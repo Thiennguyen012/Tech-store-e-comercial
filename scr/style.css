@@ -1,0 +1,12 @@
+body {
+  font-family: "poppins", sans-serif;
+  background: #ececec;
+}
+.side-img {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+#left-text {
+}
