@@ -8,5 +8,7 @@ body {
   background-repeat: no-repeat;
   position: relative;
 }
-#left-text {
+#login-text {
+  font-size: 30px;
+  font-weight: 500;
 }
