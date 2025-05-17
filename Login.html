@@ -20,15 +20,37 @@
       <!-- login-container -->
       <div
         class="row border border rounded-5 p-3 bg-white"
-        style="width: 930px"
+        style="width: 930px; margin: auto"
       >
         <!-- left box -->
         <div
-          class="col-md-6 rounded-4 justify-content-center align-content-center d-flex flex-column"
+          class="col-md-6 rounded-4 justify-content-center align-content-center d-flex flex-column image-container"
         >
           <div>
-            <img src="./img/login-side-img.jpeg" class="img-fluid rounded-5" />
+            <img
+              id="login-image"
+              src="./img/login-side-img.jpeg"
+              class="img-fluid rounded-5"
+              alt="Login Side"
+            />
           </div>
+          <script>
+            function updateLoginImage() {
+              const img = document.getElementById("login-image");
+              const aspectRatio = window.innerHeight / window.innerWidth;
+
+              if (aspectRatio > 0.9) {
+                img.src = "./img/side-img-crop.png";
+              } else {
+                img.src = "./img/login-side-img.jpeg";
+              }
+            }
+
+            // Gọi ngay khi load
+            window.addEventListener("load", updateLoginImage);
+            // Gọi lại khi thay đổi kích thước cửa sổ
+            window.addEventListener("resize", updateLoginImage);
+          </script>
         </div>
         <!-- right box -->
         <!-- tạo cột phải -->
