@@ -15,7 +15,7 @@ body {
 @media (max-width: 991px) {
   .sidebar {
     background-color: rgba(255, 255, 255, 0.7) !important;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(25px);
   }
   .dropmenu {
     background-color: rgba(255, 255, 255, 1) !important;
