@@ -12,3 +12,18 @@ body {
   font-size: 30px;
   font-weight: 500;
 }
+@media (max-width: 991px) {
+  .sidebar {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px);
+  }
+  .dropmenu {
+    background-color: rgba(255, 255, 255, 1) !important;
+  }
+}
+.search-form {
+  height: 25px;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
