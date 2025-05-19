@@ -27,3 +27,11 @@ body {
   box-shadow: none !important;
   outline: none !important;
 }
+.c-items {
+  height: 520px;
+}
+.c-img {
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+}
