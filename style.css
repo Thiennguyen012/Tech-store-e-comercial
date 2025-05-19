@@ -12,6 +12,9 @@ body {
   font-size: 30px;
   font-weight: 500;
 }
+.navbar-brand {
+  font-weight: 550;
+}
 @media (max-width: 991px) {
   .sidebar {
     background-color: rgba(255, 255, 255, 0.7) !important;
@@ -34,4 +37,9 @@ body {
   height: 100%;
   object-fit: cover;
   filter: brightness(0.8);
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: brightness(0) saturate(100%) invert(43%) sepia(0%) saturate(0%)
+    hue-rotate(160deg) brightness(90%) contrast(85%);
 }
