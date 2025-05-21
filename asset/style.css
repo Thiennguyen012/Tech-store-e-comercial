@@ -38,8 +38,20 @@ body {
   object-fit: cover;
   filter: brightness(0.8);
 }
+/* Đổi màu 2 nút next với prev của phần camera ở homepage */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   filter: brightness(0) saturate(100%) invert(43%) sepia(0%) saturate(0%)
     hue-rotate(160deg) brightness(90%) contrast(85%);
+}
+
+/* Hiệu ứng hoover cho các card */
+.card {
+  height: 520px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }

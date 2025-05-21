@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./asset/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Registration</title>
-  </head>
-  <body>
+<?php
+require 'components/header.php'
+?>
     <!-- Main container -->
     <div
       class="container d-flex justify-content-center align-items-center min-vh-100 border-5"
@@ -27,10 +16,28 @@
         >
           <div>
             <img
+              id="register-img"
               src="./img/register-side-img.jpg"
               class="img-fluid rounded-5"
             />
           </div>
+          <script>
+            function updateLoginImage() {
+              const img = document.getElementById("register-img");
+              const aspectRatio = window.innerHeight / window.innerWidth;
+
+              if (aspectRatio > 1.05) {
+                img.src = "./img/register-side-img-cropped.jpg";
+              } else {
+                img.src = "./img/register-side-img.jpg"
+              }
+            }
+
+            // Gọi ngay khi load
+            window.addEventListener("load", updateLoginImage);
+            // Gọi lại khi thay đổi kích thước cửa sổ
+            window.addEventListener("resize", updateLoginImage);
+          </script>
         </div>
         <!-- right box -->
         <!-- tạo cột phải -->
@@ -130,7 +137,7 @@
 
               <div>
                 <small
-                  ><a href="./Login.html" class="text-success"
+                  ><a href="./Login.php" class="text-success"
                     >Sign in</a
                   ></small
                 >

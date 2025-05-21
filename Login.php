@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="./asset/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Login</title>
-  </head>
-  <body>
+<?php
+require 'components/header.php'
+?>
     <!-- Main container -->
     <div
       class="container d-flex justify-content-center align-items-center min-vh-100 border-5"
@@ -39,7 +27,7 @@
               const img = document.getElementById("login-image");
               const aspectRatio = window.innerHeight / window.innerWidth;
 
-              if (aspectRatio > 0.9) {
+              if (aspectRatio > 1.05) {
                 img.src = "./img/side-img-crop.png";
               } else {
                 img.src = "./img/login-side-img.jpeg";
@@ -154,7 +142,7 @@
 
               <div>
                 <small
-                  ><a href="./Registration.html" class="text-success"
+                  ><a href="./Registration.php" class="text-success"
                     >Sign up</a
                   ></small
                 >
