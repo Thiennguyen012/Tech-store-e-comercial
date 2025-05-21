@@ -42,7 +42,7 @@
           <div class="offcanvas-body flex-lg-row d-flex flex-column">
             <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
               <li class="nav-item mx-2">
-                <a class="nav-link" aria-current="page" href="#">Home</a>
+                <a class="nav-link" aria-current="page" href="index.php">Home</a>
               </li>
 
               <li class="nav-item dropdown mx-2">
@@ -681,6 +681,8 @@
         </div>
       </div>
     </div>
+    <!-- Contact -->
+
 <?php
   include 'components/footer.php'
 ?>

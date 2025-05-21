@@ -55,3 +55,22 @@ body {
   transform: scale(1.03);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
+
+/* Hiệu ứng cho phần dropdown */
+/* Ẩn dropdown lúc đầu */
+.dropdown-menu {
+  display: block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Hiện dropdown có hiệu ứng */
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
