@@ -1,66 +1,207 @@
-
--- Tạo database
+-- Create database
 CREATE DATABASE IF NOT EXISTS banhang CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE banhang;
 
--- Bảng người dùng
-CREATE TABLE IF NOT EXISTS users (
+-- Table: country
+CREATE TABLE country (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') DEFAULT 'user',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    country_name VARCHAR(100) NOT NULL
 );
 
--- Bảng danh mục sản phẩm
-CREATE TABLE IF NOT EXISTS categories (
+-- Table: site_user
+CREATE TABLE site_user (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    email_address VARCHAR(255) NOT NULL UNIQUE,
+    phone_number VARCHAR(50),
+    password VARCHAR(255) NOT NULL
 );
 
--- Bảng sản phẩm
-CREATE TABLE IF NOT EXISTS products (
+-- Table: address
+CREATE TABLE address (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    category_id INT,
-    image VARCHAR(255),
-    description TEXT,
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    unit_number VARCHAR(20),
+    street_number VARCHAR(20),
+    address_line1 VARCHAR(255),
+    address_line2 VARCHAR(255),
+    city VARCHAR(100),
+    region VARCHAR(100),
+    postal_code VARCHAR(20),
+    country_id INT,
+    FOREIGN KEY (country_id) REFERENCES country(id)
 );
 
--- Bảng đơn hàng
-CREATE TABLE IF NOT EXISTS orders (
+-- Table: user_address
+CREATE TABLE user_address (
+    user_id INT,
+    address_id INT,
+    is_default BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (user_id, address_id),
+    FOREIGN KEY (user_id) REFERENCES site_user(id),
+    FOREIGN KEY (address_id) REFERENCES address(id)
+);
+
+-- Table: user_review
+CREATE TABLE user_review (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('pending','paid','shipped','cancelled') DEFAULT 'pending',
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    ordered_product_id INT,
+    rating_value INT,
+    comment TEXT,
+    FOREIGN KEY (user_id) REFERENCES site_user(id)
+    -- ordered_product_id FK will be added after order_line is created
 );
 
--- Bảng chi tiết đơn hàng
-CREATE TABLE IF NOT EXISTS order_items (
+-- Table: payment_type
+CREATE TABLE payment_type (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_id INT,
-    quantity INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    value VARCHAR(100) NOT NULL
 );
 
--- Dữ liệu mẫu cho categories
-INSERT INTO categories (name) VALUES ('Laptop'), ('Camera');
+-- Table: user_payment_method
+CREATE TABLE user_payment_method (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    payment_type_id INT,
+    provider VARCHAR(100),
+    account_number VARCHAR(100),
+    expiry_date DATE,
+    is_default BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES site_user(id),
+    FOREIGN KEY (payment_type_id) REFERENCES payment_type(id)
+);
 
--- Dữ liệu mẫu cho products
-INSERT INTO products (name, price, category_id, image, description) VALUES
-('Laptop Dell Inspiron', 15000000, 1, 'laptop_dell.jpg', 'Laptop Dell cấu hình mạnh'),
-('Laptop HP Pavilion', 18000000, 1, 'laptop_hp.jpg', 'HP Pavilion 15-inch'),
-('Camera Canon EOS', 12000000, 2, 'camera_canon.jpg', 'Máy ảnh Canon chuyên nghiệp'),
-('Camera Sony Alpha', 15500000, 2, 'camera_sony.jpg', 'Sony Alpha mirrorless');
+-- Table: shopping_cart
+CREATE TABLE shopping_cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES site_user(id)
+);
 
--- Dữ liệu mẫu cho users
-INSERT INTO users (username, password, email, role) VALUES
-('admin', '123456', 'admin@example.com', 'admin'),
-('user1', '123456', 'user1@example.com', 'user');
+-- Table: product_category
+CREATE TABLE product_category (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parent_category_id INT,
+    category_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (parent_category_id) REFERENCES product_category(id)
+);
+
+-- Table: product
+CREATE TABLE product (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    product_image VARCHAR(255),
+    FOREIGN KEY (category_id) REFERENCES product_category(id)
+);
+
+-- Table: product_item
+CREATE TABLE product_item (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    SKU VARCHAR(100),
+    qty_in_stock INT,
+    product_image VARCHAR(255),
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+-- Table: variation
+CREATE TABLE variation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT,
+    name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES product_category(id)
+);
+
+-- Table: variation_option
+CREATE TABLE variation_option (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    variation_id INT,
+    value VARCHAR(100) NOT NULL,
+    FOREIGN KEY (variation_id) REFERENCES variation(id)
+);
+
+-- Table: product_configuration
+CREATE TABLE product_configuration (
+    product_item_id INT,
+    variation_option_id INT,
+    PRIMARY KEY (product_item_id, variation_option_id),
+    FOREIGN KEY (product_item_id) REFERENCES product_item(id),
+    FOREIGN KEY (variation_option_id) REFERENCES variation_option(id)
+);
+
+-- Table: promotion
+CREATE TABLE promotion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    discount_rate DECIMAL(5,2),
+    start_date DATE,
+    end_date DATE
+);
+
+-- Table: promotion_category
+CREATE TABLE promotion_category (
+    category_id INT,
+    promotion_id INT,
+    PRIMARY KEY (category_id, promotion_id),
+    FOREIGN KEY (category_id) REFERENCES product(id),
+    FOREIGN KEY (promotion_id) REFERENCES promotion(id)
+);
+
+-- Table: shopping_cart_item
+CREATE TABLE shopping_cart_item (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cart_id INT,
+    product_item_id INT,
+    qty INT NOT NULL,
+    FOREIGN KEY (cart_id) REFERENCES shopping_cart(id),
+    FOREIGN KEY (product_item_id) REFERENCES product_item(id)
+);
+
+-- Table: shipping_method
+CREATE TABLE shipping_method (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2) NOT NULL
+);
+
+-- Table: order_status
+CREATE TABLE order_status (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(50) NOT NULL
+);
+
+-- Table: shop_order
+CREATE TABLE shop_order (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    payment_method_id INT,
+    shipping_address INT,
+    shipping_method INT,
+    order_total DECIMAL(12,2),
+    order_status INT,
+    FOREIGN KEY (user_id) REFERENCES site_user(id),
+    FOREIGN KEY (payment_method_id) REFERENCES user_payment_method(id),
+    FOREIGN KEY (shipping_address) REFERENCES address(id),
+    FOREIGN KEY (shipping_method) REFERENCES shipping_method(id),
+    FOREIGN KEY (order_status) REFERENCES order_status(id)
+);
+
+-- Table: order_line
+CREATE TABLE order_line (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_item_id INT,
+    order_id INT,
+    qty INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (product_item_id) REFERENCES product_item(id),
+    FOREIGN KEY (order_id) REFERENCES shop_order(id)
+);
+
+-- Add missing FK to user_review for ordered_product_id
+ALTER TABLE user_review
+    ADD CONSTRAINT fk_user_review_ordered_product
+    FOREIGN KEY (ordered_product_id) REFERENCES order_line(id);
