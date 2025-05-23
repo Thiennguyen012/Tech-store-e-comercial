@@ -223,3 +223,6 @@
   }
 </style>
 <!-- End loc san pham -->
+<?php
+  include 'components/footer.php'
+?>
