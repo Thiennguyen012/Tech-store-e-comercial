@@ -87,9 +87,11 @@ require 'db/connect.php'
           <?php else: ?>
             <!-- Đã đăng nhập -->
             <div class="d-flex justify-content-center align-content-center gap-5">
+              <!-- Shopping cart  -->
               <button type="button" class="btn border-0 position-relative">
                 <i class="fa-solid fa-cart-shopping fs-5"></i>
               </button>
+              <!-- Tính năng khác  -->
               <div class="dropdown">
                 <button class="btn border-0 position-relative dropdown-toggle" type="button" data-bs-toggle="dropdown"
                   aria-expanded="false">

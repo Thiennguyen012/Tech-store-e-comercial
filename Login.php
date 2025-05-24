@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $password = $_POST["password"];
 
   // Truy vấn database để kiểm tra thông tin đăng nhập và lấy role
-  $sql = "SELECT * FROM tbl_user WHERE username = '$username' AND password = '$password'";
+  $sql = "SELECT * FROM site_user WHERE username = '$username' AND password = '$password'";
   $result = $conn->query($sql);
 
   if ($result->num_rows > 0) {
