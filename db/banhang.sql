@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 24, 2025 at 01:42 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th5 24, 2025 lúc 06:23 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `banhang`
+-- Cơ sở dữ liệu: `banhang`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_line`
+-- Cấu trúc bảng cho bảng `order_line`
 --
 
 CREATE TABLE `order_line` (
@@ -38,7 +38,7 @@ CREATE TABLE `order_line` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_status`
+-- Cấu trúc bảng cho bảng `order_status`
 --
 
 CREATE TABLE `order_status` (
@@ -49,7 +49,7 @@ CREATE TABLE `order_status` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payment_type`
+-- Cấu trúc bảng cho bảng `payment_type`
 --
 
 CREATE TABLE `payment_type` (
@@ -60,7 +60,7 @@ CREATE TABLE `payment_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product`
+-- Cấu trúc bảng cho bảng `product`
 --
 
 CREATE TABLE `product` (
@@ -74,7 +74,7 @@ CREATE TABLE `product` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_category`
+-- Cấu trúc bảng cho bảng `product_category`
 --
 
 CREATE TABLE `product_category` (
@@ -85,7 +85,7 @@ CREATE TABLE `product_category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_configuration`
+-- Cấu trúc bảng cho bảng `product_configuration`
 --
 
 CREATE TABLE `product_configuration` (
@@ -96,7 +96,7 @@ CREATE TABLE `product_configuration` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_item`
+-- Cấu trúc bảng cho bảng `product_item`
 --
 
 CREATE TABLE `product_item` (
@@ -111,7 +111,7 @@ CREATE TABLE `product_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `promotion`
+-- Cấu trúc bảng cho bảng `promotion`
 --
 
 CREATE TABLE `promotion` (
@@ -126,7 +126,7 @@ CREATE TABLE `promotion` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `promotion_category`
+-- Cấu trúc bảng cho bảng `promotion_category`
 --
 
 CREATE TABLE `promotion_category` (
@@ -137,7 +137,7 @@ CREATE TABLE `promotion_category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shipping_method`
+-- Cấu trúc bảng cho bảng `shipping_method`
 --
 
 CREATE TABLE `shipping_method` (
@@ -149,7 +149,7 @@ CREATE TABLE `shipping_method` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shopping_cart`
+-- Cấu trúc bảng cho bảng `shopping_cart`
 --
 
 CREATE TABLE `shopping_cart` (
@@ -160,7 +160,7 @@ CREATE TABLE `shopping_cart` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shopping_cart_item`
+-- Cấu trúc bảng cho bảng `shopping_cart_item`
 --
 
 CREATE TABLE `shopping_cart_item` (
@@ -173,7 +173,7 @@ CREATE TABLE `shopping_cart_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shop_order`
+-- Cấu trúc bảng cho bảng `shop_order`
 --
 
 CREATE TABLE `shop_order` (
@@ -190,24 +190,34 @@ CREATE TABLE `shop_order` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site_user`
+-- Cấu trúc bảng cho bảng `site_user`
 --
 
 CREATE TABLE `site_user` (
   `id` int(11) NOT NULL,
-  `name` varchar(59) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(50) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `role` tinyint(1) NOT NULL DEFAULT 0,
-  `username` varchar(50) NOT NULL
+  `role` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `site_user`
+--
+
+INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, `password`, `role`) VALUES
+(1, 'Chu Minh Vũ', NULL, 'vungu@gmail.com', '0333123456', 'vungu1', '123456', 1),
+(2, 'Bùi Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh1', '123456', 1),
+(3, 'Bùi Đức Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh2', '123456', 1),
+(4, 'Bùi Đức Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh3', '123456', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_payment_method`
+-- Cấu trúc bảng cho bảng `user_payment_method`
 --
 
 CREATE TABLE `user_payment_method` (
@@ -222,7 +232,7 @@ CREATE TABLE `user_payment_method` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_review`
+-- Cấu trúc bảng cho bảng `user_review`
 --
 
 CREATE TABLE `user_review` (
@@ -236,7 +246,7 @@ CREATE TABLE `user_review` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variation`
+-- Cấu trúc bảng cho bảng `variation`
 --
 
 CREATE TABLE `variation` (
@@ -248,7 +258,7 @@ CREATE TABLE `variation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variation_option`
+-- Cấu trúc bảng cho bảng `variation_option`
 --
 
 CREATE TABLE `variation_option` (
@@ -258,11 +268,11 @@ CREATE TABLE `variation_option` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `order_line`
+-- Chỉ mục cho bảng `order_line`
 --
 ALTER TABLE `order_line`
   ADD PRIMARY KEY (`id`),
@@ -270,72 +280,72 @@ ALTER TABLE `order_line`
   ADD KEY `order_id` (`order_id`);
 
 --
--- Indexes for table `order_status`
+-- Chỉ mục cho bảng `order_status`
 --
 ALTER TABLE `order_status`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `payment_type`
+-- Chỉ mục cho bảng `payment_type`
 --
 ALTER TABLE `payment_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product`
+-- Chỉ mục cho bảng `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indexes for table `product_category`
+-- Chỉ mục cho bảng `product_category`
 --
 ALTER TABLE `product_category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product_configuration`
+-- Chỉ mục cho bảng `product_configuration`
 --
 ALTER TABLE `product_configuration`
   ADD PRIMARY KEY (`product_item_id`,`variation_option_id`),
   ADD KEY `variation_option_id` (`variation_option_id`);
 
 --
--- Indexes for table `product_item`
+-- Chỉ mục cho bảng `product_item`
 --
 ALTER TABLE `product_item`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `promotion`
+-- Chỉ mục cho bảng `promotion`
 --
 ALTER TABLE `promotion`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `promotion_category`
+-- Chỉ mục cho bảng `promotion_category`
 --
 ALTER TABLE `promotion_category`
   ADD PRIMARY KEY (`category_id`,`promotion_id`),
   ADD KEY `promotion_id` (`promotion_id`);
 
 --
--- Indexes for table `shipping_method`
+-- Chỉ mục cho bảng `shipping_method`
 --
 ALTER TABLE `shipping_method`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `shopping_cart`
+-- Chỉ mục cho bảng `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `shopping_cart_item`
+-- Chỉ mục cho bảng `shopping_cart_item`
 --
 ALTER TABLE `shopping_cart_item`
   ADD PRIMARY KEY (`id`),
@@ -343,7 +353,7 @@ ALTER TABLE `shopping_cart_item`
   ADD KEY `product_item_id` (`product_item_id`);
 
 --
--- Indexes for table `shop_order`
+-- Chỉ mục cho bảng `shop_order`
 --
 ALTER TABLE `shop_order`
   ADD PRIMARY KEY (`id`),
@@ -353,13 +363,13 @@ ALTER TABLE `shop_order`
   ADD KEY `order_status` (`order_status`);
 
 --
--- Indexes for table `site_user`
+-- Chỉ mục cho bảng `site_user`
 --
 ALTER TABLE `site_user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_payment_method`
+-- Chỉ mục cho bảng `user_payment_method`
 --
 ALTER TABLE `user_payment_method`
   ADD PRIMARY KEY (`id`),
@@ -367,7 +377,7 @@ ALTER TABLE `user_payment_method`
   ADD KEY `payment_type_id` (`payment_type_id`);
 
 --
--- Indexes for table `user_review`
+-- Chỉ mục cho bảng `user_review`
 --
 ALTER TABLE `user_review`
   ADD PRIMARY KEY (`id`),
@@ -375,171 +385,171 @@ ALTER TABLE `user_review`
   ADD KEY `ordered_product_id` (`ordered_product_id`);
 
 --
--- Indexes for table `variation`
+-- Chỉ mục cho bảng `variation`
 --
 ALTER TABLE `variation`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indexes for table `variation_option`
+-- Chỉ mục cho bảng `variation_option`
 --
 ALTER TABLE `variation_option`
   ADD PRIMARY KEY (`id`),
   ADD KEY `variation_id` (`variation_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `order_line`
+-- AUTO_INCREMENT cho bảng `order_line`
 --
 ALTER TABLE `order_line`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `order_status`
+-- AUTO_INCREMENT cho bảng `order_status`
 --
 ALTER TABLE `order_status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `payment_type`
+-- AUTO_INCREMENT cho bảng `payment_type`
 --
 ALTER TABLE `payment_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `product`
+-- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `product_category`
+-- AUTO_INCREMENT cho bảng `product_category`
 --
 ALTER TABLE `product_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `product_item`
+-- AUTO_INCREMENT cho bảng `product_item`
 --
 ALTER TABLE `product_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `promotion`
+-- AUTO_INCREMENT cho bảng `promotion`
 --
 ALTER TABLE `promotion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shipping_method`
+-- AUTO_INCREMENT cho bảng `shipping_method`
 --
 ALTER TABLE `shipping_method`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shopping_cart`
+-- AUTO_INCREMENT cho bảng `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shopping_cart_item`
+-- AUTO_INCREMENT cho bảng `shopping_cart_item`
 --
 ALTER TABLE `shopping_cart_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shop_order`
+-- AUTO_INCREMENT cho bảng `shop_order`
 --
 ALTER TABLE `shop_order`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `site_user`
+-- AUTO_INCREMENT cho bảng `site_user`
 --
 ALTER TABLE `site_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user_payment_method`
+-- AUTO_INCREMENT cho bảng `user_payment_method`
 --
 ALTER TABLE `user_payment_method`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user_review`
+-- AUTO_INCREMENT cho bảng `user_review`
 --
 ALTER TABLE `user_review`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `variation`
+-- AUTO_INCREMENT cho bảng `variation`
 --
 ALTER TABLE `variation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `variation_option`
+-- AUTO_INCREMENT cho bảng `variation_option`
 --
 ALTER TABLE `variation_option`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `order_line`
+-- Các ràng buộc cho bảng `order_line`
 --
 ALTER TABLE `order_line`
   ADD CONSTRAINT `order_line_ibfk_1` FOREIGN KEY (`product_item_id`) REFERENCES `product_item` (`id`),
   ADD CONSTRAINT `order_line_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `shop_order` (`id`);
 
 --
--- Constraints for table `product`
+-- Các ràng buộc cho bảng `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Constraints for table `product_configuration`
+-- Các ràng buộc cho bảng `product_configuration`
 --
 ALTER TABLE `product_configuration`
   ADD CONSTRAINT `product_configuration_ibfk_1` FOREIGN KEY (`product_item_id`) REFERENCES `product_item` (`id`),
   ADD CONSTRAINT `product_configuration_ibfk_2` FOREIGN KEY (`variation_option_id`) REFERENCES `variation_option` (`id`);
 
 --
--- Constraints for table `product_item`
+-- Các ràng buộc cho bảng `product_item`
 --
 ALTER TABLE `product_item`
   ADD CONSTRAINT `product_item_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 --
--- Constraints for table `promotion_category`
+-- Các ràng buộc cho bảng `promotion_category`
 --
 ALTER TABLE `promotion_category`
   ADD CONSTRAINT `promotion_category_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`),
   ADD CONSTRAINT `promotion_category_ibfk_2` FOREIGN KEY (`promotion_id`) REFERENCES `promotion` (`id`);
 
 --
--- Constraints for table `shopping_cart`
+-- Các ràng buộc cho bảng `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
   ADD CONSTRAINT `shopping_cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`);
 
 --
--- Constraints for table `shopping_cart_item`
+-- Các ràng buộc cho bảng `shopping_cart_item`
 --
 ALTER TABLE `shopping_cart_item`
   ADD CONSTRAINT `shopping_cart_item_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `shopping_cart` (`id`),
   ADD CONSTRAINT `shopping_cart_item_ibfk_2` FOREIGN KEY (`product_item_id`) REFERENCES `product_item` (`id`);
 
 --
--- Constraints for table `shop_order`
+-- Các ràng buộc cho bảng `shop_order`
 --
 ALTER TABLE `shop_order`
   ADD CONSTRAINT `shop_order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
@@ -548,27 +558,27 @@ ALTER TABLE `shop_order`
   ADD CONSTRAINT `shop_order_ibfk_4` FOREIGN KEY (`order_status`) REFERENCES `order_status` (`id`);
 
 --
--- Constraints for table `user_payment_method`
+-- Các ràng buộc cho bảng `user_payment_method`
 --
 ALTER TABLE `user_payment_method`
   ADD CONSTRAINT `user_payment_method_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
   ADD CONSTRAINT `user_payment_method_ibfk_2` FOREIGN KEY (`payment_type_id`) REFERENCES `payment_type` (`id`);
 
 --
--- Constraints for table `user_review`
+-- Các ràng buộc cho bảng `user_review`
 --
 ALTER TABLE `user_review`
   ADD CONSTRAINT `user_review_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
   ADD CONSTRAINT `user_review_ibfk_2` FOREIGN KEY (`ordered_product_id`) REFERENCES `order_line` (`id`);
 
 --
--- Constraints for table `variation`
+-- Các ràng buộc cho bảng `variation`
 --
 ALTER TABLE `variation`
   ADD CONSTRAINT `variation_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Constraints for table `variation_option`
+-- Các ràng buộc cho bảng `variation_option`
 --
 ALTER TABLE `variation_option`
   ADD CONSTRAINT `variation_option_ibfk_1` FOREIGN KEY (`variation_id`) REFERENCES `variation` (`id`);
