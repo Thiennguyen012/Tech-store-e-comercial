@@ -22,13 +22,13 @@ if (empty($name) || empty($email) || empty($phone) || empty($username) || empty(
   echo "<script>alert('Mật khẩu xác nhận không khớp');</script>";
 } else {
   // Kiểm tra username đã tồn tại chưa
-  $check = "SELECT * FROM tbl_user WHERE username = '$username'";
+  $check = "SELECT * FROM site_user WHERE username = '$username'";
   $result = mysqli_query($conn, $check);
 
   if (mysqli_num_rows($result) > 0) {
     echo "<script>alert('Username đã tồn tại');</script>";
   } else {
-    $sql = "INSERT INTO tbl_user (name, email, phone, username, password, role)
+    $sql = "INSERT INTO site_user (name, email, phone, username, password, role)
               VALUES ('$name', '$email', '$phone', '$username', '$password', 1)";
 
     if (mysqli_query($conn, $sql)) {
