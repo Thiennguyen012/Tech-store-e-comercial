@@ -1,37 +1,25 @@
 <?php
+session_start();
 require 'components/header.php';
 require 'db/connect.php'
-?>
+  ?>
 <!-- Navbar -->
-<nav
-  class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow"
-  style="height: 65px">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow" style="height: 65px">
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand fs-4" href="#">Technologia</a>
     <!-- Toggle button -->
-    <button
-      class="navbar-toggler shaddow-none border-0"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasNavbar"
-      aria-controls="offcanvasNavbar"
-      aria-label="Toggle navigation">
+    <button class="navbar-toggler shaddow-none border-0" type="button" data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- sidebar -->
-    <div
-      class="sidebar offcanvas offcanvas-end"
-      tabindex="-1"
-      id="offcanvasNavbar"
+    <div class="sidebar offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
       aria-labelledby="offcanvasNavbarLabel">
       <!-- sidebar header -->
       <div class="offcanvas-header border-dark border-bottom">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-        <button
-          type="button"
-          class="btn-close btn-close-dark shadow-none border-0"
-          data-bs-dismiss="offcanvas"
+        <button type="button" class="btn-close btn-close-dark shadow-none border-0" data-bs-dismiss="offcanvas"
           aria-label="Close"></button>
       </div>
       <!-- sidebar body -->
@@ -42,12 +30,7 @@ require 'db/connect.php'
           </li>
 
           <li class="nav-item dropdown mx-2">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Products
             </a>
             <ul class="dropmenu dropdown-menu mx-2" ;>
@@ -59,12 +42,7 @@ require 'db/connect.php'
             </ul>
           </li>
           <li class="nav-item dropdown mx-2">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Services
             </a>
             <ul class="dropmenu dropdown-menu mx-2" ;>
@@ -85,22 +63,13 @@ require 'db/connect.php'
             <a class="nav-link" href="#Contact">Contact</a>
           </li>
           <li class="nav-item dropdown mx-2">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-search"></i>
             </a>
             <ul class="dropmenu dropdown-menu mx-2">
               <li class="d-flex justify-content-center">
                 <form action="search.php" method="post">
-                  <input
-                    type="text"
-                    class="form-control search-form"
-                    placeholder="Search..."
-                    aria-label="Search" />
+                  <input type="text" class="form-control search-form" placeholder="Search..." aria-label="Search" />
                 </form>
               </li>
             </ul>
@@ -113,20 +82,17 @@ require 'db/connect.php'
             <button type="button" class="btn border-0 position-relative mt-1">
               <i class="fa-solid fa-cart-shopping fs-5"></i>
             </button>
-            <a href="./login.php" class="btn btn-dark rounded-4">Sign in</a>
+            <a href="./Login.php" class="btn btn-dark rounded-4">Sign in</a>
             <a href="./Registration.php" class="btn btn-dark rounded-4">Sign up</a>
           <?php else: ?>
             <!-- Đã đăng nhập -->
             <div class="d-flex justify-content-center align-content-center gap-5">
               <button type="button" class="btn border-0 position-relative">
                 <i class="fa-solid fa-cart-shopping fs-5"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-                  99+
-                  <span class="visually-hidden">unread messages</span>
-                </span>
               </button>
               <div class="dropdown">
-                <button class="btn border-0 position-relative dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn border-0 position-relative dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
                   <i class="fa-solid fa-user fs-5"></i>
                 </button>
                 <ul class="dropdown-menu">
@@ -146,31 +112,14 @@ require 'db/connect.php'
 <!-- Content -->
 <div id="carouselExampleCaptions" class="carousel slide">
   <div class="carousel-indicators">
-    <button
-      type="button"
-      data-bs-target="#carouselExampleCaptions"
-      data-bs-slide-to="0"
-      class="active btn btn-primary"
-      aria-current="true"
-      aria-label="Slide 1"></button>
-    <button
-      type="button"
-      data-bs-target="#carouselExampleCaptions"
-      data-bs-slide-to="1"
-      aria-label="Slide 2"></button>
-    <button
-      type="button"
-      data-bs-target="#carouselExampleCaptions"
-      data-bs-slide-to="2"
-      aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active btn btn-primary"
+      aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active c-items">
-      <img
-        id="slide-img1"
-        src="./img/product-banner/zenbook14.jpg"
-        class="d-block w-100 c-img"
-        alt="..." />
+      <img id="slide-img1" src="./img/product-banner/zenbook14.jpg" class="d-block w-100 c-img" alt="..." />
       <script>
         function updateLoginImage() {
           const img = document.getElementById("slide-img1");
@@ -194,8 +143,7 @@ require 'db/connect.php'
               Some representative placeholder content for the first slide.
             </p> -->
         <div>
-          <button
-            class="btn btn-transparent btn-outline-dark rounded-4 mx-3 my-1 my-lg-3 fw-bold">
+          <button class="btn btn-transparent btn-outline-dark rounded-4 mx-3 my-1 my-lg-3 fw-bold">
             Learn more
           </button>
           <a class="text-dark ms-2 fw-bold" href="#">Buy now</a>
@@ -203,11 +151,7 @@ require 'db/connect.php'
       </div>
     </div>
     <div class="carousel-item c-items">
-      <img
-        id="slide-img2"
-        src="./img/product-banner/vivo s16.jpg"
-        class="d-block w-100 c-img"
-        alt="..." />
+      <img id="slide-img2" src="./img/product-banner/vivo s16.jpg" class="d-block w-100 c-img" alt="..." />
       <script>
         function updateLoginImage() {
           const img = document.getElementById("slide-img2");
@@ -231,8 +175,7 @@ require 'db/connect.php'
               Some representative placeholder content for the second slide.
             </p> -->
         <div>
-          <button
-            class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">
+          <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">
             Learn more
           </button>
           <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
@@ -240,11 +183,7 @@ require 'db/connect.php'
       </div>
     </div>
     <div class="carousel-item c-items">
-      <img
-        id="slide-img3"
-        src="./img/product-banner/zenbook a14.jpg"
-        class="d-block w-100 c-img"
-        alt="..." />
+      <img id="slide-img3" src="./img/product-banner/zenbook a14.jpg" class="d-block w-100 c-img" alt="..." />
       <script>
         function updateLoginImage() {
           const img = document.getElementById("slide-img3");
@@ -268,8 +207,7 @@ require 'db/connect.php'
               Some representative placeholder content for the third slide.
             </p> -->
         <div>
-          <button
-            class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">
+          <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">
             Learn more
           </button>
           <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
@@ -277,19 +215,11 @@ require 'db/connect.php'
       </div>
     </div>
   </div>
-  <button
-    class="carousel-control-prev"
-    type="button"
-    data-bs-target="#carouselExampleCaptions"
-    data-bs-slide="prev">
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button
-    class="carousel-control-next"
-    type="button"
-    data-bs-target="#carouselExampleCaptions"
-    data-bs-slide="next">
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
@@ -319,62 +249,32 @@ require 'db/connect.php'
     <div class="col-md-6 text-center">
       <div id="carouselExampleIndicators" class="carousel slide">
         <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="1"
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
             aria-label="Slide 2"></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="2"
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
             aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img
-              src="./img/product-banner/google-camera.png"
-              class="d-block w-100"
-              alt="camera" />
+            <img src="./img/product-banner/google-camera.png" class="d-block w-100" alt="camera" />
           </div>
           <div class="carousel-item">
-            <img
-              src="./img/product-banner/gcam-front.png"
-              class="d-block w-100"
-              alt="camera-front" />
+            <img src="./img/product-banner/gcam-front.png" class="d-block w-100" alt="camera-front" />
           </div>
           <div class="carousel-item">
-            <img
-              src="./img/product-banner/gcam-side.png"
-              class="d-block w-100"
-              alt="camera-side" />
+            <img src="./img/product-banner/gcam-side.png" class="d-block w-100" alt="camera-side" />
           </div>
         </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
           data-bs-slide="prev">
-          <span
-            class="carousel-control-prev-icon"
-            aria-hidden="true"></span>
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
           data-bs-slide="next">
-          <span
-            class="carousel-control-next-icon"
-            aria-hidden="true"></span>
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
       </div>
@@ -389,84 +289,47 @@ require 'db/connect.php'
     <div class="col-md-6 text-center">
       <div id="carouselLaptopIndicators" class="carousel slide">
         <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#carouselLaptopIndicators"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"></button>
-          <button
-            type="button"
-            data-bs-target="#carouselLaptopIndicators"
-            data-bs-slide-to="1"
+          <button type="button" data-bs-target="#carouselLaptopIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselLaptopIndicators" data-bs-slide-to="1"
             aria-label="Slide 2"></button>
-          <button
-            type="button"
-            data-bs-target="#carouselLaptopIndicators"
-            data-bs-slide-to="2"
+          <button type="button" data-bs-target="#carouselLaptopIndicators" data-bs-slide-to="2"
             aria-label="Slide 3"></button>
-          <button
-            type="button"
-            data-bs-target="#carouselLaptopIndicators"
-            data-bs-slide-to="3"
+          <button type="button" data-bs-target="#carouselLaptopIndicators" data-bs-slide-to="3"
             aria-label="Slide 4"></button>
-          <button
-            type="button"
-            data-bs-target="#carouselLaptopIndicators"
-            data-bs-slide-to="4"
+          <button type="button" data-bs-target="#carouselLaptopIndicators" data-bs-slide-to="4"
             aria-label="Slide 5"></button>
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img
-              src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix_Front.png"
-              class="d-block w-100"
+            <img src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix_Front.png" class="d-block w-100"
               alt="camera" />
           </div>
           <div class="carousel-item">
-            <img
-              src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__A.png"
-              class="d-block w-100"
+            <img src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__A.png" class="d-block w-100"
               alt="camera-front" />
           </div>
           <div class="carousel-item">
-            <img
-              src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__B.png"
-              class="d-block w-100"
+            <img src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__B.png" class="d-block w-100"
               alt="camera-side" />
           </div>
           <div class="carousel-item">
-            <img
-              src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__C.png"
-              class="d-block w-100"
+            <img src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__C.png" class="d-block w-100"
               alt="camera-side" />
           </div>
           <div class="carousel-item">
-            <img
-              src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__D.png"
-              class="d-block w-100"
+            <img src="./img/product-banner/rog/89555_laptop_asus_gaming_rog_strix__D.png" class="d-block w-100"
               alt="camera-side" />
           </div>
         </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselLaptopIndicators"
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselLaptopIndicators"
           data-bs-slide="prev">
-          <span
-            class="carousel-control-prev-icon"
-            aria-hidden="true"></span>
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselLaptopIndicators"
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselLaptopIndicators"
           data-bs-slide="next">
-          <span
-            class="carousel-control-next-icon"
-            aria-hidden="true"></span>
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
       </div>
@@ -482,7 +345,8 @@ require 'db/connect.php'
         NVIDIA® GeForce RTX™ 5070 Ti Laptop GPU with a max TDP of 140W.
       </p>
       <p class="laptop-content mb-4 fs-2 fw-bold">
-        <span style="font-size: 16px; vertical-align: top">$</span>1,899<span style="font-size: 14px; vertical-align: super">99</span>
+        <span style="font-size: 16px; vertical-align: top">$</span>1,899<span
+          style="font-size: 14px; vertical-align: super">99</span>
       </p>
       <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2">
         Show more
@@ -496,12 +360,9 @@ require 'db/connect.php'
   <hr />
   <!-- Laptop -->
   <div class="row align-content-center my-lg-4">
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/laptop/84663_laptop_acer_gaming_nitro_v_16_propanel_anv16_41.jpg"
-          class="card-img-top"
+        <img src="./img/products/laptop/84663_laptop_acer_gaming_nitro_v_16_propanel_anv16_41.jpg" class="card-img-top"
           alt="..." />
         <div class="card-body">
           <h5 class="card-title">Laptop Acer Gaming Nitro V 16 ProPanel</h5>
@@ -511,17 +372,15 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/laptop/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg"
-          class="card-img-top"
-          alt="..." />
+        <img src="./img/products/laptop/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg"
+          class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">Laptop Acer Gaming Nitro Lite</h5>
           <p class="card-text">
@@ -530,16 +389,14 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/laptop/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg"
-          class="card-img-top"
+        <img src="./img/products/laptop/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg" class="card-img-top"
           alt="..." />
         <div class="card-body">
           <h5 class="card-title">Laptop Asus ZenBook UX3405MA-PP152W</h5>
@@ -549,17 +406,14 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/laptop/dell inspiron 3530 i7.jpg"
-          class="card-img-top"
-          alt="..." />
+        <img src="./img/products/laptop/dell inspiron 3530 i7.jpg" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">Laptop Dell Inspiron 3530 i7</h5>
           <p class="card-text">
@@ -569,19 +423,17 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <!-- Security Camera -->
   <div class="row align-content-center my-lg-4">
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/cams/91274_camera_tp_link_tapo_c510w_0003_layer_1.jpg"
-          class="card-img-top"
+        <img src="./img/products/cams/91274_camera_tp_link_tapo_c510w_0003_layer_1.jpg" class="card-img-top"
           alt="..." />
         <div class="card-body">
           <h5 class="card-title">Camera TP-Link Tapo C510W</h5>
@@ -592,16 +444,14 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/cams/83142_camera_hikvision_ds_2cd1343g2_liuf_sl_2.jpg"
-          class="card-img-top"
+        <img src="./img/products/cams/83142_camera_hikvision_ds_2cd1343g2_liuf_sl_2.jpg" class="card-img-top"
           alt="..." />
         <div class="card-body">
           <h5 class="card-title">
@@ -614,17 +464,14 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img
-          src="./img/products/cams/74708_camera_tp_link_vigi_c240l_2_8mm_1.jpg"
-          class="card-img-top"
-          alt="..." />
+        <img src="./img/products/cams/74708_camera_tp_link_vigi_c240l_2_8mm_1.jpg" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">Camera TP-Link VIGI C240I</h5>
           <p class="card-text">
@@ -634,19 +481,16 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
         <br />
         <br />
-        <img
-          src="./img/products/cams/56519_hikvision-hp-2cd1t23g0e-gpro-h265.jpg"
-          class="card-img-top"
-          alt="..." />
+        <img src="./img/products/cams/56519_hikvision-hp-2cd1t23g0e-gpro-h265.jpg" class="card-img-top" alt="..." />
         <br />
         <br />
         <div class="card-body">
@@ -658,7 +502,8 @@ require 'db/connect.php'
         </div>
         <div class="row justify-content-center text-center">
           <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a></div>
+          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          </div>
         </div>
       </div>
     </div>
@@ -669,4 +514,4 @@ require 'db/connect.php'
 
 <?php
 include 'components/footer.php'
-?>
+  ?>

@@ -1,7 +1,19 @@
 <?php
+session_start();
 require 'components/header.php';
 require 'db/connect.php';
 global $conn;
+
+// Redirect logged-in users away from login page
+if (isset($_SESSION['username'])) {
+  if ($_SESSION['role'] == 0) {
+    header("Location: admin.php");
+    exit();
+  } else if ($_SESSION['role'] == 1) {
+    header("Location: index.php");
+    exit();
+  }
+}
 ?>
 
 <!-- Xử lý form đăng nhập -->
@@ -17,6 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $role = $row['role'];
+
+    // Tạo session
+    $_SESSION['username'] = $username;
+    $_SESSION['role'] = $role;
 
     // Kiểm tra role để chuyển hướng
     if ($role == 0) {
