@@ -2,6 +2,10 @@
 session_start();
 require 'components/header.php';
 require 'db/connect.php';
+
+// Khởi tạo biến để lưu thông báo
+$alert_message = '';
+$alert_type = '';
 ?>
 
 <!-- Lấy dữ liệu từ form đăng ký -->
@@ -17,24 +21,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 // Kiểm tra các trường trống 
 if (empty($name) || empty($email) || empty($phone) || empty($username) || empty($password)) {
-  echo "<script>alert('Vui lòng nhập đầy đủ thông tin');</script>";
+  $alert_message = 'Please fulfill the information!';
+  $alert_type = 'danger';
 } elseif ($password !== $rePassword) {
-  echo "<script>alert('Mật khẩu xác nhận không khớp');</script>";
+  $alert_message = 'Wrong Password! Try again!';
+  $alert_type = 'warning';
 } else {
   // Kiểm tra username đã tồn tại chưa
   $check = "SELECT * FROM site_user WHERE username = '$username'";
   $result = mysqli_query($conn, $check);
 
   if (mysqli_num_rows($result) > 0) {
-    echo "<script>alert('Username đã tồn tại');</script>";
+    $alert_message = 'Username already exists! Try again!';
+    $alert_type = 'warning';
   } else {
+    // Hash password trước khi lưu vào database
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $sql = "INSERT INTO site_user (name, email, phone, username, password, role)
               VALUES ('$name', '$email', '$phone', '$username', '$password', 1)";
 
     if (mysqli_query($conn, $sql)) {
-      echo "<script>alert('Đăng ký thành công'); window.location.href='login.php';</script>";
+      $alert_message = 'Success!';
+      $alert_type = 'success';
+      echo "<script>window.location.href='login.php';</script>";
     } else {
-      echo "<script>alert('Có lỗi xảy ra khi đăng ký');</script>";
+      $alert_message = 'Error! Try again!';
+      $alert_type = 'danger';
     }
   }
 }
@@ -42,8 +54,19 @@ if (empty($name) || empty($email) || empty($phone) || empty($username) || empty(
 
 <!-- Main container -->
 <div class="container d-flex justify-content-center align-items-center min-vh-100 border-5">
-  <!-- login-container -->
+  <!-- register-container -->
   <div class="row border border rounded-5 p-3 bg-white" style="width: 930px">
+    <!-- Alert Box - Hiển thị thông báo -->
+    <?php if (!empty($alert_message)): ?>
+      <div class="col-12 mb-3">
+        <div class="alert alert-<?php echo $alert_type; ?> alert-dismissible fade show" role="alert" id="alertBox">
+          <i
+            class="bi bi-<?php echo $alert_type == 'success' ? 'check-circle' : ($alert_type == 'danger' ? 'exclamation-triangle' : 'info-circle'); ?>"></i>
+          <?php echo $alert_message; ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <?php endif; ?>
     <!-- left box -->
     <div class="col-md-6 rounded-4 justify-content-center align-content-center d-flex flex-column">
       <div>
