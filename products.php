@@ -207,13 +207,67 @@ require 'db/connect.php'
         </div>
       </div>
     </div>
+    <!-- End loc san pham -->
     <!-- Main content on the right -->
     <div class="col-md-9">
-      <!-- Your product grid/list goes here -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold mb-0">Laptop<span class="fs-6 fw-normal"></span></h3>
+        <div>
+          <select class="form-select" style="width: 180px;">
+            <option selected>Sắp xếp theo</option>
+            <option value="1">Giá tăng dần</option>
+            <option value="2">Giá giảm dần</option>
+            <option value="3">Tên A-Z</option>
+            <option value="4">Tên Z-A</option>
+          </select>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <!-- Sản phẩm 1 -->
+        <div class="col">
+          <div class="card border-0 h-100">
+            <img src="./img/products/laptop/84663_laptop_acer_gaming_nitro_v_16_propanel_anv16_41.jpg" class="card-img-top" alt="Laptop Acer Gaming Nitro V 16 ProPanel">
+            <div class="card-body text-center">
+              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Acer Gaming Nitro V 16 ProPanel</h6>
+              <div class="fw-bold" style="font-size: 1.1rem;">19.990.000₫</div>
+            </div>
+          </div>
+        </div>
+        <!-- Sản phẩm 2 -->
+        <div class="col">
+          <div class="card border-0 h-100">
+            <img src="./img/products/laptop/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg" class="card-img-top" alt="Laptop Acer Gaming Nitro Lite">
+            <div class="card-body text-center">
+              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Acer Gaming Nitro Lite</h6>
+              <div class="fw-bold" style="font-size: 1.1rem;">20.990.000₫</div>
+            </div>
+          </div>
+        </div>
+        <!-- Sản phẩm 3 -->
+        <div class="col">
+          <div class="card border-0 h-100">
+            <img src="./img/products/laptop/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg" class="card-img-top" alt="Laptop Asus ZenBook UX3405MA-PP152W">
+            <div class="card-body text-center">
+              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Asus ZenBook UX3405MA-PP152W</h6>
+              <div class="fw-bold" style="font-size: 1.1rem;">32.990.000₫</div>
+            </div>
+          </div>
+        </div>
+        <!-- Sản phẩm 4 -->
+        <div class="col">
+          <div class="card border-0 h-100">
+            <img src="./img/products/laptop/dell inspiron 3530 i7.jpg" class="card-img-top" alt="Laptop Dell Inspiron 3530 i7">
+            <div class="card-body text-center">
+              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Dell Inspiron 3530 i7</h6>
+              <div class="fw-bold" style="font-size: 1.1rem;">17.990.000₫</div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
     </div>
   </div>
 </div>
-<!-- End loc san pham -->
 <?php
 include 'components/footer.php'
 ?>
