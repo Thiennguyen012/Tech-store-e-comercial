@@ -10,13 +10,13 @@ function loadPage(file, clickedLink = null) {
   }
 }
 
-document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
-  link.addEventListener("click", function () {
-    // Bỏ class active khỏi các mục khác
-    document
-      .querySelectorAll(".navbar-nav .nav-link")
-      .forEach((item) => item.classList.remove("active"));
-    // Thêm class active vào mục được chọn
-    this.classList.add("active");
+//script cho arrow up to top
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop()) {
+      $(".arrow").fadeIn();
+    } else {
+      $(".arrow").fadeOut();
+    }
   });
 });

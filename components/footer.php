@@ -70,6 +70,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- reload page -->
 <script src="./asset/main-script.js"></script>
+
 </body>
 
 </html>

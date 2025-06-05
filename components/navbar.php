@@ -53,7 +53,7 @@
             </ul>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#About">About</a>
+            <a class="nav-link" href="#About" onclick="loadPage('module/about-us/about-us.php',this); return false;">About</a>
           </li>
           <li class="nav-item mx-2">
             <a class="nav-link" href="#Contact">Contact</a>
