@@ -122,9 +122,9 @@ require 'db/connect.php'
 <div class="container-fluid mt-5 mb-5 px-2">
   <div class="row">
     <!-- Sidebar on the left -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div
-        class="card shadow-sm position-sticky"
+        class="shadow-sm position-sticky border rounded-3 p-3 " 
         style="top: 80px; z-index: 1020; background: #fff">
         <div class="card-body">
           <h6
@@ -223,47 +223,29 @@ require 'db/connect.php'
         </div>
       </div>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Sản phẩm 1 -->
+        <?php
+// Lấy danh sách sản phẩm từ database
+$sql = "SELECT name, product_image, price FROM product";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        ?>
         <div class="col">
           <div class="card border-0 h-100">
-            <img src="./img/products/laptop/84663_laptop_acer_gaming_nitro_v_16_propanel_anv16_41.jpg" class="card-img-top" alt="Laptop Acer Gaming Nitro V 16 ProPanel">
+            <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['name']); ?>">
             <div class="card-body text-center">
-              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Acer Gaming Nitro V 16 ProPanel</h6>
-              <div class="fw-bold" style="font-size: 1.1rem;">19.990.000₫</div>
+              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;"><?php echo htmlspecialchars($row['name']); ?></h6>
+              <div class="fw-bold" style="font-size: 1.1rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$ </div>
             </div>
           </div>
         </div>
-        <!-- Sản phẩm 2 -->
-        <div class="col">
-          <div class="card border-0 h-100">
-            <img src="./img/products/laptop/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg" class="card-img-top" alt="Laptop Acer Gaming Nitro Lite">
-            <div class="card-body text-center">
-              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Acer Gaming Nitro Lite</h6>
-              <div class="fw-bold" style="font-size: 1.1rem;">20.990.000₫</div>
-            </div>
-          </div>
-        </div>
-        <!-- Sản phẩm 3 -->
-        <div class="col">
-          <div class="card border-0 h-100">
-            <img src="./img/products/laptop/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg" class="card-img-top" alt="Laptop Asus ZenBook UX3405MA-PP152W">
-            <div class="card-body text-center">
-              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Asus ZenBook UX3405MA-PP152W</h6>
-              <div class="fw-bold" style="font-size: 1.1rem;">32.990.000₫</div>
-            </div>
-          </div>
-        </div>
-        <!-- Sản phẩm 4 -->
-        <div class="col">
-          <div class="card border-0 h-100">
-            <img src="./img/products/laptop/dell inspiron 3530 i7.jpg" class="card-img-top" alt="Laptop Dell Inspiron 3530 i7">
-            <div class="card-body text-center">
-              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;">Laptop Dell Inspiron 3530 i7</h6>
-              <div class="fw-bold" style="font-size: 1.1rem;">17.990.000₫</div>
-            </div>
-          </div>
-        </div>
-        
+        <?php
+    }
+} else {
+    echo '<div class="col"><div class="alert alert-warning w-100">Không có sản phẩm nào.</div></div>';
+}
+?>
       </div>
     </div>
   </div>

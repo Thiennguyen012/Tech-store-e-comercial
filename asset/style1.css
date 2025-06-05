@@ -2,6 +2,7 @@ body {
   font-family: "poppins", sans-serif;
   background: #ececec;
 }
+/* login/logout */
 .side-img {
   background-position: center;
   background-size: cover;
@@ -12,6 +13,8 @@ body {
   font-size: 30px;
   font-weight: 500;
 }
+/*  */
+/* navbar */
 .navbar-brand {
   font-weight: 550;
 }
@@ -30,6 +33,26 @@ body {
   box-shadow: none !important;
   outline: none !important;
 }
+/* Hiệu ứng cho phần dropdown */
+/* Ẩn dropdown lúc đầu */
+.dropdown-menu {
+  display: block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Hiện dropdown có hiệu ứng */
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+/*  */
+/* carousel */
 .c-items {
   height: 520px;
 }
@@ -55,22 +78,32 @@ body {
   transform: scale(1.03);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
-
-/* Hiệu ứng cho phần dropdown */
-/* Ẩn dropdown lúc đầu */
-.dropdown-menu {
-  display: block;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-  visibility: hidden;
-  pointer-events: none;
+.categories-card {
+  height: 270px;
+}
+/* about us */
+.about-us-container {
+  max-width: 1280px;
+  height: 100%;
+  background-image: url("../img/about-us-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+#about-us-btn {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hiện dropdown có hiệu ứng */
-.dropdown:hover .dropdown-menu {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-  pointer-events: auto;
+#about-us-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
+}
+.arrow {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 40px;
+  right: 30px;
 }
