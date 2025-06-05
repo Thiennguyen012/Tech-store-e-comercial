@@ -40,6 +40,7 @@
     include 'module/main-content/main-content.php';
     ?>
   </div>
+  <!-- back to top -->
   <a href="#" class="arrow" id="scrollToTop">
     <i><img src="img/up-arrow.png" alt="" width="50px"></i>
   </a>
