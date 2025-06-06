@@ -1,22 +1,46 @@
-<div class="container my-5">
-    <div class="row align-items-center">
-        <!-- Nội dung bên trái -->
-        <div class="col-md-6 text-md-start text-center mb-4 mb-md-0">
-            <h1 class=" fw-bold mb-3">
-                Who we are
-            </h1>
-            <p class=" text-muted">
-                Established in 2025, <span style="font-weight: bold;">Technologia</span> is an e-commerce platform that specializes in providing high-quality tech products including laptops, cameras, smart devices, and consumer electronics.
-            </p>
-            <p class=" text-muted mb-4">Our goal is to bring customers a modern, convenient, and trustworthy shopping experience, where product quality and customer satisfaction always come first.</p>
-        </div>
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text -->
+            <div class="col-md-6">
+                <h1 class="fw-bold mb-4">Who we are</h1>
+                <p class="text-muted">
+                    Established in 2025, <strong>Technologia</strong> is an e-commerce platform that specializes in providing
+                    high-quality tech products including laptops, cameras, smart devices, and consumer electronics.
+                </p>
+                <p class="text-muted">
+                    Our goal is to bring customers a modern, convenient, and trustworthy shopping experience,
+                    where product quality and customer satisfaction always come first.
+                </p>
+            </div>
 
-        <!-- Hình ảnh bên phải -->
-        <div class="col-md-6 text-center">
-            heheh
+            <!-- Image -->
+            <div class="col-md-6">
+                <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2021/11/shutterstock_1445581070.jpeg" alt=" Tech Store" class="img-fluid rounded shadow-sm">
+            </div>
         </div>
     </div>
-    <div class="row align-items-center">
+</section>
+<section class="py-5" style="background-color:aliceblue">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text -->
+            <div class="col-md-6">
+                <h1 class="fw-bold mb-4">Who we are</h1>
+                <p class="text-muted">
+                    Established in 2025, <strong>Technologia</strong> is an e-commerce platform that specializes in providing
+                    high-quality tech products including laptops, cameras, smart devices, and consumer electronics.
+                </p>
+                <p class="text-muted">
+                    Our goal is to bring customers a modern, convenient, and trustworthy shopping experience,
+                    where product quality and customer satisfaction always come first.
+                </p>
+            </div>
 
+            <!-- Image -->
+            <div class="col-md-6">
+                <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2021/11/shutterstock_1445581070.jpeg" alt=" Tech Store" class="img-fluid rounded shadow-sm">
+            </div>
+        </div>
     </div>
-</div>
+</section>
