@@ -44,6 +44,26 @@
   <a href="#" class="arrow" id="scrollToTop">
     <i><img src="img/up-arrow.png" alt="" width="50px"></i>
   </a>
+  <!-- sticky cart/social contact -->
+  <div class="cart-social-fixed">
+    <!-- Cart -->
+    <div class="cart-icon bg-warning text-white d-flex flex-column align-items-center justify-content-center rounded-3 ">
+      <span class="fw-bold">0</span>
+      <a href="#" style="text-decoration: none; color:white;" onclick="loadPage('module/cart/cart.php',this)"><i class="bi bi-bag-fill fs-4"></i></a>
+    </div>
+
+    <!-- Socials -->
+    <div class="social-icons bg-dark d-flex flex-column text-white p-2 gap-2 rounded-3">
+      <a href="https://www.facebook.com/" target="_blank"><i
+          class="bi bi-facebook text-decoration-none text-white fs-5"></i></a>
+      <a href="https://www.instagram.com/" target="_blank"><i
+          class="bi bi-instagram text-decoration-none text-white fs-5"></i></a>
+      <a href="https://x.com/" target="_blank"><i
+          class="bi bi-twitter-x text-decoration-none text-white fs-5"></i></a>
+      <a href="https://www.youtube.com/" target="_blank"><i
+          class="bi bi-youtube text-decoration-none text-white fs-4"></i></a>
+    </div>
+  </div>
   <!-- Footer -->
   <footer class="bg-dark text-white py-4">
     <div class="container px-4">
@@ -52,7 +72,7 @@
           <h4 class="pt-2">About Us</h4>
           <ul class="list-unstyled">
             <li>
-              <a href="#" class="text-decoration-none text-white">Our Team</a>
+              <a href="#" class="text-decoration-none text-white" onclick="loadPage('module/about-us/about-us.php',this)">Our Team</a>
             </li>
             <li>
               <p>Address: 141 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi</p>
@@ -90,14 +110,14 @@
         <div class="col-6 col-lg-3">
           <h4 class="pt-2">Social Media</h4>
           <div>
-            <a href="#"><i
-                class="bi bi-google me-3 text-decoration-none text-white fs-5"></i></a>
-            <a href="#"><i
+            <a href="https://www.facebook.com/" target="_blank"><i
                 class="bi bi-facebook me-3 text-decoration-none text-white fs-5"></i></a>
-            <a href="#"><i
+            <a href="https://www.instagram.com/" target="_blank"><i
                 class="bi bi-instagram me-3 text-decoration-none text-white fs-5"></i></a>
-            <a href="#"><i
+            <a href="https://x.com/" target="_blank"><i
                 class="bi bi-twitter-x me-3 text-decoration-none text-white fs-5"></i></a>
+            <a href="https://www.youtube.com/" target="_blank"><i
+                class="bi bi-youtube me-3 text-decoration-none text-white fs-4"></i></a>
           </div>
         </div>
       </div>
