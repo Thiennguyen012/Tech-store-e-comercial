@@ -15,6 +15,12 @@ body {
 }
 /*  */
 /* navbar */
+.navbar a {
+  text-decoration: none; /* Bỏ gạch chân mặc định */
+  padding: 8px 12px; /* Khoảng cách bên trong */
+  transition: all 0.2s ease; /* Hiệu ứng mượt */
+}
+
 .navbar-brand {
   font-weight: 550;
 }
@@ -97,6 +103,10 @@ body {
   transform: scale(1.03);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
 }
+.custom-shadow {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.75);
+}
+/*  */
 .arrow {
   width: 50px;
   height: 50px;
@@ -106,4 +116,48 @@ body {
   position: fixed;
   bottom: 40px;
   right: 30px;
+}
+/* sticky cart/social contact */
+.cart-social-fixed {
+  position: fixed;
+  top: 30%;
+  right: 0;
+  z-index: 1000;
+}
+
+.cart-icon {
+  width: 45px;
+  height: 70px;
+}
+.cart-icon:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.social-icons {
+  width: 45px;
+  height: auto;
+  text-align: center;
+}
+.social-icons:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+/*  */
+
+/* value section */
+.value-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transition: transform 0.3s;
+}
+
+.value-circle:hover {
+  transform: scale(1.1);
 }
