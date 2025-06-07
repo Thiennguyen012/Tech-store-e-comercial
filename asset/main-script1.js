@@ -20,3 +20,27 @@ $(document).ready(function () {
     }
   });
 });
+
+document.getElementById('filterButton').addEventListener('click', function () {
+  const formData = new FormData(document.getElementById('filterForm'));
+
+  fetch('module/product/filter.php', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById('productList').innerHTML = data;
+    })
+    .catch((error) => console.error('Error:', error));
+});
+
+document.querySelector('.form-select').addEventListener('change', function () {
+  const form = document.getElementById('filterForm');
+  const formData = new FormData(form);
+  formData.append('sortBy', this.value); // Thêm giá trị sắp xếp vào form data
+
+  const queryString = new URLSearchParams(formData).toString();
+  loadPage('module/product/product.php?' + queryString);
+});
+

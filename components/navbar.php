@@ -26,15 +26,13 @@
           </li>
 
           <li class="nav-item dropdown mx-2">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="loadPage('module/product/product.php',this); return false;">
               Products
             </a>
             <ul class="dropmenu dropdown-menu mx-2" ;>
-              <li><a class="dropdown-item" href="#">Laptop</a></li>
-              <li><a class="dropdown-item" href="#">Security Camera</a></li>
-              <li>
-                <a class="dropdown-item" href="#">Others</a>
-              </li>
+              <li><a class="dropdown-item" href="#" onclick="loadPage('module/product/product.php?category=laptop', this); return false;">Laptop</a></li>
+              <li><a class="dropdown-item" href="#" onclick="loadPage('module/product/product.php?category=camera', this); return false;">Camera</a></li>
+              <li><a class="dropdown-item" href="#" onclick="loadPage('module/product/product.php?category=accessories', this); return false;">Accessories</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown mx-2">
