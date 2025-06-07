@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../db/connect.php';
 // Lấy dữ liệu lọc từ request
 $minPrice = isset($_GET['minPrice']) && is_numeric($_GET['minPrice']) ? intval($_GET['minPrice']) : 0;
 $maxPrice = isset($_GET['maxPrice']) && is_numeric($_GET['maxPrice']) ? intval($_GET['maxPrice']) : 10000000;
-$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'laptop';
+$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'laptop'; // Lấy category từ URL
 
 $selectedFilters = [];
 if (isset($_GET['filters']) && is_array($_GET['filters'])) {
@@ -19,8 +19,7 @@ $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price
         FROM product p 
         INNER JOIN product_category pc ON p.category_id = pc.id 
         LEFT JOIN variation_options vo ON p.id = vo.product_id 
-        WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?
-";
+        WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sii", $category, $minPrice, $maxPrice);
@@ -105,7 +104,7 @@ switch ($sortBy) {
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php', this); return false;">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Laptop</li>
+      <li class="breadcrumb-item active" aria-current="page"><?php echo ucfirst($category); ?></li>
     </ol>
   </nav>
 </div>
@@ -118,6 +117,7 @@ switch ($sortBy) {
       <div class="shadow-sm position-sticky border rounded-3 p-3" style="top: 80px; z-index: 1020; background: #fff">
         <div class="card-body">
           <form id="filterForm">
+            <input type="hidden" name="category" value="<?php echo htmlspecialchars($category); ?>">
             <?php foreach ($filters as $categoryName => $filterOptions): ?>
               <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">
                 <span class="toggle-category" style="cursor: pointer;" onclick="toggleCategory('<?php echo str_replace(' ', '-', $categoryName); ?>')">
@@ -129,7 +129,7 @@ switch ($sortBy) {
                   <?php foreach ($filterOptions as $option): ?>
                     <li class="list-group-item px-0">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="filters[]" value="<?php echo $option['value']; ?>" id="<?php echo $option['value']; ?>" />
+                        <input class="form-check-input" type="checkbox" name="filters[<?php echo $categoryName; ?>]" value="<?php echo $option['value']; ?>" id="<?php echo $option['value']; ?>" />
                         <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>">
                           <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
                         </label>
@@ -164,8 +164,7 @@ switch ($sortBy) {
     <div class="col-md-9">
       <div id="productList">
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="fw-bold mb-0">Laptop<span class="fs-6 fw-normal"></span></h3>
-
+          <h3 class="fw-bold mb-0"><?php echo ucfirst($category); ?><span class="fs-6 fw-normal"></span></h3>
         </div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
           <?php

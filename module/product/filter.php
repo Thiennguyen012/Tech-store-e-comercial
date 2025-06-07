@@ -12,19 +12,26 @@ $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price
         INNER JOIN product_category pc ON p.category_id = pc.id 
         LEFT JOIN variation_options vo ON p.id = vo.product_id 
         LEFT JOIN variation v ON vo.variation_id = v.id 
-        WHERE pc.category_name = '$category' AND p.price BETWEEN $minPrice AND $maxPrice";
+        WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
 
 $filterConditions = [];
+$params = [$category, $minPrice, $maxPrice];
+$types = "sii";
 
-foreach ($selectedFilters as $category => $value) {
-    $filterConditions[] = "vo.value = '" . htmlspecialchars($value) . "'";
+foreach ($selectedFilters as $key => $value) {
+    $filterConditions[] = "vo.value = ?";
+    $params[] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); // Xử lý giá trị đặc biệt
+    $types .= "s";
 }
 
 if (!empty($filterConditions)) {
     $sql .= " AND (" . implode(" OR ", $filterConditions) . ")";
 }
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param($types, ...$params);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result && $result->num_rows > 0) {
     echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">'; // Thêm lớp row và chia cột
@@ -43,5 +50,6 @@ if ($result && $result->num_rows > 0) {
     }
     echo '</div>'; // Đóng lớp row
 } else {
-    echo '<div class="col"><div class="alert alert-warning w-100">Không có sản phẩm nào.</div></div>';
+    echo '<div class="col"><div class="alert alert-warning w-100">Không có sản phẩm nào phù hợp với bộ lọc hiện tại.</div></div>';
 }
+?>
