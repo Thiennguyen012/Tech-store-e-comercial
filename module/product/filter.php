@@ -6,6 +6,7 @@ $selectedFilters = isset($_POST['filters']) ? $_POST['filters'] : [];
 $minPrice = isset($_POST['minPrice']) ? intval($_POST['minPrice']) : 0;
 $maxPrice = isset($_POST['maxPrice']) ? intval($_POST['maxPrice']) : 10000000;
 $category = isset($_POST['category']) ? htmlspecialchars($_POST['category']) : 'laptop'; // Lấy category từ request
+$sortBy = isset($_POST['sortBy']) ? $_POST['sortBy'] : '1';
 
 $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
         FROM product p 
@@ -26,6 +27,24 @@ foreach ($selectedFilters as $key => $value) {
 
 if (!empty($filterConditions)) {
     $sql .= " AND (" . implode(" OR ", $filterConditions) . ")";
+}
+
+// Thêm phần sắp xếp
+switch ($sortBy) {
+    case '1':
+        $sql .= " ORDER BY p.price ASC";
+        break;
+    case '2':
+        $sql .= " ORDER BY p.price DESC";
+        break;
+    case '3':
+        $sql .= " ORDER BY p.name ASC";
+        break;
+    case '4':
+        $sql .= " ORDER BY p.popularity DESC";
+        break;
+    default:
+        $sql .= " ORDER BY p.price ASC";
 }
 
 $stmt = $conn->prepare($sql);
