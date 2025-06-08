@@ -131,7 +131,7 @@ $result = $stmt->get_result();
       </button>
     </div>
     <!-- Sidebar on the left (desktop) -->
-    <div class="col-md-3 d-none d-md-block">
+    <div class="col-md-2 d-none d-md-block"> <!-- Đổi col-md-3 thành col-md-2 để giảm chiều rộng -->
       <div class="shadow-sm position-sticky border rounded-3 p-3" style="top: 80px; z-index: 1020; background: #fff">
         <div class="card-body">
           <!-- Filter Form -->
@@ -235,19 +235,30 @@ $result = $stmt->get_result();
           <?php
           if ($result && $result->num_rows > 0) {
               while ($row = $result->fetch_assoc()) {
-                  ?>
-                  <div class="col">
-                    <div class="card border-0 h-100">
-                      <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" style="text-decoration:none; color:inherit;">
-                        <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['name']); ?>">
-                        <div class="card-body text-center">
-                          <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem;"><?php echo htmlspecialchars($row['name']); ?></h6>
-                          <div class="fw-bold" style="font-size: 1.1rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$</div>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                  <?php
+          ?>
+    <div class="col">
+      <div class="card border-0 h-100 shadow-sm">
+        <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" style="text-decoration:none; color:inherit;">
+          <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;"> <!-- tăng chiều cao ảnh -->
+        </a>
+        <div class="card-body text-center">
+          <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
+            <?php echo htmlspecialchars($row['name']); ?>
+          </h6>
+          <!-- Xóa dòng mô tả ngắn nếu không cần -->
+          <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$</div>
+          <div class="d-flex justify-content-center gap-2">
+            <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
+              More details
+            </a>
+            <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="addToCart(<?php echo $row['id']; ?>)">
+              <i class="bi bi-cart"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+          <?php
               }
           } else {
               echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
