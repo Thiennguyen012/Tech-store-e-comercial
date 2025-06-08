@@ -2,7 +2,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow" style="height: 65px">
   <div class="container">
     <!-- Logo -->
-    <a class="navbar-brand fs-4" href="#" onclick="loadPage('module/main-content/main-content.php',this); return false;">Technologia</a>
+    <a class="navbar-brand fs-4" href="#"
+      onclick="loadPage('module/main-content/main-content.php',this); return false;">Technologia</a>
     <!-- Toggle button -->
     <button class="navbar-toggler shaddow-none border-0" type="button" data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -21,7 +22,8 @@
       <div class="offcanvas-body flex-lg-row d-flex flex-column">
         <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#" onclick="loadPage('module/main-content/main-content.php',this); return false;">Home</a>
+            <a class="nav-link" href="#"
+              onclick="loadPage('module/main-content/main-content.php',this); return false;">Home</a>
 
           </li>
 
@@ -53,7 +55,8 @@
             </ul>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#About" onclick="loadPage('module/about-us/about-us.php',this); return false;">About</a>
+            <a class="nav-link" href="#About"
+              onclick="loadPage('module/about-us/about-us.php',this); return false;">About</a>
           </li>
           <li class="nav-item mx-2">
             <a class="nav-link" href="#Contact">Contact</a>
@@ -64,8 +67,9 @@
             </a>
             <ul class="dropmenu dropdown-menu mx-2">
               <li class="d-flex justify-content-center">
-                <form action="search.php" method="post">
-                  <input type="text" class="form-control search-form" placeholder="Search..." aria-label="Search" />
+                <form action="products.php" method="get">
+                  <input type="text" name="keyword" class="form-control search-form" placeholder="Search..."
+                    aria-label="Search" />
                 </form>
               </li>
             </ul>
