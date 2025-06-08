@@ -10,6 +10,32 @@ $sql = "SELECT * FROM product WHERE id = $product_id";
 $result = $conn->query($sql);
 $product = $result->fetch_assoc();
 
+// Lấy tên hãng (brand) phù hợp với từng category
+$brand = '';
+$brand_variation = '';
+switch ($product['category_id']) {
+    case 1: // laptop
+        $brand_variation = 'Brand';
+        break;
+    case 2: // camera
+        $brand_variation = 'CCTV brand';
+        break;
+    case 3: // accessories
+        $brand_variation = 'accessory_brand';
+        break;
+}
+if ($brand_variation) {
+    $brandSql = "SELECT vo.value FROM variation_options vo
+        JOIN variation v ON vo.variation_id = v.id
+        WHERE vo.product_id = ? AND v.name = ? LIMIT 1";
+    $brandStmt = $conn->prepare($brandSql);
+    $brandStmt->bind_param('is', $product_id, $brand_variation);
+    $brandStmt->execute();
+    $brandStmt->bind_result($brand);
+    $brandStmt->fetch();
+    $brandStmt->close();
+}
+
 // Lấy các thuộc tính cấu hình (nếu có)
 $configs = [];
 $config_sql = "SELECT v.name as variation, vo.value 
@@ -45,19 +71,20 @@ while($row = $config_result->fetch_assoc()) {
           <a href="#" onclick="loadPage('module/product/product.php'); return false;">Laptops</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="#" onclick="loadPage('module/product/product.php'); return false;">
-            <?php
-              $brand = '';
-              foreach($configs as $c) {
-                if (strtolower($c['variation']) == 'brand' || strtolower($c['variation']) == 'thương hiệu') {
-                  $brand = $c['value'];
-                  break;
-                }
-              }
-              echo htmlspecialchars($brand);
-            ?>
-          </a>
-        </li>
+          <a href="#" onclick="loadPage('module/product/product.php?category=<?php
+      // Lấy category
+      $catSql = 'SELECT category_name FROM product_category WHERE id = ? LIMIT 1';
+      $catStmt = $conn->prepare($catSql);
+      $catStmt->bind_param('i', $product['category_id']);
+      $catStmt->execute();
+      $catStmt->bind_result($catName);
+      $catStmt->fetch();
+      $catStmt->close();
+      echo urlencode($catName);
+    ?>&filters[<?php echo urlencode($brand_variation); ?>]=<?php echo urlencode($brand); ?>'); return false;">
+    <?php echo htmlspecialchars($brand); ?>
+  </a>
+</li>
         <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($product['name']); ?></li>
       </ol>
     </nav>
@@ -94,7 +121,7 @@ while($row = $config_result->fetch_assoc()) {
     <!-- Related Products -->
     <div class="row mt-5">
       <div class="col-12">
-        <h5 class="fw-bold border-bottom pb-2 mb-3">Sản phẩm liên quan</h5>
+        <h5 class="fw-bold border-bottom pb-2 mb-3">Related Products</h5>
         <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <?php

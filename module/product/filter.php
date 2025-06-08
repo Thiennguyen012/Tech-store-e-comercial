@@ -69,6 +69,6 @@ if ($result && $result->num_rows > 0) {
     }
     echo '</div>'; // Đóng lớp row
 } else {
-    echo '<div class="col"><div class="alert alert-warning w-100">Không có sản phẩm nào phù hợp với bộ lọc hiện tại.</div></div>';
+    echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter.</div></div>';
 }
 ?>
