@@ -2,6 +2,13 @@ body {
   font-family: "poppins", sans-serif;
   background: #ececec;
 }
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  color: #333;
+}
 /* login/logout */
 .side-img {
   background-position: center;
@@ -160,4 +167,30 @@ body {
 
 .value-circle:hover {
   transform: scale(1.1);
+}
+
+/* Services card */
+.service-card {
+  transition: 0.3s ease-in-out;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.service-card:hover {
+  background-color: #fef3c7; /* màu vàng nhạt - bạn có thể đổi */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+/*  */
+/* laptop-cleaning */
+.section-title {
+  border-bottom: 2px solid #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+.highlight {
+  background-color: #f8f9fa;
+  border-left: 5px solid #ffc107;
+  padding: 15px;
 }

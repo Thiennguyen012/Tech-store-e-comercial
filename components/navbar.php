@@ -38,22 +38,22 @@
             </ul>
           </li>
           <li class="nav-item dropdown mx-2">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="loadPage('module/services/services.php',this)">
               Services
             </a>
             <ul class="dropmenu dropdown-menu mx-2" ;>
-              <li><a class="dropdown-item" href="#">Laptop cleaning</a></li>
+              <li><a class="dropdown-item" href="#" onclick="loadPage('module/laptop-cleaning/laptop-cleaning.php')">Laptop cleaning</a></li>
               <li>
-                <a class="dropdown-item" href="#">Security Camera installation</a>
+                <a class="dropdown-item" href="#" onclick="loadPage('module/install-cam/install-cam.php')">Security Camera installation</a>
               </li>
-              <li><a class="dropdown-item" href="#">Repair</a></li>
+              <li><a class="dropdown-item" href="#" onclick="loadPage('module/repair/repair.php')">Repair</a></li>
               <li>
-                <a class="dropdown-item" href="#">Warranty</a>
+                <a class="dropdown-item" href="#" onclick="loadPage('module/warrantly/warrantly.php')">Warranty</a>
               </li>
             </ul>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#About" onclick="loadPage('module/about-us/about-us.php',this); return false;">About</a>
+            <a class="nav-link" href="#About" onclick="loadPage('module/about-us/about-us.php'); return false;">About</a>
           </li>
           <li class="nav-item mx-2">
             <a class="nav-link" href="#Contact">Contact</a>
