@@ -427,7 +427,7 @@
     </div>
   </div>
   <div class="row align-content-center my-lg-4">
-    <div class="col-12 d-flex justify-content-center"><button class="btn btn-outline-dark rounded-4 mb-3 w-25" onclick="loadPage('module/product/product.php')">View more</button></div>
+    <div class="col-12 d-flex justify-content-center"><button class="btn btn-outline-dark rounded-4 mb-3 w-25" onclick="loadPage('module/product/product.php',this,'products');return false;">View more</button></div>
   </div>
 </div>
 <!-- about us -->

@@ -4,8 +4,8 @@
         <div class="col-md-8 mb-5">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php')">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/services/services.php')">Services</a></li>
+                    <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php',this,'home')">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/services/services.php',this,'services')">Services</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Laptop Cleaning</li>
                 </ol>
             </nav>
@@ -62,12 +62,12 @@
         <!-- Cột bên phải: Dịch vụ khác -->
         <div class="col-md-4">
             <h4 class="section-title fw-bold">Other Services</h4>
-            <div class="sidebar">
-                <a href="#" onclick="loadPage('module/install-cam/install-cam.php')">Security Camera Installation</a>
+            <div class="other-services-sidebar">
+                <a href="#" onclick="loadPage('module/services/install-cam/install-cam.php',this,'installcam');return false;">Security Camera Installation</a>
                 <br>
-                <a href="#" onclick="loadPage('module/repair/repair.php')">Repair</a>
+                <a href="#" onclick="loadPage('module/services/repair/repair.php',this,'repair');return false;">Repair</a>
                 <br>
-                <a href="#" onclick="loadPage('module/warrantly/warrantly.php')">Warrantly</a>
+                <a href="#" onclick="loadPage('module/services/warrantly/warrantly.php',this, 'warrantly');return false;">Warrantly</a>
             </div>
         </div>
     </div>

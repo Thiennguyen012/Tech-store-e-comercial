@@ -37,7 +37,63 @@
   <!-- Content -->
   <div id="main-content">
     <?php
-    include 'module/main-content/main-content.php';
+    $act = $_GET['act'] ?? '';
+    switch ($act) {
+      // mục products
+      case 'products':
+        include 'module/product/product.php';
+        break;
+      // vũ ịt làm chỗ products thêm file php nào muốn load thì thêm 1 case mới vào đây
+      case 'laptop':
+        include 'module/product/product.php';
+        break;
+      case 'camera':
+        include 'module/product/product.php';
+        break;
+      case 'others':
+        include 'module/product/product.php';
+        break;
+      // 
+      case 'about':
+        include 'module/about-us/about-us.php';
+        break;
+      // Mục services
+      case 'services':
+        include 'module/services/services.php';
+        break;
+      case 'laptopcleaning':
+        include 'module/services/laptop-cleaning/laptop-cleaning.php';
+        break;
+      case 'intallcam':
+        include 'module/services/install-cam/install-cam.php';
+        break;
+      case 'repair':
+        include 'module/services/repair/repair.php';
+        break;
+      case 'warrantly':
+        include 'module/services/warrantly/warrantly.php';
+        break;
+      // 
+      //Mục contact
+      case 'contact':
+        include 'module/contact/contact.php';
+        break;
+      // Mục cart
+      case 'cart':
+        include 'module/cart/cart.php';
+        break;
+      // Mục User profile
+      case 'profile':
+        include 'module/user-profile/user-profile.php';
+        break;
+      // Mục your Order
+      case 'order':
+        include 'module/user-order/user-order.php';
+        break;
+      // Default sẽ nhảy về main-content 
+      default:
+        include 'module/main-content/main-content.php';
+    }
     ?>
   </div>
   <!-- back to top -->
@@ -47,9 +103,20 @@
   <!-- sticky cart/social contact -->
   <div class="cart-social-fixed">
     <!-- Cart -->
-    <div class="cart-icon bg-warning text-white d-flex flex-column align-items-center justify-content-center rounded-3 ">
+    <div class="cart-icon bg-warning text-white d-flex flex-column align-items-center justify-content-center rounded-3">
       <span class="fw-bold">0</span>
-      <a href="#" style="text-decoration: none; color:white;" onclick="loadPage('module/cart/cart.php',this)"><i class="bi bi-bag-fill fs-4"></i></a>
+      <!-- check xem đã đăng nhập hay chưa -->
+      <!-- chưa thì đăng nhập -->
+      <?php if (isset($_SESSION['username'])): ?>
+        <a href="#" style="text-decoration: none; color:white;" onclick="loadPage('module/cart/cart.php', this, 'cart'); return false;">
+          <i class="bi bi-bag-fill fs-4"></i>
+        </a>
+        <!-- nếu đã login thì mở giỏ hàng của user -->
+      <?php else: ?>
+        <a href="Login.php" style="text-decoration: none; color:white;">
+          <i class="bi bi-bag-fill fs-4"></i>
+        </a>
+      <?php endif; ?>
     </div>
 
     <!-- Socials -->
