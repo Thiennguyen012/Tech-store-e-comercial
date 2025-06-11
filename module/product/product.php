@@ -6,12 +6,8 @@ require_once __DIR__ . '/../../db/connect.php';
 $minPrice = isset($_GET['minPrice']) && is_numeric($_GET['minPrice']) ? intval($_GET['minPrice']) : 0;
 $maxPrice = isset($_GET['maxPrice']) && is_numeric($_GET['maxPrice']) ? intval($_GET['maxPrice']) : 10000000;
 
-// Lấy category từ URL, nếu không có thì mặc định là 'products' (hiển thị tất cả sản phẩm)
-$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'products';
-
-// Khởi tạo mảng lưu trữ các giá trị và kiểu dữ liệu cho việc lọc
-$filterValues = []; // Thêm dòng này
-$filterTypes = "";  // Thêm dòng này
+// Lấy category từ URL, nếu không có thì mặc định là 'laptop'
+$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'laptop';
 
 // Lấy các bộ lọc đã chọn từ request
 $selectedFilters = [];
@@ -22,28 +18,15 @@ if (isset($_GET['filters']) && is_array($_GET['filters'])) {
 }
 
 // Tạo câu truy vấn SQL lấy sản phẩm theo category và khoảng giá
-if ($category === 'products') {
-    // Không lọc theo category
-    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
-            FROM product p 
-            LEFT JOIN variation_options vo ON p.id = vo.product_id 
-            WHERE p.price BETWEEN ? AND ?";
-    $allTypes = "ii" . $filterTypes;
-    $allValues = array_merge([$minPrice, $maxPrice], $filterValues);
-} else {
-    // Lọc theo category 
-    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
-            FROM product p 
-            INNER JOIN product_category pc ON p.category_id = pc.id 
-            LEFT JOIN variation_options vo ON p.id = vo.product_id 
-            WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
-    $allTypes = "sii" . $filterTypes;
-    $allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
-}
+$sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+        FROM product p 
+        INNER JOIN product_category pc ON p.category_id = pc.id 
+        LEFT JOIN variation_options vo ON p.id = vo.product_id 
+        WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
 
 // Chuẩn bị statement và bind các giá trị lọc cơ bản
 $stmt = $conn->prepare($sql);
-$stmt->bind_param($allTypes, ...$allValues);
+$stmt->bind_param("sii", $category, $minPrice, $maxPrice);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -90,6 +73,8 @@ foreach ($filterCategories as $categoryName => $variationId) {
 }
 
 // Nếu có bộ lọc được chọn, thêm điều kiện vào câu truy vấn chính
+$filterValues = [];
+$filterTypes = "";
 if (!empty($selectedFilters)) {
     foreach ($selectedFilters as $value) {
         $sql .= " AND EXISTS (
@@ -119,13 +104,8 @@ switch ($sortBy) {
 }
 
 // Bind tất cả tham số vào statement
-if ($category === 'products') {
-    $allTypes = "ii" . $filterTypes;
-    $allValues = array_merge([$minPrice, $maxPrice], $filterValues);
-} else {
-    $allTypes = "sii" . $filterTypes;
-    $allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
-}
+$allTypes = "sii" . $filterTypes;
+$allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param($allTypes, ...$allValues);
