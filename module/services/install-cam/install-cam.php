@@ -1,1 +1,1 @@
-<h1>Install camera</h1>
+<h1>Install camera now</h1>
