@@ -7,7 +7,7 @@ $minPrice = isset($_GET['minPrice']) && is_numeric($_GET['minPrice']) ? intval($
 $maxPrice = isset($_GET['maxPrice']) && is_numeric($_GET['maxPrice']) ? intval($_GET['maxPrice']) : 10000000;
 
 // Lấy category từ URL, nếu không có thì mặc định là 'laptop'
-$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'products';
+$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'laptop';
 
 // Lấy các bộ lọc đã chọn từ request
 $selectedFilters = [];
