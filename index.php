@@ -50,7 +50,7 @@
       case 'camera':
         include 'module/product/product.php';
         break;
-      case 'others':
+      case 'accessories':
         include 'module/product/product.php';
         break;
       // 
@@ -64,7 +64,7 @@
       case 'laptopcleaning':
         include 'module/services/laptop-cleaning/laptop-cleaning.php';
         break;
-      case 'intallcam':
+      case 'installcam':
         include 'module/services/install-cam/install-cam.php';
         break;
       case 'repair':
