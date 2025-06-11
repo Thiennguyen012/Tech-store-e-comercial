@@ -9,9 +9,9 @@ $category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'la
 
 $selectedFilters = [];
 if (isset($_GET['filters']) && is_array($_GET['filters'])) {
-    foreach ($_GET['filters'] as $key => $value) {
-        $selectedFilters[htmlspecialchars($key)] = htmlspecialchars($value);
-    }
+  foreach ($_GET['filters'] as $key => $value) {
+    $selectedFilters[htmlspecialchars($key)] = htmlspecialchars($value);
+  }
 }
 
 // Xây dựng câu lệnh SQL với điều kiện lọc
@@ -35,14 +35,14 @@ $stmt->execute();
 $variationResult = $stmt->get_result();
 
 if ($variationResult && $variationResult->num_rows > 0) {
-    while ($row = $variationResult->fetch_assoc()) {
-        $filterCategories[$row['name']] = $row['id'];
-    }
+  while ($row = $variationResult->fetch_assoc()) {
+    $filterCategories[$row['name']] = $row['id'];
+  }
 }
 
 $filters = [];
 foreach ($filterCategories as $categoryName => $variationId) {
-    $filterSql = "
+  $filterSql = "
         SELECT vo.value, COUNT(DISTINCT p.id) as count 
         FROM variation_options vo 
         LEFT JOIN product p ON vo.product_id = p.id 
@@ -51,54 +51,54 @@ foreach ($filterCategories as $categoryName => $variationId) {
         GROUP BY vo.value
     ";
 
-    $stmt = $conn->prepare($filterSql);
-    $stmt->bind_param("is", $variationId, $category);
-    $stmt->execute();
-    $filterResult = $stmt->get_result();
+  $stmt = $conn->prepare($filterSql);
+  $stmt->bind_param("is", $variationId, $category);
+  $stmt->execute();
+  $filterResult = $stmt->get_result();
 
-    if ($filterResult && $filterResult->num_rows > 0) {
-        $filters[$categoryName] = [];
-        while ($row = $filterResult->fetch_assoc()) {
-            $filters[$categoryName][] = [
-                'value' => htmlspecialchars($row['value']),
-                'count' => $row['count'],
-            ];
-        }
+  if ($filterResult && $filterResult->num_rows > 0) {
+    $filters[$categoryName] = [];
+    while ($row = $filterResult->fetch_assoc()) {
+      $filters[$categoryName][] = [
+        'value' => htmlspecialchars($row['value']),
+        'count' => $row['count'],
+      ];
     }
+  }
 }
 
 // Nếu có bộ lọc được chọn, thêm điều kiện vào câu truy vấn chính
 $filterValues = [];
 $filterTypes = "";
 if (!empty($selectedFilters)) {
-    foreach ($selectedFilters as $value) {
-        $sql .= " AND EXISTS (
+  foreach ($selectedFilters as $value) {
+    $sql .= " AND EXISTS (
             SELECT 1 FROM variation_options vo2 
             WHERE vo2.product_id = p.id 
             AND vo2.value = ?
         )";
-        $filterValues[] = $value;
-        $filterTypes .= "s";
-    }
+    $filterValues[] = $value;
+    $filterTypes .= "s";
+  }
 }
 
 // Thêm phần sắp xếp
 $sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1'; // Giá trị mặc định là '1'
 switch ($sortBy) {
-    case '1': // Price Low to High
-        $sql .= " ORDER BY p.price ASC";
-        break;
-    case '2': // Price High to Low
-        $sql .= " ORDER BY p.price DESC";
-        break;
-    case '3': // Alphabetical
-        $sql .= " ORDER BY p.name ASC";
-        break;
-    case '4': // Popularity
-        $sql .= " ORDER BY p.popularity DESC";
-        break;
-    default:
-        $sql .= " ORDER BY p.price ASC"; // Giá trị mặc định
+  case '1': // Price Low to High
+    $sql .= " ORDER BY p.price ASC";
+    break;
+  case '2': // Price High to Low
+    $sql .= " ORDER BY p.price DESC";
+    break;
+  case '3': // Alphabetical
+    $sql .= " ORDER BY p.name ASC";
+    break;
+  case '4': // Popularity
+    $sql .= " ORDER BY p.popularity DESC";
+    break;
+  default:
+    $sql .= " ORDER BY p.price ASC"; // Giá trị mặc định
 }
 
 // Chuẩn bị bind tất cả tham số
@@ -132,7 +132,7 @@ $result = $stmt->get_result();
     </div>
     <!-- Sidebar on the left (desktop) -->
     <div class="col-md-2 d-none d-md-block"> <!-- Đổi col-md-3 thành col-md-2 để giảm chiều rộng -->
-      <div class="shadow-sm position-sticky border rounded-3 p-3" style="top: 80px; z-index: 1020; background: #fff">
+      <div class="shadow-sm position-sticky border rounded-3 p-3" style="top: 80px; background: #fff">
         <div class="card-body">
           <!-- Filter Form -->
           <form id="filterForm">
@@ -234,34 +234,34 @@ $result = $stmt->get_result();
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
           <?php
           if ($result && $result->num_rows > 0) {
-              while ($row = $result->fetch_assoc()) {
+            while ($row = $result->fetch_assoc()) {
           ?>
-    <div class="col">
-      <div class="card border-0 h-100 shadow-sm">
-        <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" style="text-decoration:none; color:inherit;">
-          <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;"> <!-- tăng chiều cao ảnh -->
-        </a>
-        <div class="card-body text-center">
-          <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
-            <?php echo htmlspecialchars($row['name']); ?>
-          </h6>
-          <!-- Xóa dòng mô tả ngắn nếu không cần -->
-          <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$</div>
-          <div class="d-flex justify-content-center gap-2">
-            <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
-              More details
-            </a>
-            <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="addToCart(<?php echo $row['id']; ?>)">
-              <i class="bi bi-cart"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+              <div class="col">
+                <div class="card border-0 h-100 shadow-sm">
+                  <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" style="text-decoration:none; color:inherit;">
+                    <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;"> <!-- tăng chiều cao ảnh -->
+                  </a>
+                  <div class="card-body text-center">
+                    <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
+                      <?php echo htmlspecialchars($row['name']); ?>
+                    </h6>
+                    <!-- Xóa dòng mô tả ngắn nếu không cần -->
+                    <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$</div>
+                    <div class="d-flex justify-content-center gap-2">
+                      <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
+                        More details
+                      </a>
+                      <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="addToCart(<?php echo $row['id']; ?>)">
+                        <i class="bi bi-cart"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
           <?php
-              }
+            }
           } else {
-              echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
+            echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
           }
           ?>
         </div>
@@ -285,47 +285,47 @@ $result = $stmt->get_result();
   }
 
   // Desktop filter
-  document.getElementById('filterButton').addEventListener('click', function () {
+  document.getElementById('filterButton').addEventListener('click', function() {
     const formData = new FormData(document.getElementById('filterForm'));
     fetch('module/product/filter.php', {
         method: 'POST',
         body: formData,
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then((data) => {
-            document.getElementById('productList').innerHTML = data;
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
-        });
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then((data) => {
+        document.getElementById('productList').innerHTML = data;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
+      });
   });
 
   // Mobile filter
-  document.getElementById('filterButtonMobile').addEventListener('click', function () {
+  document.getElementById('filterButtonMobile').addEventListener('click', function() {
     const formData = new FormData(document.getElementById('filterFormMobile'));
     fetch('module/product/filter.php', {
         method: 'POST',
         body: formData,
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then((data) => {
-            document.getElementById('productList').innerHTML = data;
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
-        });
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then((data) => {
+        document.getElementById('productList').innerHTML = data;
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
+      });
   });
 </script>
 <!-- Make sure Bootstrap JS is loaded for offcanvas to work -->

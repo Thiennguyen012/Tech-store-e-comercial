@@ -37,13 +37,100 @@
   <!-- Content -->
   <div id="main-content">
     <?php
-    include 'module/main-content/main-content.php';
+    $act = $_GET['act'] ?? '';
+    switch ($act) {
+      // mục products
+      case 'products':
+        include 'module/product/product.php';
+        break;
+      // vũ ịt làm chỗ products thêm file php nào muốn load thì thêm 1 case mới vào đây
+      case 'laptop':
+        include 'module/product/product.php';
+        break;
+      case 'camera':
+        include 'module/product/product.php';
+        break;
+      case 'others':
+        include 'module/product/product.php';
+        break;
+      // 
+      case 'about':
+        include 'module/about-us/about-us.php';
+        break;
+      // Mục services
+      case 'services':
+        include 'module/services/services.php';
+        break;
+      case 'laptopcleaning':
+        include 'module/services/laptop-cleaning/laptop-cleaning.php';
+        break;
+      case 'intallcam':
+        include 'module/services/install-cam/install-cam.php';
+        break;
+      case 'repair':
+        include 'module/services/repair/repair.php';
+        break;
+      case 'warrantly':
+        include 'module/services/warrantly/warrantly.php';
+        break;
+      // 
+      //Mục contact
+      case 'contact':
+        include 'module/contact/contact.php';
+        break;
+      // Mục cart
+      case 'cart':
+        include 'module/cart/cart.php';
+        break;
+      // Mục User profile
+      case 'profile':
+        include 'module/user-profile/user-profile.php';
+        break;
+      // Mục your Order
+      case 'order':
+        include 'module/user-order/user-order.php';
+        break;
+      // Default sẽ nhảy về main-content 
+      default:
+        include 'module/main-content/main-content.php';
+    }
     ?>
   </div>
   <!-- back to top -->
   <a href="#" class="arrow" id="scrollToTop">
     <i><img src="img/up-arrow.png" alt="" width="50px"></i>
   </a>
+  <!-- sticky cart/social contact -->
+  <div class="cart-social-fixed">
+    <!-- Cart -->
+    <div class="cart-icon bg-warning text-white d-flex flex-column align-items-center justify-content-center rounded-3">
+      <span class="fw-bold">0</span>
+      <!-- check xem đã đăng nhập hay chưa -->
+      <!-- chưa thì đăng nhập -->
+      <?php if (isset($_SESSION['username'])): ?>
+        <a href="#" style="text-decoration: none; color:white;" onclick="loadPage('module/cart/cart.php', this, 'cart'); return false;">
+          <i class="bi bi-bag-fill fs-4"></i>
+        </a>
+        <!-- nếu đã login thì mở giỏ hàng của user -->
+      <?php else: ?>
+        <a href="Login.php" style="text-decoration: none; color:white;">
+          <i class="bi bi-bag-fill fs-4"></i>
+        </a>
+      <?php endif; ?>
+    </div>
+
+    <!-- Socials -->
+    <div class="social-icons bg-dark d-flex flex-column text-white p-2 gap-2 rounded-3">
+      <a href="https://www.facebook.com/" target="_blank"><i
+          class="bi bi-facebook text-decoration-none text-white fs-5"></i></a>
+      <a href="https://www.instagram.com/" target="_blank"><i
+          class="bi bi-instagram text-decoration-none text-white fs-5"></i></a>
+      <a href="https://x.com/" target="_blank"><i
+          class="bi bi-twitter-x text-decoration-none text-white fs-5"></i></a>
+      <a href="https://www.youtube.com/" target="_blank"><i
+          class="bi bi-youtube text-decoration-none text-white fs-4"></i></a>
+    </div>
+  </div>
   <!-- Footer -->
   <footer class="bg-dark text-white py-4">
     <div class="container px-4">
@@ -52,7 +139,7 @@
           <h4 class="pt-2">About Us</h4>
           <ul class="list-unstyled">
             <li>
-              <a href="#" class="text-decoration-none text-white">Our Team</a>
+              <a href="#" class="text-decoration-none text-white" onclick="loadPage('module/about-us/about-us.php',this)">Our Team</a>
             </li>
             <li>
               <p>Address: 141 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi</p>
@@ -90,14 +177,14 @@
         <div class="col-6 col-lg-3">
           <h4 class="pt-2">Social Media</h4>
           <div>
-            <a href="#"><i
-                class="bi bi-google me-3 text-decoration-none text-white fs-5"></i></a>
-            <a href="#"><i
+            <a href="https://www.facebook.com/" target="_blank"><i
                 class="bi bi-facebook me-3 text-decoration-none text-white fs-5"></i></a>
-            <a href="#"><i
+            <a href="https://www.instagram.com/" target="_blank"><i
                 class="bi bi-instagram me-3 text-decoration-none text-white fs-5"></i></a>
-            <a href="#"><i
+            <a href="https://x.com/" target="_blank"><i
                 class="bi bi-twitter-x me-3 text-decoration-none text-white fs-5"></i></a>
+            <a href="https://www.youtube.com/" target="_blank"><i
+                class="bi bi-youtube me-3 text-decoration-none text-white fs-4"></i></a>
           </div>
         </div>
       </div>

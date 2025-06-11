@@ -1,6 +1,6 @@
-<div id="carouselExampleCaptions" class="carousel slide">
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active btn btn-primary"
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active btn"
       aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
@@ -247,7 +247,7 @@
   <h1 class="text-center fw-semibold">Categories</h1>
   <hr />
   <div class="row text-center my-lg-4">
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-6 my-2">
       <div class="card p-4 categories-card">
         <img src="./img/categories-pic-laptop.png" class="mx-auto mb-3" style="height:120px" alt="icon">
         <h4 class="card-title fw-bold">Laptop</h4>
@@ -255,7 +255,7 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-6 my-2">
       <div class="card p-4 categories-card">
         <img src="./img/categories-pic-camera.png" class="mx-auto mb-3" style="height: 120px;" alt="icon">
         <h4 class="card-title fw-bold">Security Camera</h4>
@@ -263,7 +263,7 @@
       </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-6 my-2">
       <div class="card p-4 categories-card">
         <img src="./img/categories-pic-others.png" class="mx-auto mb-3" style="height: 120px;" alt="icon">
         <h4 class="card-title fw-bold">Computer Accessories</h4>
@@ -425,6 +425,9 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="row align-content-center my-lg-4">
+    <div class="col-12 d-flex justify-content-center"><button class="btn btn-outline-dark rounded-4 mb-3 w-25" onclick="loadPage('module/product/product.php',this,'products');return false;">View more</button></div>
   </div>
 </div>
 <!-- about us -->

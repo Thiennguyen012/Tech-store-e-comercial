@@ -6,7 +6,7 @@
         <h4 class="pt-2">About Us</h4>
         <ul class="list-unstyled">
           <li>
-            <a href="#" class="text-decoration-none text-white">Our Team</a>
+            <a href="#" class="text-decoration-none text-white" onclick="loadPage('module/cart/cart.php',this)">Our Team</a>
           </li>
           <li>
             <p>Address: 141 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi</p>
@@ -44,14 +44,14 @@
       <div class="col-6 col-lg-3">
         <h4 class="pt-2">Social Media</h4>
         <div>
-          <a href="#"><i
-              class="bi bi-google me-3 text-decoration-none text-white fs-5"></i></a>
-          <a href="#"><i
+          <a href="https://www.facebook.com/" target="_blank"><i
               class="bi bi-facebook me-3 text-decoration-none text-white fs-5"></i></a>
-          <a href="#"><i
+          <a href="https://www.instagram.com/" target="_blank"><i
               class="bi bi-instagram me-3 text-decoration-none text-white fs-5"></i></a>
-          <a href="#"><i
+          <a href="https://x.com/" target="_blank"><i
               class="bi bi-twitter-x me-3 text-decoration-none text-white fs-5"></i></a>
+          <a href="https://www.youtube.com/" target="_blank"><i
+              class="bi bi-youtube me-3 text-decoration-none text-white fs-4"></i></a>
         </div>
       </div>
     </div>

@@ -1,0 +1,1 @@
+<h1>Install camera</h1>
