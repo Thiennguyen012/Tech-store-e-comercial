@@ -80,7 +80,7 @@
             </a>
             <ul class="dropmenu dropdown-menu mx-2">
               <li class="d-flex justify-content-center">
-                <form action="products.php" method="get">
+                <form action="module/search/search.php" method="post">
                   <input type="text" name="keyword" class="form-control search-form" placeholder="Search..."
                     aria-label="Search" />
                 </form>
