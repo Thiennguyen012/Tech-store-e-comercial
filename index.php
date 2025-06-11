@@ -37,7 +37,63 @@
   <!-- Content -->
   <div id="main-content">
     <?php
-    include 'module/main-content/main-content.php';
+    $act = $_GET['act'] ?? '';
+    switch ($act) {
+      // mục products
+      case 'products':
+        include 'module/product/product.php';
+        break;
+      // vũ ịt làm chỗ products thêm file php nào muốn load thì thêm 1 case mới vào đây
+      case 'laptop':
+        include 'module/product/product.php';
+        break;
+      case 'camera':
+        include 'module/product/product.php';
+        break;
+      case 'accessories':
+        include 'module/product/product.php';
+        break;
+      // 
+      case 'about':
+        include 'module/about-us/about-us.php';
+        break;
+      // Mục services
+      case 'services':
+        include 'module/services/services.php';
+        break;
+      case 'laptopcleaning':
+        include 'module/services/laptop-cleaning/laptop-cleaning.php';
+        break;
+      case 'installcam':
+        include 'module/services/install-cam/install-cam.php';
+        break;
+      case 'repair':
+        include 'module/services/repair/repair.php';
+        break;
+      case 'warrantly':
+        include 'module/services/warrantly/warrantly.php';
+        break;
+      // 
+      //Mục contact
+      case 'contact':
+        include 'module/contact/contact.php';
+        break;
+      // Mục cart
+      case 'cart':
+        include 'module/cart/cart.php';
+        break;
+      // Mục User profile
+      case 'profile':
+        include 'module/user-profile/user-profile.php';
+        break;
+      // Mục your Order
+      case 'order':
+        include 'module/user-order/user-order.php';
+        break;
+      // Default sẽ nhảy về main-content 
+      default:
+        include 'module/main-content/main-content.php';
+    }
     ?>
   </div>
   <!-- back to top -->
