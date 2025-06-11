@@ -1,5 +1,5 @@
 <?php
-// filepath: d:\xampp\htdocs\code web\module\product\single_product.php
+// Kết nối database
 require_once __DIR__ . '/../../db/connect.php';
 
 // Lấy id sản phẩm từ URL
@@ -25,6 +25,7 @@ switch ($product['category_id']) {
         break;
 }
 if ($brand_variation) {
+    // Lấy giá trị brand từ variation_options
     $brandSql = "SELECT vo.value FROM variation_options vo
         JOIN variation v ON vo.variation_id = v.id
         WHERE vo.product_id = ? AND v.name = ? LIMIT 1";
@@ -53,7 +54,7 @@ while($row = $config_result->fetch_assoc()) {
     <!-- Breadcrumb -->
     <style>
       .breadcrumb a {
-        color:rgb(126, 130, 134) !important;      /* Bootstrap default link color */
+        color:rgb(126, 130, 134) !important;
         text-decoration: none !important;
         font-family: inherit !important;
         font-size: inherit !important;
@@ -62,7 +63,7 @@ while($row = $config_result->fetch_assoc()) {
         text-decoration: underline !important;
       }
     </style>
-    <nav style="--bs-breadcrumb-divider: '»';" aria-label="breadcrumb" class="mb-3">
+    <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb" class="mb-3">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="#" onclick="loadPage('module/main-content/main-content.php'); return false;">Home</a>
@@ -71,6 +72,7 @@ while($row = $config_result->fetch_assoc()) {
           <a href="#" onclick="loadPage('module/product/product.php'); return false;">Laptops</a>
         </li>
         <li class="breadcrumb-item">
+          <!-- Breadcrumb hãng, tự động lấy theo category và brand -->
           <a href="#" onclick="loadPage('module/product/product.php?category=<?php
       // Lấy category
       $catSql = 'SELECT category_name FROM product_category WHERE id = ? LIMIT 1';
@@ -91,6 +93,7 @@ while($row = $config_result->fetch_assoc()) {
     <!-- End Breadcrumb -->
     <div class="row">
       <div class="col-md-5 text-center">
+        <!-- Ảnh sản phẩm -->
         <img src="<?php echo htmlspecialchars($product['product_image']); ?>" class="img-fluid" alt="<?php echo htmlspecialchars($product['name']); ?>">
       </div>
       <div class="col-md-7">
@@ -98,6 +101,7 @@ while($row = $config_result->fetch_assoc()) {
         <div class="mb-3 text-dark fw-bold" style="font-size: 1.5rem;">
           <?php echo number_format($product['price'], 0, ',', '.'); ?>$
         </div>
+        <!-- Danh sách cấu hình sản phẩm -->
         <ul class="mb-3">
           <?php foreach($configs as $c): ?>
             <li><b><?php echo htmlspecialchars($c['variation']); ?>:</b> <?php echo htmlspecialchars($c['value']); ?></li>
@@ -125,7 +129,7 @@ while($row = $config_result->fetch_assoc()) {
         <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             <?php
-            // Lấy danh sách sản phẩm liên quan (cùng category_id)
+            // Lấy danh sách sản phẩm liên quan (cùng category_id, loại trừ chính nó)
             $related_sql = "SELECT id, name, price, product_image FROM product WHERE category_id = " . intval($product['category_id']) . " AND id != $product_id LIMIT 10";
             $related_result = $conn->query($related_sql);
             $products = [];
@@ -133,9 +137,9 @@ while($row = $config_result->fetch_assoc()) {
               $products[] = $related;
             }
 
-            // Chia sản phẩm thành các nhóm (mỗi nhóm 4 sản phẩm)
+            // Chia sản phẩm thành các nhóm (mỗi nhóm 4 sản phẩm cho 1 slide)
             $chunks = array_chunk($products, 4);
-            $isActive = true; // Đặt nhóm đầu tiên là active
+            $isActive = true; // Slide đầu tiên là active
 
             foreach ($chunks as $chunk):
             ?>
@@ -157,11 +161,11 @@ while($row = $config_result->fetch_assoc()) {
               </div>
             </div>
             <?php
-            $isActive = false; // Sau nhóm đầu tiên, các nhóm khác không active
+            $isActive = false; // Sau slide đầu, các slide khác không active
             endforeach;
             ?>
           </div>
-          <!-- Nút điều hướng trái phải -->
+          <!-- Nút điều hướng carousel -->
           <button class="carousel-control-prev" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -176,5 +180,6 @@ while($row = $config_result->fetch_assoc()) {
   </div>
 </div>
 <?php else: ?>
+<!-- Nếu không tìm thấy sản phẩm -->
 <div class="container mt-5"><div class="alert alert-danger">Product not found.</div></div>
 <?php endif; ?>

@@ -1,32 +1,53 @@
 <?php
-// filepath: d:\xampp\htdocs\code web\module\product\product.php
+// Kết nối database
 require_once __DIR__ . '/../../db/connect.php';
 
-// Lấy dữ liệu lọc từ request
+// Lấy giá trị lọc giá từ request (nếu có), nếu không thì lấy mặc định
 $minPrice = isset($_GET['minPrice']) && is_numeric($_GET['minPrice']) ? intval($_GET['minPrice']) : 0;
 $maxPrice = isset($_GET['maxPrice']) && is_numeric($_GET['maxPrice']) ? intval($_GET['maxPrice']) : 10000000;
-$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'laptop'; // Lấy category từ URL
 
+// Lấy category từ URL, nếu không có thì mặc định là 'products' (hiển thị tất cả sản phẩm)
+$category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'products';
+
+// Khởi tạo mảng lưu trữ các giá trị và kiểu dữ liệu cho việc lọc
+$filterValues = []; // Thêm dòng này
+$filterTypes = "";  // Thêm dòng này
+
+// Lấy các bộ lọc đã chọn từ request
 $selectedFilters = [];
 if (isset($_GET['filters']) && is_array($_GET['filters'])) {
-  foreach ($_GET['filters'] as $key => $value) {
-    $selectedFilters[htmlspecialchars($key)] = htmlspecialchars($value);
-  }
+    foreach ($_GET['filters'] as $key => $value) {
+        $selectedFilters[htmlspecialchars($key)] = htmlspecialchars($value);
+    }
 }
 
-// Xây dựng câu lệnh SQL với điều kiện lọc
-$sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
-        FROM product p 
-        INNER JOIN product_category pc ON p.category_id = pc.id 
-        LEFT JOIN variation_options vo ON p.id = vo.product_id 
-        WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
+// Tạo câu truy vấn SQL lấy sản phẩm theo category và khoảng giá
+if ($category === 'products') {
+    // Không lọc theo category
+    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+            FROM product p 
+            LEFT JOIN variation_options vo ON p.id = vo.product_id 
+            WHERE p.price BETWEEN ? AND ?";
+    $allTypes = "ii" . $filterTypes;
+    $allValues = array_merge([$minPrice, $maxPrice], $filterValues);
+} else {
+    // Lọc theo category 
+    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+            FROM product p 
+            INNER JOIN product_category pc ON p.category_id = pc.id 
+            LEFT JOIN variation_options vo ON p.id = vo.product_id 
+            WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
+    $allTypes = "sii" . $filterTypes;
+    $allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
+}
 
+// Chuẩn bị statement và bind các giá trị lọc cơ bản
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sii", $category, $minPrice, $maxPrice);
+$stmt->bind_param($allTypes, ...$allValues);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Lấy danh sách các bộ lọc và số lượng sản phẩm tương ứng
+// Lấy danh sách các bộ lọc (variation) cho category hiện tại
 $filterCategories = [];
 $variationSql = "SELECT id, name FROM variation WHERE category_id = (SELECT id FROM product_category WHERE category_name = ?)";
 $stmt = $conn->prepare($variationSql);
@@ -35,14 +56,15 @@ $stmt->execute();
 $variationResult = $stmt->get_result();
 
 if ($variationResult && $variationResult->num_rows > 0) {
-  while ($row = $variationResult->fetch_assoc()) {
-    $filterCategories[$row['name']] = $row['id'];
-  }
+    while ($row = $variationResult->fetch_assoc()) {
+        $filterCategories[$row['name']] = $row['id'];
+    }
 }
 
+// Lấy các giá trị bộ lọc (option) và số lượng sản phẩm cho từng bộ lọc
 $filters = [];
 foreach ($filterCategories as $categoryName => $variationId) {
-  $filterSql = "
+    $filterSql = "
         SELECT vo.value, COUNT(DISTINCT p.id) as count 
         FROM variation_options vo 
         LEFT JOIN product p ON vo.product_id = p.id 
@@ -51,59 +73,59 @@ foreach ($filterCategories as $categoryName => $variationId) {
         GROUP BY vo.value
     ";
 
-  $stmt = $conn->prepare($filterSql);
-  $stmt->bind_param("is", $variationId, $category);
-  $stmt->execute();
-  $filterResult = $stmt->get_result();
+    $stmt = $conn->prepare($filterSql);
+    $stmt->bind_param("is", $variationId, $category);
+    $stmt->execute();
+    $filterResult = $stmt->get_result();
 
-  if ($filterResult && $filterResult->num_rows > 0) {
-    $filters[$categoryName] = [];
-    while ($row = $filterResult->fetch_assoc()) {
-      $filters[$categoryName][] = [
-        'value' => htmlspecialchars($row['value']),
-        'count' => $row['count'],
-      ];
+    if ($filterResult && $filterResult->num_rows > 0) {
+        $filters[$categoryName] = [];
+        while ($row = $filterResult->fetch_assoc()) {
+            $filters[$categoryName][] = [
+                'value' => htmlspecialchars($row['value']),
+                'count' => $row['count'],
+            ];
+        }
     }
-  }
 }
 
 // Nếu có bộ lọc được chọn, thêm điều kiện vào câu truy vấn chính
-$filterValues = [];
-$filterTypes = "";
 if (!empty($selectedFilters)) {
-  foreach ($selectedFilters as $value) {
-    $sql .= " AND EXISTS (
+    foreach ($selectedFilters as $value) {
+        $sql .= " AND EXISTS (
             SELECT 1 FROM variation_options vo2 
             WHERE vo2.product_id = p.id 
             AND vo2.value = ?
         )";
-    $filterValues[] = $value;
-    $filterTypes .= "s";
-  }
+        $filterValues[] = $value;
+        $filterTypes .= "s";
+    }
 }
 
-// Thêm phần sắp xếp
-$sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1'; // Giá trị mặc định là '1'
+// Thêm điều kiện sắp xếp
+$sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1'; // Mặc định là '1'
 switch ($sortBy) {
-  case '1': // Price Low to High
-    $sql .= " ORDER BY p.price ASC";
-    break;
-  case '2': // Price High to Low
-    $sql .= " ORDER BY p.price DESC";
-    break;
-  case '3': // Alphabetical
-    $sql .= " ORDER BY p.name ASC";
-    break;
-  case '4': // Popularity
-    $sql .= " ORDER BY p.popularity DESC";
-    break;
-  default:
-    $sql .= " ORDER BY p.price ASC"; // Giá trị mặc định
+    case '1': // Giá tăng dần
+        $sql .= " ORDER BY p.price ASC";
+        break;
+    case '2': // Giá giảm dần
+        $sql .= " ORDER BY p.price DESC";
+        break;
+    case '3': // Theo tên
+        $sql .= " ORDER BY p.name ASC";
+        break;
+    default:
+        $sql .= " ORDER BY p.price ASC";
 }
 
-// Chuẩn bị bind tất cả tham số
-$allTypes = "sii" . $filterTypes;
-$allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
+// Bind tất cả tham số vào statement
+if ($category === 'products') {
+    $allTypes = "ii" . $filterTypes;
+    $allValues = array_merge([$minPrice, $maxPrice], $filterValues);
+} else {
+    $allTypes = "sii" . $filterTypes;
+    $allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
+}
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param($allTypes, ...$allValues);
@@ -111,7 +133,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
-<!-- filepath: d:\xampp\htdocs\code web\module\product\product.php -->
+<!-- Breadcrumb -->
 <div class="container mt-3">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -124,17 +146,17 @@ $result = $stmt->get_result();
 <!-- loc san pham -->
 <div class="container-fluid mt-5 mb-5 px-2">
   <div class="row">
-    <!-- Filter Button for mobile -->
+     <!-- Nút mở bộ lọc cho mobile/tablet (ẩn trên desktop) -->
     <div class="d-md-none mb-3">
       <button class="btn btn-dark w-100 fw-bold" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
         Filters
       </button>
     </div>
-    <!-- Sidebar on the left (desktop) -->
+    <!-- Sidebar bộ lọc (chỉ hiện trên desktop/laptop) -->
     <div class="col-md-2 d-none d-md-block"> <!-- Đổi col-md-3 thành col-md-2 để giảm chiều rộng -->
       <div class="shadow-sm position-sticky border rounded-3 p-3" style="top: 80px; background: #fff">
         <div class="card-body">
-          <!-- Filter Form -->
+          <!-- Form bộ lọc desktop -->
           <form id="filterForm">
             <input type="hidden" name="category" value="<?php echo htmlspecialchars($category); ?>">
             <?php foreach ($filters as $categoryName => $filterOptions): ?>
@@ -177,7 +199,7 @@ $result = $stmt->get_result();
         </div>
       </div>
     </div>
-    <!-- Offcanvas Filter for mobile -->
+    <!-- Offcanvas bộ lọc cho mobile/tablet -->
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="filterOffcanvasLabel">Filters</h5>
@@ -185,7 +207,7 @@ $result = $stmt->get_result();
       </div>
       <div class="offcanvas-body">
         <form id="filterFormMobile">
-          <!-- Copy the filter form HTML here, but change id to filterFormMobile -->
+          <!-- Form bộ lọc mobile (giống desktop nhưng id khác) -->
           <?php foreach ($filters as $categoryName => $filterOptions): ?>
             <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">
               <span class="toggle-category" style="cursor: pointer;" onclick="toggleCategory('<?php echo str_replace(' ', '-', $categoryName); ?>-mobile')">
@@ -225,43 +247,45 @@ $result = $stmt->get_result();
         </form>
       </div>
     </div>
-    <!-- Main content on the right -->
+    <!-- Khu vực hiển thị sản phẩm -->
     <div class="col-md-9">
       <div id="productList">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h3 class="fw-bold mb-0"><?php echo ucfirst($category); ?><span class="fs-6 fw-normal"></span></h3>
         </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <!-- Grid sản phẩm, responsive theo từng loại màn hình -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 ">
           <?php
           if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
+              while ($row = $result->fetch_assoc()) {
           ?>
-              <div class="col">
-                <div class="card border-0 h-100 shadow-sm">
-                  <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" style="text-decoration:none; color:inherit;">
-                    <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;"> <!-- tăng chiều cao ảnh -->
-                  </a>
-                  <div class="card-body text-center">
-                    <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
-                      <?php echo htmlspecialchars($row['name']); ?>
-                    </h6>
-                    <!-- Xóa dòng mô tả ngắn nếu không cần -->
-                    <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$</div>
-                    <div class="d-flex justify-content-center gap-2">
-                      <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
-                        More details
-                      </a>
-                      <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="addToCart(<?php echo $row['id']; ?>)">
-                        <i class="bi bi-cart"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div class="col">
+      <div class="card border-0 h-100 shadow-sm">
+        <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" style="text-decoration:none; color:inherit;">
+          <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;"> <!-- tăng chiều cao ảnh -->
+        </a>
+        <div class="card-body text-center">
+          <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
+            <?php echo htmlspecialchars($row['name']); ?>
+          </h6>
+          <!-- Giá sản phẩm -->
+          <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;"><?php echo number_format($row['price'], 0, ',', '.'); ?>$</div>
+          <div class="d-flex justify-content-center gap-2">
+            <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
+              More details
+            </a>
+            <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="addToCart(<?php echo $row['id']; ?>)">
+              <i class="bi bi-cart"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
           <?php
-            }
+              }
           } else {
-            echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
+              // Nếu không có sản phẩm nào phù hợp
+              echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
           }
           ?>
         </div>
@@ -271,7 +295,7 @@ $result = $stmt->get_result();
 </div>
 
 <script>
-  // Toggle category for both desktop and mobile
+  // Ẩn/hiện từng nhóm bộ lọc (desktop & mobile)
   function toggleCategory(categoryId) {
     const categoryElement = document.getElementById(`category-${categoryId}`);
     const toggleIcon = document.getElementById(`toggle-icon-${categoryId}`);
@@ -284,48 +308,48 @@ $result = $stmt->get_result();
     }
   }
 
-  // Desktop filter
-  document.getElementById('filterButton').addEventListener('click', function() {
+  // Gửi form lọc (desktop)
+  document.getElementById('filterButton').addEventListener('click', function () {
     const formData = new FormData(document.getElementById('filterForm'));
     fetch('module/product/filter.php', {
         method: 'POST',
         body: formData,
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.text();
-      })
-      .then((data) => {
-        document.getElementById('productList').innerHTML = data;
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
-      });
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then((data) => {
+            document.getElementById('productList').innerHTML = data;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
+        });
   });
 
-  // Mobile filter
-  document.getElementById('filterButtonMobile').addEventListener('click', function() {
+  // Gửi form lọc (mobile)
+  document.getElementById('filterButtonMobile').addEventListener('click', function () {
     const formData = new FormData(document.getElementById('filterFormMobile'));
     fetch('module/product/filter.php', {
         method: 'POST',
         body: formData,
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.text();
-      })
-      .then((data) => {
-        document.getElementById('productList').innerHTML = data;
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
-      });
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then((data) => {
+            document.getElementById('productList').innerHTML = data;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
+        });
   });
 </script>
-<!-- Make sure Bootstrap JS is loaded for offcanvas to work -->
+<!-- Đảm bảo đã load Bootstrap JS để offcanvas hoạt động -->
