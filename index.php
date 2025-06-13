@@ -29,6 +29,10 @@
 <body>
   <?php
   session_start();
+  if (!isset($_SESSION['username'])) {
+    // Lưu URL hiện tại vào session
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+  }
   require 'db/connect.php';
   // navbar
   include 'components/navbar.php'

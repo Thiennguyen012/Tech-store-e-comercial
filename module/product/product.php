@@ -251,9 +251,16 @@ $result = $stmt->get_result();
                       <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
                         More details
                       </a>
-                      <button class="btn btn-outline-dark btn-sm rounded-pill px-3" onclick="addToCart(<?php echo $row['id']; ?>)">
-                        <i class="bi bi-cart"></i>
-                      </button>
+                      <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
+                      <form id="addToCartForm" action="module/cart/cart.php" method="POST">
+                        <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
+                        <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
+                        <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
+                        <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
+                        <button id="addcart-submit" type="submit" name="add-to-cart" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                          <i class="bi bi-cart"></i>
+                        </button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -329,3 +336,29 @@ $result = $stmt->get_result();
   });
 </script>
 <!-- Make sure Bootstrap JS is loaded for offcanvas to work -->
+<script>
+  // Xử lý thêm vào giỏ hàng bằng AJAX cho tất cả form trên trang
+  document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Ngăn submit mặc định
+
+      const formData = new FormData(form);
+
+      fetch('module/cart/cart.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("Đã thêm sản phẩm vào giỏ hàng!");
+            // Cập nhật số trên icon giỏ hàng nếu cần
+            document.querySelector('.cart-icon .fw-bold').textContent = data.total;
+          } else {
+            alert("Thêm vào giỏ hàng thất bại!");
+          }
+        })
+        .catch(err => console.error("Lỗi khi gửi form:", err));
+    });
+  });
+</script>

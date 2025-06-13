@@ -94,3 +94,17 @@ document.querySelector(".form-select").addEventListener("change", function () {
   const queryString = new URLSearchParams(formData).toString();
   loadPage("module/product/product.php?" + queryString);
 });
+
+$("#addcart-submit").click(function () {
+  $.post(
+    $("#addToCartForm").attr("action"),
+    $("#addToCartForm :input").serializeArray(),
+    function info() {
+      $("#response").empty();
+      $("#response").html(info);
+    }
+  );
+  $("#addToCartForm").submit(function () {
+    return false;
+  });
+});
