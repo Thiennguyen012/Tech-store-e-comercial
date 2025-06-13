@@ -169,7 +169,7 @@
               <a href="#" class="text-decoration-none text-white">Security Camera</a>
             </li>
             <li>
-              <a href="#" class="text-decoration-none text-white">Others</a>
+              <a href="#" class="text-decoration-none text-white">Computer Accessories</a>
             </li>
           </ul>
         </div>
