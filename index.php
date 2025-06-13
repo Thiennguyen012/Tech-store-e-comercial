@@ -90,6 +90,12 @@
       case 'order':
         include 'module/user-order/user-order.php';
         break;
+      case 'notification':
+        include 'module/user-profile/notification.php';
+        break;
+      case 'addresses':
+        include 'module/user-profile/addresses.php';
+        break;
       // Default sẽ nhảy về main-content 
       default:
         include 'module/main-content/main-content.php';
