@@ -46,6 +46,10 @@
       case 'accessories':
         include 'module/product/product.php';
         break;
+      // Mục search
+      case 'search':
+        include 'module/search/search.php';
+        break;
       // 
       case 'about':
         include 'module/about-us/about-us.php';
@@ -66,7 +70,6 @@
       case 'warrantly':
         include 'module/services/warrantly/warrantly.php';
         break;
-      // 
       //Mục contact
       case 'contact':
         include 'module/contact/contact.php';

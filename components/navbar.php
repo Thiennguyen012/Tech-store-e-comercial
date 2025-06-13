@@ -74,19 +74,15 @@
             <a class="nav-link" href="#Contact"
               onclick="loadPage('module/contact/contact.php',this, 'contact'); return false;">Contact</a>
           </li>
-          <li class="nav-item dropdown mx-2">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-search"></i>
-            </a>
-            <ul class="dropmenu dropdown-menu mx-2">
-              <li class="d-flex justify-content-center">
-                <form action="module/search/search.php" method="post">
-                  <input type="text" name="keyword" class="form-control search-form" placeholder="Search..."
-                    aria-label="Search" />
-                </form>
-              </li>
-            </ul>
+          <li class="nav-item dropdown mx-2 d-flex align-items-center">
+            <a class="nav-link px-2">
+              <a class="nav-link px-2" href="#" Search>
+                <i class="fas fa-search bg-light rounded-3 p-2"
+                  onclick="loadPage('module/search/search.php', this, 'search'); return false;">
+                </i>
+              </a>
           </li>
+
         </ul>
         <!-- Check đã đăng nhập hay chưa -->
         <div class="d-flex justify-content-center align-content-center gap-3">
