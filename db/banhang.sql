@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2025 at 08:17 PM
+-- Generation Time: Jun 13, 2025 at 06:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -205,10 +205,10 @@ CREATE TABLE `site_user` (
 
 INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, `password`, `role`) VALUES
 (1, 'Chu Minh Vũ', NULL, 'vungu@gmail.com', '0333123456', 'vungu1', '123456', 1),
-(2, 'Bùi Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh1', '123456', 1),
+(2, 'Bùi Thịnh', '141 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi', 'thinhbui7779@gmail.com', '0389040222', 'thinh1', '123456', 1),
 (3, 'Bùi Đức Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh2', '123456', 1),
 (4, 'Bùi Đức Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh3', '123456', 1),
-(5, 'Vũ Chu', NULL, 'chuminhvubu1@gmail.com', '0389040222', 'WhiteYin69', '1234', 1);
+(5, 'Chu Minh Vũ', '142 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi', 'chuminhvubu@gmail.com', '0389040222', 'WhiteYin69', '1234', 1);
 
 -- --------------------------------------------------------
 

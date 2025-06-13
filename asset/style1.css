@@ -279,47 +279,19 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-/* Đảm bảo input và button trong .input-group có cùng chiều cao và chữ màu đen */
-.input-group .form-control,
-.input-group .btn {
-    height: 48px;
-    color: #000 !important;
-    background: #fff !important;
-    border: 1px solid #ced4da !important;
-    box-shadow: none;
-}
-.input-group .btn {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
+.add-btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  box-sizing: border-box;
 }
 
-/* Đảm bảo input và button trong .input-group có cùng chiều cao và chữ màu đen */
-.input-group .form-control,
-.input-group .btn {
-    height: 48px;
-    color: #000 !important;
-    background: #fff !important;
-    border: 1px solid #ced4da !important;
-    box-shadow: none;
+.add-btn:hover {
+  background-color: #060707;
 }
-.input-group .btn {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-}
-.input-group .btn.btn-primary {
-    background-color: #4f5250 !important; /* Green */
-    color: #fff !important;               /* White text */
-    border-color: #4f5250 !important;
-}
-.input-group .btn.btn-primary:hover,
-.input-group .btn.btn-primary:focus {
-    background-color: #393b39 !important; /* Darker green on hover */
-    color: #fff !important;
-    border-color: #393b39 !important;
-}
-
-
-
-

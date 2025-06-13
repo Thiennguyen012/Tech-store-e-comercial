@@ -109,7 +109,7 @@ $user = $stmt->get_result()->fetch_assoc();
                         </div>
                     </div>
                     <?php endif; ?>
-                    <button type="submit" class="btn btn-primary mt-2">Update</button>
+                    <button type="submit" class="btn btn-dark mt-2">Update</button>
                 </form>
             </div>
         </div>
