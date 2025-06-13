@@ -13,7 +13,7 @@
 
             <!-- Laptop cleaning -->
             <div class="col-md-4">
-                <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4" onclick="loadPage('module/laptop-cleaning/laptop-cleaning.php')">
+                <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4" onclick="loadPage('module/services/laptop-cleaning/laptop-cleaning.php',this, 'laptopcleaning'); return false;">
                     <div class="card-body">
                         <div class="mb-3 text-warning fs-1"><i class="bi bi-laptop"></i></div>
                         <h5 class="card-title fw-bold">Laptop Cleaning</h5>
