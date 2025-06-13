@@ -53,7 +53,7 @@ $stmt->close();
                     <form method="post" class="w-100" style="max-width:500px;">
                         <div class="input-group">
                             <input type="text" name="address" class="form-control" placeholder="Enter new address..." value="" required>
-                            <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> Add </button>
+                            <button type="submit" class="btn btn-dark add-btn"><i class="bi bi-plus"></i> Add </button>
                         </div>
                     </form>
                 </div>
