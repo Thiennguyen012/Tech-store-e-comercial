@@ -255,6 +255,30 @@ a:hover {
     padding: 24px 24px 16px 24px;
     min-height: 180px;
 }
+input[type="number"] {
+  width: 70px;
+  height: 30px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  appearance: none;
+  -moz-appearance: textfield; /* Ẩn mũi tên trên Firefox */
+}
+
+input[type="number"]:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Ẩn mũi tên tăng giảm trên Chrome/Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 /* Đảm bảo input và button trong .input-group có cùng chiều cao và chữ màu đen */
 .input-group .form-control,
 .input-group .btn {
@@ -295,35 +319,7 @@ a:hover {
     color: #fff !important;
     border-color: #393b39 !important;
 }
-@media (max-width: 991px) {
-    .pv-profile-sidebar, .pv-profile-main, .pv-profile-address {
-        border-radius: 0;
-        padding: 16px;
-    }
-}
 
 
-input[type="number"] {
-  width: 70px;
-  height: 30px;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  text-align: center;
-  appearance: none;
-  -moz-appearance: textfield; /* Ẩn mũi tên trên Firefox */
-}
 
-input[type="number"]:focus {
-  border-color: #0d6efd;
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
 
-/* Ẩn mũi tên tăng giảm trên Chrome/Safari */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
