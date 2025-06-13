@@ -114,7 +114,18 @@
   <div class="cart-social-fixed">
     <!-- Cart -->
     <div class="cart-icon bg-warning text-white d-flex flex-column align-items-center justify-content-center rounded-3">
-      <span class="fw-bold">0</span>
+      <span id="cart-count" class="fw-bold">
+        <?php
+        $totalItems = 0;
+        if (isset($_SESSION['cart'])) {
+          foreach ($_SESSION['cart'] as $item) {
+            $totalItems += $item['quantity'];
+          }
+        }
+        echo $totalItems;
+        ?>
+      </span>
+
       <!-- check xem đã đăng nhập hay chưa -->
       <!-- chưa thì đăng nhập -->
       <?php if (isset($_SESSION['username'])): ?>

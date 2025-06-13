@@ -71,7 +71,8 @@ function showCart()
             </tr>';
         }
     } else {
-        echo '<tr><td colspan="3" class="text-center text-muted">Your cart is empty.</td></tr>';
+        echo '
+        <tr><td colspan="3" class="text-center text-muted fs-5"><br></br>Your cart is empty.<br></br></td></tr>';
     }
 }
 ?>
@@ -93,7 +94,7 @@ function showCart()
     </table>
 
     <!-- Có thể tính tổng ở đây nếu muốn -->
-    <div class="row justify-content-end">
+    <div class="row justify-content-end mb-3">
         <div class="col-md-4">
             <table class="table">
                 <tr>
