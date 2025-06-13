@@ -7,7 +7,7 @@ function is_active($file) {
 }
 ?>
 <div class="pv-profile-sidebar text-center shadow-sm">
-    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['username']); ?>&background=0D8ABC&color=fff&size=128" class="avatar mb-2" alt="Avatar">
+    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['username']); ?>&background=4f5250&color=fff&size=128" class="avatar mb-2" alt="Avatar">
     <div class="username mb-2">Account of<br><span><?php echo htmlspecialchars($_SESSION['username']); ?></span></div>
     <nav class="nav flex-column align-items-start mt-4">
         <!-- Mỗi liên kết sẽ load một trang con của profile bằng AJAX -->

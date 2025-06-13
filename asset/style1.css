@@ -255,6 +255,46 @@ a:hover {
     padding: 24px 24px 16px 24px;
     min-height: 180px;
 }
+/* Đảm bảo input và button trong .input-group có cùng chiều cao và chữ màu đen */
+.input-group .form-control,
+.input-group .btn {
+    height: 48px;
+    color: #000 !important;
+    background: #fff !important;
+    border: 1px solid #ced4da !important;
+    box-shadow: none;
+}
+.input-group .btn {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+/* Đảm bảo input và button trong .input-group có cùng chiều cao và chữ màu đen */
+.input-group .form-control,
+.input-group .btn {
+    height: 48px;
+    color: #000 !important;
+    background: #fff !important;
+    border: 1px solid #ced4da !important;
+    box-shadow: none;
+}
+.input-group .btn {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+.input-group .btn.btn-primary {
+    background-color: #4f5250 !important; /* Green */
+    color: #fff !important;               /* White text */
+    border-color: #4f5250 !important;
+}
+.input-group .btn.btn-primary:hover,
+.input-group .btn.btn-primary:focus {
+    background-color: #393b39 !important; /* Darker green on hover */
+    color: #fff !important;
+    border-color: #393b39 !important;
+}
 @media (max-width: 991px) {
     .pv-profile-sidebar, .pv-profile-main, .pv-profile-address {
         border-radius: 0;

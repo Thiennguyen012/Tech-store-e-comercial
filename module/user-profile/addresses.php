@@ -52,8 +52,8 @@ $stmt->close();
                 <div class="d-flex justify-content-center p-3 mb-3" style="background:#fff;border-radius:8px;border:1px dashed #ccc;">
                     <form method="post" class="w-100" style="max-width:500px;">
                         <div class="input-group">
-                            <input type="text" name="address" class="form-control" placeholder="Enter your address..." value="<?php echo htmlspecialchars($address ?? ''); ?>" required>
-                            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
+                            <input type="text" name="address" class="form-control" placeholder="Enter new address..." value="" required>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> Add </button>
                         </div>
                     </form>
                 </div>
