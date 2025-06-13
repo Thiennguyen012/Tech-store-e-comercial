@@ -29,6 +29,10 @@
 <body>
   <?php
   session_start();
+  if (!isset($_SESSION['username'])) {
+    // Lưu URL hiện tại vào session
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+  }
   require 'db/connect.php';
   // navbar
   include 'components/navbar.php'
@@ -50,7 +54,7 @@
       case 'camera':
         include 'module/product/product.php';
         break;
-      case 'others':
+      case 'accessories':
         include 'module/product/product.php';
         break;
       // 
@@ -64,7 +68,7 @@
       case 'laptopcleaning':
         include 'module/services/laptop-cleaning/laptop-cleaning.php';
         break;
-      case 'intallcam':
+      case 'installcam':
         include 'module/services/install-cam/install-cam.php';
         break;
       case 'repair':
