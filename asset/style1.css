@@ -197,63 +197,64 @@ a:hover {
 
 /* style cho trang profile */
 .pv-profile-sidebar {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px 0 24px 0;
-    min-height: 420px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 0 24px 0;
+  min-height: 420px;
 }
 .pv-profile-sidebar .avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 12px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
 }
 .pv-profile-sidebar .username {
-    font-weight: 600;
-    font-size: 18px;
-    margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 8px;
 }
 .pv-profile-sidebar .nav-link {
-    color: #222;
-    font-size: 16px;
-    padding: 8px 24px;
-    border-radius: 6px;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  color: #222;
+  font-size: 16px;
+  padding: 8px 24px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.pv-profile-sidebar .nav-link.active, .pv-profile-sidebar .nav-link:hover {
-    background: #f5f5f5;
-    color: #0072bc;
+.pv-profile-sidebar .nav-link.active,
+.pv-profile-sidebar .nav-link:hover {
+  background: #f5f5f5;
+  color: #0072bc;
 }
 .pv-profile-main {
-    background: #fff;
-    border-radius: 12px;
-    padding: 32px 32px 24px 32px;
-    min-height: 420px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 32px 24px 32px;
+  min-height: 420px;
 }
 .pv-profile-main label {
-    font-weight: 500;
+  font-weight: 500;
 }
-.pv-profile-main input[type="text"], 
-.pv-profile-main input[type="email"], 
+.pv-profile-main input[type="text"],
+.pv-profile-main input[type="email"],
 .pv-profile-main input[type="date"] {
-    background: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 10px 12px;
-    margin-bottom: 16px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
 }
 .pv-profile-main .form-check-input {
-    margin-top: 0.2em;
+  margin-top: 0.2em;
 }
 .pv-profile-address {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px 24px 16px 24px;
-    min-height: 180px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 24px 16px 24px;
+  min-height: 180px;
 }
 input[type="number"] {
   width: 70px;
@@ -294,4 +295,53 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .add-btn:hover {
   background-color: #060707;
+}
+
+/* search style*/
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+.search-flyout {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100vw;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 30px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(-10px);
+  z-index: 1050;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.search-flyout.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.search-input {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  color: #212529;
+  padding: 15px 20px;
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  background: #ffffff;
+  border-color: #000000;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #6c757d;
 }
