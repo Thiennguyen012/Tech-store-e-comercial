@@ -75,9 +75,9 @@
               onclick="loadPage('module/contact/contact.php',this, 'contact'); return false;">Contact</a>
           </li>
           <!-- search -->
-          <li class="nav-item dropdown mx-2 d-flex align-items-center list-unstyled">
+          <li class="nav-item dropdown mx-2">
             <a class="nav-link px-2 search-container">
-              <i class="fas fa-search bg-light rounded-3 p-2 search-icon" onclick="toggleSearch(); return false;">
+              <i class="fas fa-search rounded-3" onclick="toggleSearch(); return false;">
               </i>
               <!-- Search Flyout -->
               <div class="search-flyout" id="searchFlyout">
@@ -91,129 +91,7 @@
               </div>
             </a>
           </li>
-          <!-- search script -->
-          <script>
-            let isSearchOpen = false;
 
-            // Search toggle function
-            function toggleSearch() {
-              const flyout = document.getElementById('searchFlyout');
-              const searchInput = document.getElementById('searchInput');
-
-              if (isSearchOpen) {
-                flyout.classList.remove('show');
-                isSearchOpen = false;
-              } else {
-                flyout.classList.add('show');
-                isSearchOpen = true;
-                setTimeout(() => {
-                  searchInput.focus();
-                }, 300);
-              }
-            }
-
-            // Handle Enter key for search
-            function handleSearch(event) {
-              if (event.key === 'Enter') {
-                event.preventDefault();
-                const query = document.getElementById('searchInput').value.trim();
-                if (query) {
-                  performSearch(query);
-                  toggleSearch();
-                }
-              }
-            }
-
-            // Perform search - Using product.php with query parameter
-            function performSearch(keyword) {
-              // Clear search input
-              document.getElementById('searchInput').value = '';
-
-              // Update browser URL to index.php?act=products&query=keyword
-              const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
-              history.pushState({ query: keyword }, '', newUrl);
-
-              // Load product page with search query parameter
-              loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
-            }
-
-            // Handle browser back/forward buttons
-            window.addEventListener('popstate', function (event) {
-              // Get current URL parameters
-              const urlParams = new URLSearchParams(window.location.search);
-              const query = urlParams.get('query');
-              const act = urlParams.get('act');
-
-              if (act === 'products' && query) {
-                // Load product page with search query
-                loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
-              } else if (act === 'products' && !query) {
-                // Load product page without search query
-                loadPage('module/product/product.php');
-              } else {
-                // Handle other pages or reload current page
-                location.reload();
-              }
-            });
-
-            // Alternative solution: More comprehensive URL routing
-            function handleUrlChange() {
-              const urlParams = new URLSearchParams(window.location.search);
-              const act = urlParams.get('act');
-              const query = urlParams.get('query');
-
-              switch (act) {
-                case 'products':
-                  if (query) {
-                    loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
-                  } else {
-                    loadPage('module/product/product.php');
-                  }
-                  break;
-                case 'home':
-                  loadPage('module/home/home.php');
-                  break;
-                // Thêm các case khác tùy theo trang web của bạn
-                default:
-                  // Load trang mặc định hoặc trang hiện tại
-                  if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
-                    loadPage('module/home/home.php');
-                  }
-              }
-            }
-
-            // Improved popstate handler
-            window.addEventListener('popstate', function (event) {
-              handleUrlChange();
-            });
-
-            // Call handleUrlChange on page load to handle direct URL access
-            document.addEventListener('DOMContentLoaded', function () {
-              handleUrlChange();
-            });
-
-            // Close search when clicking outside
-            document.addEventListener('click', function (event) {
-              const searchContainer = document.querySelector('.search-container');
-
-              if (isSearchOpen && !searchContainer.contains(event.target)) {
-                document.getElementById('searchFlyout').classList.remove('show');
-                isSearchOpen = false;
-              }
-            });
-
-            // Handle escape key
-            document.addEventListener('keydown', function (event) {
-              if (event.key === 'Escape' && isSearchOpen) {
-                document.getElementById('searchFlyout').classList.remove('show');
-                isSearchOpen = false;
-              }
-            });
-
-            // Handle Enter key for search
-            document.getElementById('searchInput').addEventListener('keydown', handleSearch);
-          </script>
-          <!-- search -->
         </ul>
         <!-- Check đã đăng nhập hay chưa -->
         <div class="d-flex justify-content-center align-content-center gap-3">
@@ -255,3 +133,126 @@
     </div>
   </div>
 </nav>
+<!-- search script -->
+<script>
+  let isSearchOpen = false;
+
+  // Search toggle function
+  function toggleSearch() {
+    const flyout = document.getElementById('searchFlyout');
+    const searchInput = document.getElementById('searchInput');
+
+    if (isSearchOpen) {
+      flyout.classList.remove('show');
+      isSearchOpen = false;
+    } else {
+      flyout.classList.add('show');
+      isSearchOpen = true;
+      setTimeout(() => {
+        searchInput.focus();
+      }, 300);
+    }
+  }
+
+  // Handle Enter key for search
+  function handleSearch(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        performSearch(query);
+        toggleSearch();
+      }
+    }
+  }
+
+  // Perform search - Using product.php with query parameter
+  function performSearch(keyword) {
+    // Clear search input
+    document.getElementById('searchInput').value = '';
+
+    // Update browser URL to index.php?act=products&query=keyword
+    const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
+    history.pushState({ query: keyword }, '', newUrl);
+
+    // Load product page with search query parameter
+    loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
+  }
+
+  // Handle browser back/forward buttons
+  window.addEventListener('popstate', function (event) {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query');
+    const act = urlParams.get('act');
+
+    if (act === 'products' && query) {
+      // Load product page with search query
+      loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
+    } else if (act === 'products' && !query) {
+      // Load product page without search query
+      loadPage('module/product/product.php');
+    } else {
+      // Handle other pages or reload current page
+      location.reload();
+    }
+  });
+
+  // Alternative solution: More comprehensive URL routing
+  function handleUrlChange() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const act = urlParams.get('act');
+    const query = urlParams.get('query');
+
+    switch (act) {
+      case 'products':
+        if (query) {
+          loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
+        } else {
+          loadPage('module/product/product.php');
+        }
+        break;
+      case 'home':
+        loadPage('module/home/home.php');
+        break;
+      // Thêm các case khác tùy theo trang web của bạn
+      default:
+        // Load trang mặc định hoặc trang hiện tại
+        if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
+          loadPage('module/home/home.php');
+        }
+    }
+  }
+
+  // Improved popstate handler
+  window.addEventListener('popstate', function (event) {
+    handleUrlChange();
+  });
+
+  // Call handleUrlChange on page load to handle direct URL access
+  document.addEventListener('DOMContentLoaded', function () {
+    handleUrlChange();
+  });
+
+  // Close search when clicking outside
+  document.addEventListener('click', function (event) {
+    const searchContainer = document.querySelector('.search-container');
+
+    if (isSearchOpen && !searchContainer.contains(event.target)) {
+      document.getElementById('searchFlyout').classList.remove('show');
+      isSearchOpen = false;
+    }
+  });
+
+  // Handle escape key
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && isSearchOpen) {
+      document.getElementById('searchFlyout').classList.remove('show');
+      isSearchOpen = false;
+    }
+  });
+
+  // Handle Enter key for search
+  document.getElementById('searchInput').addEventListener('keydown', handleSearch);
+</script>
+<!-- search -->
