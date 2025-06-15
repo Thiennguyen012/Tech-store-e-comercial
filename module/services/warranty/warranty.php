@@ -15,7 +15,7 @@
                 </ol>
             </nav>
 
-            <h2 class="section-title fw-bold">Warranty and Return</h2>
+            <h2 class="section-title fw-bold">Warranty and Return Policies</h2>
 
             <p>
                 Products sold by Technologia are warranted in accordance with the standards and policies of the manufacturer,
