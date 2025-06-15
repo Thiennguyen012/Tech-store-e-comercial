@@ -114,16 +114,30 @@ $user = $stmt->get_result()->fetch_assoc();
             </div>
         </div>
         <!-- Hộp địa chỉ mặc định -->
-        <div class="col-lg-3">
+        <div class="col-lg-3 ">
             <div class="pv-profile-address shadow-sm">
                 <h5 class="fw-bold mb-2">Default Address</h5>
-                <div class="text-muted mb-2" style="font-size:15px;">
-                    You don't have a default shipping address. Please select Add new address.
-                </div>
-                <!-- Liên kết đến trang sổ địa chỉ -->
-                <a class="nav-link <?php echo is_active('addresses.php'); ?>" href="#" onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
-                    <i class="bi bi-plus"></i> Add a new address
-                </a>
+                <?php
+                // Lấy địa chỉ mặc định của user
+                $userAddress = $user['address'] ?? '';
+                ?>
+                <?php if (!empty($userAddress)): ?>
+                    <div class="d-flex align-items-center" style="font-size:15px;">
+                        <span class="me-2"><?= htmlspecialchars($userAddress); ?></span>
+                        <a class="bi bi-pen"
+                           href="#"
+                           onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <div class="text-muted mb-2" style="font-size:15px;">
+                        You don't have a default shipping address. Please select Add new address.
+                    </div>
+                    <a class="nav-link <?php echo is_active('addresses.php'); ?>" href="#"
+                       onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
+                        <i class="bi bi-plus"></i> Add a new address
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
