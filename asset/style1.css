@@ -296,3 +296,52 @@ input[type="number"]::-webkit-inner-spin-button {
 .add-btn:hover {
   background-color: #060707;
 }
+
+/* search style*/
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+.search-flyout {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100vw;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 30px 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(-10px);
+  z-index: 1050;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.search-flyout.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.search-input {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  color: #212529;
+  padding: 15px 20px;
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  background: #ffffff;
+  border-color: #000000;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #6c757d;
+}
