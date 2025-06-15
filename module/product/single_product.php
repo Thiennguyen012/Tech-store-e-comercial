@@ -108,11 +108,11 @@ while ($row = $config_result->fetch_assoc()) {
               <li><b><?php echo htmlspecialchars($c['variation']); ?>:</b> <?php echo htmlspecialchars($c['value']); ?></li>
             <?php endforeach; ?>
           </ul>
-          <div class="mb-3">
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
-          </div>
           <form id="addToCartForm" action="module/cart/cart.php" method="POST">
+            <div class="mb-3">
+              <label for="quantity">Quantity:</label>
+              <input type="number" name="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
+            </div>
             <input type="hidden" name="product-id" value="<?= $product['id'] ?>">
             <input type="hidden" name="product-name" value="<?= $product['name'] ?>">
             <input type="hidden" name="product-price" value="<?= $product['price'] ?>">

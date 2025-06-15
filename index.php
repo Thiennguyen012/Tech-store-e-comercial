@@ -29,7 +29,7 @@
   require 'db/connect.php';
   // navbar
   include 'components/navbar.php'
-    ?>
+  ?>
 
   <!-- Content -->
   <div id="main-content">
@@ -90,6 +90,9 @@
         break;
       case 'addresses':
         include 'module/user-profile/addresses.php';
+        break;
+      case 'checkout':
+        include 'module/checkout/checkout.php';
         break;
       // Default sẽ nhảy về main-content 
       default:

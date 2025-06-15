@@ -345,3 +345,10 @@ input[type="number"]::-webkit-inner-spin-button {
 .search-input::placeholder {
   color: #6c757d;
 }
+/* trang checkout */
+.address-box {
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
