@@ -168,7 +168,7 @@
             </ul>
             <div class="highlight mt-4">
                 <h5><strong>📞 Contact Us</strong></h5>
-                <p><strong>Call:</strong> 098 234 2030 – 090 880 9527</p>
+                <p><strong>Call:</strong> 0945411232 </p>
                 <p>Visit us for fast and reliable wwar service!</p>
                 <button class="btn btn-dark w-25 rounded-4">Book now!</button>
             </div>
@@ -179,6 +179,8 @@
             <h4 class="section-title fw-bold">Other Services</h4>
             <div class="other-services-sidebar">
                 <a href="#" onclick="loadPage('module/services/install-cam/install-cam.php',this,'installcam');return false;">Security Camera Installation</a>
+                <br>
+                <a href="#" onclick="loadPage('module/services/repair/repair.php',this,'repair');return false;">Repair</a>
                 <br>
                 <a href="#" onclick="loadPage('module/services/laptop-cleaning/laptop-cleaning.php',this, 'laptopcleaning');return false;">Laptop Cleaning</a>
             </div>

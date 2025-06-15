@@ -10,7 +10,7 @@
                 </ol>
             </nav>
 
-            <h2 class="section-title fw-bold">LAPTOP CLEANING AND REPAIR – PROFESSIONAL, FAST, AND AFFORDABLE</h2>
+            <h2 class="section-title fw-bold">LAPTOP CLEANING – PROFESSIONAL, FAST, AND AFFORDABLE</h2>
 
             <p>
                 Laptops often work continuously under high load, exposed to dust, smoke, and heat.
@@ -50,37 +50,10 @@
                 <li>Reapplying thermal paste</li>
                 <li>Full device testing after cleaning</li>
             </ul>
-
-            <!-- Nội dung sửa chữa laptop -->
-            <div class="highlight my-4">
-                <h3 class="fw-bold">Laptop Repair Service</h3>
-                <p>
-                    In addition to cleaning, we provide <strong>professional laptop repair services</strong> for a wide range of hardware and software issues. Our experienced technicians can diagnose and fix most common laptop problems quickly and efficiently.
-                </p>
-                <h5><strong>Common Laptop Repair Services:</strong></h5>
-                <ul>
-                    <li>Screen replacement (cracked, flickering, or dead screens)</li>
-                    <li>Keyboard and touchpad repair or replacement</li>
-                    <li>Battery and charging port issues</li>
-                    <li>Motherboard and hardware diagnostics</li>
-                    <li>Data recovery and backup solutions</li>
-                    <li>Operating system reinstallation and software troubleshooting</li>
-                    <li>Virus and malware removal</li>
-                    <li>RAM and storage upgrades</li>
-                </ul>
-                <h5><strong>Why Choose Us?</strong></h5>
-                <ul>
-                    <li>Experienced and certified technicians</li>
-                    <li>Genuine replacement parts</li>
-                    <li>Transparent pricing and fast turnaround</li>
-                    <li>Warranty on all repairs</li>
-                </ul>
-            </div>
-
             <div class="highlight mt-4">
                 <h5><strong>📞 Contact Us</strong></h5>
-                <p><strong>Call:</strong> 098 234 2030 – 090 880 9527</p>
-                <p>Visit us for fast and reliable laptop cleaning <strong>and repair</strong> service!</p>
+                <p><strong>Call:</strong> 0945411232 </p>
+                <p>Visit us for fast and reliable<strong> laptop cleaning </strong> service!</p>
                 <button class="btn btn-dark w-25 rounded-4">Book now!</button>
             </div>
         </div>
@@ -90,6 +63,8 @@
             <h4 class="section-title fw-bold">Other Services</h4>
             <div class="other-services-sidebar">
                 <a href="#" onclick="loadPage('module/services/install-cam/install-cam.php',this,'installcam');return false;">Security Camera Installation</a>
+                <br>
+                <a href="#" onclick="loadPage('module/services/repair/repair.php',this,'repair');return false;">Repair</a>
                 <br>
                 <a href="#" onclick="loadPage('module/services/warranty/warranty.php',this, 'warranty');return false;">Warranty</a>
             </div>
