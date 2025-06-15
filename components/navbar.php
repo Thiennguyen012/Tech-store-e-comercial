@@ -62,7 +62,7 @@
                   onclick="loadPage('module/services/repair/repair.php',this, 'repair'); return false;">Repair</a></li>
               <li>
                 <a class="dropdown-item" href="#"
-                  onclick="loadPage('module/services/warrantly/warrantly.php',this, 'warrantly'); return false;">Warranty</a>
+                  onclick="loadPage('module/services/warranty/warranty.php',this, 'warranty'); return false;">Warranty</a>
               </li>
             </ul>
           </li>
