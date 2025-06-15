@@ -13,45 +13,54 @@
 
             <!-- Laptop cleaning -->
             <div class="col-md-4">
-                <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4" onclick="loadPage('module/services/laptop-cleaning/laptop-cleaning.php',this, 'laptopcleaning'); return false;">
-                    <div class="card-body">
-                        <div class="mb-3 text-warning fs-1"><i class="bi bi-laptop"></i></div>
-                        <h5 class="card-title fw-bold">Laptop Cleaning</h5>
-                        <p class="card-text">In-depth internal and external cleaning and maintaining to keep your laptop running cool and smooth.</p>
+                <a href="#" onclick="loadPage('module/services/laptop-cleaning/laptop-cleaning.php',this,'laptopcleaning');return false;">
+                    <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
+                        <div class="card-body">
+                            <div class="mb-3 text-warning fs-1"><i class="bi bi-laptop"></i></div>
+                            <h5 class="card-title fw-bold">Laptop Cleaning</h5>
+                            <p class="card-text">In-depth internal and external cleaning and maintaining to keep your laptop running cool and smooth.
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Security camera installation -->
-            <div class="col-md-4">
-                <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
-                    <div class="card-body">
-                        <div class="mb-3 text-warning fs-1"><i class="bi bi-camera-video"></i></div>
-                        <h5 class="card-title fw-bold">Security Camera Installation</h5>
-                        <p class="card-text">Install high-quality security cameras with optimal placement and configuration for 24/7 protection of your property.</p>
-                    </div>
-                </div>
+                </a>
             </div>
             <!-- Repair -->
             <div class="col-md-4">
-                <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
-                    <div class="card-body">
-                        <div class="mb-3 text-warning fs-1"><i class="bi bi-tools"></i></div>
-                        <h5 class="card-title fw-bold">Repair</h5>
-                        <p class="card-text">Fast and reliable repair services for laptops, cameras, and other tech devices. Diagnosis and free consultation included.</p>
+                <a href="#" onclick="loadPage('module/services/repair/repair.php',this,'repair');return false;">
+                    <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
+                        <div class="card-body">
+                            <div class="mb-3 text-warning fs-1"><i class="bi bi-tools"></i></div>
+                            <h5 class="card-title fw-bold">Repair Services</h5>
+                            <p class="card-text">Fast and reliable repair services for laptops, cameras, and other tech devices. Diagnosis and free consultation included.</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
-            <!-- Warrantly -->
+            <!-- Security camera installation -->
             <div class="col-md-4">
-                <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
-                    <div class="card-body">
-                        <div class="mb-3 text-warning fs-1"><i class="bi bi-shield-check"></i></div>
-                        <h5 class="card-title fw-bold">Warrantly</h5>
-                        <p class="card-text">Check warranty status, process warranty claims, and ensure that your products get repaired or replaced promptly.</p>
+                <a href="#" onclick="loadPage('module/services/install-cam/install-cam.php',this,'installcam');return false;">
+                    <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
+                        <div class="card-body">
+                            <div class="mb-3 text-warning fs-1"><i class="bi bi-camera-video"></i></div>
+                            <h5 class="card-title fw-bold">Security Camera Installation</h5>
+                            <p class="card-text">Install high-quality security cameras with optimal placement and configuration for 24/7 protection of your property.</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
+            <!-- Warranty -->
+            <div class="col-md-4">
+                <a href="#" onclick="loadPage('module/services/warranty/warranty.php',this,'warranty');return false;">
+                    <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
+                        <div class="card-body">
+                            <div class="mb-3 text-warning fs-1"><i class="bi bi-shield-check"></i></div>
+                            <h5 class="card-title fw-bold">Warranty</h5>
+                            <p class="card-text">Check warranty status, process warranty claims, and ensure that your products get repaired or replaced promptly.</p>
+                        </div>
+                    </div>
+            </div>
+            </a>
+
 
         </div>
     </div>

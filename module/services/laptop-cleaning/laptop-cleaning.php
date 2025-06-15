@@ -50,11 +50,10 @@
                 <li>Reapplying thermal paste</li>
                 <li>Full device testing after cleaning</li>
             </ul>
-
             <div class="highlight mt-4">
                 <h5><strong>📞 Contact Us</strong></h5>
-                <p><strong>Call:</strong> 098 234 2030 – 090 880 9527</p>
-                <p>Visit us for fast and reliable laptop cleaning service!</p>
+                <p><strong>Call:</strong> 0945411232 </p>
+                <p>Visit us for fast and reliable<strong> laptop cleaning </strong> service!</p>
                 <button class="btn btn-dark w-25 rounded-4">Book now!</button>
             </div>
         </div>
@@ -67,7 +66,7 @@
                 <br>
                 <a href="#" onclick="loadPage('module/services/repair/repair.php',this,'repair');return false;">Repair</a>
                 <br>
-                <a href="#" onclick="loadPage('module/services/warrantly/warrantly.php',this, 'warrantly');return false;">Warrantly</a>
+                <a href="#" onclick="loadPage('module/services/warranty/warranty.php',this, 'warranty');return false;">Warranty</a>
             </div>
         </div>
     </div>

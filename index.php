@@ -66,8 +66,8 @@
       case 'repair':
         include 'module/services/repair/repair.php';
         break;
-      case 'warrantly':
-        include 'module/services/warrantly/warrantly.php';
+      case 'warranty':
+        include 'module/services/warranty/warranty.php';
         break;
       //Mục contact
       case 'contact':
