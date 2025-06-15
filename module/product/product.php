@@ -336,7 +336,7 @@ if ($isSearchMode) {
                       <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
                       <h4 class="text-muted mb-3">No products found</h4>
                       <p class="text-muted mb-4">We couldn\'t find any products matching "' . htmlspecialchars($query) . '". Try different keywords.</p>
-                      <a href="#" onclick="loadPage(\'module/main-content/main-content.php\', this); return false;" class="btn btn-dark rounded-pill px-4">Back to Home</a>
+                      <a href="#" onclick="loadPage(\'module/main-content/main-content.php\', this, \'home\'); return false;" class="btn btn-dark rounded-pill px-4">Back to Home</a>
                     </div></div>';
             } else {
               echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
