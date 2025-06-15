@@ -50,11 +50,6 @@
       case 'accessories':
         include 'module/product/product.php';
         break;
-      // Mục search
-      case 'search':
-        include 'module/search/search.php';
-        break;
-      // 
       case 'about':
         include 'module/about-us/about-us.php';
         break;
