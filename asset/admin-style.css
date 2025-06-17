@@ -1,0 +1,77 @@
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  transition: all 0.3s;
+  background-color: #212529; /* Bootstrap dark */
+  color: white;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+  align-items: center;
+}
+
+.sidebar-header {
+  height: 50px;
+  padding: 0 1rem;
+}
+
+.sidebar-header .title {
+  font-size: 1.2rem;
+}
+
+.sidebar.collapsed .sidebar-header .title {
+  display: none;
+}
+
+.sidebar-toggle {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  color: white;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.2rem;
+  transition: font-size 0.3s;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 0.75rem 0;
+}
+
+.sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-link i {
+  font-size: 1.6rem;
+}
+
+.content {
+  margin-left: 250px;
+  transition: all 0.3s;
+  padding: 2rem;
+}
+
+.sidebar.collapsed + .content {
+  margin-left: 80px;
+}
