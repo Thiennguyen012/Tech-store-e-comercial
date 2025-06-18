@@ -1,7 +1,7 @@
 <?php
 // Kết nối database
 require_once __DIR__ . '/../../db/connect.php';
-require_once __DIR__ . '../../search/search-logic.php';
+require_once __DIR__ . '/../search/search-logic.php';
 
 $query = isset($_GET['query']) ? trim($_GET['query']) : '';
 $isSearchMode = !empty($query); // Kiểm tra có đang ở chế độ tìm kiếm không
@@ -31,6 +31,11 @@ if ($isSearchMode) {
   $filters = getSearchFilters($conn); // Lấy tất cả bộ lọc
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
+  
+  // Thêm các biến cần thiết cho search mode
+  $limit = 8;
+  $offset = 0;
+  
 } else {
   // Chế độ category thông thường
   $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
