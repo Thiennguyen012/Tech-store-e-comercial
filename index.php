@@ -94,6 +94,9 @@
       case 'checkout':
         include 'module/checkout/checkout.php';
         break;
+      case 'checkout-result':
+        include 'module/checkout/checkout-result.php';
+        break;
       case 'home':
         include 'module/main-content/main-content.php';
         break;

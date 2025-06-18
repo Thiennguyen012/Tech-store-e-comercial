@@ -67,8 +67,11 @@ if ($username) {
         <!-- RIGHT: Shipping info -->
         <div class="col-md-5 p-4 rounded-3" style="background-color: #f8f9fa">
             <h4 class="mb-3">Shipping Information</h4>
-
+            <!-- <form action="module/checkout/checkout-result.php" method="POST" id="checkout-form"> -->
             <!-- Địa chỉ từ database -->
+            <input type="hidden" name="db_name" value="<?= htmlspecialchars($user['name']) ?>">
+            <input type="hidden" name="db_phone" value="<?= htmlspecialchars($user['phone']) ?>">
+            <input type="hidden" name="db_address" value="<?= htmlspecialchars($user['address']) ?>">
             <div class="mb-4 p-3 border rounded bg-white shadow-sm">
                 <h6>Default Information</h6>
                 <div id="default-info-content">
@@ -80,26 +83,27 @@ if ($username) {
             <div class="p-3 border rounded bg-white shadow-sm">
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="use-new-info">
+                    <input type="hidden" name="use_new_info" id="use_new_info_hidden" value="0">
                     <label class="form-check-label" for="use-new-info">
                         Use a different shipping infomation
                     </label>
                 </div>
-
+                <!-- Thông tin người dùng nhập mới -->
                 <div id="new-info-fields" class="d-none">
-                    <form id="new-info-form">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="hoten">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" name="sdt">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Address Details</label>
-                            <input type="text" class="form-control" name="diachi">
-                        </div>
-                    </form>
+
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="form_name" id="form_name">
+                    </div>
+                    <div class=" mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="form_phone" id="form_phone">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address Details</label>
+                        <input type="text" class="form-control" name="form_address" id="form_address">
+                    </div>
+
                 </div>
             </div>
             <!-- pt thanh toán -->
@@ -121,13 +125,19 @@ if ($username) {
 
             <!-- Nút đặt hàng -->
             <div class="mt-4">
-                <button class="btn btn-dark w-100 rounded-4" onclick="handlePlaceOrder()">Place Order</button>
+                <button value="Place Order" class="btn btn-dark w-100 rounded-4" onclick="handlePlaceOrder()">Place Order</button>
             </div>
+            <!-- </form> -->
         </div>
     </div>
 </div>
 </div>
 <script>
+    // Kiểm tra xem người dùng có chọn sử dụng thông tin mới không
+    document.getElementById('use-new-info').addEventListener('change', function() {
+        document.getElementById('use_new_info_hidden').value = this.checked ? '1' : '0';
+    });
+
     const userInfo = <?= json_encode($user) ?>;
 
     const addressContent = document.getElementById('default-info-content');
@@ -136,10 +146,10 @@ if ($username) {
 
     if (userInfo && userInfo.address) {
         addressContent.innerHTML = `
-      <p><strong>${userInfo.name}</strong></p>
-      <p>Phone: ${userInfo.phone}</p>
-      <p>Address: ${userInfo.address}</p>
-    `;
+          <p><strong>${userInfo.name}</strong></p>
+          <p>Phone: ${userInfo.phone}</p>
+          <p>Address: ${userInfo.address}</p>
+        `;
     } else {
         addressContent.innerHTML = `<p class="text-muted">No default address available.</p>`;
     }
@@ -152,45 +162,44 @@ if ($username) {
         }
     });
 
-    // Xử lý khi đặt hàng
     function handlePlaceOrder() {
         const checkbox = document.getElementById('use-new-info');
         const useNew = checkbox.checked;
 
-        let shippingInfo = {};
+        let name = '',
+            phone = '',
+            address = '';
 
         if (useNew) {
-            // Lấy thông tin từ form nhập mới
-            const form = document.getElementById('new-info-form');
-            const hoten = form.hoten.value.trim();
-            const sdt = form.sdt.value.trim();
-            const diachi = form.diachi.value.trim();
+            const nameInput = document.getElementById('form_name');
+            const phoneInput = document.getElementById('form_phone');
+            const addressInput = document.getElementById('form_address');
 
-            if (!hoten || !sdt || !diachi) {
-                alert("Please fill in all new address fields.");
+            if (!nameInput || !phoneInput || !addressInput) {
+                alert("Input fields not found in the DOM.");
                 return;
             }
 
-            shippingInfo = {
-                name: hoten,
-                phone: sdt,
-                address: diachi
-            };
+            name = nameInput.value.trim();
+            phone = phoneInput.value.trim();
+            address = addressInput.value.trim();
+
+            if (!name || !phone || !address) {
+                alert("Please fill in all new address fields.");
+                return;
+            }
         } else {
-            // Lấy từ dữ liệu user đã load từ PHP
             if (!userInfo || !userInfo.address) {
                 alert("No default address available. Please enter a new address.");
                 return;
             }
 
-            shippingInfo = {
-                name: userInfo.name,
-                phone: userInfo.phone,
-                address: userInfo.address
-            };
+            name = userInfo.name;
+            phone = userInfo.phone;
+            address = userInfo.address;
         }
 
-        // ✅ Kiểm tra phương thức thanh toán
+        // ✅ Lấy phương thức thanh toán
         const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
         if (!selectedMethod) {
             alert("Please select a payment method.");
@@ -199,36 +208,38 @@ if ($username) {
 
         const paymentMethod = selectedMethod.value;
 
-        // ✅ Kiểm tra giỏ hàng không rỗng (từ PHP chuyển sang JS)
+        // ✅ Kiểm tra giỏ hàng
         const cartHasItem = <?= isset($_SESSION['cart']) && count($_SESSION['cart']) > 0 ? 'true' : 'false' ?>;
         if (!cartHasItem) {
             alert("Your cart is empty. Please add products before placing the order.");
             return;
         }
 
-        // ✅ Gửi đơn hàng hoặc hiển thị (demo)
-        console.log("Placing order with info:");
-        console.log("Shipping Info:", shippingInfo);
-        console.log("Payment Method:", paymentMethod);
+        // ✅ Tạo form ẩn để POST dữ liệu sang checkout-result.php
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'index.php?act=checkout-result';
+        form.style.display = 'none';
+        form.appendChild(createInput('use_new_info', useNew ? '1' : '0'));
 
-        alert("Order placed successfully with " + paymentMethod.toUpperCase());
+        form.appendChild(createInput('db_name', userInfo.name));
+        form.appendChild(createInput('db_phone', userInfo.phone));
+        form.appendChild(createInput('db_address', userInfo.address));
 
-        // TODO: You can send the order via fetch() here
-        // Example:
-        /*
-        fetch('process_order.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ shippingInfo, paymentMethod })
-        })
-        .then(res => res.json())
-        .then(data => {
-          alert(data.message || "Order placed!");
-        })
-        .catch(err => {
-          console.error("Error:", err);
-          alert("Failed to place order.");
-        });
-        */
+        form.appendChild(createInput('form_name', name));
+        form.appendChild(createInput('form_phone', phone));
+        form.appendChild(createInput('form_address', address));
+        form.appendChild(createInput('payment_method', paymentMethod));
+
+        document.body.appendChild(form);
+        form.submit();
+
+        function createInput(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            return input;
+        }
     }
 </script>

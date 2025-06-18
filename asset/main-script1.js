@@ -56,6 +56,13 @@ window.onpopstate = function (event) {
     case "cart":
       file = "module/cart/cart.php";
       break;
+    // mục checkout
+    case "checkout":
+      file = "module/checkout/checkout.php";
+      break;
+    case "checkout-result":
+      file = "module/checkout/checkout-result.php";
+      break;
     //Mục profile
     case "profile":
       file = "module/user-profile/user-profile.php";
