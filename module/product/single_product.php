@@ -6,9 +6,12 @@ require_once __DIR__ . '/../../db/connect.php';
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Lấy thông tin sản phẩm
-$sql = "SELECT * FROM product WHERE id = $product_id";
-$result = $conn->query($sql);
-$product = $result->fetch_assoc();
+$sql = "SELECT * FROM product WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result && $result->num_rows > 0 ? $result->fetch_assoc() : null;
 
 // Lấy tên hãng (brand) phù hợp với từng category
 $brand = '';
@@ -42,8 +45,11 @@ $configs = [];
 $config_sql = "SELECT v.name as variation, vo.value 
                FROM variation_options vo 
                JOIN variation v ON vo.variation_id = v.id 
-               WHERE vo.product_id = $product_id";
-$config_result = $conn->query($config_sql);
+               WHERE vo.product_id = ?";
+$stmt = $conn->prepare($config_sql);
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$config_result = $stmt->get_result();
 while ($row = $config_result->fetch_assoc()) {
   $configs[] = $row;
 }
@@ -112,9 +118,19 @@ while ($row = $config_result->fetch_assoc()) {
           <input type="number" id="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
         </div>
         <?php if ($product['qty_in_stock'] > 0): ?>
-          <button class="btn btn-dark btn-lg fw-bold">Add To Cart</button>
+          <!-- Form thêm vào giỏ hàng -->
+          <form id="addToCartForm" action="module/cart/cart.php" method="POST" class="d-inline">
+            <input type="hidden" name="product-id" value="<?php echo $product['id']; ?>">
+            <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($product['name']); ?>">
+            <input type="hidden" name="product-price" value="<?php echo $product['price']; ?>">
+            <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($product['product_image']); ?>">
+            <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
+            <button type="submit" name="add-to-cart" class="btn btn-dark btn-lg fw-bold">Add To Cart</button>
+          </form>
         <?php else: ?>
-          <a href="mailto:yourshop@email.com?subject=Contact%20about%20product%20<?php echo urlencode($product['name']); ?>" class="btn btn-secondary btn-lg fw-bold ">Contact Us</a>
+          <button id="contactBtn" class="btn btn-outline-secondary btn-lg fw-bold">
+            Contact us
+          </button>
         <?php endif; ?>
       </div>
     </div>
@@ -134,8 +150,11 @@ while ($row = $config_result->fetch_assoc()) {
           <div class="carousel-inner">
             <?php
             // Lấy danh sách sản phẩm liên quan (cùng category_id, loại trừ chính nó)
-            $related_sql = "SELECT id, name, price, product_image FROM product WHERE category_id = " . intval($product['category_id']) . " AND id != $product_id LIMIT 10";
-            $related_result = $conn->query($related_sql);
+            $related_sql = "SELECT id, name, price, product_image FROM product WHERE category_id = ? AND id != ? LIMIT 10";
+            $stmt = $conn->prepare($related_sql);
+            $stmt->bind_param("ii", $product['category_id'], $product_id);
+            $stmt->execute();
+            $related_result = $stmt->get_result();
             $products = [];
             while ($related = $related_result->fetch_assoc()) {
               $products[] = $related;
@@ -190,28 +209,38 @@ while ($row = $config_result->fetch_assoc()) {
   </div>
 <?php endif; ?>
 <script>
-  // Xử lý thêm vào giỏ hàng bằng AJAX cho tất cả form trên trang
-  document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault(); // Ngăn submit mặc định
+  // Đồng bộ quantity input với hidden field
+  document.getElementById('quantity').addEventListener('change', function() {
+    document.getElementById('hiddenQuantity').value = this.value;
+  });
 
-      const formData = new FormData(form);
+  // Xử lý thêm vào giỏ hàng bằng AJAX
+  document.querySelector('form[id="addToCartForm"]')?.addEventListener('submit', function(e) {
+    e.preventDefault(); // Ngăn submit mặc định
 
-      fetch('module/cart/cart.php', {
-          method: 'POST',
-          body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert("Đã thêm sản phẩm vào giỏ hàng!");
-            // Cập nhật số trên icon giỏ hàng nếu cần
+    const formData = new FormData(this);
+
+    fetch('module/cart/cart.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Đã thêm sản phẩm vào giỏ hàng!");
+          // Cập nhật số trên icon giỏ hàng nếu cần
+          if (document.querySelector('.cart-icon .fw-bold')) {
             document.querySelector('.cart-icon .fw-bold').textContent = data.total;
-          } else {
-            alert("Thêm vào giỏ hàng thất bại!");
           }
-        })
-        .catch(err => console.error("Lỗi khi gửi form:", err));
-    });
+        } else {
+          alert("Thêm vào giỏ hàng thất bại!");
+        }
+      })
+      .catch(err => console.error("Lỗi khi gửi form:", err));
+  });
+
+  // Xử lý button contact
+  document.getElementById('contactBtn')?.addEventListener('click', function() {
+    loadPage('module/contact/contact.php');
   });
 </script>

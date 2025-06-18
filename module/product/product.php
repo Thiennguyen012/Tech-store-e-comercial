@@ -33,7 +33,7 @@ if ($isSearchMode) {
   $breadcrumbTitle = 'Search Results';
 } else {
   // Chế độ category thông thường
-  $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+  $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
             LEFT JOIN variation_options vo ON p.id = vo.product_id 
@@ -57,13 +57,13 @@ if ($isSearchMode) {
   $filters = [];
   foreach ($filterCategories as $categoryName => $variationId) {
     $filterSql = "
-            SELECT vo.value, COUNT(DISTINCT p.id) as count 
-            FROM variation_options vo 
-            LEFT JOIN product p ON vo.product_id = p.id 
-            LEFT JOIN product_category pc ON p.category_id = pc.id 
-            WHERE vo.variation_id = ? AND pc.category_name = ? 
-            GROUP BY vo.value
-        ";
+          SELECT vo.value, COUNT(DISTINCT p.id) as count 
+          FROM variation_options vo 
+          INNER JOIN product p ON vo.product_id = p.id 
+          INNER JOIN product_category pc ON p.category_id = pc.id 
+          WHERE vo.variation_id = ? AND pc.category_name = ? 
+          GROUP BY vo.value
+      ";
 
     $stmt = $conn->prepare($filterSql);
     $stmt->bind_param("is", $variationId, $category);
@@ -80,6 +80,17 @@ if ($isSearchMode) {
       }
     }
   }
+
+  // Add total product count query for the category
+  $totalCountSql = "SELECT COUNT(DISTINCT p.id) as total_count 
+                  FROM product p 
+                  INNER JOIN product_category pc ON p.category_id = pc.id 
+                  WHERE pc.category_name = ?";
+  $totalStmt = $conn->prepare($totalCountSql);
+  $totalStmt->bind_param("s", $category);
+  $totalStmt->execute();
+  $totalResult = $totalStmt->get_result();
+  $totalProducts = $totalResult->fetch_assoc()['total_count'];
 
   // Nếu có bộ lọc được chọn, thêm điều kiện vào câu truy vấn chính
   $filterValues = [];
@@ -297,8 +308,12 @@ if ($isSearchMode) {
           <h3 class="fw-bold mb-0">
             <?php echo $pageTitle; ?>
             <span class="fs-6 fw-normal">
-              <?php if ($result): ?>
-                (<?php echo $result->num_rows; ?> products<?php echo $isSearchMode ? ' found' : ''; ?>)
+              <?php if ($isSearchMode): ?>
+                <?php if ($result): ?>
+                  (<?php echo $result->num_rows; ?> products found)
+                <?php endif; ?>
+              <?php else: ?>
+                (<?php echo $totalProducts; ?> products)
               <?php endif; ?>
             </span>
           </h3>
@@ -332,17 +347,25 @@ if ($isSearchMode) {
                         class="btn btn-dark btn-sm rounded-pill px-3">
                         More details
                       </a>
-                      <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
-                      <form id="addToCartForm" action="module/cart/cart.php" method="POST">
-                        <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
-                        <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
-                        <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
-                        <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
-                        <button id="addcart-submit" type="submit" name="add-to-cart"
-                          class="btn btn-outline-dark btn-sm rounded-pill px-3">
-                          <i class="bi bi-cart"></i>
+                      <?php if ($row['qty_in_stock'] > 0): ?>
+                        <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
+                        <form id="addToCartForm" action="module/cart/cart.php" method="POST">
+                          <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
+                          <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
+                          <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
+                          <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
+                          <button id="addcart-submit" type="submit" name="add-to-cart"
+                            class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                            <i class="bi bi-cart"></i>
+                          </button>
+                        </form>
+                      <?php else: ?>
+                        <!-- Contact us button when out of stock -->
+                        <button onclick="loadPage('module/contact/contact.php'); return false;"
+                          class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                          Contact us
                         </button>
-                      </form>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
