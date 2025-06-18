@@ -111,12 +111,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- input username, password -->
             <div class="input-group mb-3">
               <input type="text" id="username" name="username" class="form-control form-control-lg bg-light fs-6"
-                placeholder="Username" required />
+                placeholder="Username" />
             </div>
 
             <div class="input-group mb-4">
               <input type="password" id="password" name="password" class="form-control form-control-lg bg-light fs-6"
-                placeholder="Password" required />
+                placeholder="Password" />
             </div>
 
             <!-- tạo checkbox và forgot password trên cùng 1 hàng, dùng d-flex và justify-content-beetween
