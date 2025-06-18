@@ -29,7 +29,7 @@
   require 'db/connect.php';
   // navbar
   include 'components/navbar.php'
-    ?>
+  ?>
 
   <!-- Content -->
   <div id="main-content">
@@ -91,6 +91,15 @@
       case 'addresses':
         include 'module/user-profile/addresses.php';
         break;
+      case 'checkout':
+        include 'module/checkout/checkout.php';
+        break;
+      case 'checkout-result':
+        include 'module/checkout/checkout-result.php';
+        break;
+      case 'home':
+        include 'module/main-content/main-content.php';
+        break;
       // Default sẽ nhảy về main-content 
       default:
         include 'module/main-content/main-content.php';
@@ -98,14 +107,26 @@
     ?>
   </div>
   <!-- back to top -->
-  <a href="#" class="arrow" id="scrollToTop">
-    <i><img src="img/up-arrow.png" alt="" width="50px"></i>
+  <a href="#" class="arrow" id="scrollToTop" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+    <img src="img/up-arrow.png" alt="" width="50px">
   </a>
+
   <!-- sticky cart/social contact -->
   <div class="cart-social-fixed">
     <!-- Cart -->
     <div class="cart-icon bg-warning text-white d-flex flex-column align-items-center justify-content-center rounded-3">
-      <span class="fw-bold">0</span>
+      <span id="cart-count" class="fw-bold">
+        <?php
+        $totalItems = 0;
+        if (isset($_SESSION['cart'])) {
+          foreach ($_SESSION['cart'] as $item) {
+            $totalItems += $item['quantity'];
+          }
+        }
+        echo $totalItems;
+        ?>
+      </span>
+
       <!-- check xem đã đăng nhập hay chưa -->
       <!-- chưa thì đăng nhập -->
       <?php if (isset($_SESSION['username'])): ?>
@@ -161,7 +182,7 @@
               <a href="#" class="text-decoration-none text-white">Security Camera</a>
             </li>
             <li>
-              <a href="#" class="text-decoration-none text-white">Others</a>
+              <a href="#" class="text-decoration-none text-white">Computer Accessories</a>
             </li>
           </ul>
         </div>
@@ -205,7 +226,6 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- reload page -->
   <script src="./asset/main-script1.js"></script>
-
 </body>
 
 </html>

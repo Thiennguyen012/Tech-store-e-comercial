@@ -51,15 +51,15 @@
             <!-- Warranty -->
             <div class="col-md-4">
                 <a href="#" onclick="loadPage('module/services/warranty/warranty.php',this,'warranty');return false;">
-                                    <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
-                    <div class="card-body">
-                        <div class="mb-3 text-warning fs-1"><i class="bi bi-shield-check"></i></div>
-                        <h5 class="card-title fw-bold">Warranty</h5>
-                        <p class="card-text">Check warranty status, process warranty claims, and ensure that your products get repaired or replaced promptly.</p>
+                    <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
+                        <div class="card-body">
+                            <div class="mb-3 text-warning fs-1"><i class="bi bi-shield-check"></i></div>
+                            <h5 class="card-title fw-bold">Warranty</h5>
+                            <p class="card-text">Check warranty status, process warranty claims, and ensure that your products get repaired or replaced promptly.</p>
+                        </div>
                     </div>
-                </div>
             </div>
-                </a>
+            </a>
 
 
         </div>

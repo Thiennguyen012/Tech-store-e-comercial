@@ -71,14 +71,15 @@ function showCart()
             </tr>';
         }
     } else {
-        echo '<tr><td colspan="3" class="text-center text-muted">Your cart is empty.</td></tr>';
+        echo '
+        <tr><td colspan="3" class="text-center text-muted fs-5"><br></br>Your cart is empty.<br></br></td></tr>';
     }
 }
 ?>
 
 <!-- ✅ HTML GIỎ HÀNG -->
-<div class="container bg-white p-4 rounded shadow my-4">
-    <h2 class="mb-4">Shopping cart</h2>
+<div class="container py-5 bg-white p-4 rounded shadow my-4">
+    <h2 class="mb-4 fw-semibold">Shopping Cart</h2>
     <table class="table align-middle">
         <thead>
             <tr>
@@ -93,7 +94,7 @@ function showCart()
     </table>
 
     <!-- Có thể tính tổng ở đây nếu muốn -->
-    <div class="row justify-content-end">
+    <div class="row justify-content-end mb-3">
         <div class="col-md-4">
             <table class="table">
                 <tr>
@@ -125,7 +126,18 @@ function showCart()
                 </tr>
 
             </table>
-            <button class="btn btn-dark w-100 rounded-4">Check Out</button>
+            <button class="btn btn-dark w-100 rounded-4" onclick="checkCartBeforeCheckout()">Check Out</button>
         </div>
     </div>
 </div>
+<script>
+    function checkCartBeforeCheckout() {
+        const cartHasItem = <?= isset($_SESSION['cart']) && count($_SESSION['cart']) > 0 ? 'true' : 'false' ?>;
+
+        if (!cartHasItem) {
+            alert("Your cart is empty. Please add some products before checking out.");
+        } else {
+            window.location.href = '?act=checkout';
+        }
+    }
+</script>
