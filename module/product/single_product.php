@@ -111,7 +111,11 @@ while($row = $config_result->fetch_assoc()) {
           <label for="quantity">Quantity:</label>
           <input type="number" id="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
         </div>
-        <button class="btn btn-dark btn-lg fw-bold">Add To Cart</button>
+        <?php if ($product['qty_in_stock'] > 0): ?>
+          <button class="btn btn-dark btn-lg fw-bold">Add To Cart</button>
+        <?php else: ?>
+          <a href="mailto:yourshop@email.com?subject=Contact%20about%20product%20<?php echo urlencode($product['name']); ?>" class="btn btn-secondary btn-lg fw-bold ">Contact Us</a>
+        <?php endif; ?>
       </div>
     </div>
     <div class="row mt-4">

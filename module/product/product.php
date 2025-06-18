@@ -111,10 +111,20 @@ if ($isSearchMode) {
       $sql .= " ORDER BY p.price ASC";
   }
 
-  // Bind tất cả tham số vào statement
+  $limit = 8;
+  $offset = 0;
+
+  // Khởi tạo biến types và values đúng thứ tự
   $allTypes = "sii" . $filterTypes;
   $allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
 
+  // Thêm điều kiện phân trang
+  $sql .= " LIMIT ? OFFSET ?";
+  $allTypes .= "ii";
+  $allValues[] = $limit;
+  $allValues[] = $offset;
+
+  // Bind tất cả tham số vào statement
   $stmt = $conn->prepare($sql);
   $stmt->bind_param($allTypes, ...$allValues);
   $stmt->execute();
@@ -294,10 +304,12 @@ if ($isSearchMode) {
           </h3>
         </div>
         <!-- Grid sản phẩm, responsive theo từng loại màn hình -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 ">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4" id="productGrid">
           <?php
+          $productCount = 0;
           if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+              $productCount++;
               ?>
               <div class="col">
                 <div class="card border-0 h-100 shadow-sm">
@@ -337,21 +349,14 @@ if ($isSearchMode) {
               </div>
               <?php
             }
-          } else {
-            // Nếu không có sản phẩm nào phù hợp
-            if ($isSearchMode) {
-              echo '<div class="container-fluid vh-100 d-flex align-items-center justify-content-center"><div class="text-center py-5">
-                      <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
-                      <h4 class="text-muted mb-3">No products found</h4>
-                      <p class="text-muted mb-4">We couldn\'t find any products matching "' . htmlspecialchars($query) . '". Try different keywords.</p>
-                      <a href="#" onclick="loadPage(\'module/main-content/main-content.php\', this, \'home\'); return false;" class="btn btn-dark rounded-pill px-4">Back to Home</a>
-                    </div></div>';
-            } else {
-              echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
-            }
           }
           ?>
         </div>
+        <?php if ($result && $result->num_rows == $limit): ?>
+          <div class="text-center my-4">
+            <button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="<?= $limit ?>">Show more</button>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -430,6 +435,87 @@ if ($isSearchMode) {
     form.reset();
     document.getElementById('filterButtonMobile').click();
   });
+
+  // Xử lý nút "Show more" để tải thêm sản phẩm
+  document.getElementById('showMoreBtn').addEventListener('click', function () {
+    const button = this;
+    const currentOffset = parseInt(button.getAttribute('data-offset')) || 0;
+    const formData = new FormData(document.getElementById('filterForm'));
+
+    // Thay đổi phương thức thành GET và thêm tham số offset
+    const url = new URL('module/product/filter.php', window.location.origin);
+    url.searchParams.append('offset', currentOffset);
+
+    fetch(url, {
+      method: 'GET',
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then((data) => {
+        // Thêm sản phẩm mới vào danh sách hiện tại
+        const productGrid = document.getElementById('productGrid');
+        productGrid.insertAdjacentHTML('beforeend', data);
+
+        // Cập nhật lại offset cho nút "Show more"
+        button.setAttribute('data-offset', currentOffset + 8);
+
+        // Nếu số sản phẩm tải thêm ít hơn limit, ẩn nút "Show more"
+        if (data.trim() === '' || productGrid.children.length % 8 !== 0) {
+          button.style.display = 'none';
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  });
+
+  // Show more sản phẩm
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.id === 'showMoreBtn') {
+      const btn = e.target;
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+      const offset = parseInt(btn.getAttribute('data-offset'), 10);
+      const form = document.getElementById('filterForm') || document.getElementById('filterFormMobile');
+      const formData = new FormData(form);
+      formData.append('limit', 8);
+      formData.append('offset', offset);
+
+      fetch('module/product/filter.php', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(res => res.text())
+        .then(html => {
+          // Tạo một div tạm để lấy phần sản phẩm mới
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+          // Lấy sản phẩm mới
+          const newRows = tempDiv.querySelectorAll('.col');
+          newRows.forEach(row => {
+            document.getElementById('productGrid').appendChild(row);
+          });
+          // Xử lý nút show more mới (nếu còn)
+          const newShowMore = tempDiv.querySelector('#showMoreBtn');
+          if (newShowMore) {
+            btn.setAttribute('data-offset', newShowMore.getAttribute('data-offset'));
+            btn.disabled = false;
+            btn.textContent = 'Show more';
+          } else {
+            btn.remove();
+          }
+        })
+        .catch(() => {
+          btn.textContent = 'Show more';
+          btn.disabled = false;
+        });
+    }
+  });
 </script>
 <!-- Make sure Bootstrap JS is loaded for offcanvas to work -->
 <script>
@@ -458,3 +544,4 @@ if ($isSearchMode) {
     });
   });
 </script>
+

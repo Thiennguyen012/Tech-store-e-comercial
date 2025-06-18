@@ -8,6 +8,8 @@ $minPrice = isset($_POST['minPrice']) ? intval($_POST['minPrice']) : 0;
 $maxPrice = isset($_POST['maxPrice']) ? intval($_POST['maxPrice']) : 10000000;
 $category = isset($_POST['category']) ? htmlspecialchars($_POST['category']) : 'laptop'; // Lấy category từ request
 $sortBy = isset($_POST['sortBy']) ? $_POST['sortBy'] : '1';
+$limit = isset($_POST['limit']) ? intval($_POST['limit']) : 8;
+$offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
 
 // Tạo câu truy vấn SQL cơ bản
 $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
@@ -49,11 +51,25 @@ switch ($sortBy) {
         $sql .= " ORDER BY p.price ASC";
 }
 
+// Thêm điều kiện giới hạn và offset cho phân trang
+$sql .= " LIMIT ? OFFSET ?";
+$params[] = $limit;
+$params[] = $offset;
+$types .= "ii";
+
 // Chuẩn bị và thực thi truy vấn
 $stmt = $conn->prepare($sql);
 $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
+
+// Đếm tổng số sản phẩm phù hợp (không phân trang)
+$countSql = preg_replace('/SELECT .* FROM/', 'SELECT COUNT(DISTINCT p.id) as total FROM', $sql, 1);
+$countStmt = $conn->prepare($countSql);
+$countStmt->bind_param($types, ...$params);
+$countStmt->execute();
+$countResult = $countStmt->get_result();
+$total = $countResult->fetch_assoc()['total'];
 
 // Xuất HTML danh sách sản phẩm (dạng grid Bootstrap)
 if ($result && $result->num_rows > 0) {
@@ -89,5 +105,8 @@ if ($result && $result->num_rows > 0) {
 } else {
     // Không có sản phẩm phù hợp
     echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter.</div></div>';
+}
+if ($offset + $limit < $total) {
+    echo '<div class="text-center my-4"><button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="' . ($offset + $limit) . '">Show more</button></div>';
 }
 ?>
