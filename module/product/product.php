@@ -183,13 +183,13 @@ if ($isSearchMode) {
                 </ul>
               </div>
             <?php endforeach; ?>
-            <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">Price</h6>
-            <div class="d-flex align-items-center gap-2 mb-3">
+            <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">Price($)</h6>
+            <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
               <input type="number" name="minPrice" min="0" max="10000000" value="<?php echo $minPrice; ?>"
-                class="form-control" style="width: 45%" />
+                class="form-control w-30" />
               <span>-</span>
               <input type="number" name="maxPrice" min="0" max="10000000" value="<?php echo $maxPrice; ?>"
-                class="form-control" style="width: 45%" />
+                class="form-control w-50" />
             </div>
             <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">Sort by</h6>
             <div class="mb-4">
@@ -202,7 +202,11 @@ if ($isSearchMode) {
                   echo 'selected'; ?>>Alphabetical</option>
               </select>
             </div>
-            <button type="button" id="filterButton" class="btn btn-dark w-100 rounded-pill fw-bold">Sort</button>
+            <div class="d-flex gap-2 flex-wrap">
+              <button type="button" id="filterButton" class="btn btn-dark w-100 rounded-pill fw-bold">Sort</button>
+              <button type="button" id="resetFilterButton" class="btn btn-outline-dark w-100 rounded-pill fw-bold">Reset
+                filter</button>
+            </div>
           </form>
         </div>
       </div>
@@ -267,8 +271,12 @@ if ($isSearchMode) {
                 echo 'selected'; ?>>Alphabetical</option>
             </select>
           </div>
-          <button type="button" id="filterButtonMobile" class="btn btn-dark w-100 rounded-pill fw-bold"
-            data-bs-dismiss="offcanvas">Sort</button>
+          <div class="d-flex gap-2 flex-wrap">
+            <button type="button" id="filterButtonMobile" class="btn btn-dark w-100 rounded-pill fw-bold"
+              data-bs-dismiss="offcanvas">Sort</button>
+            <button type="button" id="resetFilterButtonMobile" class="btn btn-outline-dark w-100 rounded-pill fw-bold">Reset
+              filter</button>
+          </div>
         </form>
       </div>
     </div>
@@ -405,6 +413,22 @@ if ($isSearchMode) {
         console.error('Error:', error);
         document.getElementById('productList').innerHTML = '<div class="alert alert-danger">An error occurred while loading products. Please try again later.</div>';
       });
+  });
+
+  // Reset filter desktop
+  document.getElementById('resetFilterButton').addEventListener('click', function () {
+    const form = document.getElementById('filterForm');
+    form.reset();
+    // Nếu có giá trị mặc định cho category, minPrice, maxPrice, sortBy thì set lại
+    // Gửi lại filter để load toàn bộ sản phẩm
+    document.getElementById('filterButton').click();
+  });
+
+  // Reset filter mobile
+  document.getElementById('resetFilterButtonMobile').addEventListener('click', function () {
+    const form = document.getElementById('filterFormMobile');
+    form.reset();
+    document.getElementById('filterButtonMobile').click();
   });
 </script>
 <!-- Make sure Bootstrap JS is loaded for offcanvas to work -->

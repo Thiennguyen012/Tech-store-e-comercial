@@ -254,7 +254,6 @@ a:hover {
   background: #fff;
   border-radius: 12px;
   padding: 24px 24px 16px 24px;
-  min-height: 180px;
 }
 input[type="number"] {
   width: 70px;
