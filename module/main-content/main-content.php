@@ -1,6 +1,7 @@
+<!-- Carousel -->
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active btn"
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
       aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
@@ -8,98 +9,23 @@
   <div class="carousel-inner">
     <div class="carousel-item active c-items">
       <img id="slide-img1" src="./img/product-banner/zenbook14.jpg" class="d-block w-100 c-img" alt="..." />
-      <script>
-        function updateLoginImage() {
-          const img = document.getElementById("slide-img1");
-          const aspectRatio = window.innerHeight / window.innerWidth;
-
-          if (aspectRatio > 0.9) {
-            img.src = "./img/product-banner/zenbook14-smalll.jpg";
-          } else {
-            img.src = "./img/product-banner/zenbook14.jpg";
-          }
-        }
-
-        // Gọi ngay khi load
-        window.addEventListener("load", updateLoginImage);
-        // Gọi lại khi thay đổi kích thước cửa sổ
-        window.addEventListener("resize", updateLoginImage);
-      </script>
       <div class="carousel-caption d-md-block">
-        <!-- <h1 class="mt-5 fw-bold">First slide label</h1>
-            <p class="my-3">
-              Some representative placeholder content for the first slide.
-            </p> -->
-        <div>
-          <button class="btn btn-transparent btn-outline-dark rounded-4 mx-3 my-1 my-lg-3 fw-bold">
-            Learn more
-          </button>
-          <a class="text-dark ms-2 fw-bold" href="#">Buy now</a>
-        </div>
+        <button class="btn btn-transparent btn-outline-dark rounded-4 mx-3 my-1 my-lg-3 fw-bold">Learn more</button>
+        <a class="text-dark ms-2 fw-bold" href="#">Buy now</a>
       </div>
     </div>
     <div class="carousel-item c-items">
       <img id="slide-img2" src="./img/product-banner/vivo s16.jpg" class="d-block w-100 c-img" alt="..." />
-      <script>
-        function updateLoginImage() {
-          const img = document.getElementById("slide-img2");
-          const aspectRatio = window.innerHeight / window.innerWidth;
-
-          if (aspectRatio > 0.9) {
-            img.src = "./img/product-banner/vivo s16-small.jpg";
-          } else {
-            img.src = "./img/product-banner/vivo s16.jpg";
-          }
-        }
-
-        // Gọi ngay khi load
-        window.addEventListener("load", updateLoginImage);
-        // Gọi lại khi thay đổi kích thước cửa sổ
-        window.addEventListener("resize", updateLoginImage);
-      </script>
       <div class="carousel-caption d-md-block">
-        <!-- <h1 class="mt-5 fw-bold">Second slide label</h1>
-            <p class="my-3">
-              Some representative placeholder content for the second slide.
-            </p> -->
-        <div>
-          <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">
-            Learn more
-          </button>
-          <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
-        </div>
+        <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">Learn more</button>
+        <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
       </div>
     </div>
     <div class="carousel-item c-items">
       <img id="slide-img3" src="./img/product-banner/zenbook a14.jpg" class="d-block w-100 c-img" alt="..." />
-      <script>
-        function updateLoginImage() {
-          const img = document.getElementById("slide-img3");
-          const aspectRatio = window.innerHeight / window.innerWidth;
-
-          if (aspectRatio > 0.9) {
-            img.src = "./img/product-banner/zenbook a14-small.jpg";
-          } else {
-            img.src = "./img/product-banner/zenbook a14.jpg";
-          }
-        }
-
-        // Gọi ngay khi load
-        window.addEventListener("load", updateLoginImage);
-        // Gọi lại khi thay đổi kích thước cửa sổ
-        window.addEventListener("resize", updateLoginImage);
-      </script>
-      <div class="carousel-caption d-md-block align-content-center">
-        <!-- <h1 class="mt-5 fw-bold">Third slide label</h1>
-            <p class="my-3">
-              Some representative placeholder content for the third slide.
-            </p> -->
-        <div>
-          <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">
-            Learn more
-          </button>
-          <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
-        </div>
+      <div class="carousel-caption d-md-block">
+        <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">Learn more</button>
+        <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
       </div>
     </div>
   </div>
@@ -112,6 +38,7 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
 <!-- Camera -->
 <div class="gcam-container container my-5">
   <div class="row align-items-center">
@@ -455,3 +382,27 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
   }
 </style>
+<script>
+  function updateCarouselImages() {
+    const aspectRatio = window.innerHeight / window.innerWidth;
+
+    const slide1 = document.getElementById("slide-img1");
+    const slide2 = document.getElementById("slide-img2");
+    const slide3 = document.getElementById("slide-img3");
+
+    if (slide1 && slide2 && slide3) {
+      if (aspectRatio > 0.9) {
+        slide1.src = "./img/product-banner/zenbook14-smalll.jpg";
+        slide2.src = "./img/product-banner/vivo s16-small.jpg";
+        slide3.src = "./img/product-banner/zenbook a14-small.jpg";
+      } else {
+        slide1.src = "./img/product-banner/zenbook14.jpg";
+        slide2.src = "./img/product-banner/vivo s16.jpg";
+        slide3.src = "./img/product-banner/zenbook a14.jpg";
+      }
+    }
+  }
+
+  window.addEventListener("load", updateCarouselImages);
+  window.addEventListener("resize", updateCarouselImages);
+</script>

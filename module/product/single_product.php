@@ -14,27 +14,27 @@ $product = $result->fetch_assoc();
 $brand = '';
 $brand_variation = '';
 switch ($product['category_id']) {
-    case 1: // laptop
-        $brand_variation = 'Brand';
-        break;
-    case 2: // camera
-        $brand_variation = 'CCTV brand';
-        break;
-    case 3: // accessories
-        $brand_variation = 'accessory_brand';
-        break;
+  case 1: // laptop
+    $brand_variation = 'Brand';
+    break;
+  case 2: // camera
+    $brand_variation = 'CCTV brand';
+    break;
+  case 3: // accessories
+    $brand_variation = 'accessory_brand';
+    break;
 }
 if ($brand_variation) {
-    // Lấy giá trị brand từ variation_options
-    $brandSql = "SELECT vo.value FROM variation_options vo
+  // Lấy giá trị brand từ variation_options
+  $brandSql = "SELECT vo.value FROM variation_options vo
         JOIN variation v ON vo.variation_id = v.id
         WHERE vo.product_id = ? AND v.name = ? LIMIT 1";
-    $brandStmt = $conn->prepare($brandSql);
-    $brandStmt->bind_param('is', $product_id, $brand_variation);
-    $brandStmt->execute();
-    $brandStmt->bind_result($brand);
-    $brandStmt->fetch();
-    $brandStmt->close();
+  $brandStmt = $conn->prepare($brandSql);
+  $brandStmt->bind_param('is', $product_id, $brand_variation);
+  $brandStmt->execute();
+  $brandStmt->bind_result($brand);
+  $brandStmt->fetch();
+  $brandStmt->close();
 }
 
 // Lấy các thuộc tính cấu hình (nếu có)
@@ -44,8 +44,8 @@ $config_sql = "SELECT v.name as variation, vo.value
                JOIN variation v ON vo.variation_id = v.id 
                WHERE vo.product_id = $product_id";
 $config_result = $conn->query($config_sql);
-while($row = $config_result->fetch_assoc()) {
-    $configs[] = $row;
+while ($row = $config_result->fetch_assoc()) {
+  $configs[] = $row;
 }
 ?>
 <?php if ($product): ?>
@@ -141,49 +141,77 @@ while($row = $config_result->fetch_assoc()) {
               $products[] = $related;
             }
 
-            // Chia sản phẩm thành các nhóm (mỗi nhóm 4 sản phẩm cho 1 slide)
-            $chunks = array_chunk($products, 4);
-            $isActive = true; // Slide đầu tiên là active
+              // Chia sản phẩm thành các nhóm (mỗi nhóm 4 sản phẩm cho 1 slide)
+              $chunks = array_chunk($products, 4);
+              $isActive = true; // Slide đầu tiên là active
 
-            foreach ($chunks as $chunk):
-            ?>
-            <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
-              <div class="row">
-                <?php foreach ($chunk as $related): ?>
-                <div class="col-md-3 text-center">
-                  <div class="card border-0 text-center" style="width: 100%;">
-                    <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $related['id']; ?>'); return false;" class="text-decoration-none text-dark">
-                      <img src="<?php echo htmlspecialchars($related['product_image']); ?>" class="card-img-top img-fluid" alt="<?php echo htmlspecialchars($related['name']); ?>">
-                      <div class="card-body">
-                        <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.9rem;"><?php echo htmlspecialchars($related['name']); ?></h6>
-                        <div class="text-uppercase fw-bold"><?php echo number_format($related['price'], 0, ',', '.'); ?>$</div>
+              foreach ($chunks as $chunk):
+              ?>
+                <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
+                  <div class="row">
+                    <?php foreach ($chunk as $related): ?>
+                      <div class="col-md-3 text-center">
+                        <div class="card border-0 text-center" style="width: 100%;">
+                          <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $related['id']; ?>'); return false;" class="text-decoration-none text-dark">
+                            <img src="<?php echo htmlspecialchars($related['product_image']); ?>" class="card-img-top img-fluid" alt="<?php echo htmlspecialchars($related['name']); ?>">
+                            <div class="card-body">
+                              <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.9rem;"><?php echo htmlspecialchars($related['name']); ?></h6>
+                              <div class="text-uppercase fw-bold"><?php echo number_format($related['price'], 0, ',', '.'); ?>$</div>
+                            </div>
+                          </a>
+                        </div>
                       </div>
-                    </a>
+                    <?php endforeach; ?>
                   </div>
                 </div>
-                <?php endforeach; ?>
-              </div>
+              <?php
+                $isActive = false; // Sau slide đầu, các slide khác không active
+              endforeach;
+              ?>
             </div>
-            <?php
-            $isActive = false; // Sau slide đầu, các slide khác không active
-            endforeach;
-            ?>
+            <!-- Nút điều hướng carousel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
-          <!-- Nút điều hướng carousel -->
-          <button class="carousel-control-prev" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#relatedProductsCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
         </div>
       </div>
     </div>
   </div>
-</div>
 <?php else: ?>
-<!-- Nếu không tìm thấy sản phẩm -->
-<div class="container mt-5"><div class="alert alert-danger">Product not found.</div></div>
+  <!-- Nếu không tìm thấy sản phẩm -->
+  <div class="container mt-5">
+    <div class="alert alert-danger">Product not found.</div>
+  </div>
 <?php endif; ?>
+<script>
+  // Xử lý thêm vào giỏ hàng bằng AJAX cho tất cả form trên trang
+  document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault(); // Ngăn submit mặc định
+
+      const formData = new FormData(form);
+
+      fetch('module/cart/cart.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("Đã thêm sản phẩm vào giỏ hàng!");
+            // Cập nhật số trên icon giỏ hàng nếu cần
+            document.querySelector('.cart-icon .fw-bold').textContent = data.total;
+          } else {
+            alert("Thêm vào giỏ hàng thất bại!");
+          }
+        })
+        .catch(err => console.error("Lỗi khi gửi form:", err));
+    });
+  });
+</script>

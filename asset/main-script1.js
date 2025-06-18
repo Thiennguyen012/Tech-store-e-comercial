@@ -5,6 +5,15 @@ function loadPage(file, clickedLink = null, act = "") {
     if (act) {
       history.pushState({ act: act }, "", `index.php?act=${act}`);
     }
+    // Khởi động lại carousel nếu có
+    const myCarousel = document.querySelector("#carouselExampleCaptions");
+    if (myCarousel) {
+      new bootstrap.Carousel(myCarousel, {
+        interval: 3000,
+        ride: "carousel",
+      });
+      updateCarouselImages(); // Cập nhật ảnh responsive
+    }
   });
 }
 
@@ -46,6 +55,13 @@ window.onpopstate = function (event) {
     //Mục cart
     case "cart":
       file = "module/cart/cart.php";
+      break;
+    // mục checkout
+    case "checkout":
+      file = "module/checkout/checkout.php";
+      break;
+    case "checkout-result":
+      file = "module/checkout/checkout-result.php";
       break;
     //Mục profile
     case "profile":
@@ -108,3 +124,23 @@ $("#addcart-submit").click(function () {
     return false;
   });
 });
+function updateCarouselImage() {
+  const aspectRatio = window.innerHeight / window.innerWidth;
+
+  const slide1 = document.getElementById("slide-img1");
+  const slide2 = document.getElementById("slide-img2");
+  const slide3 = document.getElementById("slide-img3");
+
+  if (aspectRatio > 0.9) {
+    slide1.src = "./img/product-banner/zenbook14-smalll.jpg";
+    slide2.src = "./img/product-banner/vivo s16-small.jpg";
+    slide3.src = "./img/product-banner/zenbook a14-small.jpg";
+  } else {
+    slide1.src = "./img/product-banner/zenbook14.jpg";
+    slide2.src = "./img/product-banner/vivo s16.jpg";
+    slide3.src = "./img/product-banner/zenbook a14.jpg";
+  }
+}
+
+window.addEventListener("load", updateCarouselImage);
+window.addEventListener("resize", updateCarouselImage);

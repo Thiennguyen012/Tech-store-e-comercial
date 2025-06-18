@@ -28,6 +28,7 @@
           </li>
 
           <li class="nav-item dropdown mx-2">
+            <!-- onclick="location.href='?act=products'" -->
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
               onclick="loadPage('module/product/product.php',this,'products'); return false;">
               Products
@@ -173,14 +174,16 @@
 
     // Update browser URL to index.php?act=products&query=keyword
     const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
-    history.pushState({ query: keyword }, '', newUrl);
+    history.pushState({
+      query: keyword
+    }, '', newUrl);
 
     // Load product page with search query parameter
     loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
   }
 
   // Handle browser back/forward buttons
-  window.addEventListener('popstate', function (event) {
+  window.addEventListener('popstate', function(event) {
     // Get current URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('query');
@@ -215,7 +218,7 @@
       case 'home':
         loadPage('module/home/home.php');
         break;
-      // Thêm các case khác tùy theo trang web của bạn
+        // Thêm các case khác tùy theo trang web của bạn
       default:
         // Load trang mặc định hoặc trang hiện tại
         if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
@@ -225,17 +228,17 @@
   }
 
   // Improved popstate handler
-  window.addEventListener('popstate', function (event) {
+  window.addEventListener('popstate', function(event) {
     handleUrlChange();
   });
 
   // Call handleUrlChange on page load to handle direct URL access
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     handleUrlChange();
   });
 
   // Close search when clicking outside
-  document.addEventListener('click', function (event) {
+  document.addEventListener('click', function(event) {
     const searchContainer = document.querySelector('.search-container');
 
     if (isSearchOpen && !searchContainer.contains(event.target)) {
@@ -245,7 +248,7 @@
   });
 
   // Handle escape key
-  document.addEventListener('keydown', function (event) {
+  document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && isSearchOpen) {
       document.getElementById('searchFlyout').classList.remove('show');
       isSearchOpen = false;
