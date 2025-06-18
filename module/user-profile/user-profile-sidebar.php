@@ -1,7 +1,24 @@
 <?php
+require_once(__DIR__ . '/../../db/connect.php');
+
+// Lấy user hiện tại
+$username = $_SESSION['username'] ?? '';
+$unread_count = 0;
+
+if ($username) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications n
+                            JOIN site_user u ON n.user_id = u.id
+                            WHERE u.username = ? AND n.is_read = 0");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($unread_count);
+    $stmt->fetch();
+    $stmt->close();
+}
 // Xác định mục nào trên sidebar đang active
 $active = basename($_SERVER['PHP_SELF']);
-function is_active($file) {
+function is_active($file)
+{
     global $active;
     return $active === $file ? 'active' : '';
 }
@@ -20,8 +37,12 @@ function is_active($file) {
         <a class="nav-link text-dark<?php echo is_active('addresses.php'); ?>" href="#" onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
             <i class="bi bi-geo-alt"></i> Address Book
         </a>
-        <a class="nav-link text-dark<?php echo is_active('notification.php'); ?>" href="#" onclick="loadPage('module/user-profile/notification.php',this,'notification'); return false;">
-            <i class="bi bi-bell"></i> Notifications
+        <a class="nav-link d-flex justify-content-between align-items-center text-dark<?php echo is_active('notification.php'); ?>" href="#" onclick="loadPage('module/user-profile/notification.php',this,'notification'); return false;">
+            <span><i class="bi bi-bell"></i> Notifications</span>
+            <?php if ($unread_count > 0): ?>
+                <span class="badge bg-danger"><?php echo $unread_count; ?></span>
+            <?php endif; ?>
         </a>
+
     </nav>
 </div>

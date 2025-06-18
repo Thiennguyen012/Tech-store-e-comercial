@@ -222,10 +222,10 @@
     </div>
   </footer>
   <!-- Bootstrap JS -->
-  <script src="./asset/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="asset/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- reload page -->
-  <script src="./asset/main-script1.js"></script>
+  <script src="asset/main-script1.js"></script>
 </body>
 
 </html>
