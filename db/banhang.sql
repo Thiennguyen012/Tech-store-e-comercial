@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 13, 2025 at 06:50 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th6 19, 2025 lúc 10:22 AM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,49 +18,206 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `banhang`
+-- Cơ sở dữ liệu: `banhang`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_line`
+-- Cấu trúc bảng cho bảng `bill`
 --
 
-CREATE TABLE `order_line` (
+CREATE TABLE `bill` (
   `id` int(11) NOT NULL,
-  `product_item_id` int(11) DEFAULT NULL,
-  `order_id` int(11) DEFAULT NULL,
-  `qty` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `order_date` datetime DEFAULT current_timestamp(),
+  `order_name` varchar(50) NOT NULL,
+  `order_phone` varchar(50) NOT NULL,
+  `order_address` varchar(255) DEFAULT NULL,
+  `order_total` decimal(12,2) DEFAULT NULL,
+  `order_paymethod` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0: thanh toán offline, 1: thanh toán online',
+  `order_status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `bill`
+--
+
+INSERT INTO `bill` (`id`, `user_id`, `order_date`, `order_name`, `order_phone`, `order_address`, `order_total`, `order_paymethod`, `order_status`) VALUES
+(1, NULL, '2025-06-18 00:12:32', '', '', '', 438.90, 0, NULL),
+(2, NULL, '2025-06-18 00:30:02', '', '', '', 548.90, 0, NULL),
+(3, NULL, '2025-06-18 00:35:08', '', '', '', 877.80, 0, NULL),
+(4, NULL, '2025-06-18 00:40:17', '', '', '', 50.24, 0, NULL),
+(5, NULL, '2025-06-18 01:10:16', 'Thien dep trai ne', '123', 'vn', 438.90, 0, NULL),
+(6, NULL, '2025-06-18 01:10:53', 'hẹ ', 'hẹ ', 'hẹ', 2306.70, 0, NULL),
+(7, NULL, '2025-06-18 01:15:10', 'kk', 'kk', '1', 746.78, 0, NULL),
+(8, NULL, '2025-06-18 01:19:13', 'Thien dep trai ne', '123', 'vn', 438.90, 0, NULL),
+(9, NULL, '2025-06-18 01:19:50', 'Thien dep trai ne', '123', 'vn', 50.24, 0, NULL),
+(10, NULL, '2025-06-18 01:21:05', 'Thien dep trai ne', '123', 'vn', 438.90, 0, NULL),
+(11, NULL, '2025-06-18 01:21:32', 'Thien dep trai ne', '123', 'vn', 548.90, 0, NULL),
+(12, NULL, '2025-06-18 01:23:36', 'Thien dep trai ne', '123', 'vn', 197.88, 0, NULL),
+(13, NULL, '2025-06-18 01:37:52', 'Thien dep trai ne', '123', 'vn', 197.88, 0, NULL),
+(14, NULL, '2025-06-18 01:46:17', '', '', '', 548.90, 0, NULL),
+(15, NULL, '2025-06-18 01:49:03', '36', '36', '36', 438.90, 0, NULL),
+(16, NULL, '2025-06-18 01:49:48', '36', '36', '37', 32.99, 0, NULL),
+(17, NULL, '2025-06-18 01:50:38', 'Thien dep trai ne', '123', 'vn', 197.88, 0, NULL),
+(18, NULL, '2025-06-18 01:52:08', 'Thien dep trai ne', '123', 'vn', 1241.76, 0, NULL),
+(19, NULL, '2025-06-18 01:53:01', '36', '36', '36', 54.99, 0, NULL),
+(20, NULL, '2025-06-18 22:55:00', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 219.99, 0, NULL),
+(21, NULL, '2025-06-18 22:56:07', '36', '36', '36', 438.90, 0, NULL),
+(22, NULL, '2025-06-18 22:57:28', 'Thien dep trai ne', '123', 'vn', 1097.25, 0, NULL),
+(23, NULL, '2025-06-18 23:06:58', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 714.97, 0, NULL),
+(24, 2, '2025-06-18 23:44:14', '1', '1', '1', 438.90, 0, NULL),
+(25, 2, '2025-06-18 23:54:40', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(26, 2, '2025-06-19 00:21:59', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(27, 2, '2025-06-19 00:52:02', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 515.88, 0, NULL),
+(28, 2, '2025-06-19 00:56:25', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(29, 2, '2025-06-19 01:00:05', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(30, 2, '2025-06-19 01:00:54', '2', '2', '2', 1013.19, 0, NULL),
+(31, 2, '2025-06-19 01:21:10', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(32, 2, '2025-06-19 01:24:29', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(33, 2, '2025-06-19 01:27:21', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 32.99, 0, NULL),
+(34, 2, '2025-06-19 01:27:28', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(35, 2, '2025-06-19 01:27:49', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(36, 2, '2025-06-19 01:47:10', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(37, 2, '2025-06-19 01:49:16', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(38, 2, '2025-06-19 01:51:36', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(39, 2, '2025-06-19 01:55:01', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(40, 2, '2025-06-19 02:00:49', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 658.90, 0, NULL),
+(41, 2, '2025-06-19 02:04:43', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(42, 2, '2025-06-19 02:09:42', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(43, 2, '2025-06-19 02:17:44', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(44, 2, '2025-06-19 02:20:51', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(45, 2, '2025-06-19 02:21:51', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 549.97, 0, NULL),
+(46, 2, '2025-06-19 02:24:00', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1097.25, 0, NULL),
+(47, 2, '2025-06-19 02:25:20', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(48, 8, '2025-06-19 02:47:16', '18', '36', '36', 1955.68, 0, NULL),
+(49, 2, '2025-06-19 10:31:32', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(50, 9, '2025-06-19 10:57:27', '1', '1', '1', 197.88, 0, NULL),
+(51, 2, '2025-06-19 11:01:26', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 384.97, 0, NULL),
+(52, 2, '2025-06-19 11:07:24', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 768.90, 0, NULL),
+(53, 2, '2025-06-19 11:20:46', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1538.90, 0, NULL),
+(54, 2, '2025-06-19 11:26:26', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 3298.90, 0, NULL),
+(55, 2, '2025-06-19 11:47:20', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_status`
+-- Cấu trúc bảng cho bảng `checkout_cart`
 --
 
-CREATE TABLE `order_status` (
+CREATE TABLE `checkout_cart` (
   `id` int(11) NOT NULL,
-  `status` varchar(50) NOT NULL
+  `product_name` varchar(100) NOT NULL,
+  `product_image` varchar(100) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `bill_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `checkout_cart`
+--
+
+INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `quantity`, `total`, `bill_id`) VALUES
+(1, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 1),
+(2, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 2),
+(3, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 2, 798.00, 3),
+(4, 'TP-Link VIGI C240I 4mm 4MP Dome Camera', 'https://hanoicomputercdn.com/media/product/74709_camera_tp_link_vigi_c240l_4mm_1.jpg', 45.67, 1, 45.67, 4),
+(5, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 5),
+(6, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 6),
+(7, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 6),
+(8, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00, 1, 1199.00, 6),
+(9, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 7),
+(10, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 7),
+(11, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 8),
+(12, 'TP-Link VIGI C240I 4mm 4MP Dome Camera', 'https://hanoicomputercdn.com/media/product/74709_camera_tp_link_vigi_c240l_4mm_1.jpg', 45.67, 1, 45.67, 9),
+(13, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 10),
+(14, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 11),
+(15, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 12),
+(16, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 13),
+(17, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 14),
+(18, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 15),
+(19, 'MSI Vigor GK20 UK USB Keyboard', 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99, 1, 29.99, 16),
+(20, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 17),
+(21, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 18),
+(22, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 18),
+(23, 'Razer BlackWidow V4 75 RGB Gaming Keyboard', 'https://www.laptopsdirect.co.uk/Images/RZ03-05000400-R3E1_1_Supersize.png?width=750&height=750&v=3', 199.99, 1, 199.99, 18),
+(24, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99, 1, 249.99, 18),
+(25, 'Razer Kraken X Wired Gaming Headset', 'https://www.laptopsdirect.co.uk/Images/RZ04-02950100-R381_1_Supersize.jpg?width=750&height=750&v=7', 49.99, 1, 49.99, 19),
+(26, 'Razer BlackWidow V4 75 RGB Gaming Keyboard', 'https://www.laptopsdirect.co.uk/Images/RZ03-05000400-R3E1_1_Supersize.png?width=750&height=750&v=3', 199.99, 1, 199.99, 20),
+(27, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 21),
+(28, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 1, 997.50, 22),
+(29, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99, 1, 249.99, 23),
+(30, 'Razer DeathAdder V3 Pro Black Gaming Mouse', 'https://www.laptopsdirect.co.uk/Images/RZ01-04630100-R3G1_1_Supersize.png?width=750&height=750&v=7', 149.99, 1, 149.99, 23),
+(31, 'Razer Huntsman V3 Pro USB RGB Mechanical Gaming Keyboard', 'https://www.laptopsdirect.co.uk/Images/RZ03-04970300-R3W1_1_Supersize.jpg?width=750&height=750&v=3', 249.99, 1, 249.99, 23),
+(32, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 24),
+(33, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 25),
+(34, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 26),
+(35, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 27),
+(36, 'MSI Vigor GK20 UK USB Keyboard', 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99, 1, 29.99, 27),
+(37, 'MSI Forge GM300 Wired Gaming Mouse', 'https://www.laptopsdirect.co.uk/Images/BUNS12-0402300-HH996740_2_Supersize.png?width=750&height=750&', 39.99, 1, 39.99, 27),
+(38, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 28),
+(39, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 29),
+(40, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59s', 921.08, 1, 921.08, 30),
+(41, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 31),
+(42, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 32),
+(43, 'MSI Vigor GK20 UK USB Keyboard', 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99, 1, 29.99, 33),
+(44, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 34),
+(45, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 35),
+(46, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 36),
+(47, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 37),
+(48, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 38),
+(49, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 39),
+(50, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00, 1, 599.00, 40),
+(51, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 41),
+(52, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 42),
+(53, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 43),
+(54, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 44),
+(55, 'Acer TravelMate P2 Intel Core i5 8GB RAM 256GB SSD 14 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.VYAEK.00F_1_Supersize.jpg?v=3', 499.97, 1, 499.97, 45),
+(56, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 1, 997.50, 46),
+(57, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 47),
+(58, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 48),
+(59, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 48),
+(60, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00, 1, 1199.00, 48),
+(61, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 49),
+(62, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 50),
+(63, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99, 1, 249.99, 51),
+(64, 'Razer Kraken X Wired Gaming Headset', 'https://www.laptopsdirect.co.uk/Images/RZ04-02950100-R381_1_Supersize.jpg?width=750&height=750&v=7', 49.99, 2, 99.98, 51),
+(65, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00, 1, 699.00, 52),
+(66, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00, 1, 1399.00, 53),
+(67, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00, 1, 2999.00, 54),
+(68, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 55);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payment_type`
+-- Cấu trúc bảng cho bảng `notifications`
 --
 
-CREATE TABLE `payment_type` (
+CREATE TABLE `notifications` (
   `id` int(11) NOT NULL,
-  `value` varchar(100) NOT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `is_read` tinyint(4) DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `content`, `is_read`, `created_at`) VALUES
+(20, 8, 'You have successfully placed order #48.', 1, '2025-06-19 02:47:16'),
+(27, 2, 'You have successfully placed order #55.', 1, '2025-06-19 11:47:20'),
+(28, 2, 'You have successfully booked the service: Laptop Cleaning.', 1, '2025-06-19 14:02:35'),
+(29, 2, 'You have successfully booked the service: Laptop Cleaning at 1.', 1, '2025-06-19 14:05:32');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product`
+-- Cấu trúc bảng cho bảng `product`
 --
 
 CREATE TABLE `product` (
@@ -74,19 +231,19 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `product`
+-- Đang đổ dữ liệu cho bảng `product`
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock`, `product_image`, `price`) VALUES
-(1, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'Highlighting form and function, a stunningly slim body and impressive tactile finish accentuate real-world design features. Built to keep you active, engaged, and on the move, the Aspire 3 has the technology to suit your way of life. Fundamentally impressive technology.\r\nEfficient Performance with Intel Celeron N4500\r\nThe Acer Aspire 3 A315-35 is powered by the Intel Celeron N4500 processor, delivering reliable performance for everyday computing tasks. With speeds of up to 2.8 GHz, this dual-core processor ensures smooth web browsing, document editing, and media playback. Whether you\'re working on assignments, streaming content, or managing emails, the Aspire 3 provides a seamless user experience.Crisp 15.6-Inch HD Display for Everyday Use\r\nFeaturing a 15.6-inch HD (1366 x 768) TN display, the Aspire 3 offers clear visuals and vibrant colors for work and entertainment. The anti-glare screen reduces reflections, making it comfortable to use in various lighting conditions. Its widescreen format enhances productivity, allowing you to view multiple applications simultaneously without feeling cramped.Fast and Reliable Storage with 128GB NVMe SSD\r\nThe 128GB NVMe SSD provides quick boot times and fast data access, ensuring efficient performance for everyday computing. With 3D Triple-Level Cell (TLC) technology, the SSD offers durability and reliability, making file transfers and software loading times much faster compared to traditional hard drives. This storage capacity is ideal for essential applications, documents, and media files.Seamless Connectivity with Wi-Fi 6 and Gigabit Ethernet\r\nStay connected with the latest Wi-Fi 6 technology, providing faster and more stable wireless connections for browsing, streaming, and online meetings. The Aspire 3 also includes a Gigabit Ethernet port for a reliable wired connection when needed. Whether at home, in the office, or on the go, you can enjoy uninterrupted connectivity for all your online activities.Sleek Design with a Comfortable UK Keyboard\r\nFinished in an elegant pure silver design, the Acer Aspire 3 offers a stylish and lightweight build, making it easy to carry wherever you go. The UK keyboard layout ensures comfortable and accurate typing, ideal for students and professionals alike. With a full-sized keyboard and precision touchpad, navigating through tasks becomes effortless, enhancing your overall productivity.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89),
+(1, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'Highlighting form and function, a stunningly slim body and impressive tactile finish accentuate real-world design features. Built to keep you active, engaged, and on the move, the Aspire 3 has the technology to suit your way of life. Fundamentally impressive technology.\r\nEfficient Performance with Intel Celeron N4500\r\nThe Acer Aspire 3 A315-35 is powered by the Intel Celeron N4500 processor, delivering reliable performance for everyday computing tasks. With speeds of up to 2.8 GHz, this dual-core processor ensures smooth web browsing, document editing, and media playback. Whether you\'re working on assignments, streaming content, or managing emails, the Aspire 3 provides a seamless user experience.Crisp 15.6-Inch HD Display for Everyday Use\r\nFeaturing a 15.6-inch HD (1366 x 768) TN display, the Aspire 3 offers clear visuals and vibrant colors for work and entertainment. The anti-glare screen reduces reflections, making it comfortable to use in various lighting conditions. Its widescreen format enhances productivity, allowing you to view multiple applications simultaneously without feeling cramped.Fast and Reliable Storage with 128GB NVMe SSD\r\nThe 128GB NVMe SSD provides quick boot times and fast data access, ensuring efficient performance for everyday computing. With 3D Triple-Level Cell (TLC) technology, the SSD offers durability and reliability, making file transfers and software loading times much faster compared to traditional hard drives. This storage capacity is ideal for essential applications, documents, and media files.Seamless Connectivity with Wi-Fi 6 and Gigabit Ethernet\r\nStay connected with the latest Wi-Fi 6 technology, providing faster and more stable wireless connections for browsing, streaming, and online meetings. The Aspire 3 also includes a Gigabit Ethernet port for a reliable wired connection when needed. Whether at home, in the office, or on the go, you can enjoy uninterrupted connectivity for all your online activities.Sleek Design with a Comfortable UK Keyboard\r\nFinished in an elegant pure silver design, the Acer Aspire 3 offers a stylish and lightweight build, making it easy to carry wherever you go. The UK keyboard layout ensures comfortable and accurate typing, ideal for students and professionals alike. With a full-sized keyboard and precision touchpad, navigating through tasks becomes effortless, enhancing your overall productivity.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89),
 (2, 'Acer TravelMate P2 Intel Core i5 8GB RAM 256GB SSD 14 Inch Windows 11 Laptop', 'Acer TravelMate P2, Intel Core i5, 8GB RAM, 256GB SSD, 14\" Full HD, Windows 11, NX.VYAEK.003. Designed for business and productivity with robust security, long battery life, and a lightweight chassis.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/NX.VYAEK.00F_1_Supersize.jpg?v=3', 499.97),
-(3, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'Apple MacBook Air 13-inch (M2, 2022), 16GB RAM, 512GB SSD, Space Grey. Siêu mỏng nhẹ, hiệu năng mạnh mẽ với chip Apple M2, màn hình Liquid Retina, thời lượng pin lên tới 18 giờ, Touch ID, macOS.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00),
+(3, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'Apple MacBook Air 13-inch (M2, 2022), 16GB RAM, 512GB SSD, Space Grey. Siêu mỏng nhẹ, hiệu năng mạnh mẽ với chip Apple M2, màn hình Liquid Retina, thời lượng pin lên tới 18 giờ, Touch ID, macOS.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00),
 (4, 'Apple MacBook Pro 14-inch M4 16GB RAM 512GB SSD Space Black', 'Apple MacBook Pro 14-inch (2024), Apple M4 chip with 10-core CPU and 10-core GPU, 16GB RAM, 512GB SSD, Space Black. Màn hình Liquid Retina XDR, Touch ID, thời lượng pin lên tới 18 giờ, macOS.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/MW2U3BA_1_Supersize.jpg?v=4', 1799.00),
 (5, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'ASUS TUF A15, AMD Ryzen 7 7435HS, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4060, 144Hz 15.6\" FHD, FA507NVR-LP012W, Windows 11, thiết kế gaming bền bỉ, hiệu năng mạnh mẽ.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00),
-(6, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'ASUS ROG Strix G16, Intel Core Ultra 9, 16GB RAM, 2TB SSD, NVIDIA GeForce RTX 5080, 240Hz 16\" FHD, G615LW-S5008W, Windows 11, laptop gaming cao cấp với hiệu năng vượt trội.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00),
-(7, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'Dell Latitude 7400 Refurbished, Intel Core i5 8th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 11 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00),
+(6, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'ASUS ROG Strix G16, Intel Core Ultra 9, 16GB RAM, 2TB SSD, NVIDIA GeForce RTX 5080, 240Hz 16\" FHD, G615LW-S5008W, Windows 11, laptop gaming cao cấp với hiệu năng vượt trội.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00),
+(7, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'Dell Latitude 7400 Refurbished, Intel Core i5 8th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 11 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00),
 (8, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'Dell Latitude 5420 Refurbished, Intel Core i5 11th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 10 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00),
-(9, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'HP 250 G9, Intel Core i7-1255U, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00),
+(9, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'HP 250 G9, Intel Core i7-1255U, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00),
 (10, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'HP 250 G9, Intel Core i5, 16GB RAM, 256GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng bền bỉ, hiệu năng ổn định, phù hợp cho doanh nghiệp và cá nhân.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00),
 (11, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'Lenovo V15 G4, AMD Ryzen 5, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00),
 (12, 'Lenovo Legion 5 Y500 Series 16 240Hz Intel Core i7-14650HX 16GB 1TB RTX 4060', 'Lenovo Legion 5 Y500 Series, 16\" 240Hz, Intel Core i7-14650HX, 16GB RAM, 1TB SSD, NVIDIA GeForce RTX 4060, Windows 11, laptop gaming cao cấp với hiệu năng mạnh mẽ và màn hình tần số quét cao.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/83DG00DSUK_1_Supersize.jpg?v=8', 1599.00),
@@ -103,16 +260,16 @@ INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock
 (23, 'Razer Huntsman V3 Pro USB RGB Mechanical Gaming Keyboard', 'Razer Huntsman V3 Pro, RGB mechanical gaming keyboard, analog optical switches.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ03-04970300-R3W1_1_Supersize.jpg?width=750&height=750&v=3', 249.99),
 (24, 'Razer BlackWidow V4 75 RGB Gaming Keyboard', 'Razer BlackWidow V4 75, RGB gaming keyboard, customizable keys, durable design.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ03-05000400-R3E1_1_Supersize.png?width=750&height=750&v=3', 199.99),
 (25, 'MSI Forge GM300 Wired Gaming Mouse', 'MSI Forge GM300, wired gaming mouse, ergonomic design, RGB lighting.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/BUNS12-0402300-HH996740_2_Supersize.png?width=750&height=750&v=10', 39.99),
-(26, 'Razer Kraken X Wired Gaming Headset', 'Razer Kraken X, wired gaming headset, lightweight design, immersive sound.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ04-02950100-R381_1_Supersize.jpg?width=750&height=750&v=7', 49.99),
+(26, 'Razer Kraken X Wired Gaming Headset', 'Razer Kraken X, wired gaming headset, lightweight design, immersive sound.', 3, 48, 'https://www.laptopsdirect.co.uk/Images/RZ04-02950100-R381_1_Supersize.jpg?width=750&height=750&v=7', 49.99),
 (27, 'Razer DeathAdder V3 Pro Black Gaming Mouse', 'Razer DeathAdder V3 Pro, wireless gaming mouse, ergonomic design, high precision.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ01-04630100-R3G1_1_Supersize.png?width=750&height=750&v=7', 149.99),
 (28, 'Cables Direct HDMI Cable with Ethernet 3m', 'Cables Direct HDMI Cable, 3m length, supports Ethernet, high-speed data transfer.', 3, 100, 'https://www.laptopsdirect.co.uk/Images/77HDMI-030_1_supersize.jpg?width=750&height=750&v=1', 9.99),
 (29, '1m RJ-45 Cat6 Networking Cable Black', 'RJ-45 Cat6 Networking Cable, 1m length, black, high-speed data transfer.', 3, 100, 'https://www.laptopsdirect.co.uk/Images/31-0010BK_1_Supersize.jpg?width=750&height=750&v=3', 4.99),
-(30, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'Corsair T3 Rush Gaming Chair, fabric material, ergonomic design, grey and charcoal.', 3, 20, 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99);
+(30, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'Corsair T3 Rush Gaming Chair, fabric material, ergonomic design, grey and charcoal.', 3, 19, 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_category`
+-- Cấu trúc bảng cho bảng `product_category`
 --
 
 CREATE TABLE `product_category` (
@@ -121,7 +278,7 @@ CREATE TABLE `product_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `product_category`
+-- Đang đổ dữ liệu cho bảng `product_category`
 --
 
 INSERT INTO `product_category` (`id`, `category_name`) VALUES
@@ -132,19 +289,32 @@ INSERT INTO `product_category` (`id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shipping_method`
+-- Cấu trúc bảng cho bảng `services`
 --
 
-CREATE TABLE `shipping_method` (
+CREATE TABLE `services` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `service_type` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `services`
+--
+
+INSERT INTO `services` (`id`, `user_id`, `name`, `phone`, `address`, `service_type`, `created_at`) VALUES
+(1, 2, '1', '1', '', 'Laptop Cleaning', '2025-06-19 14:02:35'),
+(2, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-19 14:05:32'),
+(3, 6, '1', '2', '3', 'Repair', '2025-06-19 14:24:08');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shopping_cart`
+-- Cấu trúc bảng cho bảng `shopping_cart`
 --
 
 CREATE TABLE `shopping_cart` (
@@ -155,7 +325,7 @@ CREATE TABLE `shopping_cart` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shopping_cart_item`
+-- Cấu trúc bảng cho bảng `shopping_cart_item`
 --
 
 CREATE TABLE `shopping_cart_item` (
@@ -168,24 +338,7 @@ CREATE TABLE `shopping_cart_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shop_order`
---
-
-CREATE TABLE `shop_order` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `order_date` datetime DEFAULT current_timestamp(),
-  `payment_method_id` int(11) DEFAULT NULL,
-  `shipping_address_line` varchar(255) DEFAULT NULL,
-  `shipping_method` int(11) DEFAULT NULL,
-  `order_total` decimal(12,2) DEFAULT NULL,
-  `order_status` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `site_user`
+-- Cấu trúc bảng cho bảng `site_user`
 --
 
 CREATE TABLE `site_user` (
@@ -200,35 +353,24 @@ CREATE TABLE `site_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `site_user`
+-- Đang đổ dữ liệu cho bảng `site_user`
 --
 
 INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, `password`, `role`) VALUES
 (1, 'Chu Minh Vũ', NULL, 'vungu@gmail.com', '0333123456', 'vungu1', '123456', 1),
-(2, 'Bùi Thịnh', '141 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi', 'thinhbui7779@gmail.com', '0389040222', 'thinh1', '123456', 1),
+(2, 'Bùi Thịnh', 'tao bắn phi phai', 'thinhbui7779@gmail.com', '0333675969', 'thinh1', '123456', 1),
 (3, 'Bùi Đức Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh2', '123456', 1),
 (4, 'Bùi Đức Thịnh', NULL, 'thinhbui7779@gmail.com', '0333675969', 'thinh3', '123456', 1),
-(5, 'Chu Minh Vũ', '142 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi', 'chuminhvubu@gmail.com', '0389040222', 'WhiteYin69', '1234', 1);
+(5, 'Vũ Chu', NULL, 'chuminhvubu1@gmail.com', '0389040222', 'WhiteYin69', '1234', 1),
+(6, 'Thien dep trai ne', 'vn', '123@gmail.com', '123', 'dit cu', '123', 1),
+(7, 'Tao la Tung Tung ', 'tao ở mỹ', '123@gmail.com', '123', 'duma1', '321', 1),
+(8, 'hẹ', NULL, 'kkk@gmail.com', '123', 'hehehe', '123123', 1),
+(9, 'admin', NULL, '', NULL, 'admin1', '123', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_payment_method`
---
-
-CREATE TABLE `user_payment_method` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `payment_type_id` int(11) DEFAULT NULL,
-  `account_number` varchar(100) DEFAULT NULL,
-  `expiry_date` date DEFAULT NULL,
-  `is_default` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_review`
+-- Cấu trúc bảng cho bảng `user_review`
 --
 
 CREATE TABLE `user_review` (
@@ -242,7 +384,7 @@ CREATE TABLE `user_review` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variation`
+-- Cấu trúc bảng cho bảng `variation`
 --
 
 CREATE TABLE `variation` (
@@ -252,7 +394,7 @@ CREATE TABLE `variation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `variation`
+-- Đang đổ dữ liệu cho bảng `variation`
 --
 
 INSERT INTO `variation` (`id`, `category_id`, `name`) VALUES
@@ -277,7 +419,7 @@ INSERT INTO `variation` (`id`, `category_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variation_options`
+-- Cấu trúc bảng cho bảng `variation_options`
 --
 
 CREATE TABLE `variation_options` (
@@ -287,7 +429,7 @@ CREATE TABLE `variation_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `variation_options`
+-- Đang đổ dữ liệu cho bảng `variation_options`
 --
 
 INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
@@ -457,57 +599,57 @@ INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
 (30, 17, 'Corsair');
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `order_line`
+-- Chỉ mục cho bảng `bill`
 --
-ALTER TABLE `order_line`
+ALTER TABLE `bill`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_item_id` (`product_item_id`),
-  ADD KEY `order_id` (`order_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `order_status` (`order_status`);
 
 --
--- Indexes for table `order_status`
+-- Chỉ mục cho bảng `checkout_cart`
 --
-ALTER TABLE `order_status`
+ALTER TABLE `checkout_cart`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `payment_type`
+-- Chỉ mục cho bảng `notifications`
 --
-ALTER TABLE `payment_type`
+ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product`
+-- Chỉ mục cho bảng `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_product_category` (`category_id`);
 
 --
--- Indexes for table `product_category`
+-- Chỉ mục cho bảng `product_category`
 --
 ALTER TABLE `product_category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `shipping_method`
+-- Chỉ mục cho bảng `services`
 --
-ALTER TABLE `shipping_method`
+ALTER TABLE `services`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `shopping_cart`
+-- Chỉ mục cho bảng `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `shopping_cart_item`
+-- Chỉ mục cho bảng `shopping_cart_item`
 --
 ALTER TABLE `shopping_cart_item`
   ADD PRIMARY KEY (`id`),
@@ -515,31 +657,13 @@ ALTER TABLE `shopping_cart_item`
   ADD KEY `product_item_id` (`product_item_id`);
 
 --
--- Indexes for table `shop_order`
---
-ALTER TABLE `shop_order`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `payment_method_id` (`payment_method_id`),
-  ADD KEY `shipping_method` (`shipping_method`),
-  ADD KEY `order_status` (`order_status`);
-
---
--- Indexes for table `site_user`
+-- Chỉ mục cho bảng `site_user`
 --
 ALTER TABLE `site_user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_payment_method`
---
-ALTER TABLE `user_payment_method`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `payment_type_id` (`payment_type_id`);
-
---
--- Indexes for table `user_review`
+-- Chỉ mục cho bảng `user_review`
 --
 ALTER TABLE `user_review`
   ADD PRIMARY KEY (`id`),
@@ -547,164 +671,135 @@ ALTER TABLE `user_review`
   ADD KEY `ordered_product_id` (`ordered_product_id`);
 
 --
--- Indexes for table `variation`
+-- Chỉ mục cho bảng `variation`
 --
 ALTER TABLE `variation`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indexes for table `variation_options`
+-- Chỉ mục cho bảng `variation_options`
 --
 ALTER TABLE `variation_options`
   ADD PRIMARY KEY (`product_id`,`variation_id`),
   ADD KEY `variation_id` (`variation_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `order_line`
+-- AUTO_INCREMENT cho bảng `bill`
 --
-ALTER TABLE `order_line`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `bill`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
--- AUTO_INCREMENT for table `order_status`
+-- AUTO_INCREMENT cho bảng `checkout_cart`
 --
-ALTER TABLE `order_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `checkout_cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
--- AUTO_INCREMENT for table `payment_type`
+-- AUTO_INCREMENT cho bảng `notifications`
 --
-ALTER TABLE `payment_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `product`
+-- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `product_category`
+-- AUTO_INCREMENT cho bảng `product_category`
 --
 ALTER TABLE `product_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `shipping_method`
+-- AUTO_INCREMENT cho bảng `services`
 --
-ALTER TABLE `shipping_method`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `services`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `shopping_cart`
+-- AUTO_INCREMENT cho bảng `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shopping_cart_item`
+-- AUTO_INCREMENT cho bảng `shopping_cart_item`
 --
 ALTER TABLE `shopping_cart_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shop_order`
---
-ALTER TABLE `shop_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `site_user`
+-- AUTO_INCREMENT cho bảng `site_user`
 --
 ALTER TABLE `site_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `user_payment_method`
---
-ALTER TABLE `user_payment_method`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `user_review`
+-- AUTO_INCREMENT cho bảng `user_review`
 --
 ALTER TABLE `user_review`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `variation`
+-- AUTO_INCREMENT cho bảng `variation`
 --
 ALTER TABLE `variation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `order_line`
+-- Các ràng buộc cho bảng `bill`
 --
-ALTER TABLE `order_line`
-  ADD CONSTRAINT `order_line_ibfk_1` FOREIGN KEY (`product_item_id`) REFERENCES `product` (`id`),
-  ADD CONSTRAINT `order_line_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `shop_order` (`id`);
+ALTER TABLE `bill`
+  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`);
 
 --
--- Constraints for table `product`
+-- Các ràng buộc cho bảng `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_ibfk_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Constraints for table `shopping_cart`
+-- Các ràng buộc cho bảng `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
   ADD CONSTRAINT `shopping_cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`);
 
 --
--- Constraints for table `shopping_cart_item`
+-- Các ràng buộc cho bảng `shopping_cart_item`
 --
 ALTER TABLE `shopping_cart_item`
   ADD CONSTRAINT `shopping_cart_item_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `shopping_cart` (`id`),
   ADD CONSTRAINT `shopping_cart_item_ibfk_2` FOREIGN KEY (`product_item_id`) REFERENCES `product` (`id`);
 
 --
--- Constraints for table `shop_order`
---
-ALTER TABLE `shop_order`
-  ADD CONSTRAINT `shop_order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
-  ADD CONSTRAINT `shop_order_ibfk_2` FOREIGN KEY (`payment_method_id`) REFERENCES `user_payment_method` (`id`),
-  ADD CONSTRAINT `shop_order_ibfk_3` FOREIGN KEY (`shipping_method`) REFERENCES `shipping_method` (`id`),
-  ADD CONSTRAINT `shop_order_ibfk_4` FOREIGN KEY (`order_status`) REFERENCES `order_status` (`id`);
-
---
--- Constraints for table `user_payment_method`
---
-ALTER TABLE `user_payment_method`
-  ADD CONSTRAINT `user_payment_method_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
-  ADD CONSTRAINT `user_payment_method_ibfk_2` FOREIGN KEY (`payment_type_id`) REFERENCES `payment_type` (`id`);
-
---
--- Constraints for table `user_review`
+-- Các ràng buộc cho bảng `user_review`
 --
 ALTER TABLE `user_review`
   ADD CONSTRAINT `user_review_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
   ADD CONSTRAINT `user_review_ibfk_2` FOREIGN KEY (`ordered_product_id`) REFERENCES `order_line` (`id`);
 
 --
--- Constraints for table `variation`
+-- Các ràng buộc cho bảng `variation`
 --
 ALTER TABLE `variation`
   ADD CONSTRAINT `fk_variation_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `variation_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Constraints for table `variation_options`
+-- Các ràng buộc cho bảng `variation_options`
 --
 ALTER TABLE `variation_options`
   ADD CONSTRAINT `fk_productconfig_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE,
