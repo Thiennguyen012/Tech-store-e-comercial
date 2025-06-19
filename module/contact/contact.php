@@ -60,7 +60,7 @@
                                 <i class="fas fa-tag text-dark me-1"></i>
                                 Subject *
                             </label>
-                            <select class="form-select form-select-md" id="subject" name="subject" required>
+                            <select class="form-select" id="subject" name="subject" required style="font-size: 1rem;">
                                 <option value="">Select subject...</option>
                                 <option value="general">General Question</option>
                                 <option value="service">Service</option>
