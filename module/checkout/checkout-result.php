@@ -1,23 +1,35 @@
 <?php
 include 'lib.php';
 
+// Xác định user_id từ session
+$username = $_SESSION['username'] ?? '';
+$user_id = null;
+
+if ($username) {
+    $sql = "SELECT id FROM site_user WHERE username = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($row = mysqli_fetch_assoc($result)) {
+        $user_id = $row['id'];
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $phone = $address = '';
 
-    // Nếu chọn dùng thông tin mới:
     if (isset($_POST['use_new_info']) && $_POST['use_new_info'] === '1') {
         $name = $_POST['form_name'] ?? '';
         $phone = $_POST['form_phone'] ?? '';
         $address = $_POST['form_address'] ?? '';
     } else {
-        // Ngược lại dùng thông tin từ DB
         $name = $_POST['db_name'] ?? '';
         $phone = $_POST['db_phone'] ?? '';
         $address = $_POST['db_address'] ?? '';
     }
 
     $payment_method = $_POST['payment_method'] ?? 'cash';
-
     $payment_code = ($payment_method === 'vnpay') ? 1 : 0;
     $cart = $_SESSION['cart'] ?? [];
 
@@ -26,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Calculate total
     $subtotal = 0;
     foreach ($cart as $item) {
         $subtotal += $item['price'] * $item['quantity'];
@@ -34,10 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tax = $subtotal * 0.1;
     $total = $subtotal + $tax;
 
-    // Insert order
-    $order_id = newBillOrder($conn, $name, $phone, $address, $total, $payment_code);
+    // ✅ Tạo đơn hàng
+    $order_id = newBillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
 
-    // Insert order items
+    if (!$order_id) {
+        echo "<div class='alert alert-danger text-center'>Failed to create order. Please try again later.</div>";
+        exit;
+    }
+
+    // ✅ Thêm sản phẩm vào checkout_cart
     foreach ($cart as $item) {
         newCheckoutCart(
             $conn,
@@ -48,9 +64,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $item['price'] * $item['quantity'],
             $order_id
         );
+        $product_id = $item['id'];
+        $qty_bought = $item['quantity'];
+
+        $stmt = $conn->prepare("UPDATE product SET qty_in_stock = qty_in_stock - ? WHERE id = ?");
+        $stmt->bind_param("ii", $qty_bought, $product_id);
+        $stmt->execute();
     }
 
-    // Clear cart
+    // ✅ Thêm thông báo sau khi có $order_id
+    if ($user_id && $order_id) {
+        $message = "You have successfully placed order #$order_id.";
+        $stmtNotify = $conn->prepare("INSERT INTO notifications (user_id, content) VALUES (?, ?)");
+        $stmtNotify->bind_param("is", $user_id, $message);
+        $stmtNotify->execute();
+    }
+
+    // Xóa giỏ hàng
     unset($_SESSION['cart']);
 } else {
     echo "<div class='alert alert-danger text-center'>Invalid access.</div>";
@@ -107,6 +137,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Back button -->
     <div class="text-center mt-5">
-        <a href="index.php" class="btn btn-outline-dark rounded-4 px-4">Continue Shopping</a>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="index.php" class="btn btn-outline-dark rounded-4 px-4">Back to Homepage</a>
+            <a onclick="location.href='?act=products'" class="btn btn-outline-dark rounded-4 px-4">Continue Shopping</a>
+        </div>
     </div>
+
 </div>

@@ -68,7 +68,7 @@
                 <h5><strong>📞 Contact Us</strong></h5>
                 <p><strong>Call:</strong> 098 234 2030 – 090 880 9527</p>
                 <p>Contact us for a free consultation and quote for your security camera installation!</p>
-                <button class="btn btn-dark w-25 rounded-4">Book now!</button>
+                <button class="btn btn-dark w-25 rounded-4" onclick="location.href='index.php?act=book-services'">Book now!</button>
             </div>
         </div>
 

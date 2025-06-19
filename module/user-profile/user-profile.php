@@ -61,7 +61,7 @@ $user = $stmt->get_result()->fetch_assoc();
         </div>
         <!-- Form thông tin tài khoản chính -->
         <div class="col-lg-6">
-            <div class="pv-profile-main shadow-sm">
+            <div class="pv-profile-main shadow-sm mb-5 mt-5" style="height: 446px;">
                 <h4 class="mb-4 fw-bold">Account Information</h4>
                 <?php if ($success): ?>
                     <div class="alert alert-success"><?php echo $success; ?></div>
@@ -72,42 +72,42 @@ $user = $stmt->get_result()->fetch_assoc();
                     <div class="mb-3">
                         <label for="name" class="form-label">Full Name</label>
                         <input type="text" class="form-control" id="name" name="name"
-                               value="<?php echo htmlspecialchars($user['name'] ?? ''); ?>" required>
+                            value="<?php echo htmlspecialchars($user['name'] ?? ''); ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email"
-                               value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" required>
+                            value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
                         <input type="text" class="form-control" id="phone" name="phone"
-                               value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" required>
+                            value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" required>
                     </div>
                     <?php if (isset($user['dob'])): ?>
-                    <div class="mb-3">
-                        <label for="dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" name="dob"
-                               value="<?php echo htmlspecialchars($user['dob'] ?? ''); ?>">
-                    </div>
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob"
+                                value="<?php echo htmlspecialchars($user['dob'] ?? ''); ?>">
+                        </div>
                     <?php endif; ?>
                     <?php if (isset($user['gender'])): ?>
-                    <div class="mb-3">
-                        <label class="form-label">Gender</label><br>
-                        <?php $gender = $user['gender'] ?? ''; ?>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="male" value="Nam" <?php if($gender=='Nam') echo 'checked'; ?>>
-                            <label class="form-check-label" for="male">Male</label>
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label><br>
+                            <?php $gender = $user['gender'] ?? ''; ?>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="Nam" <?php if ($gender == 'Nam') echo 'checked'; ?>>
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="Nữ" <?php if ($gender == 'Nữ') echo 'checked'; ?>>
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="other" value="Khác" <?php if ($gender == 'Khác') echo 'checked'; ?>>
+                                <label class="form-check-label" for="other">Other</label>
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="female" value="Nữ" <?php if($gender=='Nữ') echo 'checked'; ?>>
-                            <label class="form-check-label" for="female">Female</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="other" value="Khác" <?php if($gender=='Khác') echo 'checked'; ?>>
-                            <label class="form-check-label" for="other">Other</label>
-                        </div>
-                    </div>
                     <?php endif; ?>
                     <button type="submit" class="btn btn-dark mt-2">Update</button>
                 </form>
@@ -115,7 +115,7 @@ $user = $stmt->get_result()->fetch_assoc();
         </div>
         <!-- Hộp địa chỉ mặc định -->
         <div class="col-lg-3 ">
-            <div class="pv-profile-address shadow-sm">
+            <div class="pv-profile-address shadow-sm mt-5">
                 <h5 class="fw-bold mb-2">Default Address</h5>
                 <?php
                 // Lấy địa chỉ mặc định của user
@@ -125,8 +125,8 @@ $user = $stmt->get_result()->fetch_assoc();
                     <div class="d-flex align-items-center" style="font-size:15px;">
                         <span class="me-2"><?= htmlspecialchars($userAddress); ?></span>
                         <a class="bi bi-pen"
-                           href="#"
-                           onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
+                            href="#"
+                            onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
                         </a>
                     </div>
                 <?php else: ?>
@@ -134,7 +134,7 @@ $user = $stmt->get_result()->fetch_assoc();
                         You don't have a default shipping address. Please select Add new address.
                     </div>
                     <a class="nav-link <?php echo is_active('addresses.php'); ?>" href="#"
-                       onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
+                        onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">
                         <i class="bi bi-plus"></i> Add a new address
                     </a>
                 <?php endif; ?>

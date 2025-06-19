@@ -63,6 +63,12 @@
                     </div>
                 </a>
             </div>
+            <hr>
+            <div class="col-md-12 text-center mt-5 py-5 mb-5 bg-white rounded-4 shadow-sm">
+                <h2 class=" py-3">Book a service with us today!</h2>
+                <button class="btn btn-dark rounded-4 w-25" onclick="location.href='index.php?act=book-services'">Book Now</button>
+            </div>
+
 
         </div>
     </div>

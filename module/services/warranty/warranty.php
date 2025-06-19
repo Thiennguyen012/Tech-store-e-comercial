@@ -165,8 +165,8 @@
             <div class="highlight mt-4">
                 <h5><strong>📞 Contact Us</strong></h5>
                 <p><strong>Call:</strong> 0945411232 </p>
-                <p>Visit us for fast and reliable wwar service!</p>
-                <button class="btn btn-dark w-25 rounded-4">Book now!</button>
+                <p>Visit us for fast and reliable warranty service!</p>
+                <button class="btn btn-dark w-25 rounded-4" onclick="location.href='index.php?act=book-services'">Book now!</button>
             </div>
         </div>
 

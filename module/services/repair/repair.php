@@ -64,7 +64,7 @@
                 <h5><strong>📞 Contact Us</strong></h5>
                 <p><strong>Call:</strong> 0945411232 </p>
                 <p>Bring your device to us for fast and reliable repair service!</p>
-                <button class="btn btn-dark w-25 rounded-4">Book now!</button>
+                <button class="btn btn-dark w-25 rounded-4" onclick="location.href='index.php?act=book-services'">Book now!</button>
             </div>
         </div>
 

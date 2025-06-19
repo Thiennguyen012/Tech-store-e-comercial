@@ -1,9 +1,26 @@
+<?php
+
+// Lấy user hiện tại
+$username = $_SESSION['username'] ?? '';
+$unread_count = 0;
+
+if ($username) {
+  $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications n
+                            JOIN site_user u ON n.user_id = u.id
+                            WHERE u.username = ? AND n.is_read = 0");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $stmt->bind_result($unread_count);
+  $stmt->fetch();
+  $stmt->close();
+}
+?>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow" style="height: 65px">
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand fs-4" href="#"
-      onclick="loadPage('module/main-content/main-content.php',this,'home'); return false;">Technologia</a>
+      onclick="loadPage('module/main-content/main-content.php',this,'home'); return false;">Technologia™</a>
     <!-- Toggle button -->
     <button class="navbar-toggler shaddow-none border-0" type="button" data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -101,8 +118,8 @@
             <button type="button" class="btn border-0 position-relative mt-1" onclick="location.href='login.php'">
               <i class="fa-solid fa-cart-shopping fs-5"></i>
             </button>
-            <a href="./Login.php" class="btn btn-dark rounded-4">Sign in</a>
-            <a href="./Registration.php" class="btn btn-dark rounded-4">Sign up</a>
+            <a href="./Login.php" class="btn btn-dark rounded-5">Sign in</a>
+            <a href="./Registration.php" class="btn btn-dark rounded-5">Sign up</a>
           <?php else: ?>
             <!-- Đã đăng nhập -->
             <div class="d-flex justify-content-center align-content-center gap-5">
@@ -124,6 +141,17 @@
                   <li><a class="dropdown-item" href="#"
                       onclick="loadPage('module/user-order/user-order.php', this, 'order'); return false;">Your Order</a>
                   </li>
+                  <li>
+                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                      onclick="loadPage('module/user-profile/notification.php', this, 'notification'); return false;">
+                      Notification
+                      <?php if ($unread_count > 0): ?>
+                        <span class="badge bg-danger ms-2" id="noti-badge"><?= $unread_count ?></span>
+                      <?php endif; ?>
+                    </a>
+                  </li>
+
+
                   <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                 </ul>
               </div>
@@ -257,5 +285,29 @@
 
   // Handle Enter key for search
   document.getElementById('searchInput').addEventListener('keydown', handleSearch);
+
+  function markAsRead(notiId, element) {
+    fetch('module/user-profile/mark-read.php?id=' + notiId)
+      .then(res => res.text())
+      .then(() => {
+        // 1. Cập nhật UI item vừa click
+        element.classList.add('text-muted');
+        const badge = element.querySelector('.badge');
+        if (badge) badge.remove();
+
+        // 2. Kiểm tra còn badge trên navbar không
+        const navbarBadge = document.querySelector('#noti-badge');
+        if (navbarBadge) {
+          let count = parseInt(navbarBadge.innerText);
+          count = Math.max(0, count - 1);
+
+          if (count > 0) {
+            navbarBadge.innerText = count;
+          } else {
+            navbarBadge.remove(); // Xóa badge nếu hết thông báo
+          }
+        }
+      });
+  }
 </script>
 <!-- search -->
