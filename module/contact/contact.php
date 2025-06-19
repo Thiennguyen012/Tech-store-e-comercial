@@ -27,14 +27,14 @@
                                     <i class="fas fa-user text-dark me-1"></i>
                                     First Name *
                                 </label>
-                                <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required>
+                                <input type="text" class="form-control form-control-md" id="firstName" name="firstName" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="lastName" class="form-label fw-semibold">
                                     <i class="fas fa-user text-dark me-1"></i>
                                     Last Name *
                                 </label>
-                                <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required>
+                                <input type="text" class="form-control form-control-md" id="lastName" name="lastName" required>
                             </div>
                         </div>
 
@@ -44,14 +44,14 @@
                                     <i class="fas fa-envelope text-dark me-1"></i>
                                     Email *
                                 </label>
-                                <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                                <input type="email" class="form-control form-control-md" id="email" name="email" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="phone" class="form-label fw-semibold">
                                     <i class="fas fa-phone text-dark me-1"></i>
                                     Phone Number
                                 </label>
-                                <input type="tel" class="form-control form-control-lg" id="phone" name="phone">
+                                <input type="tel" class="form-control form-control-md" id="phone" name="phone">
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-dark btn-lg">
+                            <button type="submit" class="btn btn-dark rounded-4">
                                 <i class="fas fa-paper-plane me-2"></i>
                                 Send Message
                             </button>
