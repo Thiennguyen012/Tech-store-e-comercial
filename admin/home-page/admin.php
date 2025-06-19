@@ -10,7 +10,52 @@
 </head>
 
 <body>
+    <?php
+    session_start();
 
+    if (!isset($_SESSION['role'])) {
+        echo '
+    <div class="main container mt-5 mb-5 py-5">
+            <div class="row mb-3">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-3"></div>
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <div class="main-img text-center">
+                        <img src="../../img/access-denied.png" alt="Main" class="img-fluid pb-3" style="max-width: 300px;">
+
+                        <h2>Access Denied</h2>
+                        <p>You must <a href="../../login.php" class="alert-link">log in</a> to access this page.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-3"></div>
+            </div>
+        </div>';
+        exit;
+    }
+
+    if ($_SESSION['role'] != 0) {
+        echo '
+    <div class="main container mt-5 mb-5 py-5">
+            <div class="row mb-3">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-3"></div>
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <div class="main-img text-center">
+                        <img src="../../img/access-denied.png" alt="Main" class="img-fluid pb-3" style="max-width: 300px;">
+
+                        <h2>Access Denied</h2>
+                        <p class="main-description pt-2">You do not have permission to access this page.</p>
+                        <button class="btn btn-dark rounded-5 w-25" onclick="location.href=\'../../index.php\'">Go Home</button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-3"></div>
+            </div>
+        </div>';
+        exit;
+    }
+    ?>
     <div class="d-flex">
         <!-- Sidebar -->
         <!-- Sidebar -->
@@ -24,11 +69,15 @@
                 <!-- Menu -->
                 <ul class="nav flex-column">
                     <li class="nav-item">
+                        <a href="../../index.php" class="nav-link text-white"><i class="bi bi-house-door"></i> <span>Go to Website</span></a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link text-white"><i class="bi bi-people"></i> <span>Users</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link text-white"><i class="bi bi-box"></i> <span>Products</span></a>
                     </li>
+
                 </ul>
             </div>
 

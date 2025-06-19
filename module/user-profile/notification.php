@@ -38,7 +38,7 @@ $notifications = $stmt->get_result();
             <?php include 'user-profile-sidebar.php'; ?>
         </div>
         <div class="col-lg-9">
-            <div class="pv-profile-main shadow-sm">
+            <div class="pv-profile-main shadow-sm mt-5 mb-5" style="height: 446px">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="fw-bold mb-0">Your Notifications</h4>
                     <a href="#" class="text-primary" style="font-size:15px;">Mark all as read</a>

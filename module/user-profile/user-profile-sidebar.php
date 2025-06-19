@@ -23,7 +23,7 @@ function is_active($file)
     return $active === $file ? 'active' : '';
 }
 ?>
-<div class="pv-profile-sidebar text-center shadow-sm">
+<div class="pv-profile-sidebar text-center shadow-sm mb-5 mt-5" style="height: 446px;">
     <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['username']); ?>&background=4f5250&color=fff&size=128" class="avatar mb-2" alt="Avatar">
     <div class="username mb-2">Account of<br><span><?php echo htmlspecialchars($_SESSION['username']); ?></span></div>
     <nav class="nav flex-column align-items-start mt-4">
@@ -43,6 +43,11 @@ function is_active($file)
                 <span class="badge bg-danger"><?php echo $unread_count; ?></span>
             <?php endif; ?>
         </a>
-
+        <!-- Mục dành cho admin -->
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 0): ?>
+            <a class="nav-link d-flex justify-content-between align-items-center text-dark" href="admin/home-page/admin.php">
+                <i class="bi bi-speedometer2"></i> Admin Dashboard
+            </a>
+        <?php endif; ?>
     </nav>
 </div>

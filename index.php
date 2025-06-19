@@ -32,7 +32,7 @@
   ?>
 
   <!-- Content -->
-  <div id="main-content">
+  <main id="main-content" class="flex-fill">
     <?php
     $act = $_GET['act'] ?? '';
     switch ($act) {
@@ -105,7 +105,7 @@
         include 'module/main-content/main-content.php';
     }
     ?>
-  </div>
+  </main>
   <!-- back to top -->
   <a href="#" class="arrow" id="scrollToTop" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999;">
     <img src="img/up-arrow.png" alt="" width="50px">

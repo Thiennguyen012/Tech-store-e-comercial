@@ -1,6 +1,14 @@
+html,
 body {
   font-family: "poppins", sans-serif;
   background: #ececec;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
 }
 a {
   text-decoration: none;
