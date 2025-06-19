@@ -32,7 +32,7 @@
     ?>
 
   <!-- Content -->
-  <div id="main-content">
+  <main id="main-content" class="flex-fill">
     <?php
     $act = $_GET['act'] ?? '';
     switch ($act) {
@@ -68,6 +68,9 @@
         break;
       case 'warranty':
         include 'module/services/warranty/warranty.php';
+        break;
+      case 'book-services':
+        include 'module/services/book-services.php';
         break;
       //Mục contact
       case 'contact':
@@ -105,7 +108,7 @@
         include 'module/main-content/main-content.php';
     }
     ?>
-  </div>
+  </main>
   <!-- back to top -->
   <a href="#" class="arrow" id="scrollToTop"
     style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999;">
@@ -223,10 +226,10 @@
     </div>
   </footer>
   <!-- Bootstrap JS -->
-  <script src="./asset/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="asset/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- reload page -->
-  <script src="./asset/main-script1.js"></script>
+  <script src="asset/main-script1.js"></script>
 </body>
 
 </html>

@@ -47,7 +47,9 @@ window.onpopstate = function (event) {
     case "warrantly":
       file = "module/services/warrantly/warrantly.php";
       break;
-    //
+    case "book-services":
+      file = "module/services/book-services.php";
+      break;
     //Mục contact
     case "contact":
       file = "module/contact/contact.php";
@@ -79,12 +81,19 @@ window.onpopstate = function (event) {
 
 //script cho arrow up to top
 $(document).ready(function () {
+  // Hiện/ẩn nút scroll
   $(window).scroll(function () {
-    if ($(this).scrollTop()) {
+    if ($(this).scrollTop() > 100) {
       $(".arrow").fadeIn();
     } else {
       $(".arrow").fadeOut();
     }
+  });
+
+  // Scroll lên đầu khi click
+  $("#scrollToTop").click(function (e) {
+    e.preventDefault(); // Ngăn chuyển hướng khi href="#"
+    $("html, body").animate({ scrollTop: 0 }, 200);
   });
 });
 

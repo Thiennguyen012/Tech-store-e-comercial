@@ -51,27 +51,27 @@ function calculateTotal()
     return $total;
 }
 
-function newBillOrder($conn, $name, $phone, $address, $total, $paymentMethod)
+function newBillOrder($conn, $userId, $name, $phone, $address, $total, $paymentMethod)
 {
     // Chuẩn bị câu lệnh SQL an toàn
-    $stmt = $conn->prepare("INSERT INTO bill (order_name, order_phone, order_address, order_total, order_paymethod) 
-                            VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO bill (user_id, order_name, order_phone, order_address, order_total, order_paymethod) 
+                            VALUES (?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
 
     // Gắn giá trị vào câu lệnh
-    $stmt->bind_param("sssdi", $name, $phone, $address, $total, $paymentMethod);
+    $stmt->bind_param("isssdi", $userId, $name, $phone, $address, $total, $paymentMethod);
 
     // Thực thi
     if ($stmt->execute()) {
         // Trả về ID đơn hàng vừa tạo
         return $stmt->insert_id;
     } else {
-        // Trả về false nếu thất bại
         return false;
     }
 }
+
 function newCheckoutCart($conn, $product_name, $product_image, $price, $quantity, $total, $bill_id)
 {
     // Chuẩn bị câu SQL an toàn
