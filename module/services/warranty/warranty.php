@@ -1,27 +1,23 @@
-
 <div class="container py-4">
     <div class="row">
         <!-- Cột bên trái: Nội dung dịch vụ -->
         <div class="col-md-8 mb-5">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="#" onclick="loadPage('module/main-content/main-content.php',this,'home')">Home</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="#" onclick="loadPage('module/services/services.php',this,'services')">Services</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Warranty</li>
-                </ol>
-            </nav>
-
+            <div class="container py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php', this); return false;">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/services/services.php', this); return false;">Services</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Warranty</li>
+                    </ol>
+                </nav>
+            </div>
             <h2 class="section-title fw-bold">Warranty and Return Policies</h2>
 
             <p>
                 Products sold by Technologia are warranted in accordance with the standards and policies of the manufacturer,
                 for a warranty period specified by the manufacturer, starting from the date of
                 purchase as stated on the invoice issued by Technologia to the customer.
-            </p>     
+            </p>
             <div class="laptop-cleaning-img">
                 <img class="img-fluid" src="https://images.pexels.com/photos/6754846/pexels-photo-6754846.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
             </div>

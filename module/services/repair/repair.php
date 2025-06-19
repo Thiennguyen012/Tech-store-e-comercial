@@ -1,19 +1,16 @@
-
 <div class="container py-4">
     <div class="row">
         <!-- Cột bên trái: Nội dung dịch vụ -->
         <div class="col-md-8 mb-5">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="#" onclick="loadPage('module/main-content/main-content.php',this,'home')">Home</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="#" onclick="loadPage('module/services/services.php',this,'services')">Services</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Repair</li>
-                </ol>
-            </nav>
+            <div class="container py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php', this); return false;">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/services/services.php', this); return false;">Services</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Repair Services</li>
+                    </ol>
+                </nav>
+            </div>
 
             <h2 class="section-title fw-bold">LAPTOP & COMPUTER REPAIR – PROFESSIONAL, FAST, AND RELIABLE</h2>
 
