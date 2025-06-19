@@ -47,7 +47,9 @@ window.onpopstate = function (event) {
     case "warrantly":
       file = "module/services/warrantly/warrantly.php";
       break;
-    //
+    case "book-services":
+      file = "module/services/book-services.php";
+      break;
     //Mục contact
     case "contact":
       file = "module/contact/contact.php";

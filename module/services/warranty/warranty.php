@@ -1,4 +1,3 @@
-
 <div class="container py-4">
     <div class="row">
         <!-- Cột bên trái: Nội dung dịch vụ -->
@@ -21,7 +20,7 @@
                 Products sold by Technologia are warranted in accordance with the standards and policies of the manufacturer,
                 for a warranty period specified by the manufacturer, starting from the date of
                 purchase as stated on the invoice issued by Technologia to the customer.
-            </p>     
+            </p>
             <div class="laptop-cleaning-img">
                 <img class="img-fluid" src="https://images.pexels.com/photos/6754846/pexels-photo-6754846.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
             </div>
@@ -169,8 +168,8 @@
             <div class="highlight mt-4">
                 <h5><strong>📞 Contact Us</strong></h5>
                 <p><strong>Call:</strong> 0945411232 </p>
-                <p>Visit us for fast and reliable wwar service!</p>
-                <button class="btn btn-dark w-25 rounded-4">Book now!</button>
+                <p>Visit us for fast and reliable warranty service!</p>
+                <button class="btn btn-dark w-25 rounded-4" onclick="location.href='index.php?act=book-services'">Book now!</button>
             </div>
         </div>
 
