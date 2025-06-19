@@ -41,7 +41,8 @@ $notifications = $stmt->get_result();
             <div class="pv-profile-main shadow-sm mt-5 mb-5" style="height: 446px">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="fw-bold mb-0">Your Notifications</h4>
-                    <a href="#" class="text-primary" style="font-size:15px;">Mark all as read</a>
+                    <a href="#" class="text-primary" style="font-size:15px;" onclick="markAllAsRead(); return false;">Mark all as read</a>
+
                 </div>
 
                 <?php if ($notifications->num_rows === 0): ?>
@@ -53,17 +54,23 @@ $notifications = $stmt->get_result();
                     <div class="notification-container" style="max-height: 345px; overflow-y: auto;">
                         <ul class="list-group">
                             <?php while ($row = $notifications->fetch_assoc()): ?>
-                                <li class="noti-item list-group-item d-flex justify-content-between align-items-start <?= $row['is_read'] ? 'text-muted' : '' ?>" onclick="markAsRead(<?= $row['id'] ?>, this); return false;">
-                                    <div>
-                                        <div><?= htmlspecialchars($row['content']) ?></div>
-                                        <small class="text-muted"><?= date('Y-m-d H:i', strtotime($row['created_at'])) ?></small>
+                                <li class="noti-item list-group-item d-flex justify-content-between align-items-start <?= $row['is_read'] ? 'text-muted' : '' ?>">
+                                    <div class="d-flex flex-column w-100" onclick="markAsRead(<?= $row['id'] ?>, this); return false;">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div><?= htmlspecialchars($row['content']) ?></div>
+                                                <?php if (!$row['is_read']): ?>
+                                                    <span class="badge bg-primary">New</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <a href="#" onclick="deleteNotification(<?= $row['id'] ?>, this); return false;" class="text-dark text-decoration-none fs-5 fw-bold"><i class="fa-solid fa-xmark"></i></a>
+                                        </div>
+                                        <small class="text-muted mt-1"><?= date('Y-m-d H:i', strtotime($row['created_at'])) ?></small>
                                     </div>
-                                    <?php if (!$row['is_read']): ?>
-                                        <span class="badge bg-primary">New</span>
-                                    <?php endif; ?>
                                 </li>
                             <?php endwhile; ?>
                         </ul>
+
                     </div>
                 <?php endif; ?>
             </div>
@@ -84,5 +91,57 @@ $notifications = $stmt->get_result();
             element.querySelector(".badge")?.remove();
             window.location.href = '?act=order';
         });
+    }
+
+    function markAllAsRead() {
+        fetch("module/user-profile/mark-all-read.php", {
+                method: "POST"
+            }).then(res => res.text())
+            .then(res => {
+                if (res === "success") {
+                    // Xóa các badge NEW và làm mờ tất cả
+                    document.querySelectorAll(".noti-item").forEach(item => {
+                        item.classList.add("text-muted");
+                        item.querySelector(".badge")?.remove();
+                    });
+
+                    // Xóa badge ở navbar nếu có
+                    window.location.href = '?act=notification';
+                    const navbarBadge = document.querySelector("#noti-badge");
+                    if (navbarBadge) navbarBadge.remove();
+                }
+            });
+    }
+
+    function deleteNotification(notiId, btnElement) {
+        if (!confirm("Are you sure you want to delete this notification?")) return;
+
+        fetch("module/user-profile/delete-notification.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "id=" + notiId
+            }).then(res => res.text())
+            .then(res => {
+                if (res === "success") {
+                    // Xóa li khỏi giao diện
+                    const notiItem = btnElement.closest(".noti-item");
+                    notiItem.remove();
+                    window.location.href = '?act=notification';
+                    // Nếu có badge thì xóa luôn
+                    const navbarBadge = document.querySelector("#noti-badge");
+                    if (navbarBadge) navbarBadge.remove();
+                    // Nếu không còn thông báo nào thì hiện giao diện rỗng
+                    if (document.querySelectorAll('.noti-item').length === 0) {
+                        document.querySelector('.notification-container').innerHTML = `
+                    <div class="text-center py-5">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="100" alt="empty">
+                        <div class="text-muted mt-3">You don't have any new notifications</div>
+                    </div>
+                `;
+                    }
+                }
+            });
     }
 </script>
