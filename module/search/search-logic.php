@@ -12,7 +12,7 @@ function searchProducts($conn, $query, $minPrice = 0, $maxPrice = 10000000, $sor
     }
 
     // Tạo câu truy vấn SQL tìm kiếm
-    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
             WHERE p.name LIKE ? AND p.price BETWEEN ? AND ?";
@@ -100,7 +100,7 @@ function searchProductsWithFilters($conn, $query, $selectedFilters = [], $minPri
         return false;
     }
 
-    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
             LEFT JOIN variation_options vo ON p.id = vo.product_id 

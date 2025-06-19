@@ -1,11 +1,12 @@
 <div class="container py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php')">Home</a></li>
+            <li class="breadcrumb-item"><a href="#" onclick="loadPage('module/main-content/main-content.php', this); return false;">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Services</li>
         </ol>
     </nav>
 </div>
+
 <section class="mt-2 mb-5">
     <div class="container">
         <h1 class="text-center mb-5 fw-bold">Our Services</h1>
@@ -13,20 +14,20 @@
 
             <!-- Laptop cleaning -->
             <div class="col-md-4">
-                <a href="#" onclick="loadPage('module/services/laptop-cleaning/laptop-cleaning.php',this,'laptopcleaning');return false;">
+                <a href="#" onclick="loadPage('module/services/laptop-cleaning/laptop-cleaning.php', this, 'laptopcleaning'); return false;">
                     <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
                         <div class="card-body">
                             <div class="mb-3 text-warning fs-1"><i class="bi bi-laptop"></i></div>
                             <h5 class="card-title fw-bold">Laptop Cleaning</h5>
-                            <p class="card-text">In-depth internal and external cleaning and maintaining to keep your laptop running cool and smooth.
-                            </p>
+                            <p class="card-text">In-depth internal and external cleaning and maintaining to keep your laptop running cool and smooth.</p>
                         </div>
                     </div>
                 </a>
             </div>
+
             <!-- Repair -->
             <div class="col-md-4">
-                <a href="#" onclick="loadPage('module/services/repair/repair.php',this,'repair');return false;">
+                <a href="#" onclick="loadPage('module/services/repair/repair.php', this, 'repair'); return false;">
                     <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
                         <div class="card-body">
                             <div class="mb-3 text-warning fs-1"><i class="bi bi-tools"></i></div>
@@ -36,9 +37,10 @@
                     </div>
                 </a>
             </div>
+
             <!-- Security camera installation -->
             <div class="col-md-4">
-                <a href="#" onclick="loadPage('module/services/install-cam/install-cam.php',this,'installcam');return false;">
+                <a href="#" onclick="loadPage('module/services/install-cam/install-cam.php', this, 'installcam'); return false;">
                     <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
                         <div class="card-body">
                             <div class="mb-3 text-warning fs-1"><i class="bi bi-camera-video"></i></div>
@@ -48,9 +50,10 @@
                     </div>
                 </a>
             </div>
+
             <!-- Warranty -->
             <div class="col-md-4">
-                <a href="#" onclick="loadPage('module/services/warranty/warranty.php',this,'warranty');return false;">
+                <a href="#" onclick="loadPage('module/services/warranty/warranty.php', this, 'warranty'); return false;">
                     <div class="card service-card border-0 shadow-sm h-100 p-3 rounded-4">
                         <div class="card-body">
                             <div class="mb-3 text-warning fs-1"><i class="bi bi-shield-check"></i></div>

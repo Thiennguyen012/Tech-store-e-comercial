@@ -1,7 +1,7 @@
 <?php
 // Kết nối database
 require_once __DIR__ . '/../../db/connect.php';
-require_once __DIR__ . '../../search/search-logic.php';
+require_once __DIR__ . '/../search/search-logic.php';
 
 $query = isset($_GET['query']) ? trim($_GET['query']) : '';
 $isSearchMode = !empty($query); // Kiểm tra có đang ở chế độ tìm kiếm không
@@ -31,9 +31,14 @@ if ($isSearchMode) {
   $filters = getSearchFilters($conn); // Lấy tất cả bộ lọc
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
+  
+  // Thêm các biến cần thiết cho search mode
+  $limit = 8;
+  $offset = 0;
+  
 } else {
   // Chế độ category thông thường
-  $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price 
+  $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
             LEFT JOIN variation_options vo ON p.id = vo.product_id 
@@ -57,13 +62,13 @@ if ($isSearchMode) {
   $filters = [];
   foreach ($filterCategories as $categoryName => $variationId) {
     $filterSql = "
-            SELECT vo.value, COUNT(DISTINCT p.id) as count 
-            FROM variation_options vo 
-            LEFT JOIN product p ON vo.product_id = p.id 
-            LEFT JOIN product_category pc ON p.category_id = pc.id 
-            WHERE vo.variation_id = ? AND pc.category_name = ? 
-            GROUP BY vo.value
-        ";
+          SELECT vo.value, COUNT(DISTINCT p.id) as count 
+          FROM variation_options vo 
+          INNER JOIN product p ON vo.product_id = p.id 
+          INNER JOIN product_category pc ON p.category_id = pc.id 
+          WHERE vo.variation_id = ? AND pc.category_name = ? 
+          GROUP BY vo.value
+      ";
 
     $stmt = $conn->prepare($filterSql);
     $stmt->bind_param("is", $variationId, $category);
@@ -80,6 +85,17 @@ if ($isSearchMode) {
       }
     }
   }
+
+  // Add total product count query for the category
+  $totalCountSql = "SELECT COUNT(DISTINCT p.id) as total_count 
+                  FROM product p 
+                  INNER JOIN product_category pc ON p.category_id = pc.id 
+                  WHERE pc.category_name = ?";
+  $totalStmt = $conn->prepare($totalCountSql);
+  $totalStmt->bind_param("s", $category);
+  $totalStmt->execute();
+  $totalResult = $totalStmt->get_result();
+  $totalProducts = $totalResult->fetch_assoc()['total_count'];
 
   // Nếu có bộ lọc được chọn, thêm điều kiện vào câu truy vấn chính
   $filterValues = [];
@@ -111,10 +127,20 @@ if ($isSearchMode) {
       $sql .= " ORDER BY p.price ASC";
   }
 
-  // Bind tất cả tham số vào statement
+  $limit = 8;
+  $offset = 0;
+
+  // Khởi tạo biến types và values đúng thứ tự
   $allTypes = "sii" . $filterTypes;
   $allValues = array_merge([$category, $minPrice, $maxPrice], $filterValues);
 
+  // Thêm điều kiện phân trang
+  $sql .= " LIMIT ? OFFSET ?";
+  $allTypes .= "ii";
+  $allValues[] = $limit;
+  $allValues[] = $offset;
+
+  // Bind tất cả tham số vào statement
   $stmt = $conn->prepare($sql);
   $stmt->bind_param($allTypes, ...$allValues);
   $stmt->execute();
@@ -287,17 +313,23 @@ if ($isSearchMode) {
           <h3 class="fw-bold mb-0">
             <?php echo $pageTitle; ?>
             <span class="fs-6 fw-normal">
-              <?php if ($result): ?>
-                (<?php echo $result->num_rows; ?> products<?php echo $isSearchMode ? ' found' : ''; ?>)
+              <?php if ($isSearchMode): ?>
+                <?php if ($result): ?>
+                  (<?php echo $result->num_rows; ?> products found)
+                <?php endif; ?>
+              <?php else: ?>
+                (<?php echo $totalProducts; ?> products)
               <?php endif; ?>
             </span>
           </h3>
         </div>
         <!-- Grid sản phẩm, responsive theo từng loại màn hình -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 ">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4" id="productGrid">
           <?php
+          $productCount = 0;
           if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+              $productCount++;
               ?>
               <div class="col">
                 <div class="card border-0 h-100 shadow-sm">
@@ -320,38 +352,39 @@ if ($isSearchMode) {
                         class="btn btn-dark btn-sm rounded-pill px-3">
                         More details
                       </a>
-                      <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
-                      <form id="addToCartForm" action="module/cart/cart.php" method="POST">
-                        <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
-                        <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
-                        <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
-                        <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
-                        <button id="addcart-submit" type="submit" name="add-to-cart"
-                          class="btn btn-outline-dark btn-sm rounded-pill px-3">
-                          <i class="bi bi-cart"></i>
+                      <?php if ($row['qty_in_stock'] > 0): ?>
+                        <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
+                        <form id="addToCartForm" action="module/cart/cart.php" method="POST">
+                          <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
+                          <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
+                          <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
+                          <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
+                          <button id="addcart-submit" type="submit" name="add-to-cart"
+                            class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                            <i class="bi bi-cart"></i>
+                          </button>
+                        </form>
+                      <?php else: ?>
+                        <!-- Contact us button when out of stock -->
+                        <button onclick="loadPage('module/contact/contact.php'); return false;"
+                          class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                          Contact us
                         </button>
-                      </form>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
               </div>
               <?php
             }
-          } else {
-            // Nếu không có sản phẩm nào phù hợp
-            if ($isSearchMode) {
-              echo '<div class="container-fluid vh-100 d-flex align-items-center justify-content-center"><div class="text-center py-5">
-                      <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
-                      <h4 class="text-muted mb-3">No products found</h4>
-                      <p class="text-muted mb-4">We couldn\'t find any products matching "' . htmlspecialchars($query) . '". Try different keywords.</p>
-                      <a href="#" onclick="loadPage(\'module/main-content/main-content.php\', this, \'home\'); return false;" class="btn btn-dark rounded-pill px-4">Back to Home</a>
-                    </div></div>';
-            } else {
-              echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
-            }
           }
           ?>
         </div>
+        <?php if ($result && $result->num_rows == $limit): ?>
+          <div class="text-center my-4">
+            <button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="<?= $limit ?>">Show more</button>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -430,9 +463,64 @@ if ($isSearchMode) {
     form.reset();
     document.getElementById('filterButtonMobile').click();
   });
-</script>
+
+  
+  // Show more sản phẩm
+function handleShowMore(e) {
+  if (e.target && e.target.id === 'showMoreBtn') {
+    const btn = e.target;
+    
+    // Prevent multiple clicks while loading
+    if (btn.disabled) return;
+    
+    btn.disabled = true;
+    btn.textContent = 'Loading...';
+    const offset = parseInt(btn.getAttribute('data-offset'), 10);
+    const form = document.getElementById('filterForm') || document.getElementById('filterFormMobile');
+    const formData = new FormData(form);
+    formData.append('limit', 8);
+    formData.append('offset', offset);
+    formData.append('showMore', 1);
+
+    fetch('module/product/filter.php', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => res.text())
+      .then(html => {
+        // Tạo một div tạm để lấy các .col mới
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+
+        // Lấy tất cả .col mới và append vào grid
+        tempDiv.querySelectorAll('.col').forEach(col => {
+          document.getElementById('productGrid').appendChild(col);
+        });
+
+        // Xử lý nút show more mới (nếu còn)
+        const newShowMore = tempDiv.querySelector('#showMoreBtn');
+        if (newShowMore) {
+          btn.setAttribute('data-offset', newShowMore.getAttribute('data-offset'));
+          btn.disabled = false;
+          btn.textContent = 'Show more';
+        } else {
+          btn.remove();
+        }
+      })
+      .catch(() => {
+        btn.textContent = 'Show more';
+        btn.disabled = false;
+      });
+  }
+}
+
+// Alternative approach: Check if listener already exists
+if (!window.showMoreListenerAdded) {
+  document.addEventListener('click', handleShowMore);
+  window.showMoreListenerAdded = true;
+}
 <!-- Make sure Bootstrap JS is loaded for offcanvas to work -->
-<script>
+
   // Xử lý thêm vào giỏ hàng bằng AJAX cho tất cả form trên trang
   document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
@@ -457,4 +545,5 @@ if ($isSearchMode) {
         .catch(err => console.error("Lỗi khi gửi form:", err));
     });
   });
+
 </script>
