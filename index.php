@@ -29,7 +29,7 @@
   require 'db/connect.php';
   // navbar
   include 'components/navbar.php'
-  ?>
+    ?>
 
   <!-- Content -->
   <div id="main-content">
@@ -107,7 +107,8 @@
     ?>
   </div>
   <!-- back to top -->
-  <a href="#" class="arrow" id="scrollToTop" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+  <a href="#" class="arrow" id="scrollToTop"
+    style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999;">
     <img src="img/up-arrow.png" alt="" width="50px">
   </a>
 

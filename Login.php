@@ -11,7 +11,7 @@ $alert_type = '';
 // Chuyển hướng đăng nhập
 if (isset($_SESSION['username'])) {
   if ($_SESSION['role'] == 0) {
-    header("Location: admin/home-page/admin.php");
+    header("Location: admin.php");
     exit();
   } else if ($_SESSION['role'] == 1) {
     header("Location: index.php");
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra role để chuyển hướng
     if ($role == 0) {
       // Admin
-      header("Location: admin/home-page/admin.php");
+      header("Location: admin.php");
       exit();
     } else if ($role == 1) {
       // Người dùng
@@ -149,9 +149,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <!-- tạo col thứ nhất -->
               <div class="col-3">
                 <div class="input-group mb-lg-2">
-                  <button class="btn bg-light w-100 fs-6">
-                    <img src="./img/google.png" style="width: 30px" />
-                  </button>
+                  <a href="Login-google.php">
+                    <button class="btn bg-light w-100 fs-6" type="button">
+                      <img src="./img/google.png" style="width: 30px" />
+                    </button>
+                  </a>
                 </div>
               </div>
               <!-- tạo col thứ 2 -->
