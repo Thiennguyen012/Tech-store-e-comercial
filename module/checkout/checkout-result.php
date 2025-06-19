@@ -64,6 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $item['price'] * $item['quantity'],
             $order_id
         );
+        $product_id = $item['id'];
+        $qty_bought = $item['quantity'];
+
+        $stmt = $conn->prepare("UPDATE product SET qty_in_stock = qty_in_stock - ? WHERE id = ?");
+        $stmt->bind_param("ii", $qty_bought, $product_id);
+        $stmt->execute();
     }
 
     // ✅ Thêm thông báo sau khi có $order_id

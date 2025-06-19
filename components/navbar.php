@@ -20,7 +20,7 @@ if ($username) {
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand fs-4" href="#"
-      onclick="loadPage('module/main-content/main-content.php',this,'home'); return false;">Technologia</a>
+      onclick="loadPage('module/main-content/main-content.php',this,'home'); return false;">Technologia™</a>
     <!-- Toggle button -->
     <button class="navbar-toggler shaddow-none border-0" type="button" data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
