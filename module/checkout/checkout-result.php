@@ -75,10 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ✅ Thêm thông báo sau khi có $order_id
     if ($user_id && $order_id) {
         $message = "You have successfully placed order #$order_id.";
-        $stmtNotify = $conn->prepare("INSERT INTO notifications (user_id, content) VALUES (?, ?)");
-        $stmtNotify->bind_param("is", $user_id, $message);
+        $type = 0; // 0 = product (checkout)
+        $stmtNotify = $conn->prepare("INSERT INTO notifications (user_id, content, type) VALUES (?, ?, ?)");
+        $stmtNotify->bind_param("isi", $user_id, $message, $type);
         $stmtNotify->execute();
     }
+
 
     // Xóa giỏ hàng
     unset($_SESSION['cart']);
@@ -138,8 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Back button -->
     <div class="text-center mt-5">
         <div class="d-flex justify-content-center gap-3">
-            <a href="index.php" class="btn btn-outline-dark rounded-4 px-4">Back to Homepage</a>
             <a onclick="location.href='?act=products'" class="btn btn-outline-dark rounded-4 px-4">Continue Shopping</a>
+            <a onclick="location.href='?act=order'" class="btn btn-outline-dark rounded-4 px-4">View your Order</a>
         </div>
     </div>
 

@@ -44,7 +44,11 @@ $userId = $userData['id'];
                 document.getElementById("order-list").insertAdjacentHTML("beforeend", data);
                 offset += limit;
 
-                if (!data.trim()) {
+                // Đếm số đơn hàng trả về trong lần này
+                const orderCount = (data.match(/class="border rounded-4/g) || []).length;
+
+                // Ẩn nút nếu không còn dữ liệu, có thông báo trống, hoặc số đơn hàng trả về < limit
+                if (!data.trim() || data.includes('data-empty="true"') || orderCount < limit) {
                     document.getElementById("loadMoreBtn").style.display = "none";
                 }
             });

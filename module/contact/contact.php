@@ -13,7 +13,7 @@
     <div class="row g-5">
         <!-- Contact Form -->
         <div class="col-lg-8 ">
-            <div class="shadow-lg border-0 h-100">
+            <div class="bg-white py-4 rounded-4 shadow-sm h-100">
                 <div class="card-body p-4 ">
                     <h3 class="card-title mb-4 text-center">
                         <i class="fas fa-envelope text-dark me-2"></i>
@@ -92,7 +92,7 @@
         <!-- Contact Info & Map -->
         <div class="col-lg-4">
             <!-- Contact Information -->
-            <div class=" shadow-lg border-0 mb-4">
+            <div class="bg-white py-3 rounded-4 shadow-sm mb-4">
                 <div class="card-body p-4 ">
                     <h4 class="card-title mb-4 text-center">
                         <i class="fas fa-info-circle text-dark me-2"></i>
@@ -162,7 +162,7 @@
             </div>
 
             <!-- Social Media -->
-            <div class="shadow-lg border-0">
+            <div class="shadow-sm bg-white rounded-4 py-4">
                 <div class="card-body p-4 text-center">
                     <h5 class="card-title mb-3">
                         <i class="fas fa-share-alt text-dark me-2"></i>
@@ -177,7 +177,7 @@
                         <a href="https://x.com/" target="_blank"><i
                                 class="bi bi-twitter-x me-3 text-decoration-none text-dark fs-4"></i></a>
                         <a href="https://www.youtube.com/" target="_blank" class="mt-3"><i
-                                class="bi bi-youtube me-3 text-decoration-none text-dark fs-3 "></i></a>
+                                class="bi bi-youtube me-3 text-decoration-none text-dark fs-3"></i></a>
                     </div>
                 </div>
             </div>
@@ -204,7 +204,7 @@
 </div>
 
 <!-- FAQ Section -->
-<div class="container py-5">
+<div class="container py-5 bg-white mt-5 mb-5 py-3 rounded-4 shadow-sm">
     <div class="row justify-content-center mb-5">
         <div class="col-lg-8 text-center">
             <h2 class="display-6 fw-bold mb-3">Frequently Asked Questions</h2>

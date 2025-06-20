@@ -50,6 +50,8 @@ window.onpopstate = function (event) {
     case "book-services":
       file = "module/services/book-services.php";
       break;
+    case "book-result":
+      file = "module/services/book-result.php";
     //Mục contact
     case "contact":
       file = "module/contact/contact.php";

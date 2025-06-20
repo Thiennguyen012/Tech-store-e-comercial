@@ -50,10 +50,26 @@ while ($row = $result->fetch_assoc()) {
         'total' => $row['total']
     ];
 }
+if (empty($orders)) {
+    if ($offset === 0) {
+        echo '<div class="container-fluid vh-50 d-flex align-items-center justify-content-center" data-empty="true">
+                <div class="text-center py-5">
+                    <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
+                    <h4 class="text-muted mb-3">No orders yet !</h4>
+                    <p class="text-muted mb-4">Please place an order to see it here.</p>
+                    <a href="#" onclick="loadPage(\'module/product/product.php\', this, \'products\'); return false;" class="btn btn-dark rounded-pill px-4">Shop now</a>
+                </div>
+              </div>';
+    } else {
+        // Chỉ gửi về một chuỗi rỗng nếu offset > 0
+        echo '';
+    }
+    exit;
+}
 
 foreach ($orders as $billId => $order): ?>
     <div class="border rounded-4 mb-5 p-4 shadow-sm">
-        <h5 class="mb-3 text-primary">Order #<?= $billId ?> <span class="text-muted">(<?= $order['order_date'] ?>)</span></h5>
+        <h5 class="mb-3 text-success">Order #<?= $billId ?> <span class="text-muted">(<?= $order['order_date'] ?>)</span></h5>
         <ul class="list-group mb-4">
             <li class="list-group-item"><strong>Recipient:</strong> <?= htmlspecialchars($order['order_name']) ?></li>
             <li class="list-group-item"><strong>Phone:</strong> <?= htmlspecialchars($order['order_phone']) ?></li>
