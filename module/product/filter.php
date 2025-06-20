@@ -117,11 +117,12 @@ if ($result && $result->num_rows > 0) {
         echo '</a>';
         
         if ($row['qty_in_stock'] > 0) {
-            echo '<form class="addToCartForm" action="module/cart/cart.php" method="POST">';
+            echo '<form id="addToCartForm" action="module/cart/cart.php" method="POST">';
             echo '<input type="hidden" name="product-id" value="' . $row['id'] . '">';
             echo '<input type="hidden" name="product-name" value="' . htmlspecialchars($row['name']) . '">';
             echo '<input type="hidden" name="product-price" value="' . $row['price'] . '">';
             echo '<input type="hidden" name="product-img" value="' . htmlspecialchars($row['product_image']) . '">';
+            echo '<input type="hidden" name="quantity" value="1">';
             echo '<button type="submit" name="add-to-cart" class="btn btn-outline-dark btn-sm rounded-pill px-3">';
             echo '<i class="bi bi-cart"></i>';
             echo '</button>';

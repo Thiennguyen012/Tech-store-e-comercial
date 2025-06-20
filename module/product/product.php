@@ -404,6 +404,45 @@ if ($isSearchMode) {
     }
   }
 
+  // Hàm gán sự kiện AJAX cho tất cả form add to cart
+  function attachCartEventListeners() {
+    document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
+      // Xóa event listener cũ để tránh trùng lặp
+      form.removeEventListener('submit', handleCartSubmit);
+      // Gán event listener mới
+      form.addEventListener('submit', handleCartSubmit);
+    });
+  }
+
+  // Hàm xử lý submit form add to cart
+  function handleCartSubmit(e) {
+    e.preventDefault(); // Ngăn submit mặc định
+
+    const formData = new FormData(e.target);
+
+    fetch('module/cart/cart.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Đã thêm sản phẩm vào giỏ hàng!");
+          // Cập nhật số trên icon giỏ hàng nếu có
+          const cartIcon = document.querySelector('.cart-icon .fw-bold');
+          if (cartIcon) {
+            cartIcon.textContent = data.total;
+          }
+        } else {
+          alert("Thêm vào giỏ hàng thất bại!");
+        }
+      })
+      .catch(err => {
+        console.error("Lỗi khi gửi form:", err);
+        alert("Có lỗi xảy ra, vui lòng thử lại!");
+      });
+  }
+
   // Gửi form lọc (desktop)
   document.getElementById('filterButton').addEventListener('click', function () {
     const formData = new FormData(document.getElementById('filterForm'));
@@ -419,6 +458,8 @@ if ($isSearchMode) {
       })
       .then((data) => {
         document.getElementById('productList').innerHTML = data;
+        // Gán lại sự kiện cho các form mới
+        attachCartEventListeners();
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -441,6 +482,8 @@ if ($isSearchMode) {
       })
       .then((data) => {
         document.getElementById('productList').innerHTML = data;
+        // Gán lại sự kiện cho các form mới
+        attachCartEventListeners();
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -452,8 +495,6 @@ if ($isSearchMode) {
   document.getElementById('resetFilterButton').addEventListener('click', function () {
     const form = document.getElementById('filterForm');
     form.reset();
-    // Nếu có giá trị mặc định cho category, minPrice, maxPrice, sortBy thì set lại
-    // Gửi lại filter để load toàn bộ sản phẩm
     document.getElementById('filterButton').click();
   });
 
@@ -464,86 +505,73 @@ if ($isSearchMode) {
     document.getElementById('filterButtonMobile').click();
   });
 
-  
   // Show more sản phẩm
-function handleShowMore(e) {
-  if (e.target && e.target.id === 'showMoreBtn') {
-    const btn = e.target;
-    
-    // Prevent multiple clicks while loading
-    if (btn.disabled) return;
-    
-    btn.disabled = true;
-    btn.textContent = 'Loading...';
-    const offset = parseInt(btn.getAttribute('data-offset'), 10);
-    const form = document.getElementById('filterForm') || document.getElementById('filterFormMobile');
-    const formData = new FormData(form);
-    formData.append('limit', 8);
-    formData.append('offset', offset);
-    formData.append('showMore', 1);
-
-    fetch('module/product/filter.php', {
-      method: 'POST',
-      body: formData,
-    })
-      .then(res => res.text())
-      .then(html => {
-        // Tạo một div tạm để lấy các .col mới
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
-
-        // Lấy tất cả .col mới và append vào grid
-        tempDiv.querySelectorAll('.col').forEach(col => {
-          document.getElementById('productGrid').appendChild(col);
-        });
-
-        // Xử lý nút show more mới (nếu còn)
-        const newShowMore = tempDiv.querySelector('#showMoreBtn');
-        if (newShowMore) {
-          btn.setAttribute('data-offset', newShowMore.getAttribute('data-offset'));
-          btn.disabled = false;
-          btn.textContent = 'Show more';
-        } else {
-          btn.remove();
-        }
-      })
-      .catch(() => {
-        btn.textContent = 'Show more';
-        btn.disabled = false;
-      });
-  }
-}
-
-// Alternative approach: Check if listener already exists
-if (!window.showMoreListenerAdded) {
-  document.addEventListener('click', handleShowMore);
-  window.showMoreListenerAdded = true;
-}
-<!-- Make sure Bootstrap JS is loaded for offcanvas to work -->
-
-  // Xử lý thêm vào giỏ hàng bằng AJAX cho tất cả form trên trang
-  document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault(); // Ngăn submit mặc định
-
+  function handleShowMore(e) {
+    if (e.target && e.target.id === 'showMoreBtn') {
+      const btn = e.target;
+      
+      // Prevent multiple clicks while loading
+      if (btn.disabled) return;
+      
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+      const offset = parseInt(btn.getAttribute('data-offset'), 10);
+      const form = document.getElementById('filterForm') || document.getElementById('filterFormMobile');
       const formData = new FormData(form);
+      formData.append('limit', 8);
+      formData.append('offset', offset);
+      formData.append('showMore', 1);
 
-      fetch('module/cart/cart.php', {
+      fetch('module/product/filter.php', {
         method: 'POST',
-        body: formData
+        body: formData,
       })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert("Đã thêm sản phẩm vào giỏ hàng!");
-            // Cập nhật số trên icon giỏ hàng nếu cần
-            document.querySelector('.cart-icon .fw-bold').textContent = data.total;
+        .then(res => res.text())
+        .then(html => {
+          // Tạo một div tạm để lấy các .col mới
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+
+          // Lấy tất cả .col mới và append vào grid
+          tempDiv.querySelectorAll('.col').forEach(col => {
+            document.getElementById('productGrid').appendChild(col);
+          });
+
+          // GÁN LẠI SỰ KIỆN AJAX CHO TẤT CẢ FORM (bao gồm cả form mới)
+          attachCartEventListeners();
+
+          // Xử lý nút show more mới (nếu còn)
+          const newShowMore = tempDiv.querySelector('#showMoreBtn');
+          if (newShowMore) {
+            btn.setAttribute('data-offset', newShowMore.getAttribute('data-offset'));
+            btn.disabled = false;
+            btn.textContent = 'Show more';
           } else {
-            alert("Thêm vào giỏ hàng thất bại!");
+            btn.remove();
           }
         })
-        .catch(err => console.error("Lỗi khi gửi form:", err));
-    });
+        .catch(() => {
+          btn.textContent = 'Show more';
+          btn.disabled = false;
+        });
+    }
+  }
+
+  // Gán sự kiện click cho nút show more
+  if (!window.showMoreListenerAdded) {
+    document.addEventListener('click', handleShowMore);
+    window.showMoreListenerAdded = true;
+  }
+
+  // Gán sự kiện cho các form có sẵn khi trang load
+  document.addEventListener('DOMContentLoaded', function() {
+    attachCartEventListeners();
   });
 
+  // Nếu trang đã load xong thì gán luôn
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachCartEventListeners);
+  } else {
+    attachCartEventListeners();
+  }
 </script>
