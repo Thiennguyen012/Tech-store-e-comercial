@@ -31,7 +31,7 @@ function is_active($file)
         <a class="nav-link text-dark<?php echo is_active('user-profile.php'); ?>" href="#" onclick="loadPage('module/user-profile/user-profile.php',this,'profile'); return false;">
             <i class="bi bi-person"></i> Account Information
         </a>
-        <a class="nav-link text-dark<?php echo is_active('user-order.php'); ?>" href="#" onclick="loadPage('module/user-order/user-order.php',this,'order'); return false;">
+        <a class="nav-link text-dark<?php echo is_active('user-order.php'); ?>" href="#" onclick="location.href='index.php?act=order'; return false;">
             <i class="bi bi-bag"></i> Order Management
         </a>
         <a class="nav-link text-dark<?php echo is_active('addresses.php'); ?>" href="#" onclick="loadPage('module/user-profile/addresses.php',this,'addresses'); return false;">

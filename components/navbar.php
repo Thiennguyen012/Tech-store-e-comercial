@@ -139,7 +139,7 @@ if ($username) {
                       onclick="loadPage('module/user-profile/user-profile.php', this, 'profile'); return false;">Profile</a>
                   </li>
                   <li><a class="dropdown-item" href="#"
-                      onclick="loadPage('module/user-order/user-order.php', this, 'order'); return false;">Your Order</a>
+                      onclick="location.href='index.php?act=order'; return false;">Your Order</a>
                   </li>
                   <li>
                     <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
