@@ -40,6 +40,16 @@
       case 'products':
         include 'module/product/product.php';
         break;
+      // Thêm case cho single product
+      case 'single-product':
+        $productId = $_GET['id'] ?? '';
+        if ($productId) {
+          $_GET['id'] = $productId; // Đảm bảo id được truyền đúng
+          include 'module/product/single_product.php';
+        } else {
+          include 'module/product/product.php';
+        }
+        break;
       // vũ ịt làm chỗ products thêm file php nào muốn load thì thêm 1 case mới vào đây
       case 'laptop':
         include 'module/product/product.php';

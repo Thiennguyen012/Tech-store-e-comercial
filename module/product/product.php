@@ -334,7 +334,7 @@ if ($isSearchMode) {
               <div class="col">
                 <div class="card border-0 h-100 shadow-sm">
                   <a href="#"
-                    onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;"
+                    onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
                     style="text-decoration:none; color:inherit;">
                     <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2"
                       alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;">
@@ -348,7 +348,7 @@ if ($isSearchMode) {
                     </div>
                     <div class="d-flex justify-content-center gap-2">
                       <a href="#"
-                        onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>'); return false;"
+                        onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
                         class="btn btn-dark btn-sm rounded-pill px-3">
                         More details
                       </a>

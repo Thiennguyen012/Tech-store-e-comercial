@@ -1,9 +1,13 @@
 // đổi #main-content trong file index thành content của 1 file php khác bằng hàm loadPage(file) gọi ra trong button hoặc thẻ a
-function loadPage(file, clickedLink = null, act = "") {
+function loadPage(file, clickedLink = null, act = "", productId = "") {
   $("#main-content").load(file, function () {
     // Thay đổi URL mà không load lại trang
     if (act) {
-      history.pushState({ act: act }, "", `index.php?act=${act}`);
+      if (act === "single-product" && productId) {
+        history.pushState({ act: act, productId: productId }, "", `index.php?act=${act}&id=${productId}`);
+      } else {
+        history.pushState({ act: act }, "", `index.php?act=${act}`);
+      }
     }
     // Khởi động lại carousel nếu có
     const myCarousel = document.querySelector("#carouselExampleCaptions");
@@ -25,6 +29,11 @@ window.onpopstate = function (event) {
     // Mục products
     case "products":
       file = "module/product/product.php";
+      break;
+    // Thêm case cho single product
+    case "single-product":
+      const productId = event.state?.productId || "";
+      file = `module/product/single_product.php?id=${productId}`;
       break;
     //
     // Mục about
