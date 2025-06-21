@@ -1,26 +1,13 @@
-<?php
-// If there's any PHP processing, add code here
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-
 <body>
 
-    <div class="container-fluid py-5" style="background: linear-gradient(135deg,rgb(234, 235, 240) 0%,rgb(71, 69, 73) 100%);">
+    <div class="container-fluid py-5"
+        style="background: linear-gradient(135deg,rgb(234, 235, 240) 0%,rgb(71, 69, 73) 100%);">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center text-white mb-5">
                     <h1 class="display-4 fw-bold mb-3">Contact Us</h1>
-                    <p class="lead">We are always ready to support you. Leave your information and we will respond as soon as possible!</p>
+                    <p class="lead">We are always ready to support you. Leave your information and we will respond as
+                        soon as possible!</p>
                 </div>
             </div>
         </div>
@@ -44,14 +31,16 @@
                                         <i class="fas fa-user text-dark me-1"></i>
                                         First Name *
                                     </label>
-                                    <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required>
+                                    <input type="text" class="form-control form-control-lg" id="firstName"
+                                        name="firstName" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="lastName" class="form-label fw-semibold">
                                         <i class="fas fa-user text-dark me-1"></i>
                                         Last Name *
                                     </label>
-                                    <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required>
+                                    <input type="text" class="form-control form-control-lg" id="lastName"
+                                        name="lastName" required>
                                 </div>
                             </div>
 
@@ -61,7 +50,8 @@
                                         <i class="fas fa-envelope text-dark me-1"></i>
                                         Email *
                                     </label>
-                                    <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                                    <input type="email" class="form-control form-control-lg" id="email" name="email"
+                                        required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="phone" class="form-label fw-semibold">
@@ -92,7 +82,8 @@
                                     <i class="fas fa-comment text-dark me-1"></i>
                                     Message *
                                 </label>
-                                <textarea class="form-control" id="message" name="message" rows="6" placeholder="Enter your message content..." required></textarea>
+                                <textarea class="form-control" id="message" name="message" rows="6"
+                                    placeholder="Enter your message content..." required></textarea>
                             </div>
 
                             <div class="d-grid">
@@ -119,19 +110,22 @@
                         <div class="contact-info">
                             <div class="d-flex align-items-start mb-3">
                                 <div class="flex-shrink-0">
-                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 40px; height: 40px;">
                                         <i class="fas fa-map-marker-alt"></i>
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1 fw-semibold">Address</h6>
-                                    <p class="text-muted mb-0">141 Chien Thang, Tan Trieu<br>Thanh Tri, Ha Noi, Vietnam</p>
+                                    <p class="text-muted mb-0">141 Chien Thang, Tan Trieu<br>Thanh Tri, Ha Noi, Vietnam
+                                    </p>
                                 </div>
                             </div>
 
                             <div class="d-flex align-items-start mb-3">
                                 <div class="flex-shrink-0">
-                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 40px; height: 40px;">
                                         <i class="fas fa-phone"></i>
                                     </div>
                                 </div>
@@ -146,22 +140,26 @@
 
                             <div class="d-flex align-items-start mb-3">
                                 <div class="flex-shrink-0">
-                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 40px; height: 40px;">
                                         <i class="fas fa-envelope"></i>
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-1 fw-semibold">Email</h6>
                                     <p class="text-muted mb-0">
-                                        <a href="mailto:info@company.com" class="text-decoration-none">info@company.com</a><br>
-                                        <a href="mailto:support@company.com" class="text-decoration-none">support@company.com</a>
+                                        <a href="mailto:info@company.com"
+                                            class="text-decoration-none">info@company.com</a><br>
+                                        <a href="mailto:support@company.com"
+                                            class="text-decoration-none">support@company.com</a>
                                     </p>
                                 </div>
                             </div>
 
                             <div class="d-flex align-items-start">
                                 <div class="flex-shrink-0">
-                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 40px; height: 40px;">
                                         <i class="fas fa-clock"></i>
                                     </div>
                                 </div>
@@ -209,11 +207,7 @@
                 <div class="map-container" style="height: 400px; background: #f8f9fa;">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.660469221864!2d105.86592631495326!3d21.030731892636764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab60f0bb2b85%3A0x5e8d8af9fa4b8de6!2zMTQxIENoaeG6v24gVGjhuq9uZywgVMOibiBUcmnhu4d1LCBUaGFuaCBUcsOsLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1sen!2s!4v1640995200000!5m2!1sen!2s"
-                        width="100%"
-                        height="400"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy">
+                        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy">
                     </iframe>
                 </div>
             </div>
@@ -234,42 +228,48 @@
                 <div class="accordion" id="faqAccordion">
                     <div class="accordion-item mb-3 border-0 shadow-sm">
                         <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq1">
                                 <i class="fas fa-question-circle text-dark me-2"></i>
                                 How do I schedule an appointment?
                             </button>
                         </h2>
                         <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                You can schedule an appointment through the contact form above, call us directly, or email us. We will confirm a suitable time with you.
+                                You can schedule an appointment through the contact form above, call us directly, or
+                                email us. We will confirm a suitable time with you.
                             </div>
                         </div>
                     </div>
 
                     <div class="accordion-item mb-3 border-0 shadow-sm">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq2">
                                 <i class="fas fa-question-circle text-dark me-2"></i>
                                 What is the response time?
                             </button>
                         </h2>
                         <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                We are committed to responding within 24 business hours. For urgent cases, please call us directly.
+                                We are committed to responding within 24 business hours. For urgent cases, please call
+                                us directly.
                             </div>
                         </div>
                     </div>
 
                     <div class="accordion-item mb-3 border-0 shadow-sm">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq3">
                                 <i class="fas fa-question-circle text-dark me-2"></i>
                                 Do you provide support outside business hours?
                             </button>
                         </h2>
                         <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                We have 24/7 emergency support service. Please contact our hotline for assistance outside business hours.
+                                We have 24/7 emergency support service. Please contact our hotline for assistance
+                                outside business hours.
                             </div>
                         </div>
                     </div>
@@ -280,16 +280,16 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Initialize tooltips
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             });
 
             // Form validation
             const contactForm = document.getElementById('contactForm');
-            contactForm.addEventListener('submit', function(e) {
+            contactForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 // Show success message

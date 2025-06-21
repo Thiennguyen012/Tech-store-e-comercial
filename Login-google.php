@@ -1,18 +1,28 @@
 <?php
-require_once 'vendor/autoload.php';
 session_start();
 
-$client = new Google_Client();
-$client->setClientId('55616739892-ag6b1llvhtsc82pg91bpksmuvfbku8dv.apps.googleusercontent.com');
-$client->setClientSecret('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');
-$client->setRedirectUri('http://localhost/Webbanhang/callback.php'); // Thay your-project-folder bằng tên thư mục project của bạn
-$client->addScope('email');
-$client->addScope('profile');
+// Thông tin Google OAuth
+$client_id = '55616739892-ag6b1llvhtsc82pg91bpksmuvfbku8dv.apps.googleusercontent.com';
+$redirect_uri = 'http://localhost/Webbanhang/callback.php';
 
-// Tạo URL đăng nhập
-$authUrl = $client->createAuthUrl();
+$scope = 'email profile';
+$response_type = 'code';
+$state = bin2hex(random_bytes(16)); // Tạo state để bảo mật
+
+// Lưu state vào session để verify sau
+$_SESSION['oauth_state'] = $state;
+
+$auth_url = 'https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query([
+    'client_id' => $client_id,
+    'redirect_uri' => $redirect_uri,
+    'scope' => $scope,
+    'response_type' => $response_type,
+    'state' => $state,
+    'access_type' => 'offline',
+    'prompt' => 'consent'
+]);
 
 // Chuyển hướng đến Google OAuth
-header('Location: ' . $authUrl);
+header('Location: ' . $auth_url);
 exit;
 ?>
