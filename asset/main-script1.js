@@ -1,6 +1,9 @@
 // đổi #main-content trong file index thành content của 1 file php khác bằng hàm loadPage(file) gọi ra trong button hoặc thẻ a
 function loadPage(file, clickedLink = null, act = "", productId = "") {
   $("#main-content").load(file, function () {
+    // Cuộn lên đầu trang sau khi load content mới
+    $("html, body").animate({ scrollTop: 0 }, 300);
+    
     // Thay đổi URL mà không load lại trang
     if (act) {
       if (act === "single-product" && productId) {
@@ -87,7 +90,10 @@ window.onpopstate = function (event) {
     default:
       file = "module/main-content/main-content.php";
   }
-  $("#main-content").load(file);
+  $("#main-content").load(file, function() {
+    // Cuộn lên đầu trang khi sử dụng nút back/forward
+    $("html, body").animate({ scrollTop: 0 }, 300);
+  });
 };
 
 //script cho arrow up to top
