@@ -405,7 +405,7 @@ if ($isSearchMode) {
 
   // Hàm gán sự kiện AJAX cho tất cả form add to cart
   function attachCartEventListeners() {
-    document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
+    document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
       // Xóa event listener cũ để tránh trùng lặp
       form.removeEventListener('submit', handleCartSubmit);
       // Gán event listener mới
@@ -420,9 +420,9 @@ if ($isSearchMode) {
     const formData = new FormData(e.target);
 
     fetch('module/cart/cart.php', {
-      method: 'POST',
-      body: formData
-    })
+        method: 'POST',
+        body: formData
+      })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -433,11 +433,13 @@ if ($isSearchMode) {
             keyboard: true
           });
           modal.show();
-          
+
           // Thêm event listener để dispose modal khi đóng
-          modalElement.addEventListener('hidden.bs.modal', function () {
+          modalElement.addEventListener('hidden.bs.modal', function() {
             modal.dispose();
-          }, { once: true });
+          }, {
+            once: true
+          });
 
           // Cập nhật số trên icon giỏ hàng nếu có
           const cartIcon = document.querySelector('.cart-icon .fw-bold');
@@ -520,10 +522,10 @@ if ($isSearchMode) {
   function handleShowMore(e) {
     if (e.target && e.target.id === 'showMoreBtn') {
       const btn = e.target;
-      
+
       // Prevent multiple clicks while loading
       if (btn.disabled) return;
-      
+
       btn.disabled = true;
       btn.textContent = 'Loading...';
       const offset = parseInt(btn.getAttribute('data-offset'), 10);
@@ -534,9 +536,9 @@ if ($isSearchMode) {
       formData.append('showMore', 1);
 
       fetch('module/product/filter.php', {
-        method: 'POST',
-        body: formData,
-      })
+          method: 'POST',
+          body: formData,
+        })
         .then(res => res.text())
         .then(html => {
           // Tạo một div tạm để lấy các .col mới
@@ -600,7 +602,6 @@ if ($isSearchMode) {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a href="#" class="btn btn-dark" onclick="location.href='index.php?act=cart';return false;">Go to Cart</a>
       </div>
     </div>
   </div>
