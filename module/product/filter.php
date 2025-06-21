@@ -105,23 +105,24 @@ if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         echo '<div class="col">';
         echo '<div class="card border-0 h-100 shadow-sm">';
-        echo '<a href="#" onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\'); return false;" style="text-decoration:none; color:inherit;">';
+        echo '<a href="#" onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\', this, \'single-product\', \'' . $row['id'] . '\'); return false;" style="text-decoration:none; color:inherit;">';
         echo '<img src="' . htmlspecialchars($row['product_image']) . '" class="card-img-top p-2" alt="' . htmlspecialchars($row['name']) . '" style="height:260px;object-fit:contain;">';
         echo '</a>';
         echo '<div class="card-body text-center">';
         echo '<h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">' . htmlspecialchars($row['name']) . '</h6>';
         echo '<div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;">' . number_format($row['price'], 0, ',', '.') . '$</div>';
         echo '<div class="d-flex justify-content-center gap-2">';
-        echo '<a href="#" onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">';
+        echo '<a href="#" onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\', this, \'single-product\', \'' . $row['id'] . '\'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">';
         echo 'More details';
         echo '</a>';
         
         if ($row['qty_in_stock'] > 0) {
-            echo '<form class="addToCartForm" action="module/cart/cart.php" method="POST">';
+            echo '<form id="addToCartForm" action="module/cart/cart.php" method="POST">';
             echo '<input type="hidden" name="product-id" value="' . $row['id'] . '">';
             echo '<input type="hidden" name="product-name" value="' . htmlspecialchars($row['name']) . '">';
             echo '<input type="hidden" name="product-price" value="' . $row['price'] . '">';
             echo '<input type="hidden" name="product-img" value="' . htmlspecialchars($row['product_image']) . '">';
+            echo '<input type="hidden" name="quantity" value="1">';
             echo '<button type="submit" name="add-to-cart" class="btn btn-outline-dark btn-sm rounded-pill px-3">';
             echo '<i class="bi bi-cart"></i>';
             echo '</button>';

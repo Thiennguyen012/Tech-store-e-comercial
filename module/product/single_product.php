@@ -75,7 +75,7 @@ while ($row = $config_result->fetch_assoc()) {
           <a href="#" onclick="loadPage('module/main-content/main-content.php'); return false;">Home</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="#" onclick="loadPage('module/product/product.php'); return false;">Laptops</a>
+          <a href="#" onclick="loadPage('module/product/product.php', this, 'products'); return false;">Laptops</a>
         </li>
         <li class="breadcrumb-item">
           <!-- Breadcrumb hãng, tự động lấy theo category và brand -->
@@ -89,7 +89,7 @@ while ($row = $config_result->fetch_assoc()) {
       $catStmt->fetch();
       $catStmt->close();
       echo urlencode($catName);
-    ?>&filters[<?php echo urlencode($brand_variation); ?>]=<?php echo urlencode($brand); ?>'); return false;">
+    ?>&filters[<?php echo urlencode($brand_variation); ?>]=<?php echo urlencode($brand); ?>', this, 'products'); return false;">
     <?php echo htmlspecialchars($brand); ?>
   </a>
 </li>
@@ -171,7 +171,7 @@ while ($row = $config_result->fetch_assoc()) {
                     <?php foreach ($chunk as $related): ?>
                       <div class="col-md-3 text-center">
                         <div class="card border-0 text-center" style="width: 100%;">
-                          <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $related['id']; ?>'); return false;" class="text-decoration-none text-dark">
+                          <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $related['id']; ?>', this, 'single-product', '<?php echo $related['id']; ?>'); return false;" class="text-decoration-none text-dark">
                             <img src="<?php echo htmlspecialchars($related['product_image']); ?>" class="card-img-top img-fluid" alt="<?php echo htmlspecialchars($related['name']); ?>">
                             <div class="card-body">
                               <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.9rem;"><?php echo htmlspecialchars($related['name']); ?></h6>

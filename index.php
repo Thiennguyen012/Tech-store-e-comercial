@@ -40,6 +40,16 @@
       case 'products':
         include 'module/product/product.php';
         break;
+      // Thêm case cho single product
+      case 'single-product':
+        $productId = $_GET['id'] ?? '';
+        if ($productId) {
+          $_GET['id'] = $productId; // Đảm bảo id được truyền đúng
+          include 'module/product/single_product.php';
+        } else {
+          include 'module/product/product.php';
+        }
+        break;
       // vũ ịt làm chỗ products thêm file php nào muốn load thì thêm 1 case mới vào đây
       case 'laptop':
         include 'module/product/product.php';
@@ -169,7 +179,7 @@
           <ul class="list-unstyled">
             <li>
               <a href="#" class="text-decoration-none text-white"
-                onclick="loadPage('module/about-us/about-us.php',this)">Our Team</a>
+                onclick="loadPage('module/about-us/about-us.php',this,'about'); return false;">Our Team</a>
             </li>
             <li>
               <p>Address: 141 Chien Thang, Tan Trieu, Thanh Tri, Ha Noi</p>
@@ -183,13 +193,16 @@
           <h4 class="pt-2">Categories</h4>
           <ul class="list-unstyled">
             <li>
-              <a href="#" class="text-decoration-none text-white">Laptop</a>
+              <a href="#" class="text-decoration-none text-white"
+                 onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Laptop</a>
             </li>
             <li>
-              <a href="#" class="text-decoration-none text-white">Security Camera</a>
+              <a href="#" class="text-decoration-none text-white"
+                 onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Security Camera</a>
             </li>
             <li>
-              <a href="#" class="text-decoration-none text-white">Computer Accessories</a>
+              <a href="#" class="text-decoration-none text-white"
+                 onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Computer Accessories</a>
             </li>
           </ul>
         </div>
@@ -197,10 +210,12 @@
           <h4 class="pt-2">More</h4>
           <ul class="list-unstyled">
             <li>
-              <a href="#" class="text-decoration-none text-white">Tracking</a>
+              <a href="#" class="text-decoration-none text-white"
+                 onclick="loadPage('module/user-order/user-order.php', this, 'order'); return false;">Tracking</a>
             </li>
             <li>
-              <a href="#" class="text-decoration-none text-white">Contribute Us</a>
+              <a href="#" class="text-decoration-none text-white"
+                 onclick="loadPage('module/contact/contact.php', this, 'contact'); return false;">Contribute Us</a>
             </li>
           </ul>
         </div>

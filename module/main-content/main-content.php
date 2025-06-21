@@ -1,3 +1,8 @@
+<?php
+// Include file lấy dữ liệu sản phẩm
+include __DIR__ . '/get-top-products.php';
+?>
+
 <!-- Carousel -->
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-indicators">
@@ -10,22 +15,28 @@
     <div class="carousel-item active c-items">
       <img id="slide-img1" src="./img/product-banner/zenbook14.jpg" class="d-block w-100 c-img" alt="..." />
       <div class="carousel-caption d-md-block">
-        <button class="btn btn-transparent btn-outline-dark rounded-4 mx-3 my-1 my-lg-3 fw-bold">Learn more</button>
-        <a class="text-dark ms-2 fw-bold" href="#">Buy now</a>
+        <button class="btn btn-transparent btn-outline-dark rounded-4 mx-3 my-1 my-lg-3 fw-bold" 
+                onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Learn more</button>
+        <a class="text-dark ms-2 fw-bold" href="#" 
+           onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Buy now</a>
       </div>
     </div>
     <div class="carousel-item c-items">
       <img id="slide-img2" src="./img/product-banner/vivo s16.jpg" class="d-block w-100 c-img" alt="..." />
       <div class="carousel-caption d-md-block">
-        <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">Learn more</button>
-        <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
+        <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold"
+                onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Learn more</button>
+        <a class="text-light ms-2 fw-bold" href="#" 
+           onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Buy now</a>
       </div>
     </div>
     <div class="carousel-item c-items">
       <img id="slide-img3" src="./img/product-banner/zenbook a14.jpg" class="d-block w-100 c-img" alt="..." />
       <div class="carousel-caption d-md-block">
-        <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold">Learn more</button>
-        <a class="text-light ms-2 fw-bold" href="#">Buy now</a>
+        <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold"
+                onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Learn more</button>
+        <a class="text-light ms-2 fw-bold" href="#" 
+           onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Buy now</a>
       </div>
     </div>
   </div>
@@ -39,25 +50,34 @@
   </button>
 </div>
 
-<!-- Camera -->
+<!-- Camera Featured Section -->
 <div class="gcam-container container my-5">
   <div class="row align-items-center">
     <!-- Nội dung bên trái -->
     <div class="col-md-6 text-md-start text-center mb-4 mb-md-0">
       <h1 class="gcam-title fw-bold mb-3">
-        Make your home secured with Google Nest Cam
+        <!-- hàm bên dưới để gọi tên sản phẩm top mới nếu cần 
+         <?php echo $featuredCamera ? htmlspecialchars($featuredCamera['name']) : 'Make your home secured with Google Nest Cam'; ?> -->
+         Make your home secured with Google Nest Cam
       </h1>
       <p class="gcam-content text-muted mb-4">
-        Start or expand your security setup with Nest Cam (battery) and the
-        Nest Cam Weatherproof Cable (10m)
+        Start or expand your security setup with professional security cameras
       </p>
       <p class="gcam-content mb-4 fs-2 fw-bold">
-        <span style="font-size: 16px; vertical-align: top">$</span>69<span
+        <span style="font-size: 16px; vertical-align: top">$</span><?php echo $featuredCamera ? number_format($featuredCamera['price'], 0) : '69'; ?><span
           style="font-size: 14px; vertical-align: super">99</span>
       </p>
-      <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2">
-        Show more
-      </button>
+      <?php if ($featuredCamera): ?>
+        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
+                onclick="loadPage('module/product/single_product.php?id=<?php echo $featuredCamera['id']; ?>', this, 'single-product', '<?php echo $featuredCamera['id']; ?>'); return false;">
+          Show more
+        </button>
+      <?php else: ?>
+        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
+                onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">
+          Show more
+        </button>
+      <?php endif; ?>
     </div>
 
     <!-- Hình ảnh bên phải -->
@@ -97,7 +117,8 @@
   </div>
 </div>
 <hr style="width: 85%; margin: auto" />
-<!-- ROG -->
+
+<!-- ROG Featured Section -->
 <div class="laptop-container container my-5">
   <div class="row align-items-center">
     <!-- Hình ảnh bên phải -->
@@ -152,30 +173,39 @@
     <!-- Nội dung bên trái -->
     <div class="col-md-6 text-md-start text-center mb-4 mb-md-0">
       <h1 class="laptop-title fw-bold mb-3">
-        Extreme Gaming performance with ROG Strix G16
+        <!-- <?php echo $featuredLaptop ? htmlspecialchars($featuredLaptop['name']) : 'Extreme Gaming performance with ROG Strix G16'; ?> -->
+         Extreme Gaming performance with ROG Strix G16
       </h1>
       <p class="laptop-content text-muted mb-4">
-        Reach new heights of Windows 11 Pro gaming with the 2025 ROG Strix
-        G16, boasting up to an AMD Ryzen™ 9 9955HX3D processor and up to an
-        NVIDIA® GeForce RTX™ 5070 Ti Laptop GPU with a max TDP of 140W.
+        Reach new heights of Windows 11 Pro gaming with high-performance laptops
       </p>
       <p class="laptop-content mb-4 fs-2 fw-bold">
-        <span style="font-size: 16px; vertical-align: top">$</span>1,899<span
+        <span style="font-size: 16px; vertical-align: top">$</span><?php echo $featuredLaptop ? number_format($featuredLaptop['price'], 0) : '1,899'; ?><span
           style="font-size: 14px; vertical-align: super">99</span>
       </p>
-      <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2">
-        Show more
-      </button>
+      <?php if ($featuredLaptop): ?>
+        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
+                onclick="loadPage('module/product/single_product.php?id=<?php echo $featuredLaptop['id']; ?>', this, 'single-product', '<?php echo $featuredLaptop['id']; ?>'); return false;">
+          Show more
+        </button>
+      <?php else: ?>
+        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
+                onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">
+          Show more
+        </button>
+      <?php endif; ?>
     </div>
   </div>
 </div>
+
 <!-- Categories -->
 <div class="categories-part-container container mb-5">
   <h1 class="text-center fw-semibold">Categories</h1>
   <hr />
   <div class="row text-center my-lg-4">
     <div class="col-md-4 col-sm-6 my-2">
-      <div class="card p-4 categories-card">
+      <div class="card p-4 categories-card" style="cursor: pointer;" 
+           onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">
         <img src="./img/categories-pic-laptop.png" class="mx-auto mb-3" style="height:120px" alt="icon">
         <h4 class="card-title fw-bold">Laptop</h4>
         <p class="card-text">Fast, reliable laptops for work, study, or gaming.</p>
@@ -183,7 +213,8 @@
     </div>
 
     <div class="col-md-4 col-sm-6 my-2">
-      <div class="card p-4 categories-card">
+      <div class="card p-4 categories-card" style="cursor: pointer;"
+           onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">
         <img src="./img/categories-pic-camera.png" class="mx-auto mb-3" style="height: 120px;" alt="icon">
         <h4 class="card-title fw-bold">Security Camera</h4>
         <p class="card-text">Easy-to-use cameras for smart home security.</p>
@@ -191,7 +222,8 @@
     </div>
 
     <div class="col-md-4 col-sm-6 my-2">
-      <div class="card p-4 categories-card">
+      <div class="card p-4 categories-card" style="cursor: pointer;"
+           onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">
         <img src="./img/categories-pic-others.png" class="mx-auto mb-3" style="height: 120px;" alt="icon">
         <h4 class="card-title fw-bold">Computer Accessories</h4>
         <p class="card-text">Useful gadgets to improve your PC setup.</p>
@@ -199,164 +231,106 @@
     </div>
   </div>
 </div>
+
 <!-- Top Product -->
 <div class="top-product-container container">
   <h1 class="text-center fw-semibold">Top Products</h1>
   <hr />
+  
   <!-- Laptop -->
   <div class="row align-content-center my-lg-4">
+    <?php while ($laptop = $laptops->fetch_assoc()): ?>
     <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img src="./img/products/laptop/84663_laptop_acer_gaming_nitro_v_16_propanel_anv16_41.jpg" class="card-img-top"
-          alt="..." />
+        <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $laptop['id']; ?>', this, 'single-product', '<?php echo $laptop['id']; ?>'); return false;" style="text-decoration: none; color: inherit;">
+          <img src="<?php echo htmlspecialchars($laptop['product_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($laptop['name']); ?>" />
+        </a>
         <div class="card-body">
-          <h5 class="card-title">Laptop Acer Gaming Nitro V 16 ProPanel</h5>
+          <h5 class="card-title"><?php echo htmlspecialchars($laptop['name']); ?></h5>
           <p class="card-text">
-            RTX3050 6GB/R7-8845HS/16GB RAM/512GB SSD/Win11/Black
+            Price: $<?php echo number_format($laptop['price'], 2); ?>
           </p>
         </div>
         <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          <div class="col-auto">
+            <a href="#" class="btn btn-dark rounded-4 mb-3"
+               onclick="loadPage('module/product/single_product.php?id=<?php echo $laptop['id']; ?>', this, 'single-product', '<?php echo $laptop['id']; ?>'); return false;">More details</a>
+          </div>
+          <div class="col-auto">
+            <?php if ($laptop['qty_in_stock'] > 0): ?>
+              <form class="addToCartForm" action="module/cart/cart.php" method="POST" style="display: inline;">
+                <input type="hidden" name="product-id" value="<?php echo $laptop['id']; ?>">
+                <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($laptop['name']); ?>">
+                <input type="hidden" name="product-price" value="<?php echo $laptop['price']; ?>">
+                <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($laptop['product_image']); ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" name="add-to-cart" class="btn rounded-4 mb-3">
+                  <i class="fa-solid fa-cart-plus fs-4"></i>
+                </button>
+              </form>
+            <?php else: ?>
+              <button onclick="loadPage('module/contact/contact.php'); return false;" class="btn rounded-4 mb-3">
+                <i class="fa-solid fa-phone fs-4"></i>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-      <div class="card" style="width: 18rem">
-        <img src="./img/products/laptop/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg"
-          class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Laptop Acer Gaming Nitro Lite</h5>
-          <p class="card-text">
-            i7 13620H/16GB/512GB SSD/RTX3050 6G/Win11/White
-          </p>
-        </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-      <div class="card" style="width: 18rem">
-        <img src="./img/products/laptop/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg" class="card-img-top"
-          alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Laptop Asus ZenBook UX3405MA-PP152W</h5>
-          <p class="card-text">
-            Core Ultra 7 155H/32GB RAM/1TB SSD/14 3K/Win11
-          </p>
-        </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-      <div class="card" style="width: 18rem">
-        <img src="./img/products/laptop/dell inspiron 3530 i7.jpg" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Laptop Dell Inspiron 3530 i7</h5>
-          <p class="card-text">
-            i7 1355U 16GB/512GB SSD/15.6 inch FHD
-            120Hz/Win11H/OfficeHS21/Silver
-          </p>
-        </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php endwhile; ?>
   </div>
+  
   <!-- Security Camera -->
   <div class="row align-content-center my-lg-4">
+    <?php while ($camera = $cameras->fetch_assoc()): ?>
     <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
       <div class="card" style="width: 18rem">
-        <img src="./img/products/cams/91274_camera_tp_link_tapo_c510w_0003_layer_1.jpg" class="card-img-top"
-          alt="..." />
+        <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $camera['id']; ?>', this, 'single-product', '<?php echo $camera['id']; ?>'); return false;" style="text-decoration: none; color: inherit;">
+          <img src="<?php echo htmlspecialchars($camera['product_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($camera['name']); ?>" />
+        </a>
         <div class="card-body">
-          <h5 class="card-title">Camera TP-Link Tapo C510W</h5>
+          <h5 class="card-title"><?php echo htmlspecialchars($camera['name']); ?></h5>
           <p class="card-text">
-            2K Resolution, Full Color Night Vision 360°, Visual Range Smart,
-            Motion Tracking
+            Price: $<?php echo number_format($camera['price'], 2); ?>
           </p>
         </div>
         <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
+          <div class="col-auto">
+            <a href="#" class="btn btn-dark rounded-4 mb-3"
+               onclick="loadPage('module/product/single_product.php?id=<?php echo $camera['id']; ?>', this, 'single-product', '<?php echo $camera['id']; ?>'); return false;">More details</a>
+          </div>
+          <div class="col-auto">
+            <?php if ($camera['qty_in_stock'] > 0): ?>
+              <form class="addToCartForm" action="module/cart/cart.php" method="POST" style="display: inline;">
+                <input type="hidden" name="product-id" value="<?php echo $camera['id']; ?>">
+                <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($camera['name']); ?>">
+                <input type="hidden" name="product-price" value="<?php echo $camera['price']; ?>">
+                <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($camera['product_image']); ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" name="add-to-cart" class="btn rounded-4 mb-3">
+                  <i class="fa-solid fa-cart-plus fs-4"></i>
+                </button>
+              </form>
+            <?php else: ?>
+              <button onclick="loadPage('module/contact/contact.php'); return false;" class="btn rounded-4 mb-3">
+                <i class="fa-solid fa-phone fs-4"></i>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-      <div class="card" style="width: 18rem">
-        <img src="./img/products/cams/83142_camera_hikvision_ds_2cd1343g2_liuf_sl_2.jpg" class="card-img-top"
-          alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">
-            Camera Hikvision DS-2CD1343G2-LIUF(SL)-2
-          </h5>
-          <p class="card-text">
-            83 / 5.000 1/2.9″ progressive scan CMOS sensor Maximum
-            resolution (1920 × 1080)/25fps 2MP
-          </p>
-        </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-      <div class="card" style="width: 18rem">
-        <img src="./img/products/cams/74708_camera_tp_link_vigi_c240l_2_8mm_1.jpg" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">Camera TP-Link VIGI C240I</h5>
-          <p class="card-text">
-            Resolution 4 Megapixel H.265+/H.265/H.264+/H.264
-            Fixed lens 2.8 mm
-          </p>
-        </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-      <div class="card" style="width: 18rem">
-        <br />
-        <br />
-        <img src="./img/products/cams/56519_hikvision-hp-2cd1t23g0e-gpro-h265.jpg" class="card-img-top" alt="..." />
-        <br />
-        <br />
-        <div class="card-body">
-          <h5 class="card-title">CAMERA HIKVISION DS-2CE16D0T-EXLPF</h5>
-          <p class="card-text">
-            HD-TVI Bullet Camera, 2MP CMOS Sensor, 1920×1080 Resolution,
-            0.02 Lux Light Sensitivity
-          </p>
-        </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-auto"><a href="#" class="btn btn-dark rounded-4 mb-3">More details</a></div>
-          <div class="col-auto"><a href="#" class="btn rounded-4 mb-3"><i class="fa-solid fa-cart-plus fs-4"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <?php endwhile; ?>
   </div>
+  
   <div class="row align-content-center my-lg-4">
-    <div class="col-12 d-flex justify-content-center"><button class="btn btn-outline-dark rounded-4 mb-3 w-25" onclick="loadPage('module/product/product.php',this,'products');return false;">View more</button></div>
+    <div class="col-12 d-flex justify-content-center">
+      <button class="btn btn-outline-dark rounded-4 mb-3 w-25" 
+              onclick="loadPage('module/product/product.php',this,'products');return false;">View more</button>
+    </div>
   </div>
 </div>
+
 <!-- about us -->
 <hr style="width: 85%; margin: auto" />
 <div id="#About" class="about-us container container my-5">
@@ -365,13 +339,14 @@
       <div class="col col-md-6">
         <h1>About Us</h1>
         <p>Welcome to <span style="font-weight:bold ;">Technologia</span> – your trusted destination for the latest and most reliable tech products!</p>
-        <p>We specialize in providing high-quality technology items such as laptops, cameras, electronic accessories, smart devices, and more. With our motto <span style="font-weight: bold;">“Quality – Trust – Dedicated Support,” Technologia</span> is committed to delivering a safe, convenient, and professional shopping experience.</p>
-        <button id="about-us-btn" class="btn btn-dark rounded-4" onclick="">More about us</button>
+        <p>We specialize in providing high-quality technology items such as laptops, cameras, electronic accessories, smart devices, and more. With our motto <span style="font-weight: bold;">"Quality – Trust – Dedicated Support," Technologia</span> is committed to delivering a safe, convenient, and professional shopping experience.</p>
+        <button id="about-us-btn" class="btn btn-dark rounded-4" 
+                onclick="loadPage('module/about-us/about-us.php', this, 'about'); return false;">More about us</button>
       </div>
     </div>
   </div>
-
 </div>
+
 <style>
   #about-us-btn {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -381,7 +356,14 @@
     transform: scale(1.03);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
   }
+
+  .categories-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
 </style>
+
 <script>
   function updateCarouselImages() {
     const aspectRatio = window.innerHeight / window.innerWidth;
@@ -403,6 +385,51 @@
     }
   }
 
-  window.addEventListener("load", updateCarouselImages);
+  // Hàm xử lý thêm vào giỏ hàng cho main content
+  function attachMainContentCartEventListeners() {
+    document.querySelectorAll('form.addToCartForm').forEach(function (form) {
+      form.removeEventListener('submit', handleMainContentCartSubmit);
+      form.addEventListener('submit', handleMainContentCartSubmit);
+    });
+  }
+
+  function handleMainContentCartSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    fetch('module/cart/cart.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Đã thêm sản phẩm vào giỏ hàng!");
+          // Cập nhật số trên icon giỏ hàng nếu có
+          const cartIcon = document.querySelector('.cart-icon .fw-bold');
+          if (cartIcon) {
+            cartIcon.textContent = data.total;
+          }
+        } else {
+          alert("Thêm vào giỏ hàng thất bại!");
+        }
+      })
+      .catch(err => {
+        console.error("Lỗi khi gửi form:", err);
+        alert("Có lỗi xảy ra, vui lòng thử lại!");
+      });
+  }
+
+  window.addEventListener("load", function() {
+    updateCarouselImages();
+    attachMainContentCartEventListeners();
+  });
+  
   window.addEventListener("resize", updateCarouselImages);
+
+  // Gán sự kiện khi trang được load lại qua AJAX
+  document.addEventListener('DOMContentLoaded', function() {
+    attachMainContentCartEventListeners();
+  });
 </script>
