@@ -164,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <!-- tạo col thứ nhất -->
               <div class="col-3">
                 <div class="input-group mb-lg-2">
-                  <a href="Login-google.php">
+                  <a href="module/login-google/Login-google.php">
                     <button class="btn bg-light w-100 fs-6" type="button">
                       <img src="./img/google.png" style="width: 30px" />
                     </button>
