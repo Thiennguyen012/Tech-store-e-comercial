@@ -139,11 +139,11 @@ if ($username) {
                       onclick="loadPage('module/user-profile/user-profile.php', this, 'profile'); return false;">Profile</a>
                   </li>
                   <li><a class="dropdown-item" href="#"
-                      onclick="loadPage('module/user-order/user-order.php', this, 'order'); return false;">Your Order</a>
+                      onclick="location.href='index.php?act=order'; return false;">Your Order</a>
                   </li>
                   <li>
                     <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
-                      onclick="loadPage('module/user-profile/notification.php', this, 'notification'); return false;">
+                      onclick="location.href='index.php?act=notification'; return false;">
                       Notification
                       <?php if ($unread_count > 0): ?>
                         <span class="badge bg-danger ms-2" id="noti-badge"><?= $unread_count ?></span>

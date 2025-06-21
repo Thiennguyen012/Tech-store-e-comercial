@@ -72,6 +72,9 @@
       case 'book-services':
         include 'module/services/book-services.php';
         break;
+      case 'book-result':
+        include 'module/services/book-result.php';
+        break;
       //Mục contact
       case 'contact':
         include 'module/contact/contact.php';

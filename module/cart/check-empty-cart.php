@@ -3,7 +3,9 @@
         const cartHasItem = <?= isset($_SESSION['cart']) && count($_SESSION['cart']) > 0 ? 'true' : 'false' ?>;
 
         if (!cartHasItem) {
-            alert("Your cart is empty. Please add some products before checking out.");
+            // Hiển thị modal thay vì alert
+            const emptyCartModal = new bootstrap.Modal(document.getElementById('emptyCartModal'));
+            emptyCartModal.show();
         } else {
             window.location.href = '?act=checkout';
         }

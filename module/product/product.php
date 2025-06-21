@@ -31,11 +31,10 @@ if ($isSearchMode) {
   $filters = getSearchFilters($conn); // Lấy tất cả bộ lọc
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
-  
+
   // Thêm các biến cần thiết cho search mode
   $limit = 8;
   $offset = 0;
-  
 } else {
   // Chế độ category thông thường
   $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
@@ -221,11 +220,11 @@ if ($isSearchMode) {
             <div class="mb-4">
               <select name="sortBy" class="form-select">
                 <option value="1" <?php if ($sortBy === '1')
-                  echo 'selected'; ?>>Price (Low to High)</option>
+                                    echo 'selected'; ?>>Price (Low to High)</option>
                 <option value="2" <?php if ($sortBy === '2')
-                  echo 'selected'; ?>>Price (High to Low)</option>
+                                    echo 'selected'; ?>>Price (High to Low)</option>
                 <option value="3" <?php if ($sortBy === '3')
-                  echo 'selected'; ?>>Alphabetical</option>
+                                    echo 'selected'; ?>>Alphabetical</option>
               </select>
             </div>
             <div class="d-flex gap-2 flex-wrap">
@@ -290,11 +289,11 @@ if ($isSearchMode) {
           <div class="mb-4">
             <select name="sortBy" class="form-select">
               <option value="1" <?php if ($sortBy === '1')
-                echo 'selected'; ?>>Price (Low to High)</option>
+                                  echo 'selected'; ?>>Price (Low to High)</option>
               <option value="2" <?php if ($sortBy === '2')
-                echo 'selected'; ?>>Price (High to Low)</option>
+                                  echo 'selected'; ?>>Price (High to Low)</option>
               <option value="3" <?php if ($sortBy === '3')
-                echo 'selected'; ?>>Alphabetical</option>
+                                  echo 'selected'; ?>>Alphabetical</option>
             </select>
           </div>
           <div class="d-flex gap-2 flex-wrap">
@@ -330,7 +329,7 @@ if ($isSearchMode) {
           if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
               $productCount++;
-              ?>
+          ?>
               <div class="col">
                 <div class="card border-0 h-100 shadow-sm">
                   <a href="#"
@@ -375,7 +374,7 @@ if ($isSearchMode) {
                   </div>
                 </div>
               </div>
-              <?php
+          <?php
             }
           }
           ?>
@@ -405,12 +404,12 @@ if ($isSearchMode) {
   }
 
   // Gửi form lọc (desktop)
-  document.getElementById('filterButton').addEventListener('click', function () {
+  document.getElementById('filterButton').addEventListener('click', function() {
     const formData = new FormData(document.getElementById('filterForm'));
     fetch('module/product/filter.php', {
-      method: 'POST',
-      body: formData,
-    })
+        method: 'POST',
+        body: formData,
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -427,12 +426,12 @@ if ($isSearchMode) {
   });
 
   // Gửi form lọc (mobile)
-  document.getElementById('filterButtonMobile').addEventListener('click', function () {
+  document.getElementById('filterButtonMobile').addEventListener('click', function() {
     const formData = new FormData(document.getElementById('filterFormMobile'));
     fetch('module/product/filter.php', {
-      method: 'POST',
-      body: formData,
-    })
+        method: 'POST',
+        body: formData,
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -449,7 +448,7 @@ if ($isSearchMode) {
   });
 
   // Reset filter desktop
-  document.getElementById('resetFilterButton').addEventListener('click', function () {
+  document.getElementById('resetFilterButton').addEventListener('click', function() {
     const form = document.getElementById('filterForm');
     form.reset();
     // Nếu có giá trị mặc định cho category, minPrice, maxPrice, sortBy thì set lại
@@ -458,84 +457,86 @@ if ($isSearchMode) {
   });
 
   // Reset filter mobile
-  document.getElementById('resetFilterButtonMobile').addEventListener('click', function () {
+  document.getElementById('resetFilterButtonMobile').addEventListener('click', function() {
     const form = document.getElementById('filterFormMobile');
     form.reset();
     document.getElementById('filterButtonMobile').click();
   });
 
-  
+
   // Show more sản phẩm
-function handleShowMore(e) {
-  if (e.target && e.target.id === 'showMoreBtn') {
-    const btn = e.target;
-    
-    // Prevent multiple clicks while loading
-    if (btn.disabled) return;
-    
-    btn.disabled = true;
-    btn.textContent = 'Loading...';
-    const offset = parseInt(btn.getAttribute('data-offset'), 10);
-    const form = document.getElementById('filterForm') || document.getElementById('filterFormMobile');
-    const formData = new FormData(form);
-    formData.append('limit', 8);
-    formData.append('offset', offset);
-    formData.append('showMore', 1);
+  function handleShowMore(e) {
+    if (e.target && e.target.id === 'showMoreBtn') {
+      const btn = e.target;
 
-    fetch('module/product/filter.php', {
-      method: 'POST',
-      body: formData,
-    })
-      .then(res => res.text())
-      .then(html => {
-        // Tạo một div tạm để lấy các .col mới
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
+      // Prevent multiple clicks while loading
+      if (btn.disabled) return;
 
-        // Lấy tất cả .col mới và append vào grid
-        tempDiv.querySelectorAll('.col').forEach(col => {
-          document.getElementById('productGrid').appendChild(col);
-        });
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+      const offset = parseInt(btn.getAttribute('data-offset'), 10);
+      const form = document.getElementById('filterForm') || document.getElementById('filterFormMobile');
+      const formData = new FormData(form);
+      formData.append('limit', 8);
+      formData.append('offset', offset);
+      formData.append('showMore', 1);
 
-        // Xử lý nút show more mới (nếu còn)
-        const newShowMore = tempDiv.querySelector('#showMoreBtn');
-        if (newShowMore) {
-          btn.setAttribute('data-offset', newShowMore.getAttribute('data-offset'));
-          btn.disabled = false;
+      fetch('module/product/filter.php', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(res => res.text())
+        .then(html => {
+          // Tạo một div tạm để lấy các .col mới
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = html;
+
+          // Lấy tất cả .col mới và append vào grid
+          tempDiv.querySelectorAll('.col').forEach(col => {
+            document.getElementById('productGrid').appendChild(col);
+          });
+
+          // Xử lý nút show more mới (nếu còn)
+          const newShowMore = tempDiv.querySelector('#showMoreBtn');
+          if (newShowMore) {
+            btn.setAttribute('data-offset', newShowMore.getAttribute('data-offset'));
+            btn.disabled = false;
+            btn.textContent = 'Show more';
+          } else {
+            btn.remove();
+          }
+        })
+        .catch(() => {
           btn.textContent = 'Show more';
-        } else {
-          btn.remove();
-        }
-      })
-      .catch(() => {
-        btn.textContent = 'Show more';
-        btn.disabled = false;
-      });
+          btn.disabled = false;
+        });
+    }
   }
-}
 
-// Alternative approach: Check if listener already exists
-if (!window.showMoreListenerAdded) {
-  document.addEventListener('click', handleShowMore);
-  window.showMoreListenerAdded = true;
-}
-<!-- Make sure Bootstrap JS is loaded for offcanvas to work -->
+  // Alternative approach: Check if listener already exists
+  if (!window.showMoreListenerAdded) {
+    document.addEventListener('click', handleShowMore);
+    window.showMoreListenerAdded = true;
+  }
 
   // Xử lý thêm vào giỏ hàng bằng AJAX cho tất cả form trên trang
-  document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
-    form.addEventListener('submit', function (e) {
+  document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault(); // Ngăn submit mặc định
 
       const formData = new FormData(form);
 
       fetch('module/cart/cart.php', {
-        method: 'POST',
-        body: formData
-      })
+          method: 'POST',
+          body: formData
+        })
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            alert("Đã thêm sản phẩm vào giỏ hàng!");
+            // alert("Đã thêm sản phẩm vào giỏ hàng!");
+            // Hiển thị modal Bootstrap
+            const modal = new bootstrap.Modal(document.getElementById('addToCartSuccessModal'));
+            modal.show();
             // Cập nhật số trên icon giỏ hàng nếu cần
             document.querySelector('.cart-icon .fw-bold').textContent = data.total;
           } else {
@@ -545,5 +546,23 @@ if (!window.showMoreListenerAdded) {
         .catch(err => console.error("Lỗi khi gửi form:", err));
     });
   });
-
 </script>
+
+<!-- Modal thông báo thêm vào giỏ hàng thành công -->
+<div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToCartSuccessModalLabel">Success</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Product has been added to your cart successfully!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#" class="btn btn-dark" onclick="location.href='index.php?act=cart';return false;">Go to Cart</a>
+      </div>
+    </div>
+  </div>
+</div>

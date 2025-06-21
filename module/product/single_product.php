@@ -227,7 +227,9 @@ while ($row = $config_result->fetch_assoc()) {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          alert("Đã thêm sản phẩm vào giỏ hàng!");
+          // Hiển thị modal Bootstrap (copy từ product.php)
+          const modal = new bootstrap.Modal(document.getElementById('addToCartSuccessModal'));
+          modal.show();
           // Cập nhật số trên icon giỏ hàng nếu cần
           if (document.querySelector('.cart-icon .fw-bold')) {
             document.querySelector('.cart-icon .fw-bold').textContent = data.total;
@@ -244,3 +246,22 @@ while ($row = $config_result->fetch_assoc()) {
     loadPage('module/contact/contact.php');
   });
 </script>
+
+<!-- Modal thông báo thêm vào giỏ hàng thành công (copy từ product.php) -->
+<div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToCartSuccessModalLabel">Success</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Product has been added to your cart successfully!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#" class="btn btn-dark" onclick="location.href='index.php?act=cart';return false;">Go to Cart</a>
+      </div>
+    </div>
+  </div>
+</div>

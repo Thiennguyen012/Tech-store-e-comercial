@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 19, 2025 lúc 10:22 AM
+-- Thời gian đã tạo: Th6 21, 2025 lúc 05:42 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -98,7 +98,21 @@ INSERT INTO `bill` (`id`, `user_id`, `order_date`, `order_name`, `order_phone`, 
 (52, 2, '2025-06-19 11:07:24', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 768.90, 0, NULL),
 (53, 2, '2025-06-19 11:20:46', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1538.90, 0, NULL),
 (54, 2, '2025-06-19 11:26:26', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 3298.90, 0, NULL),
-(55, 2, '2025-06-19 11:47:20', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL);
+(55, 2, '2025-06-19 11:47:20', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(56, 2, '2025-06-19 15:27:19', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(57, 2, '2025-06-19 15:28:31', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1013.19, 0, NULL),
+(58, 2, '2025-06-19 16:03:58', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 6155.60, 0, NULL),
+(59, 2, '2025-06-21 00:35:49', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.88, 0, NULL),
+(60, 2, '2025-06-21 01:55:59', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(61, 8, '2025-06-21 02:53:06', '31313', '51415', 'fff', 603.90, 0, NULL),
+(62, 8, '2025-06-21 02:56:27', '414', '51', '12', 252.98, 0, NULL),
+(63, 2, '2025-06-21 10:19:45', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 2715.15, 0, NULL),
+(64, 2, '2025-06-21 10:23:36', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 759.51, 0, NULL),
+(65, 2, '2025-06-21 10:24:52', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 3406.70, 0, NULL),
+(66, 2, '2025-06-21 10:28:12', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 438.90, 0, NULL),
+(67, 2, '2025-06-21 10:30:31', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 603.90, 0, NULL),
+(68, 2, '2025-06-21 10:31:57', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 768.90, 0, NULL),
+(69, 2, '2025-06-21 10:36:07', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 603.90, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -188,7 +202,27 @@ INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `qu
 (65, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00, 1, 699.00, 52),
 (66, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00, 1, 1399.00, 53),
 (67, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00, 1, 2999.00, 54),
-(68, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 55);
+(68, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 55),
+(69, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 56),
+(70, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59s', 921.08, 1, 921.08, 57),
+(71, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00, 4, 5596.00, 58),
+(72, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 59),
+(73, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 60),
+(74, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00, 1, 549.00, 61),
+(75, 'Razer BlackWidow V4 75 RGB Gaming Keyboard', 'https://www.laptopsdirect.co.uk/Images/RZ03-05000400-R3E1_1_Supersize.png?width=750&height=750&v=3', 199.99, 1, 199.99, 62),
+(76, 'MSI Vigor GK20 UK USB Keyboard', 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99, 1, 29.99, 62),
+(77, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 63),
+(78, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 63),
+(79, 'Acer TravelMate P2 Intel Core i5 8GB RAM 256GB SSD 14 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.VYAEK.00F_1_Supersize.jpg?v=3', 499.97, 1, 499.97, 63),
+(80, 'Dell Inspiron 3530 i7-1355U 16GB 512GB SSD 15.6 Inch FHD 120Hz Win11H OfficeHS21 Silver', 'https://hanoicomputercdn.com/media/product/86105_file_pts_chu___n_l____0000_layer_1.jpg', 690.46, 1, 690.46, 63),
+(81, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00, 1, 599.00, 63),
+(82, 'Dell Inspiron 3530 i7-1355U 16GB 512GB SSD 15.6 Inch FHD 120Hz Win11H OfficeHS21 Silver', 'https://hanoicomputercdn.com/media/product/86105_file_pts_chu___n_l____0000_layer_1.jpg', 690.46, 1, 690.46, 64),
+(83, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00, 2, 2398.00, 65),
+(84, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00, 1, 699.00, 65),
+(85, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 1, 399.00, 66),
+(86, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00, 1, 549.00, 67),
+(87, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00, 1, 699.00, 68),
+(88, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00, 1, 549.00, 69);
 
 -- --------------------------------------------------------
 
@@ -199,20 +233,11 @@ INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `qu
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `type` tinyint(1) NOT NULL COMMENT '0: product, 1: service',
   `content` text DEFAULT NULL,
   `is_read` tinyint(4) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `notifications`
---
-
-INSERT INTO `notifications` (`id`, `user_id`, `content`, `is_read`, `created_at`) VALUES
-(20, 8, 'You have successfully placed order #48.', 1, '2025-06-19 02:47:16'),
-(27, 2, 'You have successfully placed order #55.', 1, '2025-06-19 11:47:20'),
-(28, 2, 'You have successfully booked the service: Laptop Cleaning.', 1, '2025-06-19 14:02:35'),
-(29, 2, 'You have successfully booked the service: Laptop Cleaning at 1.', 1, '2025-06-19 14:05:32');
 
 -- --------------------------------------------------------
 
@@ -235,36 +260,37 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock`, `product_image`, `price`) VALUES
-(1, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'Highlighting form and function, a stunningly slim body and impressive tactile finish accentuate real-world design features. Built to keep you active, engaged, and on the move, the Aspire 3 has the technology to suit your way of life. Fundamentally impressive technology.\r\nEfficient Performance with Intel Celeron N4500\r\nThe Acer Aspire 3 A315-35 is powered by the Intel Celeron N4500 processor, delivering reliable performance for everyday computing tasks. With speeds of up to 2.8 GHz, this dual-core processor ensures smooth web browsing, document editing, and media playback. Whether you\'re working on assignments, streaming content, or managing emails, the Aspire 3 provides a seamless user experience.Crisp 15.6-Inch HD Display for Everyday Use\r\nFeaturing a 15.6-inch HD (1366 x 768) TN display, the Aspire 3 offers clear visuals and vibrant colors for work and entertainment. The anti-glare screen reduces reflections, making it comfortable to use in various lighting conditions. Its widescreen format enhances productivity, allowing you to view multiple applications simultaneously without feeling cramped.Fast and Reliable Storage with 128GB NVMe SSD\r\nThe 128GB NVMe SSD provides quick boot times and fast data access, ensuring efficient performance for everyday computing. With 3D Triple-Level Cell (TLC) technology, the SSD offers durability and reliability, making file transfers and software loading times much faster compared to traditional hard drives. This storage capacity is ideal for essential applications, documents, and media files.Seamless Connectivity with Wi-Fi 6 and Gigabit Ethernet\r\nStay connected with the latest Wi-Fi 6 technology, providing faster and more stable wireless connections for browsing, streaming, and online meetings. The Aspire 3 also includes a Gigabit Ethernet port for a reliable wired connection when needed. Whether at home, in the office, or on the go, you can enjoy uninterrupted connectivity for all your online activities.Sleek Design with a Comfortable UK Keyboard\r\nFinished in an elegant pure silver design, the Acer Aspire 3 offers a stylish and lightweight build, making it easy to carry wherever you go. The UK keyboard layout ensures comfortable and accurate typing, ideal for students and professionals alike. With a full-sized keyboard and precision touchpad, navigating through tasks becomes effortless, enhancing your overall productivity.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89),
-(2, 'Acer TravelMate P2 Intel Core i5 8GB RAM 256GB SSD 14 Inch Windows 11 Laptop', 'Acer TravelMate P2, Intel Core i5, 8GB RAM, 256GB SSD, 14\" Full HD, Windows 11, NX.VYAEK.003. Designed for business and productivity with robust security, long battery life, and a lightweight chassis.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/NX.VYAEK.00F_1_Supersize.jpg?v=3', 499.97),
-(3, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'Apple MacBook Air 13-inch (M2, 2022), 16GB RAM, 512GB SSD, Space Grey. Siêu mỏng nhẹ, hiệu năng mạnh mẽ với chip Apple M2, màn hình Liquid Retina, thời lượng pin lên tới 18 giờ, Touch ID, macOS.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00),
+(1, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'Highlighting form and function, a stunningly slim body and impressive tactile finish accentuate real-world design features. Built to keep you active, engaged, and on the move, the Aspire 3 has the technology to suit your way of life. Fundamentally impressive technology.\r\nEfficient Performance with Intel Celeron N4500\r\nThe Acer Aspire 3 A315-35 is powered by the Intel Celeron N4500 processor, delivering reliable performance for everyday computing tasks. With speeds of up to 2.8 GHz, this dual-core processor ensures smooth web browsing, document editing, and media playback. Whether you\'re working on assignments, streaming content, or managing emails, the Aspire 3 provides a seamless user experience.Crisp 15.6-Inch HD Display for Everyday Use\r\nFeaturing a 15.6-inch HD (1366 x 768) TN display, the Aspire 3 offers clear visuals and vibrant colors for work and entertainment. The anti-glare screen reduces reflections, making it comfortable to use in various lighting conditions. Its widescreen format enhances productivity, allowing you to view multiple applications simultaneously without feeling cramped.Fast and Reliable Storage with 128GB NVMe SSD\r\nThe 128GB NVMe SSD provides quick boot times and fast data access, ensuring efficient performance for everyday computing. With 3D Triple-Level Cell (TLC) technology, the SSD offers durability and reliability, making file transfers and software loading times much faster compared to traditional hard drives. This storage capacity is ideal for essential applications, documents, and media files.Seamless Connectivity with Wi-Fi 6 and Gigabit Ethernet\r\nStay connected with the latest Wi-Fi 6 technology, providing faster and more stable wireless connections for browsing, streaming, and online meetings. The Aspire 3 also includes a Gigabit Ethernet port for a reliable wired connection when needed. Whether at home, in the office, or on the go, you can enjoy uninterrupted connectivity for all your online activities.Sleek Design with a Comfortable UK Keyboard\r\nFinished in an elegant pure silver design, the Acer Aspire 3 offers a stylish and lightweight build, making it easy to carry wherever you go. The UK keyboard layout ensures comfortable and accurate typing, ideal for students and professionals alike. With a full-sized keyboard and precision touchpad, navigating through tasks becomes effortless, enhancing your overall productivity.', 1, 7, 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89),
+(2, 'Acer TravelMate P2 Intel Core i5 8GB RAM 256GB SSD 14 Inch Windows 11 Laptop', 'Acer TravelMate P2, Intel Core i5, 8GB RAM, 256GB SSD, 14\" Full HD, Windows 11, NX.VYAEK.003. Designed for business and productivity with robust security, long battery life, and a lightweight chassis.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/NX.VYAEK.00F_1_Supersize.jpg?v=3', 499.97),
+(3, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'Apple MacBook Air 13-inch (M2, 2022), 16GB RAM, 512GB SSD, Space Grey. Siêu mỏng nhẹ, hiệu năng mạnh mẽ với chip Apple M2, màn hình Liquid Retina, thời lượng pin lên tới 18 giờ, Touch ID, macOS.', 1, 0, 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00),
 (4, 'Apple MacBook Pro 14-inch M4 16GB RAM 512GB SSD Space Black', 'Apple MacBook Pro 14-inch (2024), Apple M4 chip with 10-core CPU and 10-core GPU, 16GB RAM, 512GB SSD, Space Black. Màn hình Liquid Retina XDR, Touch ID, thời lượng pin lên tới 18 giờ, macOS.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/MW2U3BA_1_Supersize.jpg?v=4', 1799.00),
-(5, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'ASUS TUF A15, AMD Ryzen 7 7435HS, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4060, 144Hz 15.6\" FHD, FA507NVR-LP012W, Windows 11, thiết kế gaming bền bỉ, hiệu năng mạnh mẽ.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00),
+(5, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'ASUS TUF A15, AMD Ryzen 7 7435HS, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4060, 144Hz 15.6\" FHD, FA507NVR-LP012W, Windows 11, thiết kế gaming bền bỉ, hiệu năng mạnh mẽ.', 1, 8, 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00),
 (6, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'ASUS ROG Strix G16, Intel Core Ultra 9, 16GB RAM, 2TB SSD, NVIDIA GeForce RTX 5080, 240Hz 16\" FHD, G615LW-S5008W, Windows 11, laptop gaming cao cấp với hiệu năng vượt trội.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00),
-(7, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'Dell Latitude 7400 Refurbished, Intel Core i5 8th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 11 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00),
-(8, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'Dell Latitude 5420 Refurbished, Intel Core i5 11th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 10 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00),
-(9, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'HP 250 G9, Intel Core i7-1255U, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00),
-(10, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'HP 250 G9, Intel Core i5, 16GB RAM, 256GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng bền bỉ, hiệu năng ổn định, phù hợp cho doanh nghiệp và cá nhân.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00),
-(11, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'Lenovo V15 G4, AMD Ryzen 5, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00),
+(7, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'Dell Latitude 7400 Refurbished, Intel Core i5 8th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 11 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 1, 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00),
+(8, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'Dell Latitude 5420 Refurbished, Intel Core i5 11th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 10 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00),
+(9, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'HP 250 G9, Intel Core i7-1255U, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 7, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00),
+(10, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'HP 250 G9, Intel Core i5, 16GB RAM, 256GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng bền bỉ, hiệu năng ổn định, phù hợp cho doanh nghiệp và cá nhân.', 1, 9, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00),
+(11, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'Lenovo V15 G4, AMD Ryzen 5, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 7, 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00),
 (12, 'Lenovo Legion 5 Y500 Series 16 240Hz Intel Core i7-14650HX 16GB 1TB RTX 4060', 'Lenovo Legion 5 Y500 Series, 16\" 240Hz, Intel Core i7-14650HX, 16GB RAM, 1TB SSD, NVIDIA GeForce RTX 4060, Windows 11, laptop gaming cao cấp với hiệu năng mạnh mẽ và màn hình tần số quét cao.', 1, 10, 'https://www.laptopsdirect.co.uk/Images/83DG00DSUK_1_Supersize.jpg?v=8', 1599.00),
 (13, 'Tapo C510W Outdoor Pan/Tilt Wi-Fi Camera', 'Tapo C510W Outdoor Pan/Tilt Wi-Fi Camera, 3MP, Color Night Vision, Motion Tracking, Two-Way Audio, IP65 Weatherproof, Smart AI Detection, Works with Alexa & Google Home.', 2, 20, 'https://hanoicomputercdn.com/media/product/91274_camera_tp_link_tapo_c510w_0003_layer_1.jpg', 59.99),
 (14, 'Hikvision DS-2CD1343G2-LIU/SL 4MP Dome Camera', 'Camera IP Hikvision DS-2CD1343G2-LIU/SL, 4MP, Dome, ColorVu, tích hợp micro, cảnh báo đèn còi, chuẩn nén H.265+, chống ngược sáng WDR 120dB, chuẩn IP67, hỗ trợ thẻ nhớ microSD lên tới 256GB.', 2, 15, 'https://hanoicomputercdn.com/media/product/83147_camera_hikvision_ds_2cd1343g2_liuf_sl_2.jpg', 240.00),
 (15, 'TP-Link VIGI C240I 4mm 4MP Dome Camera', 'TP-Link VIGI C240I 4mm IP Camera, 4MP, Dome, H.265+ Compression, AI-Powered, Motion Detection, WDR Backlight Compensation, IP67 Rating, Built-in Microphone.', 2, 20, 'https://hanoicomputercdn.com/media/product/74709_camera_tp_link_vigi_c240l_4mm_1.jpg', 45.67),
 (16, 'Hikvision DS-2CE16D0T-EXLPF 2MP Bullet Camera', 'Hikvision DS-2CE16D0T-EXLPF, 2MP, Bullet, EXIR, 2.8mm lens, IR up to 30m, IP67 weatherproof, metal body, suitable for indoor and outdoor installation.', 2, 20, 'https://hanoicomputercdn.com/media/product/89646_camera_hikvision_ds_2ce16d0t_exlpf.jpg', 13.39),
 (17, 'Acer Gaming Nitro V 16 ProPanel ANV16-41-R36Y R7-8845HS 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'Acer Nitro V 16 ProPanel ANV16-41-R36Y, AMD Ryzen 7 8845HS, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4050 6GB, 16\" WUXGA, Windows 11,Black color, high-performance gaming laptop, large display, efficient cooling system.', 1, 10, 'https://hanoicomputercdn.com/media/product/84662_laptop_acer_gaming_nitro_v_16_propanel_anv16_41_r6na_nh_qp0sv_001_r7_8845hs_16gb_ram_512gb_ssd_rtx4060_8gb_16_inch_0005_.jpg', 1120.66),
-(18, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'Acer Gaming Nitro Lite NL16-71G-71UJ, Intel Core i7-13620H, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4050 6GB, 16\" WUXGA, Windows 11, black color. High-performance gaming laptop with large display, efficient cooling, and modern design.', 1, 10, 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg', 921.08),
+(18, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'Acer Gaming Nitro Lite NL16-71G-71UJ, Intel Core i7-13620H, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4050 6GB, 16\" WUXGA, Windows 11, black color. High-performance gaming laptop with large display, efficient cooling, and modern design.', 1, 9, 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg', 921.08),
 (19, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'ASUS Zenbook UX3405MA-PP152W, Intel Core Ultra 5 125H, 16GB RAM, 512GB SSD, 14\" 3K OLED Touch Display, Intel Graphics, Windows 11, ultra-thin and lightweight design, long battery life, premium build quality.', 1, 10, 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50),
-(20, 'Dell Inspiron 3530 i7-1355U 16GB 512GB SSD 15.6 Inch FHD 120Hz Win11H OfficeHS21 Silver', 'Dell Inspiron 3530, Intel Core i7-1355U, 16GB RAM, 512GB SSD, 15.6\" FHD 120Hz, Windows 11 Home, Office Home & Student 2021, Silver. High-performance laptop for work and entertainment, featuring a fast display and modern design.', 1, 10, 'https://hanoicomputercdn.com/media/product/86105_file_pts_chu___n_l____0000_layer_1.jpg', 690.46),
-(21, 'MSI Vigor GK20 UK USB Keyboard', 'MSI Vigor GK20 UK USB Keyboard, ergonomic design, RGB lighting, durable keys.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99),
+(20, 'Dell Inspiron 3530 i7-1355U 16GB 512GB SSD 15.6 Inch FHD 120Hz Win11H OfficeHS21 Silver', 'Dell Inspiron 3530, Intel Core i7-1355U, 16GB RAM, 512GB SSD, 15.6\" FHD 120Hz, Windows 11 Home, Office Home & Student 2021, Silver. High-performance laptop for work and entertainment, featuring a fast display and modern design.', 1, 8, 'https://hanoicomputercdn.com/media/product/86105_file_pts_chu___n_l____0000_layer_1.jpg', 690.46),
+(21, 'MSI Vigor GK20 UK USB Keyboard', 'MSI Vigor GK20 UK USB Keyboard, ergonomic design, RGB lighting, durable keys.', 3, 49, 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99),
 (22, 'SteelSeries Apex 9 TKL Mechanical Gaming Keyboard', 'SteelSeries Apex 9 TKL, mechanical gaming keyboard, compact design, RGB lighting.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/64848_1_Supersize.png?width=750&height=750&v=5', 129.99),
 (23, 'Razer Huntsman V3 Pro USB RGB Mechanical Gaming Keyboard', 'Razer Huntsman V3 Pro, RGB mechanical gaming keyboard, analog optical switches.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ03-04970300-R3W1_1_Supersize.jpg?width=750&height=750&v=3', 249.99),
-(24, 'Razer BlackWidow V4 75 RGB Gaming Keyboard', 'Razer BlackWidow V4 75, RGB gaming keyboard, customizable keys, durable design.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ03-05000400-R3E1_1_Supersize.png?width=750&height=750&v=3', 199.99),
+(24, 'Razer BlackWidow V4 75 RGB Gaming Keyboard', 'Razer BlackWidow V4 75, RGB gaming keyboard, customizable keys, durable design.', 3, 49, 'https://www.laptopsdirect.co.uk/Images/RZ03-05000400-R3E1_1_Supersize.png?width=750&height=750&v=3', 199.99),
 (25, 'MSI Forge GM300 Wired Gaming Mouse', 'MSI Forge GM300, wired gaming mouse, ergonomic design, RGB lighting.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/BUNS12-0402300-HH996740_2_Supersize.png?width=750&height=750&v=10', 39.99),
 (26, 'Razer Kraken X Wired Gaming Headset', 'Razer Kraken X, wired gaming headset, lightweight design, immersive sound.', 3, 48, 'https://www.laptopsdirect.co.uk/Images/RZ04-02950100-R381_1_Supersize.jpg?width=750&height=750&v=7', 49.99),
 (27, 'Razer DeathAdder V3 Pro Black Gaming Mouse', 'Razer DeathAdder V3 Pro, wireless gaming mouse, ergonomic design, high precision.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/RZ01-04630100-R3G1_1_Supersize.png?width=750&height=750&v=7', 149.99),
 (28, 'Cables Direct HDMI Cable with Ethernet 3m', 'Cables Direct HDMI Cable, 3m length, supports Ethernet, high-speed data transfer.', 3, 100, 'https://www.laptopsdirect.co.uk/Images/77HDMI-030_1_supersize.jpg?width=750&height=750&v=1', 9.99),
 (29, '1m RJ-45 Cat6 Networking Cable Black', 'RJ-45 Cat6 Networking Cable, 1m length, black, high-speed data transfer.', 3, 100, 'https://www.laptopsdirect.co.uk/Images/31-0010BK_1_Supersize.jpg?width=750&height=750&v=3', 4.99),
-(30, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'Corsair T3 Rush Gaming Chair, fabric material, ergonomic design, grey and charcoal.', 3, 19, 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99);
+(30, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'Corsair T3 Rush Gaming Chair, fabric material, ergonomic design, grey and charcoal.', 3, 19, 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99),
+(31, 'Google Nest Cam Outdoor/Indoor Battery', 'Google Nest Cam (battery) is a completely wire-free outdoor security camera that helps you keep watch over what matters most. It can run on battery power or be plugged in, and it works with the Google Home app for easy setup and control.\r\n\r\nKey Features:\r\n- Wire-free design with rechargeable battery\r\n- Works indoors and outdoors (IP54 weather resistance)\r\n- 1080p HDR video with night vision\r\n- 130° diagonal field of view\r\n- Two-way talk with noise cancellation\r\n- Activity zones and intelligent alerts\r\n- 3 hours of free event video history\r\n- Works with Google Assistant and Alexa\r\n- Easy magnetic mount included\r\n- Privacy features with physical privacy switch\r\n\r\nThe camera uses advanced machine learning to tell the difference between people, animals, and vehicles, sending you intelligent alerts about activity that matters to you. With the Nest Aware subscription (sold separately), you can get up to 60 days of video history and additional intelligent features.\r\n\r\nPerfect for monitoring your home, garden, or any area where running cables isn\'t practical. The weather-resistant design means it can handle rain, snow, and extreme temperatures.', 2, 25, 'https://haloshop.vn/wp-content/uploads/2025/02/google-nest-cam-outdoor-or-indoor-battery-00-700x700-1.jpg', 179.99);
 
 -- --------------------------------------------------------
 
@@ -309,7 +335,78 @@ CREATE TABLE `services` (
 INSERT INTO `services` (`id`, `user_id`, `name`, `phone`, `address`, `service_type`, `created_at`) VALUES
 (1, 2, '1', '1', '', 'Laptop Cleaning', '2025-06-19 14:02:35'),
 (2, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-19 14:05:32'),
-(3, 6, '1', '2', '3', 'Repair', '2025-06-19 14:24:08');
+(3, 6, '1', '2', '3', 'Repair', '2025-06-19 14:24:08'),
+(4, 2, 'hẹ', 'hẹ ', 'hẹ', 'Camera Installation', '2025-06-19 15:29:05'),
+(5, 2, 'im dead', '123', '123', 'Repair', '2025-06-20 22:53:58'),
+(6, 2, 'kk', 'gg', '3', 'Camera Installation', '2025-06-20 23:05:59'),
+(7, 2, '3', '3', '3', 'Warranty', '2025-06-20 23:06:22'),
+(8, 2, '3', '3', '3', 'Warranty', '2025-06-20 23:06:37'),
+(9, 2, '3', '3', '3', 'Warranty', '2025-06-20 23:06:39'),
+(10, 2, '3', '3', '3', 'Warranty', '2025-06-20 23:08:58'),
+(11, 2, '3', '3', '3', 'Warranty', '2025-06-20 23:09:14'),
+(12, 2, '3', '3', '3', 'Warranty', '2025-06-20 23:09:14'),
+(13, 2, '1', '1', '1', 'Camera Installation', '2025-06-20 23:09:27'),
+(14, 2, '1', '1', '1', 'Camera Installation', '2025-06-20 23:13:48'),
+(15, 2, '1', '1', '1', 'Camera Installation', '2025-06-20 23:13:49'),
+(16, 2, '1', '1', '1', 'Camera Installation', '2025-06-20 23:13:49'),
+(17, 2, '1', '2', '3', 'Laptop Cleaning', '2025-06-20 23:14:12'),
+(18, 2, '3', '3', '3', 'Laptop Cleaning', '2025-06-20 23:14:42'),
+(19, 2, '3', '3', '3', 'Laptop Cleaning', '2025-06-20 23:18:41'),
+(20, 2, '3', '3', '3', 'Laptop Cleaning', '2025-06-20 23:18:42'),
+(21, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-20 23:20:20'),
+(22, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-20 23:20:35'),
+(23, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-20 23:20:55'),
+(24, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-20 23:20:56'),
+(25, 2, '1', '2', '3', 'Repair', '2025-06-20 23:21:09'),
+(26, 2, '1', '2', '3', 'Repair', '2025-06-20 23:22:00'),
+(27, 2, '1', '2', '3', 'Repair', '2025-06-20 23:22:01'),
+(28, 2, '1', '2', '3', 'Repair', '2025-06-20 23:22:02'),
+(29, 2, '1', '2', '3', 'Repair', '2025-06-20 23:22:02'),
+(30, 2, '1', '2', '3', 'Repair', '2025-06-20 23:22:03'),
+(31, 2, '1', '2', '3', 'Repair', '2025-06-20 23:23:05'),
+(32, 2, '1', '2', '3', 'Laptop Cleaning', '2025-06-20 23:23:11'),
+(33, 2, '33', '44', '55', 'Camera Installation', '2025-06-20 23:23:33'),
+(34, 2, '33', '44', '55', 'Camera Installation', '2025-06-20 23:23:38'),
+(35, 2, '33', '44', '55', 'Camera Installation', '2025-06-20 23:27:28'),
+(36, 2, '33', '44', '55', 'Camera Installation', '2025-06-20 23:27:52'),
+(37, 2, '33', '44', '55', 'Camera Installation', '2025-06-20 23:33:07'),
+(38, 2, 'kk', '66', '1', 'Laptop Cleaning', '2025-06-20 23:35:35'),
+(39, 2, '1', '3', '4', 'Laptop Cleaning', '2025-06-20 23:37:28'),
+(40, 2, '1', '3', '4', 'Camera Installation', '2025-06-20 23:38:47'),
+(41, 2, '1', '3', '4', 'Camera Installation', '2025-06-20 23:38:58'),
+(42, 2, '3', '4', '1', 'Camera Installation', '2025-06-20 23:42:39'),
+(43, 2, '3', '4', '5', 'Camera Installation', '2025-06-20 23:46:15'),
+(44, 2, 'lonma', 'kk', '69', 'Repair', '2025-06-20 23:59:52'),
+(45, 2, '4', '3', '5', 'Laptop Cleaning', '2025-06-21 00:02:30'),
+(46, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-21 00:03:21'),
+(47, 2, 'h', '2', '3', 'Camera Installation', '2025-06-21 00:07:52'),
+(48, 2, '3', '45', '1', 'Laptop Cleaning', '2025-06-21 00:09:35'),
+(49, 2, '3', '2', '3', 'Camera Installation', '2025-06-21 00:10:56'),
+(50, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-21 00:18:39'),
+(51, 2, '4', '5', '6', 'Laptop Cleaning', '2025-06-21 00:19:42'),
+(52, 2, '1', '2', '3', 'Laptop Cleaning', '2025-06-21 00:31:31'),
+(53, 2, '1', '2', '3', 'Laptop Cleaning', '2025-06-21 00:31:48'),
+(54, 2, '3', '4141', '213123', 'Repair', '2025-06-21 00:32:11'),
+(55, 2, '1', '3', '4', 'Camera Installation', '2025-06-21 00:46:44'),
+(56, 2, '1', '3', '4', 'Camera Installation', '2025-06-21 00:48:17'),
+(57, 2, '1', '3', '4', 'Repair', '2025-06-21 00:49:35'),
+(58, 2, '1', '3', '4', 'Repair', '2025-06-21 00:50:02'),
+(59, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-21 00:50:10'),
+(60, 2, '3', '4', '5', 'Laptop Cleaning', '2025-06-21 00:51:10'),
+(61, 2, '3', '4', '5', 'Laptop Cleaning', '2025-06-21 00:51:39'),
+(62, 2, '1', '3', '4', 'Laptop Cleaning', '2025-06-21 00:53:23'),
+(63, 2, '1', '1', '1', 'Laptop Cleaning', '2025-06-21 00:54:33'),
+(64, 8, '1', '3', '4', 'Repair', '2025-06-21 02:25:55'),
+(65, 8, '44', '55', '11', 'Laptop Cleaning', '2025-06-21 02:27:44'),
+(66, 8, '1', '1', '1', 'Laptop Cleaning', '2025-06-21 02:46:28'),
+(67, 8, '1', '3', '4', 'Camera Installation', '2025-06-21 02:46:48'),
+(68, 8, '55', '33', '11', 'Laptop Cleaning', '2025-06-21 02:49:04'),
+(69, 8, '515', '115', '15151515', 'Warranty', '2025-06-21 02:56:54'),
+(70, 2, 'hh', 'kk', 'jj', 'Warranty', '2025-06-21 10:16:28'),
+(71, 2, '313', '414', '5151', 'Repair', '2025-06-21 10:18:02'),
+(72, 2, '4141', '51515', '231', 'Repair', '2025-06-21 10:18:13'),
+(73, 2, 'gg', 'ee', 'aa', 'Laptop Cleaning', '2025-06-21 10:19:21'),
+(74, 2, '44', '555', '111', 'Camera Installation', '2025-06-21 10:22:27');
 
 -- --------------------------------------------------------
 
@@ -366,20 +463,6 @@ INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, 
 (7, 'Tao la Tung Tung ', 'tao ở mỹ', '123@gmail.com', '123', 'duma1', '321', 1),
 (8, 'hẹ', NULL, 'kkk@gmail.com', '123', 'hehehe', '123123', 1),
 (9, 'admin', NULL, '', NULL, 'admin1', '123', 0);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `user_review`
---
-
-CREATE TABLE `user_review` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `ordered_product_id` int(11) DEFAULT NULL,
-  `rating_value` int(11) DEFAULT NULL,
-  `comment` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -596,7 +679,11 @@ INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
 (29, 16, 'Cable'),
 (29, 17, 'Generic'),
 (30, 16, 'Gaming Chair'),
-(30, 17, 'Corsair');
+(30, 17, 'Corsair'),
+(31, 12, 'Google'),
+(31, 13, 'Indoor/Outdoor'),
+(31, 14, 'Wireless'),
+(31, 15, '1080p');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -663,14 +750,6 @@ ALTER TABLE `site_user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `user_review`
---
-ALTER TABLE `user_review`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `ordered_product_id` (`ordered_product_id`);
-
---
 -- Chỉ mục cho bảng `variation`
 --
 ALTER TABLE `variation`
@@ -692,25 +771,25 @@ ALTER TABLE `variation_options`
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT cho bảng `checkout_cart`
 --
 ALTER TABLE `checkout_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT cho bảng `product_category`
@@ -722,7 +801,7 @@ ALTER TABLE `product_category`
 -- AUTO_INCREMENT cho bảng `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT cho bảng `shopping_cart`
@@ -741,12 +820,6 @@ ALTER TABLE `shopping_cart_item`
 --
 ALTER TABLE `site_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT cho bảng `user_review`
---
-ALTER TABLE `user_review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `variation`
@@ -783,13 +856,6 @@ ALTER TABLE `shopping_cart`
 ALTER TABLE `shopping_cart_item`
   ADD CONSTRAINT `shopping_cart_item_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `shopping_cart` (`id`),
   ADD CONSTRAINT `shopping_cart_item_ibfk_2` FOREIGN KEY (`product_item_id`) REFERENCES `product` (`id`);
-
---
--- Các ràng buộc cho bảng `user_review`
---
-ALTER TABLE `user_review`
-  ADD CONSTRAINT `user_review_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`),
-  ADD CONSTRAINT `user_review_ibfk_2` FOREIGN KEY (`ordered_product_id`) REFERENCES `order_line` (`id`);
 
 --
 -- Các ràng buộc cho bảng `variation`
