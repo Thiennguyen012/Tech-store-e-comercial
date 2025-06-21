@@ -40,7 +40,7 @@ function is_active($file)
         <a class="nav-link d-flex justify-content-between align-items-center text-dark<?php echo is_active('notification.php'); ?>" href="#" onclick="loadPage('module/user-profile/notification.php',this,'notification'); return false;">
             <span><i class="bi bi-bell"></i> Notifications</span>
             <?php if ($unread_count > 0): ?>
-                <span class="badge bg-danger"><?php echo $unread_count; ?></span>
+                <span id="noti-badge-sidebar" class="badge bg-danger"><?php echo $unread_count; ?></span>
             <?php endif; ?>
         </a>
         <!-- Mục dành cho admin -->

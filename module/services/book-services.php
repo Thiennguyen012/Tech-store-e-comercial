@@ -115,7 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="text-center">Please do not <strong>reload page</strong> or click on <strong>back button</strong></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.href='index.php?act=book-result';return false;">Đóng</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.href='index.php?act=book-result';return false;">
+                    Close
+                </button>
             </div>
         </div>
     </div>

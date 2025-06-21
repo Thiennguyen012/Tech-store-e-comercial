@@ -131,7 +131,9 @@ $notifications = $stmt->get_result();
                 // Gọi API đánh dấu đã đọc
                 fetch("module/user-profile/mark-read.php", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "id=" + notiId
                 }).then(() => {
                     // Xóa badge trên navbar nếu có
@@ -184,7 +186,7 @@ $notifications = $stmt->get_result();
                 if (res === "success") {
                     const notiItem = btnElement.closest(".noti-item");
                     notiItem.remove();
-                    window.location.href = '?act=notification';
+                    window.location.href = 'index.php?act=notification';
                     const navbarBadge = document.querySelector("#noti-badge");
                     if (navbarBadge) navbarBadge.remove();
                     if (document.querySelectorAll('.noti-item').length === 0) {
@@ -222,8 +224,16 @@ $notifications = $stmt->get_result();
                     <div class="text-muted mt-3">You don't have any new notifications</div>
                 </div>
             `;
+                    document.querySelectorAll(".noti-item").forEach(item => {
+                        item.classList.add("text-muted");
+                        item.querySelector(".badge")?.remove();
+                    });
+                    // Xóa badge trên navbar
                     const navbarBadge = document.querySelector("#noti-badge");
                     if (navbarBadge) navbarBadge.remove();
+                    // Xóa badge ở sidebar (bổ sung dòng này)
+                    const sidebarBadge = document.querySelector("#noti-badge-sidebar");
+                    if (sidebarBadge) sidebarBadge.remove();
                 }
             });
     }
