@@ -4,6 +4,13 @@ require 'components/header.php';
 require 'db/connect.php';
 global $conn;
 
+if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+  $cookie_id = $_COOKIE['username'];
+  $password = $_COOKIE['password'];
+} else {
+  $cookie_id = '';
+  $password = '';
+}
 // Khởi tạo biến để lưu thông báo
 $alert_message = '';
 $alert_type = '';
@@ -17,6 +24,14 @@ if (isset($_SESSION['username'])) {
     header("Location: index.php");
     exit();
   }
+}
+
+if (isset($_POST['remember'])) {
+  setcookie('username', $_POST['username'], time() + 60 * 60 * 24);
+  setcookie('password', $_POST['password'], time() + 60 * 60 * 24);
+} else {
+  setcookie('username', '', time() - 3600);
+  setcookie('password', '', time() - 3600);
 }
 ?>
 
@@ -111,19 +126,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- input username, password -->
             <div class="input-group mb-3">
               <input type="text" id="username" name="username" class="form-control form-control-lg bg-light fs-6"
-                placeholder="Username" />
+                placeholder="Username" value="<?php echo $cookie_id ?>" />
             </div>
 
             <div class="input-group mb-4">
               <input type="password" id="password" name="password" class="form-control form-control-lg bg-light fs-6"
-                placeholder="Password" />
+                placeholder="Password" value="<?php echo $password ?>" />
             </div>
 
             <!-- tạo checkbox và forgot password trên cùng 1 hàng, dùng d-flex và justify-content-beetween
               2 đối tượng này phải cùng cấp  -->
             <div class="input-group d-flex justify-content-between">
               <div>
-                <input type="checkbox" class="form-check-input" id="remember" />
+                <input type="checkbox" class="form-check-input" id="remember" name="remember" />
                 <label for="remember"><small class="text-dark">Remember me?</small></label>
               </div>
 
