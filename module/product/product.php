@@ -452,7 +452,9 @@ if ($isSearchMode) {
       })
       .catch(err => {
         console.error("Lỗi khi gửi form:", err);
-        alert("Có lỗi xảy ra, vui lòng thử lại!");
+        // alert("You are not logged, please login to add products to cart.");
+        const notLoggedInModal = new bootstrap.Modal(document.getElementById('notLoggedInModal'));
+        notLoggedInModal.show();
       });
   }
 
@@ -601,6 +603,25 @@ if ($isSearchMode) {
         Product has been added to your cart successfully!
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal thông báo chưa đăng nhập -->
+<div class="modal fade" id="notLoggedInModal" tabindex="-1" aria-labelledby="notLoggedInModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notLoggedInModalLabel">Notification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You are not logged in. Please login to add products to cart.
+      </div>
+      <div class="modal-footer">
+        <a href="login.php" class="btn btn-dark">Login Now</a>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>

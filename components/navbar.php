@@ -97,16 +97,6 @@ if ($username) {
             <a class="nav-link px-2 search-container">
               <i class="fas fa-search rounded-3" onclick="toggleSearch(); return false;">
               </i>
-              <!-- Search Flyout -->
-              <div class="search-flyout" id="searchFlyout">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-6 mx-auto">
-                      <input type="text" class="search-input" placeholder="Search on Technologia..." id="searchInput">
-                    </div>
-                  </div>
-                </div>
-              </div>
             </a>
           </li>
 
@@ -162,6 +152,21 @@ if ($username) {
     </div>
   </div>
 </nav>
+<!-- search flyout -->
+<div class="search-flyout bg-light py-4" id="searchFlyout" style="z-index: 1;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <input
+          type="text"
+          class="search-input shadow-sm"
+          placeholder="Search on Technologia..."
+          id="searchInput">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- search script -->
 <script>
   let isSearchOpen = false;
