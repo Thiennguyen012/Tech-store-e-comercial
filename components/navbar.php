@@ -85,7 +85,7 @@ if ($username) {
             </ul>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#About"
+            <a class="nav-link" href="#"
               onclick="loadPage('module/about-us/about-us.php', this, 'about'); return false;">About</a>
           </li>
           <li class="nav-item mx-2">
@@ -124,7 +124,7 @@ if ($username) {
             <!-- Đã đăng nhập -->
             <div class="d-flex justify-content-center align-content-center gap-5">
               <!-- Shopping cart  -->
-              <button type="button" class="btn border-0 position-relative"
+              <button type="button" class="btn border-0 position-relative nav-link"
                 onclick="loadPage('module/cart/cart.php', this, 'cart')">
                 <i class="fa-solid fa-cart-shopping fs-5"></i>
               </button>
@@ -309,5 +309,20 @@ if ($username) {
         }
       });
   }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Lấy offcanvas element
+    var offcanvasEl = document.getElementById('offcanvasNavbar');
+    if (!offcanvasEl) return;
+
+    // Lấy instance Bootstrap Offcanvas
+    var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+
+    // Đóng offcanvas khi click vào bất kỳ link trong offcanvas
+    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function(link) {
+      link.addEventListener('click', function() {
+        bsOffcanvas.hide();
+      });
+    });
+  });
 </script>
 <!-- search -->
