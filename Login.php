@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra role để chuyển hướng
     if ($role == 0) {
       // Admin
-      header("Location: admin.php");
+      header("Location: admin/home-page/admin.php");
       exit();
     } else if ($role == 1) {
       // Người dùng
