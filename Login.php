@@ -143,7 +143,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <div>
-                <small><a href="#" class="text-dark float-end">Forgot password?</a></small>
+                <small><a href="#" class="text-dark float-end"
+                    onclick="window.location.href='module/forgot-password/send-email.php'; return false;">Forgot
+                    password?</a></small>
               </div>
             </div>
             <!-- Button login -->
@@ -211,6 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </div>
+  <script src="asset/main-script1.js"></script>
   <!-- bootstrap js -->
   <script src="./asset/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
