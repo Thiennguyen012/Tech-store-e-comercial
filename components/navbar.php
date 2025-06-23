@@ -85,7 +85,7 @@ if ($username) {
             </ul>
           </li>
           <li class="nav-item mx-2">
-            <a class="nav-link" href="#About"
+            <a class="nav-link" href="#"
               onclick="loadPage('module/about-us/about-us.php', this, 'about'); return false;">About</a>
           </li>
           <li class="nav-item mx-2">
@@ -97,16 +97,6 @@ if ($username) {
             <a class="nav-link px-2 search-container">
               <i class="fas fa-search rounded-3" onclick="toggleSearch(); return false;">
               </i>
-              <!-- Search Flyout -->
-              <div class="search-flyout" id="searchFlyout">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-6 mx-auto">
-                      <input type="text" class="search-input" placeholder="Search on Technologia..." id="searchInput">
-                    </div>
-                  </div>
-                </div>
-              </div>
             </a>
           </li>
 
@@ -124,7 +114,7 @@ if ($username) {
             <!-- Đã đăng nhập -->
             <div class="d-flex justify-content-center align-content-center gap-5">
               <!-- Shopping cart  -->
-              <button type="button" class="btn border-0 position-relative"
+              <button type="button" class="btn border-0 position-relative nav-link"
                 onclick="loadPage('module/cart/cart.php', this, 'cart')">
                 <i class="fa-solid fa-cart-shopping fs-5"></i>
               </button>
@@ -162,6 +152,21 @@ if ($username) {
     </div>
   </div>
 </nav>
+<!-- search flyout -->
+<div class="search-flyout bg-light py-4" id="searchFlyout" style="z-index: 1;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+        <input
+          type="text"
+          class="search-input shadow-sm"
+          placeholder="Search on Technologia..."
+          id="searchInput">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- search script -->
 <script>
   let isSearchOpen = false;
@@ -309,5 +314,20 @@ if ($username) {
         }
       });
   }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Lấy offcanvas element
+    var offcanvasEl = document.getElementById('offcanvasNavbar');
+    if (!offcanvasEl) return;
+
+    // Lấy instance Bootstrap Offcanvas
+    var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+
+    // Đóng offcanvas khi click vào bất kỳ link trong offcanvas
+    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function(link) {
+      link.addEventListener('click', function() {
+        bsOffcanvas.hide();
+      });
+    });
+  });
 </script>
 <!-- search -->

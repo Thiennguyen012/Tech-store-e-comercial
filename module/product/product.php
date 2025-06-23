@@ -405,7 +405,7 @@ if ($isSearchMode) {
 
   // Hàm gán sự kiện AJAX cho tất cả form add to cart
   function attachCartEventListeners() {
-    document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
+    document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
       // Xóa event listener cũ để tránh trùng lặp
       form.removeEventListener('submit', handleCartSubmit);
       // Gán event listener mới
@@ -420,9 +420,9 @@ if ($isSearchMode) {
     const formData = new FormData(e.target);
 
     fetch('module/cart/cart.php', {
-      method: 'POST',
-      body: formData
-    })
+        method: 'POST',
+        body: formData
+      })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -433,11 +433,13 @@ if ($isSearchMode) {
             keyboard: true
           });
           modal.show();
-          
+
           // Thêm event listener để dispose modal khi đóng
-          modalElement.addEventListener('hidden.bs.modal', function () {
+          modalElement.addEventListener('hidden.bs.modal', function() {
             modal.dispose();
-          }, { once: true });
+          }, {
+            once: true
+          });
 
           // Cập nhật số trên icon giỏ hàng nếu có
           const cartIcon = document.querySelector('.cart-icon .fw-bold');
@@ -450,7 +452,9 @@ if ($isSearchMode) {
       })
       .catch(err => {
         console.error("Lỗi khi gửi form:", err);
-        alert("Có lỗi xảy ra, vui lòng thử lại!");
+        // alert("You are not logged, please login to add products to cart.");
+        const notLoggedInModal = new bootstrap.Modal(document.getElementById('notLoggedInModal'));
+        notLoggedInModal.show();
       });
   }
 
@@ -520,10 +524,10 @@ if ($isSearchMode) {
   function handleShowMore(e) {
     if (e.target && e.target.id === 'showMoreBtn') {
       const btn = e.target;
-      
+
       // Prevent multiple clicks while loading
       if (btn.disabled) return;
-      
+
       btn.disabled = true;
       btn.textContent = 'Loading...';
       const offset = parseInt(btn.getAttribute('data-offset'), 10);
@@ -534,9 +538,9 @@ if ($isSearchMode) {
       formData.append('showMore', 1);
 
       fetch('module/product/filter.php', {
-        method: 'POST',
-        body: formData,
-      })
+          method: 'POST',
+          body: formData,
+        })
         .then(res => res.text())
         .then(html => {
           // Tạo một div tạm để lấy các .col mới
@@ -600,7 +604,25 @@ if ($isSearchMode) {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a href="#" class="btn btn-dark" onclick="location.href='index.php?act=cart';return false;">Go to Cart</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal thông báo chưa đăng nhập -->
+<div class="modal fade" id="notLoggedInModal" tabindex="-1" aria-labelledby="notLoggedInModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notLoggedInModalLabel">Notification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You are not logged in. Please login to add products to cart.
+      </div>
+      <div class="modal-footer">
+        <a href="login.php" class="btn btn-dark">Login Now</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

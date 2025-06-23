@@ -1,6 +1,15 @@
 <?php include 'module/cart/showcart.php';
 $username = $_SESSION['username'] ?? '';
 
+if (!isset($_SESSION['username'])) {
+    echo '<div class="text-center py-5 mt-5">
+        <div class="mb-4"><i class="fas fa-user fa-3x text-muted"></i></div>
+        <h4 class="text-muted mb-3">You are not logged in</h4>
+        <p class="text-muted mb-4">Please login to do this action.</p>
+        <button class="btn btn-dark rounded-4" onclick="location.href=\'Login.php\'">Login Now</button>
+    </div>';
+    return;
+}
 $user = null;
 if ($username) {
     $sql = "SELECT name, phone, address FROM site_user WHERE username = ?";
