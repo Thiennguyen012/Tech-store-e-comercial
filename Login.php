@@ -18,7 +18,7 @@ $alert_type = '';
 // Chuyển hướng đăng nhập
 if (isset($_SESSION['username'])) {
   if ($_SESSION['role'] == 0) {
-    header("Location: admin.php");
+    header("Location: admin/home-page/admin.php");
     exit();
   } else if ($_SESSION['role'] == 1) {
     header("Location: index.php");
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra role để chuyển hướng
     if ($role == 0) {
       // Admin
-      header("Location: admin.php");
+      header("Location: admin/home-page/admin.php");
       exit();
     } else if ($role == 1) {
       // Người dùng

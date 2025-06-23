@@ -85,8 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Xóa giỏ hàng
     unset($_SESSION['cart']);
 } else {
-    echo "<div class='alert alert-danger text-center'>Invalid access.</div>";
-    exit;
+    echo '<div class="text-center py-5 mt-5">
+        <div class="mb-4"><i class="fas fa-user fa-3x text-muted"></i></div>
+        <h4 class="text-muted mb-3">You are not logged in</h4>
+        <p class="text-muted mb-4">Please login to do this action.</p>
+        <button class="btn btn-dark rounded-4" onclick="location.href=\'Login.php\'">Login Now</button>
+    </div>';
+    return;
 }
 ?>
 <div class="container bg-white shadow p-5 mt-5 rounded-4 mb-5">

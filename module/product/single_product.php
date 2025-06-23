@@ -55,110 +55,111 @@ while ($row = $config_result->fetch_assoc()) {
 }
 ?>
 <?php if ($product): ?>
-<div class="container mt-5 mb-5">
-  <div class="p-4 rounded shadow" style="background: #fff;">
-    <!-- Breadcrumb -->
-    <style>
-      .breadcrumb a {
-        color:rgb(126, 130, 134) !important;
-        text-decoration: none !important;
-        font-family: inherit !important;
-        font-size: inherit !important;
-      }
-      .breadcrumb a:hover {
-        text-decoration: underline !important;
-      }
-    </style>
-    <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb" class="mb-3">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#" onclick="loadPage('module/main-content/main-content.php'); return false;">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-          <a href="#" onclick="loadPage('module/product/product.php', this, 'products'); return false;">Laptops</a>
-        </li>
-        <li class="breadcrumb-item">
-          <!-- Breadcrumb hãng, tự động lấy theo category và brand -->
-          <a href="#" onclick="loadPage('module/product/product.php?category=<?php
-      // Lấy category
-      $catSql = 'SELECT category_name FROM product_category WHERE id = ? LIMIT 1';
-      $catStmt = $conn->prepare($catSql);
-      $catStmt->bind_param('i', $product['category_id']);
-      $catStmt->execute();
-      $catStmt->bind_result($catName);
-      $catStmt->fetch();
-      $catStmt->close();
-      echo urlencode($catName);
-    ?>&filters[<?php echo urlencode($brand_variation); ?>]=<?php echo urlencode($brand); ?>', this, 'products'); return false;">
-    <?php echo htmlspecialchars($brand); ?>
-  </a>
-</li>
-        <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($product['name']); ?></li>
-      </ol>
-    </nav>
-    <!-- End Breadcrumb -->
-    <div class="row">
-      <div class="col-md-5 text-center">
-        <!-- Ảnh sản phẩm -->
-        <img src="<?php echo htmlspecialchars($product['product_image']); ?>" class="img-fluid" alt="<?php echo htmlspecialchars($product['name']); ?>">
-      </div>
-      <div class="col-md-7">
-        <h2 class="fw-bold"><?php echo htmlspecialchars($product['name']); ?></h2>
-        <div class="mb-3 text-dark fw-bold" style="font-size: 1.5rem;">
-          <?php echo number_format($product['price'], 0, ',', '.'); ?>$
+  <div class="container mt-5 mb-5">
+    <div class="p-4 rounded shadow" style="background: #fff;">
+      <!-- Breadcrumb -->
+      <style>
+        .breadcrumb a {
+          color: rgb(126, 130, 134) !important;
+          text-decoration: none !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+        }
+
+        .breadcrumb a:hover {
+          text-decoration: underline !important;
+        }
+      </style>
+      <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="#" onclick="loadPage('module/main-content/main-content.php'); return false;">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="#" onclick="loadPage('module/product/product.php', this, 'products'); return false;">Laptops</a>
+          </li>
+          <li class="breadcrumb-item">
+            <!-- Breadcrumb hãng, tự động lấy theo category và brand -->
+            <a href="#" onclick="loadPage('module/product/product.php?category=<?php
+                                                                                // Lấy category
+                                                                                $catSql = 'SELECT category_name FROM product_category WHERE id = ? LIMIT 1';
+                                                                                $catStmt = $conn->prepare($catSql);
+                                                                                $catStmt->bind_param('i', $product['category_id']);
+                                                                                $catStmt->execute();
+                                                                                $catStmt->bind_result($catName);
+                                                                                $catStmt->fetch();
+                                                                                $catStmt->close();
+                                                                                echo urlencode($catName);
+                                                                                ?>&filters[<?php echo urlencode($brand_variation); ?>]=<?php echo urlencode($brand); ?>', this, 'products'); return false;">
+              <?php echo htmlspecialchars($brand); ?>
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($product['name']); ?></li>
+        </ol>
+      </nav>
+      <!-- End Breadcrumb -->
+      <div class="row">
+        <div class="col-md-5 text-center">
+          <!-- Ảnh sản phẩm -->
+          <img src="<?php echo htmlspecialchars($product['product_image']); ?>" class="img-fluid" alt="<?php echo htmlspecialchars($product['name']); ?>">
         </div>
-        <!-- Danh sách cấu hình sản phẩm -->
-        <ul class="mb-3">
-          <?php foreach($configs as $c): ?>
-            <li><b><?php echo htmlspecialchars($c['variation']); ?>:</b> <?php echo htmlspecialchars($c['value']); ?></li>
-          <?php endforeach; ?>
-        </ul>
-        <div class="mb-3">
-          <label for="quantity">Quantity:</label>
-          <input type="number" id="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
-        </div>
-        <?php if ($product['qty_in_stock'] > 0): ?>
-          <!-- Form thêm vào giỏ hàng -->
-          <form id="addToCartForm" action="module/cart/cart.php" method="POST" class="d-inline">
-            <input type="hidden" name="product-id" value="<?php echo $product['id']; ?>">
-            <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($product['name']); ?>">
-            <input type="hidden" name="product-price" value="<?php echo $product['price']; ?>">
-            <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($product['product_image']); ?>">
-            <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
-            <button type="submit" name="add-to-cart" class="btn btn-dark btn-lg fw-bold">Add To Cart</button>
-          </form>
-        <?php else: ?>
-          <button id="contactBtn" class="btn btn-outline-secondary btn-lg fw-bold">
-            Contact us
-          </button>
-        <?php endif; ?>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-12">
-        <h5 class="fw-bold border-bottom pb-2 mb-3">Description</h5>
-        <div class="bg-light p-3 rounded">
-          <?php echo nl2br(htmlspecialchars($product['description'])); ?>
+        <div class="col-md-7">
+          <h2 class="fw-bold"><?php echo htmlspecialchars($product['name']); ?></h2>
+          <div class="mb-3 text-dark fw-bold" style="font-size: 1.5rem;">
+            <?php echo number_format($product['price'], 0, ',', '.'); ?>$
+          </div>
+          <!-- Danh sách cấu hình sản phẩm -->
+          <ul class="mb-3">
+            <?php foreach ($configs as $c): ?>
+              <li><b><?php echo htmlspecialchars($c['variation']); ?>:</b> <?php echo htmlspecialchars($c['value']); ?></li>
+            <?php endforeach; ?>
+          </ul>
+          <div class="mb-3">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
+          </div>
+          <?php if ($product['qty_in_stock'] > 0): ?>
+            <!-- Form thêm vào giỏ hàng -->
+            <form id="addToCartForm" action="module/cart/cart.php" method="POST" class="d-inline">
+              <input type="hidden" name="product-id" value="<?php echo $product['id']; ?>">
+              <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($product['name']); ?>">
+              <input type="hidden" name="product-price" value="<?php echo $product['price']; ?>">
+              <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($product['product_image']); ?>">
+              <input type="hidden" name="quantity" id="hiddenQuantity" value="1">
+              <button type="submit" name="add-to-cart" class="btn btn-dark btn-lg fw-bold">Add To Cart</button>
+            </form>
+          <?php else: ?>
+            <button id="contactBtn" class="btn btn-outline-secondary btn-lg fw-bold">
+              Contact us
+            </button>
+          <?php endif; ?>
         </div>
       </div>
-    </div>
-    <!-- Related Products -->
-    <div class="row mt-5">
-      <div class="col-12">
-        <h5 class="fw-bold border-bottom pb-2 mb-3">Related Products</h5>
-        <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <?php
-            // Lấy danh sách sản phẩm liên quan (cùng category_id, loại trừ chính nó)
-            $related_sql = "SELECT id, name, price, product_image FROM product WHERE category_id = ? AND id != ? LIMIT 10";
-            $stmt = $conn->prepare($related_sql);
-            $stmt->bind_param("ii", $product['category_id'], $product_id);
-            $stmt->execute();
-            $related_result = $stmt->get_result();
-            $products = [];
-            while ($related = $related_result->fetch_assoc()) {
-              $products[] = $related;
-            }
+      <div class="row mt-4">
+        <div class="col-12">
+          <h5 class="fw-bold border-bottom pb-2 mb-3">Description</h5>
+          <div class="bg-light p-3 rounded">
+            <?php echo nl2br(htmlspecialchars($product['description'])); ?>
+          </div>
+        </div>
+      </div>
+      <!-- Related Products -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <h5 class="fw-bold border-bottom pb-2 mb-3">Related Products</h5>
+          <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <?php
+              // Lấy danh sách sản phẩm liên quan (cùng category_id, loại trừ chính nó)
+              $related_sql = "SELECT id, name, price, product_image FROM product WHERE category_id = ? AND id != ? LIMIT 10";
+              $stmt = $conn->prepare($related_sql);
+              $stmt->bind_param("ii", $product['category_id'], $product_id);
+              $stmt->execute();
+              $related_result = $stmt->get_result();
+              $products = [];
+              while ($related = $related_result->fetch_assoc()) {
+                $products[] = $related;
+              }
 
               // Chia sản phẩm thành các nhóm (mỗi nhóm 4 sản phẩm cho 1 slide)
               $chunks = array_chunk($products, 4);
@@ -238,7 +239,13 @@ while ($row = $config_result->fetch_assoc()) {
           alert("Thêm vào giỏ hàng thất bại!");
         }
       })
-      .catch(err => console.error("Lỗi khi gửi form:", err));
+      .catch(err => {
+        console.error("Lỗi khi gửi form:", err);
+        // alert("You are not logged, please login to add products to cart.");
+        const notLoggedInModal = new bootstrap.Modal(document.getElementById('notLoggedInModal'));
+        notLoggedInModal.show();
+      });
+
   });
 
   // Xử lý button contact
@@ -260,7 +267,24 @@ while ($row = $config_result->fetch_assoc()) {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a href="#" class="btn btn-dark" onclick="location.href='index.php?act=cart';return false;">Go to Cart</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal thông báo chưa đăng nhập -->
+<div class="modal fade" id="notLoggedInModal" tabindex="-1" aria-labelledby="notLoggedInModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notLoggedInModalLabel">Notification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You are not logged in. Please login to add products to cart.
+      </div>
+      <div class="modal-footer">
+        <a href="login.php" class="btn btn-dark">Go to Login</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

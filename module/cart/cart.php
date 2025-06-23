@@ -3,6 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if (!isset($_SESSION['username'])) {
+    echo '<div class="text-center py-5 mt-5">
+        <div class="mb-4"><i class="fas fa-user fa-3x text-muted"></i></div>
+        <h4 class="text-muted mb-3">You are not logged in</h4>
+        <p class="text-muted mb-4">Please login to view your cart.</p>
+        <button class="btn btn-dark rounded-4" onclick="location.href=\'Login.php\'">Login Now</button>
+    </div>';
+    return;
+}
 // ✅ Xử lý xóa sản phẩm
 if (isset($_GET['delid'])) {
     $id = $_GET['delid'];
