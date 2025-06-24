@@ -24,6 +24,7 @@ class ComposerStaticInit566b298913829ffc1df98fbece4f9631
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Cache\\' => 10,
+            'PayOS\\' => 6,
         ),
         'M' => 
         array (
@@ -59,6 +60,10 @@ class ComposerStaticInit566b298913829ffc1df98fbece4f9631
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'PayOS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/payos/payos/src',
         ),
         'Monolog\\' => 
         array (

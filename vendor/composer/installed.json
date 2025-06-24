@@ -524,6 +524,56 @@
             "install-path": "../monolog/monolog"
         },
         {
+            "name": "payos/payos",
+            "version": "1.0.6",
+            "version_normalized": "1.0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/payOSHQ/payos-lib-php.git",
+                "reference": "dce389ac3c464f04fd67f4488b3d66275dd0e7b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/payOSHQ/payos-lib-php/zipball/dce389ac3c464f04fd67f4488b3d66275dd0e7b3",
+                "reference": "dce389ac3c464f04fd67f4488b3d66275dd0e7b3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.1"
+            },
+            "time": "2024-07-03T09:57:49+00:00",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-4": {
+                    "PayOS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "locbt"
+                }
+            ],
+            "description": "A payOS package for PHP",
+            "keywords": [
+                "payment",
+                "payos",
+                "payos package"
+            ],
+            "support": {
+                "issues": "https://github.com/payOSHQ/payos-lib-php/issues",
+                "source": "https://github.com/payOSHQ/payos-lib-php/tree/v1.0.6"
+            },
+            "install-path": "../payos/payos"
+        },
+        {
             "name": "phpseclib/phpseclib",
             "version": "2.0.48",
             "version_normalized": "2.0.48.0",
