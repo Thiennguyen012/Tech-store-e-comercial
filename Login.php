@@ -43,15 +43,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Truy vấn database để kiểm tra thông tin đăng nhập và lấy role
   $sql = "SELECT * FROM site_user WHERE username = '$username' AND password = '$password'";
-  $result = $conn->query($sql);
-
+  $result = $mysqli_conn->query($sql);
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $role = $row['role'];
 
-    // Tạo session
+    // Tạo session với đầy đủ thông tin
+    $_SESSION['user_id'] = $row['id'];
     $_SESSION['username'] = $username;
     $_SESSION['role'] = $role;
+    $_SESSION['name'] = $row['name'];
 
     // Kiểm tra role để chuyển hướng
     if ($role == 0) {
