@@ -27,26 +27,37 @@ if (empty($name) || empty($email) || empty($phone) || empty($username) || empty(
   $alert_message = 'Wrong Password! Try again!';
   $alert_type = 'warning';
 } else {
-  // Kiểm tra username đã tồn tại chưa
-  $check = "SELECT * FROM site_user WHERE username = '$username'";
-  $result = mysqli_query($conn, $check);
 
-  if (mysqli_num_rows($result) > 0) {
-    $alert_message = 'Username already exists! Try again!';
+  // Kiểm tra username đã tồn tại chưa
+  $check_username = "SELECT * FROM site_user WHERE username = '$username'";
+  $result_username = mysqli_query($conn, $check_username);
+
+  if (mysqli_num_rows($result_username) > 0) {
+    $alert_message = 'Username already exists. Please choose another username!';
     $alert_type = 'warning';
+
   } else {
-    // Hash password trước khi lưu vào database
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO site_user (name, email, phone, username, password, role)
+    // Kiểm tra email đã tồn tại chưa
+    $check_email = "SELECT * FROM site_user WHERE email = '$email'";
+    $result_email = mysqli_query($conn, $check_email);
+
+    if (mysqli_num_rows($result_email) > 0) {
+      $alert_message = 'Email already exists. Please choose another email!';
+      $alert_type = 'warning';
+
+    } else {
+      // Lưu vào database
+      $sql = "INSERT INTO site_user (name, email, phone, username, password, role)
               VALUES ('$name', '$email', '$phone', '$username', '$password', 1)";
 
-    if (mysqli_query($conn, $sql)) {
-      $alert_message = 'Success!';
-      $alert_type = 'success';
-      echo "<script>window.location.href='login.php';</script>";
-    } else {
-      $alert_message = 'Error! Try again!';
-      $alert_type = 'danger';
+      if (mysqli_query($conn, $sql)) {
+        $alert_message = 'Successfully registered! You can now log in.';
+        $alert_type = 'success';
+        echo "<script>window.location.href='login.php';</script>";
+      } else {
+        $alert_message = 'Try again! Something went wrong!';
+        $alert_type = 'danger';
+      }
     }
   }
 }

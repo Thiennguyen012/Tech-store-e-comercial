@@ -18,7 +18,7 @@ $alert_type = '';
 // Chuyển hướng đăng nhập
 if (isset($_SESSION['username'])) {
   if ($_SESSION['role'] == 0) {
-    header("Location: admin.php");
+    header("Location: admin/home-page/admin.php");
     exit();
   } else if ($_SESSION['role'] == 1) {
     header("Location: index.php");
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra role để chuyển hướng
     if ($role == 0) {
       // Admin
-      header("Location: admin.php");
+      header("Location: admin/home-page/admin.php");
       exit();
     } else if ($role == 1) {
       // Người dùng
@@ -143,7 +143,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <div>
-                <small><a href="#" class="text-dark float-end">Forgot password?</a></small>
+                <small><a href="#" class="text-dark float-end"
+                    onclick="window.location.href='module/forgot-password/send-email.php'; return false;">Forgot
+                    password?</a></small>
               </div>
             </div>
             <!-- Button login -->
@@ -164,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <!-- tạo col thứ nhất -->
               <div class="col-3">
                 <div class="input-group mb-lg-2">
-                  <a href="Login-google.php">
+                  <a href="module/login-google/Login-google.php">
                     <button class="btn bg-light w-100 fs-6" type="button">
                       <img src="./img/google.png" style="width: 30px" />
                     </button>
@@ -174,9 +176,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <!-- tạo col thứ 2 -->
               <div class="col-3">
                 <div class="input-group mb-lg-2">
-                  <button class="btn bg-light w-100 fs-6">
-                    <img src="./img/facebook2.png" style="width: 30px" />
-                  </button>
+                  <a href="module/login-fb/Login-fb.php">
+                    <button class="btn bg-light w-100 fs-6" type="button">
+                      <img src="./img/facebook2.png" style="width: 30px" />
+                    </button>
+                  </a>
                 </div>
               </div>
               <!-- tạo col thứ 3 -->
@@ -211,6 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </div>
+  <script src="asset/main-script1.js"></script>
   <!-- bootstrap js -->
   <script src="./asset/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
