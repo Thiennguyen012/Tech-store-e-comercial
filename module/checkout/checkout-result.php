@@ -16,7 +16,62 @@ if ($username) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$cart = $_SESSION['cart'] ?? [];
+
+if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID') {
+    // ✅ Thanh toán online thành công từ PayOS
+
+    $orderCode = $_GET['orderCode'] ?? '';
+    $payment_method = 'payos';
+    $payment_code = 1;
+
+    // Lấy lại thông tin khách từ session
+    $name = $_SESSION['pending_checkout']['name'] ?? '';
+    $phone = $_SESSION['pending_checkout']['phone'] ?? '';
+    $address = $_SESSION['pending_checkout']['address'] ?? '';
+
+    // Tính lại total
+    $subtotal = 0;
+    foreach ($cart as $item) {
+        $subtotal += $item['price'] * $item['quantity'];
+    }
+    $tax = $subtotal * 0.1;
+    $total = $subtotal + $tax;
+
+    // ✅ Lưu đơn hàng
+    $order_id = newBillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
+
+    foreach ($cart as $item) {
+        newCheckoutCart(
+            $conn,
+            $item['name'],
+            $item['img'],
+            $item['price'],
+            $item['quantity'],
+            $item['price'] * $item['quantity'],
+            $order_id
+        );
+
+        $product_id = $item['id'];
+        $qty_bought = $item['quantity'];
+
+        $stmt = $conn->prepare("UPDATE product SET qty_in_stock = qty_in_stock - ? WHERE id = ?");
+        $stmt->bind_param("ii", $qty_bought, $product_id);
+        $stmt->execute();
+    }
+
+    // Thêm thông báo
+    if ($user_id && $order_id) {
+        $message = "You have successfully placed order #$order_id.";
+        $type = 0;
+        $stmtNotify = $conn->prepare("INSERT INTO notifications (user_id, content, type) VALUES (?, ?, ?)");
+        $stmtNotify->bind_param("isi", $user_id, $message, $type);
+        $stmtNotify->execute();
+    }
+
+    unset($_SESSION['pending_checkout']);
+    unset($_SESSION['cart']);
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $phone = $address = '';
 
     if (isset($_POST['use_new_info']) && $_POST['use_new_info'] === '1') {
