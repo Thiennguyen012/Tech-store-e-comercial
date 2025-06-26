@@ -1,20 +1,14 @@
 <?php
 session_start();
-require_once '../../db/connect.php';
+require_once '../config/admin-connect.php';
 
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
-    http_response_code(403);
-    echo json_encode(['error' => 'Access denied']);
+    echo '<div class="alert alert-danger">Access denied</div>';
     exit;
 }
 
-$service_id = $_GET['id'] ?? null;
-
-if (!$service_id) {
-    echo '<div class="alert alert-danger">Service ID is required</div>';
-    exit;
-}
+$service_id = $_GET['id'] ?? 0;
 
 try {
     // Get service details
@@ -31,23 +25,36 @@ try {
         echo '<div class="alert alert-danger">Service request not found</div>';
         exit;
     }
-      $customer_name = $service['user_name'] ?: $service['name'] ?: 'Guest';
     
-    echo "<div class='row'>";
-    echo "<div class='col-12'>";
-    echo "<h5>Service Request Information</h5>";
-    echo "<table class='table table-borderless'>";
-    echo "<tr><td><strong>Request ID:</strong></td><td>#{$service['id']}</td></tr>";
-    echo "<tr><td><strong>Customer:</strong></td><td>{$customer_name}</td></tr>";
-    if ($service['user_email']) {
-        echo "<tr><td><strong>Email:</strong></td><td>{$service['user_email']}</td></tr>";
-    }
-    echo "<tr><td><strong>Phone:</strong></td><td>{$service['phone']}</td></tr>";
-    echo "<tr><td><strong>Address:</strong></td><td>{$service['address']}</td></tr>";
-    echo "<tr><td><strong>Service Type:</strong></td><td><span class='badge bg-info'>{$service['service_type']}</span></td></tr>";
-    echo "<tr><td><strong>Request Date:</strong></td><td>" . date('M d, Y H:i', strtotime($service['created_at'])) . "</td></tr>";
-    echo "</table>";
-    echo "</div>";
+    $customer_name = $service['user_name'] ?: $service['name'] ?: 'Guest';
+    
+    ?>
+    
+    <div class="row">
+        <div class="col-12">
+            <h6>Service Request Information</h6>
+            <table class="table table-sm">
+                <tr><td><strong>Request ID:</strong></td><td>#<?php echo $service['id']; ?></td></tr>
+                <tr><td><strong>Customer:</strong></td><td><?php echo htmlspecialchars($customer_name); ?></td></tr>
+                <?php if ($service['user_email']): ?>
+                <tr><td><strong>Email:</strong></td><td><?php echo htmlspecialchars($service['user_email']); ?></td></tr>
+                <?php endif; ?>
+                <tr><td><strong>Phone:</strong></td><td><?php echo htmlspecialchars($service['phone']); ?></td></tr>
+                <tr><td><strong>Address:</strong></td><td><?php echo htmlspecialchars($service['address']); ?></td></tr>
+                <tr><td><strong>Service Type:</strong></td><td><span class="badge bg-info"><?php echo $service['service_type']; ?></span></td></tr>
+                <tr><td><strong>Request Date:</strong></td><td><?php echo date('M d, Y H:i', strtotime($service['created_at'])); ?></td></tr>
+                <?php if (!empty($service['description'])): ?>
+                <tr><td><strong>Description:</strong></td><td><?php echo htmlspecialchars($service['description']); ?></td></tr>
+                <?php endif; ?>
+            </table>
+        </div>
+    </div>
+    
+    <?php
+} catch (Exception $e) {
+    echo '<div class="alert alert-danger">Error loading service details: ' . $e->getMessage() . '</div>';
+}
+?>
     echo "</div>";
 
 } catch (Exception $e) {

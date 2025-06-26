@@ -1,14 +1,8 @@
 <?php
-session_start();
-require_once '../../db/connect.php';
+$current_page = 'users';
+require_once '../includes/admin-layout.php';
 
-// Check if user is admin
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
-    echo '<div class="alert alert-danger">Access denied</div>';
-    exit;
-}
-
-$action = $_GET['action'] ?? 'list';
+$action = $_POST['action'] ?? $_GET['action'] ?? 'list';
 
 if ($action == 'add' && $_POST) {
     // Handle add user
@@ -17,16 +11,65 @@ if ($action == 'add' && $_POST) {
             INSERT INTO site_user (name, email, phone, username, password, role, address) 
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
+        $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $stmt->execute([
             $_POST['name'],
             $_POST['email'],
             $_POST['phone'],
             $_POST['username'],
-            $_POST['password'], // In production, this should be hashed
+            $hashed_password,
             $_POST['role'],
             $_POST['address']
         ]);
-        echo '<div class="alert alert-success">User added successfully!</div>';
+        echo '<script>
+            alert("User added successfully!");
+            location.href = "users.php";
+        </script>';
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+    }
+}
+
+if ($action == 'edit' && $_POST) {
+    // Handle edit user
+    try {
+        if (!empty($_POST['password'])) {
+            $stmt = $conn->prepare("
+                UPDATE site_user 
+                SET name = ?, email = ?, phone = ?, username = ?, password = ?, role = ?, address = ?
+                WHERE id = ?
+            ");
+            $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $stmt->execute([
+                $_POST['name'],
+                $_POST['email'],
+                $_POST['phone'],
+                $_POST['username'],
+                $hashed_password,
+                $_POST['role'],
+                $_POST['address'],
+                $_POST['id']
+            ]);
+        } else {
+            $stmt = $conn->prepare("
+                UPDATE site_user 
+                SET name = ?, email = ?, phone = ?, username = ?, role = ?, address = ?
+                WHERE id = ?
+            ");
+            $stmt->execute([
+                $_POST['name'],
+                $_POST['email'],
+                $_POST['phone'],
+                $_POST['username'],
+                $_POST['role'],
+                $_POST['address'],
+                $_POST['id']
+            ]);
+        }
+        echo '<script>
+            alert("User updated successfully!");
+            location.href = "users.php";
+        </script>';
     } catch (Exception $e) {
         echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
     }
@@ -36,7 +79,10 @@ if ($action == 'delete' && isset($_GET['id'])) {
     try {
         $stmt = $conn->prepare("DELETE FROM site_user WHERE id = ?");
         $stmt->execute([$_GET['id']]);
-        echo '<div class="alert alert-success">User deleted successfully!</div>';
+        echo '<script>
+            alert("User deleted successfully!");
+            location.href = "users.php";
+        </script>';
     } catch (Exception $e) {
         echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
     }
@@ -46,7 +92,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
 <div class="row mb-4">
     <div class="col-12">
         <h2>User Management</h2>
-        <p class="text-muted">Manage website users</p>
+        <p class="text-muted">Manage site users</p>
     </div>
 </div>
 
@@ -59,7 +105,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
                 <h6 class="m-0 font-weight-bold text-primary">Add New User</h6>
             </div>
             <div class="card-body">
-                <form method="POST">
+                <form method="POST" action="users.php?action=add">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Full Name</label>
@@ -98,7 +144,80 @@ if ($action == 'delete' && isset($_GET['id'])) {
                         <textarea class="form-control" name="address" rows="3"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add User</button>
-                    <a href="?action=list" onclick="loadAdminPage('users')" class="btn btn-secondary">Cancel</a>
+                    <button type="button" onclick="location.href='users.php'" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php elseif ($action == 'edit'): ?>
+<!-- Edit User Form -->
+<?php
+$user_id = $_GET['id'] ?? 0;
+try {
+    $stmt = $conn->prepare("SELECT * FROM site_user WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$user) {
+        echo '<div class="alert alert-danger">User not found!</div>';
+        exit;
+    }
+} catch (Exception $e) {
+    echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+    exit;
+}
+?>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Edit User</h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="users.php?action=edit&id=<?php echo $user['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Phone</label>
+                            <input type="text" class="form-control" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password">
+                            <small class="text-muted">Leave blank to keep current password</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Role</label>
+                            <select class="form-control" name="role">
+                                <option value="1" <?php echo $user['role'] == 1 ? 'selected' : ''; ?>>User</option>
+                                <option value="0" <?php echo $user['role'] == 0 ? 'selected' : ''; ?>>Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Address</label>
+                        <textarea class="form-control" name="address" rows="3"><?php echo htmlspecialchars($user['address']); ?></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                    <button type="button" onclick="location.href='users.php'" class="btn btn-secondary">Cancel</button>
                 </form>
             </div>
         </div>
@@ -112,9 +231,9 @@ if ($action == 'delete' && isset($_GET['id'])) {
         <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
-                <button onclick="loadAdminPage('users', 'add')" class="btn btn-primary btn-sm">
+                <a href="users.php?action=add" class="btn btn-primary btn-sm">
                     <i class="bi bi-plus-circle"></i> Add New User
-                </button>
+                </a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -138,7 +257,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
                                 
                                 while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $role_text = $user['role'] == 0 ? 'Admin' : 'User';
-                                    $role_badge = $user['role'] == 0 ? 'danger' : 'primary';
+                                    $role_color = $user['role'] == 0 ? 'danger' : 'primary';
                                     
                                     echo "<tr>";
                                     echo "<td>{$user['id']}</td>";
@@ -146,13 +265,10 @@ if ($action == 'delete' && isset($_GET['id'])) {
                                     echo "<td>{$user['email']}</td>";
                                     echo "<td>{$user['username']}</td>";
                                     echo "<td>{$user['phone']}</td>";
-                                    echo "<td><span class='badge bg-{$role_badge}'>{$role_text}</span></td>";
-                                    echo "<td>";                                    echo "<button class='btn btn-sm btn-warning me-1'>Edit</button>";
-                                    // Check if current session has user_id and prevent self-deletion
-                                    $current_user_id = $_SESSION['user_id'] ?? null;
-                                    if (!$current_user_id || $user['id'] != $current_user_id) {
-                                        echo "<button class='btn btn-sm btn-danger' onclick='deleteUser({$user['id']})'>Delete</button>";
-                                    }
+                                    echo "<td><span class='badge bg-{$role_color}'>{$role_text}</span></td>";
+                                    echo "<td>";
+                                    echo "<a href='users.php?action=edit&id={$user['id']}' class='btn btn-sm btn-warning me-1'>Edit</a>";
+                                    echo "<a href='users.php?action=delete&id={$user['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -168,15 +284,6 @@ if ($action == 'delete' && isset($_GET['id'])) {
     </div>
 </div>
 
-<script>
-function deleteUser(userId) {
-    if (confirm('Are you sure you want to delete this user?')) {
-        $.get('../modules/users.php?action=delete&id=' + userId)
-            .done(function() {
-                loadAdminPage('users');
-            });
-    }
-}
-</script>
-
 <?php endif; ?>
+
+<?php require_once '../includes/admin-layout-footer.php'; ?>

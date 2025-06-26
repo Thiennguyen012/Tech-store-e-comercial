@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once '../../db/connect.php';
+$current_page = 'analytics';
+require_once '../includes/admin-layout.php';
 
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
@@ -62,13 +62,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             <?php
                             try {
                                 $stmt = $conn->prepare("
-                                    SELECT p.name, pc.category_name, 
+                                    SELECT p.name, COALESCE(pc.category_name, 'Uncategorized') as category_name, 
                                            COUNT(cc.id) as times_sold,
-                                           SUM(cc.total) as total_revenue
+                                           SUM(cc.quantity * cc.price) as total_revenue
                                     FROM checkout_cart cc
-                                    JOIN product p ON cc.product_name = p.name
-                                    JOIN product_category pc ON p.category_id = pc.id
-                                    GROUP BY p.id
+                                    LEFT JOIN product p ON cc.product_name = p.name
+                                    LEFT JOIN product_category pc ON p.category_id = pc.id
+                                    WHERE p.name IS NOT NULL
+                                    GROUP BY p.id, p.name
                                     ORDER BY times_sold DESC
                                     LIMIT 10
                                 ");
@@ -253,3 +254,5 @@ $.get('../api/monthly-sales.php')
         });
     });
 </script>
+
+<?php require_once '../includes/admin-layout-footer.php'; ?>

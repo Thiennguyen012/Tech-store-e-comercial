@@ -1,14 +1,8 @@
 <?php
-session_start();
-require_once '../../db/connect.php';
+$current_page = 'products';
+require_once '../includes/admin-layout.php';
 
-// Check if user is admin
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
-    echo '<div class="alert alert-danger">Access denied</div>';
-    exit;
-}
-
-$action = $_GET['action'] ?? 'list';
+$action = $_POST['action'] ?? $_GET['action'] ?? 'list';
 
 if ($action == 'add' && $_POST) {
     // Handle add product
@@ -25,7 +19,36 @@ if ($action == 'add' && $_POST) {
             $_POST['product_image'],
             $_POST['price']
         ]);
-        echo '<div class="alert alert-success">Product added successfully!</div>';
+        echo '<script>
+            alert("Product added successfully!");
+            location.href = "products.php";
+        </script>';
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+    }
+}
+
+if ($action == 'edit' && $_POST) {
+    // Handle edit product
+    try {
+        $stmt = $conn->prepare("
+            UPDATE product 
+            SET name = ?, description = ?, category_id = ?, qty_in_stock = ?, product_image = ?, price = ? 
+            WHERE id = ?
+        ");
+        $stmt->execute([
+            $_POST['name'],
+            $_POST['description'],
+            $_POST['category_id'],
+            $_POST['qty_in_stock'],
+            $_POST['product_image'],
+            $_POST['price'],
+            $_POST['id']
+        ]);
+        echo '<script>
+            alert("Product updated successfully!");
+            location.href = "products.php";
+        </script>';
     } catch (Exception $e) {
         echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
     }
@@ -35,7 +58,10 @@ if ($action == 'delete' && isset($_GET['id'])) {
     try {
         $stmt = $conn->prepare("DELETE FROM product WHERE id = ?");
         $stmt->execute([$_GET['id']]);
-        echo '<div class="alert alert-success">Product deleted successfully!</div>';
+        echo '<script>
+            alert("Product deleted successfully!");
+            location.href = "products.php";
+        </script>';
     } catch (Exception $e) {
         echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
     }
@@ -58,7 +84,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
                 <h6 class="m-0 font-weight-bold text-primary">Add New Product</h6>
             </div>
             <div class="card-body">
-                <form method="POST">
+                <form method="POST" action="products.php?action=add">
                     <div class="row">
                         <div class="col-md-8 mb-3">
                             <label>Product Name</label>
@@ -101,7 +127,84 @@ if ($action == 'delete' && isset($_GET['id'])) {
                         <textarea class="form-control" name="description" rows="5"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Product</button>
-                    <button type="button" onclick="loadAdminPage('products')" class="btn btn-secondary">Cancel</button>
+                    <button type="button" onclick="location.href='products.php'" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php elseif ($action == 'edit'): ?>
+<!-- Edit Product Form -->
+<?php
+$product_id = $_GET['id'] ?? 0;
+try {
+    $stmt = $conn->prepare("SELECT * FROM product WHERE id = ?");
+    $stmt->execute([$product_id]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$product) {
+        echo '<div class="alert alert-danger">Product not found!</div>';
+        exit;
+    }
+} catch (Exception $e) {
+    echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+    exit;
+}
+?>
+<div class="row">
+    <div class="col-lg-10">
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">Edit Product</h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="products.php?action=edit&id=<?php echo $product['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label>Product Name</label>
+                            <input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Price ($)</label>
+                            <input type="number" step="0.01" class="form-control" name="price" value="<?php echo $product['price']; ?>" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Category</label>
+                            <select class="form-control" name="category_id" required>
+                                <option value="">Select Category</option>
+                                <?php
+                                try {
+                                    $stmt = $conn->prepare("SELECT * FROM product_category ORDER BY category_name");
+                                    $stmt->execute();
+                                    while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        $selected = ($category['id'] == $product['category_id']) ? 'selected' : '';
+                                        echo "<option value='{$category['id']}' {$selected}>{$category['category_name']}</option>";
+                                    }
+                                } catch (Exception $e) {
+                                    echo "<option value=''>Error loading categories</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Quantity in Stock</label>
+                            <input type="number" class="form-control" name="qty_in_stock" value="<?php echo $product['qty_in_stock']; ?>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Product Image URL</label>
+                        <input type="url" class="form-control" name="product_image" value="<?php echo htmlspecialchars($product['product_image']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea class="form-control" name="description" rows="5"><?php echo htmlspecialchars($product['description']); ?></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                    <button type="button" onclick="location.href='products.php'" class="btn btn-secondary">Cancel</button>
                 </form>
             </div>
         </div>
@@ -115,9 +218,9 @@ if ($action == 'delete' && isset($_GET['id'])) {
         <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">All Products</h6>
-                <button onclick="loadAdminPage('products', 'add')" class="btn btn-primary btn-sm">
+                <a href="products.php?action=add" class="btn btn-primary btn-sm">
                     <i class="bi bi-plus-circle"></i> Add New Product
-                </button>
+                </a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -155,8 +258,8 @@ if ($action == 'delete' && isset($_GET['id'])) {
                                     echo "<td>$" . number_format($product['price'], 2) . "</td>";
                                     echo "<td><span class='badge bg-{$stock_color}'>{$product['qty_in_stock']}</span></td>";
                                     echo "<td>";
-                                    echo "<button class='btn btn-sm btn-warning me-1'>Edit</button>";
-                                    echo "<button class='btn btn-sm btn-danger' onclick='deleteProduct({$product['id']})'>Delete</button>";
+                                    echo "<a href='products.php?action=edit&id={$product['id']}' class='btn btn-sm btn-warning me-1'>Edit</a>";
+                                    echo "<a href='products.php?action=delete&id={$product['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this product?\")'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -172,15 +275,6 @@ if ($action == 'delete' && isset($_GET['id'])) {
     </div>
 </div>
 
-<script>
-function deleteProduct(productId) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        $.get('../modules/products.php?action=delete&id=' + productId)
-            .done(function() {
-                loadAdminPage('products');
-            });
-    }
-}
-</script>
-
 <?php endif; ?>
+
+<?php require_once '../includes/admin-layout-footer.php'; ?>

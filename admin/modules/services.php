@@ -1,11 +1,38 @@
 <?php
-session_start();
-require_once '../../db/connect.php';
+$current_page = 'services';
+require_once '../includes/admin-layout.php';
 
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
+}
+
+$action = $_POST['action'] ?? $_GET['action'] ?? 'list';
+
+if ($action == 'delete' && isset($_GET['id'])) {
+    try {
+        $stmt = $conn->prepare("DELETE FROM services WHERE id = ?");
+        $stmt->execute([$_GET['id']]);
+        echo '<script>
+            alert("Service request deleted successfully!");
+            location.href = "services.php";
+        </script>';
+    } catch (Exception $e) {
+        echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+    }
+}
+
+if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['status'])) {
+    try {
+        $stmt = $conn->prepare("UPDATE services SET status = ? WHERE id = ?");
+        $stmt->execute([$_POST['status'], $_POST['service_id']]);
+        echo json_encode(['success' => true, 'message' => 'Service status updated successfully!']);
+        exit;
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        exit;
+    }
 }
 ?>
 
@@ -139,7 +166,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     ORDER BY s.created_at DESC
                                 ");
                                 $stmt->execute();
-                                  while ($service = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                
+                                while ($service = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $customer_name = $service['user_name'] ?: $service['name'] ?: 'Guest';
                                     
                                     echo "<tr>";
@@ -198,10 +226,16 @@ function viewServiceDetails(serviceId) {
 
 function deleteService(serviceId) {
     if (confirm('Are you sure you want to delete this service request?')) {
-        $.get('../api/delete-service.php?id=' + serviceId)
-            .done(function() {
-                loadAdminPage('services');
+        $.get('../modules/services.php?action=delete&id=' + serviceId)
+            .done(function(response) {
+                // Execute the script returned from server
+                $('body').append(response);
+            })
+            .fail(function() {
+                alert('Error deleting service request');
             });
     }
 }
 </script>
+
+<?php require_once '../includes/admin-layout-footer.php'; ?>

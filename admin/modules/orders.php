@@ -1,23 +1,11 @@
 <?php
-session_start();
-require_once '../../db/connect.php';
+$current_page = 'orders';
+require_once '../includes/admin-layout.php';
 
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
-}
-
-$action = $_GET['action'] ?? 'list';
-
-if ($action == 'update_status' && isset($_POST['order_id']) && isset($_POST['status'])) {
-    try {
-        $stmt = $conn->prepare("UPDATE bill SET order_status = ? WHERE id = ?");
-        $stmt->execute([$_POST['status'], $_POST['order_id']]);
-        echo '<div class="alert alert-success">Order status updated successfully!</div>';
-    } catch (Exception $e) {
-        echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
-    }
 }
 ?>
 
@@ -218,12 +206,45 @@ if ($action == 'update_status' && isset($_POST['order_id']) && isset($_POST['sta
 
 <script>
 function updateOrderStatus(orderId, status) {
-    $.post('../modules/orders.php', {
+    console.log('Updating order status:', orderId, status);
+    
+    $.post('orders-ajax.php', {
         action: 'update_status',
         order_id: orderId,
         status: status
-    }).done(function() {
-        loadAdminPage('orders');
+    })
+    .done(function(response) {
+        console.log('Server response:', response);
+        try {
+            const result = JSON.parse(response);
+            if (result.success) {
+                // Show success message
+                const alertDiv = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                    result.message +
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                $('#admin-content').prepend(alertDiv);
+                
+                // Auto dismiss after 3 seconds
+                setTimeout(function() {
+                    alertDiv.remove();
+                }, 3000);
+                
+                // Reload the page to show updated status
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('Error: ' + result.message);
+            }
+        } catch (e) {
+            console.error('Parse error:', e);
+            console.error('Raw response:', response);
+            alert('Error updating order status');
+        }
+    })
+    .fail(function(xhr, status, error) {
+        console.error('AJAX error:', status, error);
+        alert('Error updating order status');
     });
 }
 
@@ -240,3 +261,5 @@ function viewOrderDetails(orderId) {
         });
 }
 </script>
+
+<?php require_once '../includes/admin-layout-footer.php'; ?>

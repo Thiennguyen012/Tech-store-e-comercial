@@ -1,7 +1,7 @@
 <?php
 // Test script to check database connection and admin functionality
 session_start();
-require_once '../db/connect.php';
+require_once 'config/admin-connect.php';
 
 echo "<h2>Database Connection Test</h2>";
 
