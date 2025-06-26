@@ -1,6 +1,18 @@
 <?php
 session_start();
 
+// Determine the base path for navigation
+$current_dir = basename(dirname($_SERVER['PHP_SELF']));
+$base_path = '';
+$dashboard_path = '';
+if ($current_dir == 'home-page') {
+    $base_path = '../modules/';
+    $dashboard_path = 'admin.php';
+} elseif ($current_dir == 'modules') {
+    $base_path = '';
+    $dashboard_path = '../home-page/admin.php';
+}
+
 // Database connection for Admin Panel
 $servername = "localhost";
 $username = "root"; 
@@ -70,25 +82,25 @@ $current_page = $current_page ?? 'dashboard';
                         <a href="../../index.php" class="nav-link text-white"><i class="bi bi-house-door"></i> <span>Go to Website</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="../home-page/admin.php" class="nav-link text-white <?php echo $current_page == 'dashboard' ? 'active' : ''; ?>"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+                        <a href="<?php echo $dashboard_path; ?>" class="nav-link text-white <?php echo $current_page == 'dashboard' ? 'active' : ''; ?>"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="users.php" class="nav-link text-white <?php echo $current_page == 'users' ? 'active' : ''; ?>"><i class="bi bi-people"></i> <span>Users</span></a>
+                        <a href="<?php echo $base_path; ?>users.php" class="nav-link text-white <?php echo $current_page == 'users' ? 'active' : ''; ?>"><i class="bi bi-people"></i> <span>Users</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="products.php" class="nav-link text-white <?php echo $current_page == 'products' ? 'active' : ''; ?>"><i class="bi bi-box"></i> <span>Products</span></a>
+                        <a href="<?php echo $base_path; ?>products.php" class="nav-link text-white <?php echo $current_page == 'products' ? 'active' : ''; ?>"><i class="bi bi-box"></i> <span>Products</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="categories.php" class="nav-link text-white <?php echo $current_page == 'categories' ? 'active' : ''; ?>"><i class="bi bi-tags"></i> <span>Categories</span></a>
+                        <a href="<?php echo $base_path; ?>categories.php" class="nav-link text-white <?php echo $current_page == 'categories' ? 'active' : ''; ?>"><i class="bi bi-tags"></i> <span>Categories</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="orders.php" class="nav-link text-white <?php echo $current_page == 'orders' ? 'active' : ''; ?>"><i class="bi bi-cart-check"></i> <span>Orders</span></a>
+                        <a href="<?php echo $base_path; ?>orders.php" class="nav-link text-white <?php echo $current_page == 'orders' ? 'active' : ''; ?>"><i class="bi bi-cart-check"></i> <span>Orders</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="services.php" class="nav-link text-white <?php echo $current_page == 'services' ? 'active' : ''; ?>"><i class="bi bi-tools"></i> <span>Services</span></a>
+                        <a href="<?php echo $base_path; ?>services.php" class="nav-link text-white <?php echo $current_page == 'services' ? 'active' : ''; ?>"><i class="bi bi-tools"></i> <span>Services</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="analytics.php" class="nav-link text-white <?php echo $current_page == 'analytics' ? 'active' : ''; ?>"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
+                        <a href="<?php echo $base_path; ?>analytics.php" class="nav-link text-white <?php echo $current_page == 'analytics' ? 'active' : ''; ?>"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
                     </li>
                 </ul>
             </div>

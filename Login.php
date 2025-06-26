@@ -2,7 +2,6 @@
 session_start();
 require 'components/header.php';
 require 'db/connect.php';
-global $conn;
 
 if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
   $cookie_id = $_COOKIE['username'];
@@ -41,9 +40,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST["username"];
   $password = $_POST["password"];
 
-  // Truy vấn database để kiểm tra thông tin đăng nhập và lấy role
-  $sql = "SELECT * FROM site_user WHERE username = '$username' AND password = '$password'";
-  $result = $mysqli_conn->query($sql);
+  // Truy vấn database để kiểm tra thông tin đăng nhập và lấy role với prepared statement
+  $sql = "SELECT * FROM site_user WHERE username = ? AND password = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ss", $username, $password);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $role = $row['role'];
