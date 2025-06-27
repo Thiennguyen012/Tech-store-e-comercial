@@ -93,3 +93,19 @@ function newCheckoutCart($conn, $product_name, $product_image, $price, $quantity
     // Đóng statement (không đóng connection ở đây, để gọi nhiều lần nếu cần)
     $stmt->close();
 }
+
+function updatebillOrder($conn, $bill_id, $status)
+{
+    $stmt = $conn->prepare("UPDATE bill SET order_status = ? WHERE id = ?");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+
+    $stmt->bind_param("si", $status, $bill_id);
+
+    if (!$stmt->execute()) {
+        echo "Failed to update order status: " . $stmt->error;
+    }
+
+    $stmt->close();
+}

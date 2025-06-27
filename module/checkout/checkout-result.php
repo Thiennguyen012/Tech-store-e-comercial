@@ -16,7 +16,40 @@ if ($username) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$cart = $_SESSION['cart'] ?? [];
+
+if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID') {
+    // ✅ Thanh toán online thành công từ PayOS
+
+    $order_id = $_GET['orderCode'] ?? '';
+    $payment_code = 1;
+    $status = 'Paid';
+    // Lấy lại thông tin khách từ session
+    $name = $_SESSION['pending_checkout']['name'] ?? '';
+    $phone = $_SESSION['pending_checkout']['phone'] ?? '';
+    $address = $_SESSION['pending_checkout']['address'] ?? '';
+
+    // Tính lại total
+    $subtotal = 0;
+    foreach ($cart as $item) {
+        $subtotal += $item['price'] * $item['quantity'];
+    }
+    $tax = $subtotal * 0.1;
+    $total = $subtotal + $tax;
+
+    // ✅ Lưu đơn hàng
+    updatebillOrder($conn, $order_id, $status);
+
+    // Thêm thông báo
+    if ($user_id && $order_id) {
+        $message = "You have successfully placed order #$order_id.";
+        $type = 0;
+        $stmtNotify = $conn->prepare("INSERT INTO notifications (user_id, content, type) VALUES (?, ?, ?)");
+        $stmtNotify->bind_param("isi", $user_id, $message, $type);
+        $stmtNotify->execute();
+    }
+    unset($_SESSION['cart']);
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $phone = $address = '';
 
     if (isset($_POST['use_new_info']) && $_POST['use_new_info'] === '1') {
@@ -28,9 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phone = $_POST['db_phone'] ?? '';
         $address = $_POST['db_address'] ?? '';
     }
-
-    $payment_method = $_POST['payment_method'] ?? 'cash';
-    $payment_code = ($payment_method === 'vnpay') ? 1 : 0;
+    $payment_code = 0;
     $cart = $_SESSION['cart'] ?? [];
 
     if (empty($cart)) {
@@ -44,10 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $tax = $subtotal * 0.1;
     $total = $subtotal + $tax;
-
     // ✅ Tạo đơn hàng
     $order_id = newBillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
-
     if (!$order_id) {
         echo "<div class='alert alert-danger text-center'>Failed to create order. Please try again later.</div>";
         exit;
@@ -100,7 +129,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p class="text-muted">Thank you for shopping with us.</p>
         <h5 class="mt-3">Order ID: <span class="text-success">#<?= htmlspecialchars($order_id) ?></span></h5>
     </div>
-
+    <?php
+    if (!$order_id) {
+        echo "<div class='alert alert-danger'>Order_id not Found!</div>";
+        exit;
+    }
+    $stmt = $conn->prepare("SELECT order_name, order_phone, order_address, order_paymethod FROM bill WHERE id = ?");
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $name = $row['order_name'];
+        $phone = $row['order_phone'];
+        $address = $row['order_address'];
+        $payment_method = $row['order_paymethod'];
+    }
+    ?>
     <!-- Shipping Info -->
     <div class="mb-4">
         <h4 class="mb-3">Shipping Information</h4>
@@ -108,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li class="list-group-item"><strong>Recipient:</strong> <?= htmlspecialchars($name) ?></li>
             <li class="list-group-item"><strong>Phone:</strong> <?= htmlspecialchars($phone) ?></li>
             <li class="list-group-item"><strong>Address:</strong> <?= htmlspecialchars($address) ?></li>
-            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method === 'vnpay' ? 'VNPay' : 'Cash on Delivery' ?></li>
+            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method === '1' ? 'Online by Payos' : 'Cash on Delivery' ?></li>
         </ul>
     </div>
 
@@ -124,13 +168,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($cart as $item): ?>
+                <!-- Lấy thông tin sản phẩm từ bảng checkout-cart với bill_id = order_id -->
+                <?php
+                $stmt = $conn->prepare("SELECT product_name, quantity, price FROM checkout_cart WHERE bill_id = ?");
+                $stmt->bind_param("i", $order_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                ?>
                     <tr>
-                        <td><?= htmlspecialchars($item['name']) ?></td>
-                        <td class="text-center"><?= $item['quantity'] ?></td>
-                        <td class="text-end">$<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
+                        <td><?= htmlspecialchars($row['product_name']) ?></td>
+                        <td class="text-center"><?= $row['quantity'] ?></td>
+                        <td class="text-end">$<?= number_format($row['price'] * $row['quantity'], 2) ?></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php } ?>
             </tbody>
         </table>
 

@@ -76,7 +76,6 @@ if ($username) {
         <!-- RIGHT: Shipping info -->
         <div class="col-md-5 p-4 rounded-3" style="background-color: #f8f9fa">
             <h4 class="mb-3">Shipping Information</h4>
-            <!-- <form action="module/checkout/checkout-result.php" method="POST" id="checkout-form"> -->
             <!-- Địa chỉ từ database -->
             <input type="hidden" name="db_name" value="<?= htmlspecialchars($user['name']) ?>">
             <input type="hidden" name="db_phone" value="<?= htmlspecialchars($user['phone']) ?>">
@@ -115,26 +114,12 @@ if ($username) {
 
                 </div>
             </div>
-            <!-- pt thanh toán -->
-            <div class="p-3 border rounded bg-white shadow-sm mt-4">
-                <h6 class="mb-3">Payment Method</h6>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="payment_method" id="payment_cash" value="cash" checked>
-                    <label class="form-check-label" for="payment_cash">
-                        Cash on Delivery
-                    </label>
-                </div>
-                <div class="form-check mt-2">
-                    <input class="form-check-input" type="radio" name="payment_method" id="payment_vnpay" value="vnpay">
-                    <label class="form-check-label" for="payment_vnpay">
-                        VNPay
-                    </label>
-                </div>
-            </div>
-
             <!-- Nút đặt hàng -->
             <div class="mt-4">
-                <button value="Place Order" class="btn btn-dark w-100 rounded-4" onclick="handlePlaceOrder()">Place Order</button>
+                <button value="Place Order" class="btn btn-dark w-100 rounded-4" onclick="handlePlaceOrder()">Place Order with Cash</button>
+            </div>
+            <div class="mt-4">
+                <button value="Place Order" class="btn btn-dark w-100 rounded-4" onclick="handlePlaceOrderPayos()">Place Order with PayOS</button>
             </div>
             <!-- </form> -->
         </div>
@@ -208,15 +193,6 @@ if ($username) {
             address = userInfo.address;
         }
 
-        // ✅ Lấy phương thức thanh toán
-        const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
-        if (!selectedMethod) {
-            alert("Please select a payment method.");
-            return;
-        }
-
-        const paymentMethod = selectedMethod.value;
-
         // ✅ Kiểm tra giỏ hàng
         const cartHasItem = <?= isset($_SESSION['cart']) && count($_SESSION['cart']) > 0 ? 'true' : 'false' ?>;
         if (!cartHasItem) {
@@ -234,11 +210,79 @@ if ($username) {
         form.appendChild(createInput('db_name', userInfo.name));
         form.appendChild(createInput('db_phone', userInfo.phone));
         form.appendChild(createInput('db_address', userInfo.address));
+        form.appendChild(createInput('form_name', name));
+        form.appendChild(createInput('form_phone', phone));
+        form.appendChild(createInput('form_address', address));
+
+        document.body.appendChild(form);
+        form.submit();
+
+        function createInput(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            return input;
+        }
+    }
+
+    function handlePlaceOrderPayos() {
+        const checkbox = document.getElementById('use-new-info');
+        const useNew = checkbox.checked;
+
+        let name = '',
+            phone = '',
+            address = '';
+
+        if (useNew) {
+            const nameInput = document.getElementById('form_name');
+            const phoneInput = document.getElementById('form_phone');
+            const addressInput = document.getElementById('form_address');
+
+            if (!nameInput || !phoneInput || !addressInput) {
+                alert("Input fields not found in the DOM.");
+                return;
+            }
+
+            name = nameInput.value.trim();
+            phone = phoneInput.value.trim();
+            address = addressInput.value.trim();
+
+            if (!name || !phone || !address) {
+                alert("Please fill in all new address fields.");
+                return;
+            }
+        } else {
+            if (!userInfo || !userInfo.address) {
+                alert("No default address available. Please enter a new address.");
+                return;
+            }
+
+            name = userInfo.name;
+            phone = userInfo.phone;
+            address = userInfo.address;
+        }
+        // ✅ Kiểm tra giỏ hàng
+        const cartHasItem = <?= isset($_SESSION['cart']) && count($_SESSION['cart']) > 0 ? 'true' : 'false' ?>;
+        if (!cartHasItem) {
+            alert("Your cart is empty. Please add products before placing the order.");
+            return;
+        }
+
+        // ✅ Tạo form ẩn để POST dữ liệu sang checkout-result.php
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'module/checkout/payos_payment.php';
+        form.style.display = 'none';
+        form.appendChild(createInput('use_new_info', useNew ? '1' : '0'));
+
+        form.appendChild(createInput('db_name', userInfo.name));
+        form.appendChild(createInput('db_phone', userInfo.phone));
+        form.appendChild(createInput('db_address', userInfo.address));
 
         form.appendChild(createInput('form_name', name));
         form.appendChild(createInput('form_phone', phone));
         form.appendChild(createInput('form_address', address));
-        form.appendChild(createInput('payment_method', paymentMethod));
 
         document.body.appendChild(form);
         form.submit();
