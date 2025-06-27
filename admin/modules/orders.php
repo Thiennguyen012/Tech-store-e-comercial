@@ -27,7 +27,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status IS NULL OR order_status = 0");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status IS NULL OR order_status = 'pending' OR order_status = 0");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -45,11 +45,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Completed Orders</div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Paid Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 1");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'paid' OR order_status = 1");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -71,7 +71,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 2");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'cancelled' OR order_status = 2");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -145,14 +145,19 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                 while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $status_text = 'Pending';
                                     $status_color = 'warning';
-                                    $status_value = $order['order_status'] ?? 0;
+                                    $status_value = $order['order_status'];
                                     
-                                    if ($status_value == 1) {
-                                        $status_text = 'Completed';
+                                    // Handle both string and numeric status values
+                                    if ($status_value === 'paid' || $status_value == 1) {
+                                        $status_text = 'Paid';
                                         $status_color = 'success';
-                                    } elseif ($status_value == 2) {
+                                        $status_value = 'paid';
+                                    } elseif ($status_value === 'cancelled' || $status_value == 2) {
                                         $status_text = 'Cancelled';
                                         $status_color = 'danger';
+                                        $status_value = 'cancelled';
+                                    } else {
+                                        $status_value = 'pending';
                                     }
                                     
                                     $customer_name = $order['user_name'] ?: $order['order_name'] ?: 'Guest';
@@ -170,9 +175,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     echo "<td>";
                                     echo "<button class='btn btn-sm btn-primary me-1' onclick='viewOrderDetails({$order['id']})'>View</button>";
                                     echo "<select class='form-select form-select-sm d-inline w-auto' onchange='updateOrderStatus({$order['id']}, this.value)'>";
-                                    echo "<option value='0'" . ($status_value == 0 ? ' selected' : '') . ">Pending</option>";
-                                    echo "<option value='1'" . ($status_value == 1 ? ' selected' : '') . ">Completed</option>";
-                                    echo "<option value='2'" . ($status_value == 2 ? ' selected' : '') . ">Cancelled</option>";
+                                    echo "<option value='pending'" . ($status_value == 'pending' ? ' selected' : '') . ">Pending</option>";
+                                    echo "<option value='paid'" . ($status_value == 'paid' ? ' selected' : '') . ">Paid</option>";
+                                    echo "<option value='cancelled'" . ($status_value == 'cancelled' ? ' selected' : '') . ">Cancelled</option>";
                                     echo "</select>";
                                     echo "</td>";
                                     echo "</tr>";

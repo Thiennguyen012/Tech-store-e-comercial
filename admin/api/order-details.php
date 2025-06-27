@@ -38,12 +38,13 @@ try {
     
     $status_text = 'Pending';
     $status_color = 'warning';
-    $status_value = $order['order_status'] ?? 0;
+    $status_value = $order['order_status'];
     
-    if ($status_value == 1) {
-        $status_text = 'Completed';
+    // Handle both string and numeric status values
+    if ($status_value === 'paid' || $status_value == 1) {
+        $status_text = 'Paid';
         $status_color = 'success';
-    } elseif ($status_value == 2) {
+    } elseif ($status_value === 'cancelled' || $status_value == 2) {
         $status_text = 'Cancelled';
         $status_color = 'danger';
     }
