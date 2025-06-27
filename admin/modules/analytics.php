@@ -16,29 +16,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Analytics Overview -->
-<div class="row mb-4">
-    <div class="col-lg-6">
-        <div class="card shadow">
-            <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Sales by Category</h6>
-            </div>
-            <div class="card-body">
-                <canvas id="salesByCategoryChart"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="card shadow">
-            <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Monthly Sales Trend</h6>
-            </div>
-            <div class="card-body">
-                <canvas id="monthlySalesChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Top Products -->
 <div class="row mb-4">
