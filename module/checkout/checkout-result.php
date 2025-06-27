@@ -22,9 +22,8 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
     // ✅ Thanh toán online thành công từ PayOS
 
     $order_id = $_GET['orderCode'] ?? '';
-    $payment_method = 'payos';
     $payment_code = 1;
-
+    $status = 'Paid';
     // Lấy lại thông tin khách từ session
     $name = $_SESSION['pending_checkout']['name'] ?? '';
     $phone = $_SESSION['pending_checkout']['phone'] ?? '';
@@ -39,7 +38,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
     $total = $subtotal + $tax;
 
     // ✅ Lưu đơn hàng
-    updatebillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
+    updatebillOrder($conn, $order_id, $status);
 
     // Thêm thông báo
     if ($user_id && $order_id) {
@@ -62,9 +61,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
         $phone = $_POST['db_phone'] ?? '';
         $address = $_POST['db_address'] ?? '';
     }
-    echo "$name, $phone, $address";
-    $payment_method = $_POST['payment_method'] ?? 'cash';
-    $payment_code = ($payment_method === 'vnpay') ? 1 : 0;
+    $payment_code = 0;
     $cart = $_SESSION['cart'] ?? [];
 
     if (empty($cart)) {
@@ -78,10 +75,8 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
     }
     $tax = $subtotal * 0.1;
     $total = $subtotal + $tax;
-    echo "debug3:$name, $phone, $address, $payment_method, $payment_code, $subtotal, $tax, $total";
     // ✅ Tạo đơn hàng
     $order_id = newBillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
-    echo "debug4:$name, $phone, $address, $payment_method, $payment_code, $subtotal, $tax, $total";
     if (!$order_id) {
         echo "<div class='alert alert-danger text-center'>Failed to create order. Please try again later.</div>";
         exit;
@@ -135,9 +130,8 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
         <h5 class="mt-3">Order ID: <span class="text-success">#<?= htmlspecialchars($order_id) ?></span></h5>
     </div>
     <?php
-    // Lấy dữ liệu name, phone, address và payment_method từ database theo id của bill
     if (!$order_id) {
-        echo "<div class='alert alert-danger'>Không có order_id!</div>";
+        echo "<div class='alert alert-danger'>Order_id not Found!</div>";
         exit;
     }
     $stmt = $conn->prepare("SELECT order_name, order_phone, order_address, order_paymethod FROM bill WHERE id = ?");
@@ -158,7 +152,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
             <li class="list-group-item"><strong>Recipient:</strong> <?= htmlspecialchars($name) ?></li>
             <li class="list-group-item"><strong>Phone:</strong> <?= htmlspecialchars($phone) ?></li>
             <li class="list-group-item"><strong>Address:</strong> <?= htmlspecialchars($address) ?></li>
-            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method === 'vnpay' ? 'VNPay' : 'Cash on Delivery' ?></li>
+            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method === '1' ? 'Online by Payos' : 'Cash on Delivery' ?></li>
         </ul>
     </div>
 

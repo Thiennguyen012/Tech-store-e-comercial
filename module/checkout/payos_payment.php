@@ -33,9 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phone = $_POST['db_phone'] ?? '';
         $address = $_POST['db_address'] ?? '';
     }
-    echo "$name, $phone, $address";
-    $payment_method = $_POST['payment_method'] ?? 'cash';
-    $payment_code = ($payment_method === 'vnpay') ? 1 : 0;
+    $payment_code = 1;
     $cart = $_SESSION['cart'] ?? [];
 
     if (empty($cart)) {
@@ -49,10 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $tax = $subtotal * 0.1;
     $total = $subtotal + $tax;
-    echo "debug3:$name, $phone, $address, $payment_method, $payment_code, $subtotal, $tax, $total";
     // ✅ Tạo đơn hàng
     $order_id = newBillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
-    echo "debug4:$name, $phone, $address, $payment_method, $payment_code, $subtotal, $tax, $total";
     if (!$order_id) {
         echo "<div class='alert alert-danger text-center'>Failed to create order. Please try again later.</div>";
         exit;
@@ -105,7 +101,7 @@ $data = [
     'amount'     => intval($total_vnd), // <-- Tổng tiền thực tế
     'description' => 'Checkout for Technologia',
     'returnUrl'  => 'http://localhost/Webbanhang/index.php?act=checkout-result',
-    'cancelUrl'  => 'http://localhost/PAYOS_DEMO_PHP/cancel.php',
+    'cancelUrl'  => 'http://localhost/Webbanhang/api/Payos/cancel.php',
 ];
 try {
     $response = $payos->createPaymentLink($data);
