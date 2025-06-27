@@ -1,9 +1,25 @@
 <?php
 session_start();
 require '../../vendor/autoload.php';
+include 'lib.php';
+include '../../db/connect.php';
 
 use PayOS\PayOS;
 
+// Xác định user_id từ session
+$username = $_SESSION['username'] ?? '';
+$user_id = null;
+
+if ($username) {
+    $sql = "SELECT id FROM site_user WHERE username = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($row = mysqli_fetch_assoc($result)) {
+        $user_id = $row['id'];
+    }
+}
 // Lấy giỏ hàng từ session
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $phone = $address = '';
@@ -17,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phone = $_POST['db_phone'] ?? '';
         $address = $_POST['db_address'] ?? '';
     }
-
+    echo "$name, $phone, $address";
     $payment_method = $_POST['payment_method'] ?? 'cash';
     $payment_code = ($payment_method === 'vnpay') ? 1 : 0;
     $cart = $_SESSION['cart'] ?? [];
@@ -26,19 +42,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<div class='alert alert-warning text-center'>Your cart is empty. Cannot place order.</div>";
         exit;
     }
+
+    $subtotal = 0;
+    foreach ($cart as $item) {
+        $subtotal += $item['price'] * $item['quantity'];
+    }
+    $tax = $subtotal * 0.1;
+    $total = $subtotal + $tax;
+    echo "debug3:$name, $phone, $address, $payment_method, $payment_code, $subtotal, $tax, $total";
+    // ✅ Tạo đơn hàng
+    $order_id = newBillOrder($conn, $user_id, $name, $phone, $address, $total, $payment_code);
+    echo "debug4:$name, $phone, $address, $payment_method, $payment_code, $subtotal, $tax, $total";
+    if (!$order_id) {
+        echo "<div class='alert alert-danger text-center'>Failed to create order. Please try again later.</div>";
+        exit;
+    }
+
+    // ✅ Thêm sản phẩm vào checkout_cart
+    foreach ($cart as $item) {
+        newCheckoutCart(
+            $conn,
+            $item['name'],
+            $item['img'],
+            $item['price'],
+            $item['quantity'],
+            $item['price'] * $item['quantity'],
+            $order_id
+        );
+        $product_id = $item['id'];
+        $qty_bought = $item['quantity'];
+
+        $stmt = $conn->prepare("UPDATE product SET qty_in_stock = qty_in_stock - ? WHERE id = ?");
+        $stmt->bind_param("ii", $qty_bought, $product_id);
+        $stmt->execute();
+    }
+
+    // Xóa giỏ hàng
+    unset($_SESSION['cart']);
 }
-$cart = $_SESSION['cart'] ?? [];
-$exchangeRate = 25000; // 1 USD = 25,000 VND
-
-$subtotal = 0;
-foreach ($cart as $item) {
-    $subtotal += $item['price'] * $item['quantity'];
-}
-
-$tax = $subtotal * 0.1;
-$total = $subtotal + $tax;
-
 // Quy đổi sang VND
+$exchangeRate = 25000; // 1 USD = 25,000 VND
 $subtotal_vnd = $subtotal * $exchangeRate;
 $tax_vnd = $tax * $exchangeRate;
 $total_vnd = $total * $exchangeRate;
@@ -58,7 +101,7 @@ $data = [
     'name' => $name,
     'phone' => $phone,
     'address' => $address,
-    'orderCode'  => intval(microtime(true) * 1000),
+    'orderCode'  => $order_id,
     'amount'     => intval($total_vnd), // <-- Tổng tiền thực tế
     'description' => 'Checkout for Technologia',
     'returnUrl'  => 'http://localhost/Webbanhang/index.php?act=checkout-result',

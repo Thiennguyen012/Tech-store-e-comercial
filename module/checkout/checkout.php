@@ -210,7 +210,7 @@ if ($username) {
             phone = userInfo.phone;
             address = userInfo.address;
         }
-
+        console.log('debug 1:', name, phone, address);
         // ✅ Lấy phương thức thanh toán
         const selectedMethod = document.querySelector('input[name="payment_method"]:checked');
         if (!selectedMethod) {
@@ -237,7 +237,7 @@ if ($username) {
         form.appendChild(createInput('db_name', userInfo.name));
         form.appendChild(createInput('db_phone', userInfo.phone));
         form.appendChild(createInput('db_address', userInfo.address));
-
+        console.log('debug 2:', userInfo.name, userInfo.phone, userInfo.address);
         form.appendChild(createInput('form_name', name));
         form.appendChild(createInput('form_phone', phone));
         form.appendChild(createInput('form_address', address));
