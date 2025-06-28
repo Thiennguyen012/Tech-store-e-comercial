@@ -34,10 +34,14 @@
         <h4 class="pt-2">More</h4>
         <ul class="list-unstyled">
           <li>
-            <a href="#" class="text-decoration-none text-white">Tracking</a>
+            <a href="#" onclick="location.href='index.php?act=order';return false;" class="text-decoration-none text-white">Tracking</a>
           </li>
           <li>
             <a href="#" class="text-decoration-none text-white">Contribute Us</a>
+          </li>
+          <li>
+            <a href="#" class="text-decoration-none text-white"
+              onclick="loadPage('module/donate/donate.php', this, 'donate'); return false;">Donation</a>
           </li>
         </ul>
       </div>

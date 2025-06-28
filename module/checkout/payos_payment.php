@@ -10,6 +10,11 @@ use PayOS\PayOS;
 $username = $_SESSION['username'] ?? '';
 $user_id = null;
 
+if (!isset($_SESSION['username'])) {
+    header('Location: ../../404.php');
+    exit;
+}
+
 if ($username) {
     $sql = "SELECT id FROM site_user WHERE username = ?";
     $stmt = mysqli_prepare($conn, $sql);
@@ -101,7 +106,7 @@ $data = [
     'amount'     => intval($total_vnd), // <-- Tổng tiền thực tế
     'description' => 'Checkout for Technologia',
     'returnUrl'  => 'http://localhost/Webbanhang/index.php?act=checkout-result',
-    'cancelUrl'  => 'http://localhost/Webbanhang/api/Payos/cancel.php',
+    'cancelUrl'  => 'http://localhost/Webbanhang/module/checkout/cancel.php',
 ];
 try {
     $response = $payos->createPaymentLink($data);

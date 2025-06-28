@@ -1,6 +1,6 @@
 <?php
 include '../../db/connect.php';
-include '../../module/checkout/lib.php';
+include 'lib.php';
 
 // Xác định user_id từ session
 $username = $_SESSION['username'] ?? '';
@@ -77,7 +77,7 @@ if (isset($_GET['orderCode']) && isset($_GET['status']) && strtoupper($_GET['sta
 
         .cancel-icon {
             font-size: 80px;
-            color: #dc3545;
+            color: black;
         }
 
         .btn-home {
