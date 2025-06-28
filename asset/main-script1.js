@@ -4,7 +4,11 @@ function loadPage(file, clickedLink = null, act = "", productId = "") {
     // Thay đổi URL mà không load lại trang
     if (act) {
       if (act === "single-product" && productId) {
-        history.pushState({ act: act, productId: productId }, "", `index.php?act=${act}&id=${productId}`);
+        history.pushState(
+          { act: act, productId: productId },
+          "",
+          `index.php?act=${act}&id=${productId}`
+        );
       } else {
         history.pushState({ act: act }, "", `index.php?act=${act}`);
       }
@@ -83,6 +87,9 @@ window.onpopstate = function (event) {
     //Mục user order
     case "order":
       file = "module/user-order/user-order.php";
+      break;
+    case "donate":
+      file = "module/donate/donate.php";
       break;
     default:
       file = "module/main-content/main-content.php";
