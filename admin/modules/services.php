@@ -46,11 +46,11 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
 <!-- Service Statistics -->
 <div class="row mb-4">
     <div class="col-md-3">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Requests</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Total Requests</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -68,11 +68,11 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Laptop Cleaning</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Laptop Cleaning</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -90,11 +90,11 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Camera Install</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Camera Install</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -112,11 +112,11 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Repairs</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Repairs</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -140,7 +140,7 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
     <div class="col-12">
         <div class="card shadow">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">All Service Requests</h6>
+                <h6 class="m-0 font-weight-bold text-dark">All Service Requests</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -178,8 +178,8 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                                     echo "<td><span class='badge bg-info'>{$service['service_type']}</span></td>";
                                     echo "<td>" . date('M d, Y H:i', strtotime($service['created_at'])) . "</td>";
                                     echo "<td>";
-                                    echo "<button class='btn btn-sm btn-primary me-1' onclick='viewServiceDetails({$service['id']})'>View</button>";
-                                    echo "<button class='btn btn-sm btn-danger' onclick='deleteService({$service['id']})'>Delete</button>";
+                                    echo "<button class='btn btn-sm btn-outline-dark me-1' onclick='viewServiceDetails({$service['id']})'>View</button>";
+                                    echo "<button class='btn btn-sm btn-dark' onclick='deleteService({$service['id']})'>Delete</button>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }

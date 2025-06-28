@@ -2,7 +2,7 @@
 function loadPage(file, clickedLink = null, act = "", productId = "") {
   $("#main-content").load(file, function () {
     // Cuộn lên đầu trang sau khi load content mới
-    $("html, body").animate({ scrollTop: 0 }, 300);
+    $("html, body").animate({ scrollTop: 0 }, 50);
     
     // Thay đổi URL mà không load lại trang
     if (act) {

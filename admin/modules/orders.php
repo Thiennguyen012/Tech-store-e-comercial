@@ -19,11 +19,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 <!-- Order Statistics -->
 <div class="row mb-4">
     <div class="col-md-3">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Orders</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Pending Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -41,11 +41,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Paid Orders</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Paid Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -63,11 +63,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Cancelled Orders</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Cancelled Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -85,11 +85,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Today's Orders</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Today's Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -113,7 +113,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     <div class="col-12">
         <div class="card shadow">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">All Orders</h6>
+                <h6 class="m-0 font-weight-bold text-dark">All Orders</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -158,6 +158,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         $status_value = 'cancelled';
                                     } else {
                                         $status_value = 'pending';
+                                         $status_color = 'secondary';
                                     }
                                     
                                     $customer_name = $order['user_name'] ?: $order['order_name'] ?: 'Guest';
@@ -173,7 +174,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     echo "<td><span class='badge bg-info'>{$payment_method}</span></td>";
                                     echo "<td><span class='badge bg-{$status_color}'>{$status_text}</span></td>";
                                     echo "<td>";
-                                    echo "<button class='btn btn-sm btn-primary me-1' onclick='viewOrderDetails({$order['id']})'>View</button>";
+                                    echo "<button class='btn btn-sm btn-dark me-1' onclick='viewOrderDetails({$order['id']})'>View</button>";
                                     echo "<select class='form-select form-select-sm d-inline w-auto' onchange='updateOrderStatus({$order['id']}, this.value)'>";
                                     echo "<option value='pending'" . ($status_value == 'pending' ? ' selected' : '') . ">Pending</option>";
                                     echo "<option value='paid'" . ($status_value == 'paid' ? ' selected' : '') . ">Paid</option>";

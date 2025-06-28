@@ -59,7 +59,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
     <div class="col-lg-6">
         <div class="card shadow">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Add New Category</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Add New Category</h6>
             </div>
             <div class="card-body">
                 <form method="POST" action="categories.php?action=add">
@@ -120,8 +120,8 @@ try {
     <div class="col-lg-8">
         <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">All Categories</h6>
-                <a href="categories.php?action=add" class="btn btn-primary btn-sm">
+                <h6 class="m-0 font-weight-bold text-dark">All Categories</h6>
+                <a href="categories.php?action=add" class="btn btn-dark btn-sm">
                     <i class="bi bi-plus-circle"></i> Add New Category
                 </a>
             </div>
@@ -152,10 +152,10 @@ try {
                                     echo "<tr>";
                                     echo "<td>{$category['id']}</td>";
                                     echo "<td>{$category['category_name']}</td>";
-                                    echo "<td><span class='badge bg-info'>{$category['product_count']} products</span></td>";
+                                    echo "<td><span class='badge bg-success'>{$category['product_count']} products</span></td>";
                                     echo "<td>";
-                                    echo "<a href='categories.php?action=edit&id={$category['id']}' class='btn btn-sm btn-warning me-1'>Edit</a>";
-                                    echo "<a href='categories.php?action=delete&id={$category['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this category?\")'>Delete</a>";
+                                    echo "<a href='categories.php?action=edit&id={$category['id']}' class='btn btn-sm btn-outline-dark me-1'>Edit</a>";
+                                    echo "<a href='categories.php?action=delete&id={$category['id']}' class='btn btn-sm btn-dark' onclick='return confirm(\"Are you sure you want to delete this category?\")'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }

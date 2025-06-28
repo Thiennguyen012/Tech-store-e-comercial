@@ -217,8 +217,8 @@ try {
     <div class="col-12">
         <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">All Products</h6>
-                <a href="products.php?action=add" class="btn btn-primary btn-sm">
+                <h6 class="m-0 font-weight-bold text-dark">All Products</h6>
+                <a href="products.php?action=add" class="btn btn-dark btn-sm">
                     <i class="bi bi-plus-circle"></i> Add New Product
                 </a>
             </div>
@@ -258,8 +258,8 @@ try {
                                     echo "<td>$" . number_format($product['price'], 2) . "</td>";
                                     echo "<td><span class='badge bg-{$stock_color}'>{$product['qty_in_stock']}</span></td>";
                                     echo "<td>";
-                                    echo "<a href='products.php?action=edit&id={$product['id']}' class='btn btn-sm btn-warning me-1'>Edit</a>";
-                                    echo "<a href='products.php?action=delete&id={$product['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this product?\")'>Delete</a>";
+                                    echo "<a href='products.php?action=edit&id={$product['id']}' class='btn btn-sm btn-outline-dark me-1'>Edit</a>";
+                                    echo "<a href='products.php?action=delete&id={$product['id']}' class='btn btn-sm btn-dark' onclick='return confirm(\"Are you sure you want to delete this product?\")'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }

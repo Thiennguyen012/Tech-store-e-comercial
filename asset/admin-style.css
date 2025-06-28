@@ -134,15 +134,6 @@ body {
   position: relative;
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: #e3e6f0;
-}
 
 /* Responsive design */
 @media (max-width: 768px) {

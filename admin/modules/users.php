@@ -71,7 +71,7 @@ if ($action == 'edit' && $_POST) {
             location.href = "users.php";
         </script>';
     } catch (Exception $e) {
-        echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+        echo '<div class="alert alert-dark">Error: ' . $e->getMessage() . '</div>';
     }
 }
 
@@ -84,7 +84,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
             location.href = "users.php";
         </script>';
     } catch (Exception $e) {
-        echo '<div class="alert alert-danger">Error: ' . $e->getMessage() . '</div>';
+        echo '<div class="alert alert-dark">Error: ' . $e->getMessage() . '</div>';
     }
 }
 ?>
@@ -230,8 +230,8 @@ try {
     <div class="col-12">
         <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
-                <a href="users.php?action=add" class="btn btn-primary btn-sm">
+                <h6 class="m-0 font-weight-bold text-dark">All Users</h6>
+                <a href="users.php?action=add" class="btn btn-dark btn-sm">
                     <i class="bi bi-plus-circle"></i> Add New User
                 </a>
             </div>
@@ -257,7 +257,7 @@ try {
                                 
                                 while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $role_text = $user['role'] == 0 ? 'Admin' : 'User';
-                                    $role_color = $user['role'] == 0 ? 'danger' : 'primary';
+                                    $role_color = $user['role'] == 0 ? 'danger' : 'success';
                                     
                                     echo "<tr>";
                                     echo "<td>{$user['id']}</td>";
@@ -267,8 +267,8 @@ try {
                                     echo "<td>{$user['phone']}</td>";
                                     echo "<td><span class='badge bg-{$role_color}'>{$role_text}</span></td>";
                                     echo "<td>";
-                                    echo "<a href='users.php?action=edit&id={$user['id']}' class='btn btn-sm btn-warning me-1'>Edit</a>";
-                                    echo "<a href='users.php?action=delete&id={$user['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>";
+                                    echo "<a href='users.php?action=edit&id={$user['id']}' class='btn btn-sm btn-outline-dark me-1'>Edit</a>";
+                                    echo "<a href='users.php?action=delete&id={$user['id']}' class='btn btn-sm btn-dark' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }

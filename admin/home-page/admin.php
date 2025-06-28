@@ -14,11 +14,11 @@ require_once '../includes/admin-layout.php';
 <!-- Statistics Cards -->
 <div class="row mb-4">
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-dark shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Products</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Total Products</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -32,7 +32,7 @@ require_once '../includes/admin-layout.php';
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="bi bi-box text-primary" style="font-size: 2rem;"></i>
+                        <i class="bi bi-box text-dark" style="font-size: 2rem;"></i>
                     </div>
                 </div>
             </div>
@@ -40,11 +40,11 @@ require_once '../includes/admin-layout.php';
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-secondary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Orders</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Total Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -58,7 +58,7 @@ require_once '../includes/admin-layout.php';
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="bi bi-cart-check text-success" style="font-size: 2rem;"></i>
+                        <i class="bi bi-cart-check text-dark" style="font-size: 2rem;"></i>
                     </div>
                 </div>
             </div>
@@ -66,11 +66,11 @@ require_once '../includes/admin-layout.php';
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card border-left-secondary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Users</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Total Users</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
@@ -84,7 +84,7 @@ require_once '../includes/admin-layout.php';
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="bi bi-people text-info" style="font-size: 2rem;"></i>
+                        <i class="bi bi-people text-dark" style="font-size: 2rem;"></i>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@ require_once '../includes/admin-layout.php';
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-secondary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -124,8 +124,8 @@ require_once '../includes/admin-layout.php';
     <div class="col-lg-8 mb-4">
         <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
-                <a href="../modules/orders.php" class="btn btn-primary btn-sm">View All</a>
+                <h6 class="m-0 font-weight-bold text-secondary">Recent Orders</h6>
+                <a href="../modules/orders.php" class="btn btn-dark btn-sm">View All</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -153,7 +153,7 @@ require_once '../includes/admin-layout.php';
                                 
                                 while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $status_text = 'Pending';
-                                    $status_color = 'warning';
+                                    $status_color = 'secondary';
                                     $status_value = $order['order_status'];
                                     
                                     // Handle both string and numeric status values
@@ -189,20 +189,20 @@ require_once '../includes/admin-layout.php';
     <div class="col-lg-4 mb-4">
         <div class="card shadow">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Quick Actions</h6>
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a href="../modules/products.php?action=add" class="btn btn-primary">
+                    <a href="../modules/products.php?action=add" class="btn btn-white btn-outline-dark">
                         <i class="bi bi-plus-circle"></i> Add New Product
                     </a>
-                    <a href="../modules/categories.php?action=add" class="btn btn-success">
+                    <a href="../modules/categories.php?action=add" class="btn btn-white btn-outline-dark">
                         <i class="bi bi-plus-circle"></i> Add New Category
                     </a>
-                    <a href="../modules/users.php" class="btn btn-info">
+                    <a href="../modules/users.php" class="btn btn-white btn-outline-dark">
                         <i class="bi bi-eye"></i> View All Users
                     </a>
-                    <a href="../modules/orders.php" class="btn btn-warning">
+                    <a href="../modules/orders.php" class="btn btn-dark">
                         <i class="bi bi-cart-check"></i> Manage Orders
                     </a>
                 </div>
