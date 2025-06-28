@@ -21,7 +21,7 @@ function showCart()
         </div>
     </td>
     <td class="text-center">
-        <input type="number" class="form-control text-center mx-auto" value="' . $quantity . '" min="1" style="width: 60px;">
+        <input type="number" class="form-control text-center mx-auto" value="' . $quantity . '" min="1" style="width: 60px;" readonly>
     </td>
     <td class="text-end">$' . number_format($subtotal, 2) . '</td>
 </tr>';

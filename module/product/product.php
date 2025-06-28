@@ -162,8 +162,8 @@ if ($isSearchMode) {
 </div>
 
 <!-- loc san pham -->
-<div class="container-fluid mt-5 mb-5 px-2">
-  <div class="row">
+<div class="container-xxl mt-5 mb-5 px-2">
+  <div class="row g-4">
     <!-- Nút mở bộ lọc cho mobile/tablet (ẩn trên desktop) -->
     <div class="d-md-none mb-3">
       <button class="btn btn-dark w-100 fw-bold" type="button" data-bs-toggle="offcanvas"
@@ -172,8 +172,8 @@ if ($isSearchMode) {
       </button>
     </div>
     <!-- Sidebar bộ lọc (chỉ hiện trên desktop/laptop) -->
-    <div class="col-md-2 d-none d-md-block">
-      <div class="shadow-sm position-sticky border rounded-3 p-3" style="top: 80px; background: #fff">
+    <aside class="col-lg-3 col-md-4 d-none d-md-block">
+      <div class="shadow-sm position-sticky border rounded-3 p-3 bg-white" style="top: 80px;">
         <div class="card-body">
           <!-- Form bộ lọc desktop -->
           <form id="filterForm">
@@ -235,7 +235,7 @@ if ($isSearchMode) {
           </form>
         </div>
       </div>
-    </div>
+    </aside>
     <!-- Offcanvas bộ lọc cho mobile/tablet -->
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="filterOffcanvas"
       aria-labelledby="filterOffcanvasLabel">
@@ -306,7 +306,7 @@ if ($isSearchMode) {
       </div>
     </div>
     <!-- Khu vực hiển thị sản phẩm -->
-    <div class="col-md-9">
+    <div class="col-lg-9 col-md-8">
       <div id="productList">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h3 class="fw-bold mb-0">
@@ -323,7 +323,7 @@ if ($isSearchMode) {
           </h3>
         </div>
         <!-- Grid sản phẩm, responsive theo từng loại màn hình -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 g-4" id="productGrid">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="productGrid">
           <?php
           $productCount = 0;
           if ($result && $result->num_rows > 0) {
@@ -331,7 +331,7 @@ if ($isSearchMode) {
               $productCount++;
           ?>
               <div class="col">
-                <div class="card border-0 h-100 shadow-sm">
+                <div class="card product-card border-0 h-100 shadow-sm">
                   <a href="#"
                     onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
                     style="text-decoration:none; color:inherit;">
@@ -345,32 +345,32 @@ if ($isSearchMode) {
                     <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;">
                       <?php echo number_format($row['price'], 0, ',', '.'); ?>$
                     </div>
-                    <div class="d-flex justify-content-center gap-2">
-                      <a href="#"
-                        onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
-                        class="btn btn-dark btn-sm rounded-pill px-3">
-                        More details
-                      </a>
-                      <?php if ($row['qty_in_stock'] > 0): ?>
-                        <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
-                        <form id="addToCartForm" action="module/cart/cart.php" method="POST">
-                          <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
-                          <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
-                          <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
-                          <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
-                          <button id="addcart-submit" type="submit" name="add-to-cart"
-                            class="btn btn-outline-dark btn-sm rounded-pill px-3">
-                            <i class="bi bi-cart"></i>
-                          </button>
-                        </form>
-                      <?php else: ?>
-                        <!-- Contact us button when out of stock -->
-                        <button onclick="loadPage('module/contact/contact.php'); return false;"
-                          class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-                          Contact us
+
+                  </div>
+                  <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <button
+                      onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
+                      More details
+                    </button>
+                    <?php if ($row['qty_in_stock'] > 0): ?>
+                      <!-- Tạo form để lấy thông tin của 1 sản phẩm khi click thêm vào giỏ hàng -->
+                      <form id="addToCartForm" action="module/cart/cart.php" method="POST">
+                        <input type="hidden" name="product-id" value="<?= $row['id'] ?>">
+                        <input type="hidden" name="product-name" value="<?= $row['name'] ?>">
+                        <input type="hidden" name="product-price" value="<?= $row['price'] ?>">
+                        <input type="hidden" name="product-img" value="<?= $row['product_image'] ?>">
+                        <button id="addcart-submit" type="submit" name="add-to-cart"
+                          class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                          <i class="bi bi-cart"></i>
                         </button>
-                      <?php endif; ?>
-                    </div>
+                      </form>
+                    <?php else: ?>
+                      <!-- Contact us button when out of stock -->
+                      <button onclick="location.href='index.php?act=contact'; return false;"
+                        class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                        Contact
+                      </button>
+                    <?php endif; ?>
                   </div>
                 </div>
               </div>

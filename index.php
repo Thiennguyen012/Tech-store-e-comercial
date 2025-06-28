@@ -29,7 +29,7 @@
   require 'db/connect.php';
   // navbar
   include 'components/navbar.php'
-    ?>
+  ?>
 
   <!-- Content -->
   <main id="main-content" class="flex-fill">
@@ -113,6 +113,9 @@
       case 'checkout-result':
         include 'module/checkout/checkout-result.php';
         break;
+      case 'donate':
+        include 'module/donate/donate.php';
+        break;
       case 'home':
         include 'module/main-content/main-content.php';
         break;
@@ -194,15 +197,15 @@
           <ul class="list-unstyled">
             <li>
               <a href="#" class="text-decoration-none text-white"
-                 onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Laptop</a>
+                onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Laptop</a>
             </li>
             <li>
               <a href="#" class="text-decoration-none text-white"
-                 onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Security Camera</a>
+                onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Security Camera</a>
             </li>
             <li>
               <a href="#" class="text-decoration-none text-white"
-                 onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Computer Accessories</a>
+                onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Computer Accessories</a>
             </li>
           </ul>
         </div>
@@ -211,11 +214,15 @@
           <ul class="list-unstyled">
             <li>
               <a href="#" class="text-decoration-none text-white"
-                 onclick="loadPage('module/user-order/user-order.php', this, 'order'); return false;">Tracking</a>
+                onclick="location.href='index.php?act=order'; return false;">Tracking</a>
             </li>
             <li>
               <a href="#" class="text-decoration-none text-white"
-                 onclick="loadPage('module/contact/contact.php', this, 'contact'); return false;">Contribute Us</a>
+                onclick="loadPage('module/contact/contact.php', this, 'contact'); return false;">Contribute Us</a>
+            </li>
+            <li>
+              <a href="#" class="text-decoration-none text-white"
+                onclick="loadPage('module/donate/donate.php', this, 'donate'); return false;">Donation</a>
             </li>
           </ul>
         </div>
