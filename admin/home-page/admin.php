@@ -22,7 +22,7 @@ require_once '../includes/admin-layout.php';
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM products");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM product");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -154,12 +154,13 @@ require_once '../includes/admin-layout.php';
                                 while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $status_text = 'Pending';
                                     $status_color = 'warning';
-                                    $status_value = $order['order_status'] ?? 0;
+                                    $status_value = $order['order_status'];
                                     
-                                    if ($status_value == 1) {
-                                        $status_text = 'Completed';
+                                    // Handle both string and numeric status values
+                                    if ($status_value === 'paid' || $status_value == 1) {
+                                        $status_text = 'Paid';
                                         $status_color = 'success';
-                                    } elseif ($status_value == 2) {
+                                    } elseif ($status_value === 'cancelled' || $status_value == 2) {
                                         $status_text = 'Cancelled';
                                         $status_color = 'danger';
                                     }
