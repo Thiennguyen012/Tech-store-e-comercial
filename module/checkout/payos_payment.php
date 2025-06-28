@@ -106,7 +106,7 @@ $data = [
     'amount'     => intval($total_vnd), // <-- Tổng tiền thực tế
     'description' => 'Checkout for Technologia',
     'returnUrl'  => 'http://localhost/Webbanhang/index.php?act=checkout-result',
-    'cancelUrl'  => 'http://localhost/Webbanhang/api/Payos/cancel.php',
+    'cancelUrl'  => 'http://localhost/Webbanhang/module/checkout/cancel.php',
 ];
 try {
     $response = $payos->createPaymentLink($data);
