@@ -16,7 +16,7 @@ if ($username) {
 }
 ?>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow" style="height: 65px">
+<nav class="navbar navbar-expand-xl navbar-light bg-light sticky-top shadow" style="height: 65px">
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand fs-4" href="#"
