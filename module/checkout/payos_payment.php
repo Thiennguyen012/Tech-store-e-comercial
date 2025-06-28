@@ -10,6 +10,11 @@ use PayOS\PayOS;
 $username = $_SESSION['username'] ?? '';
 $user_id = null;
 
+if (!isset($_SESSION['username'])) {
+    header('Location: ../../404.php');
+    exit;
+}
+
 if ($username) {
     $sql = "SELECT id FROM site_user WHERE username = ?";
     $stmt = mysqli_prepare($conn, $sql);

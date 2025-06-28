@@ -5,6 +5,16 @@ include 'lib.php';
 $username = $_SESSION['username'] ?? '';
 $user_id = null;
 
+if (!isset($_SESSION['username'])) {
+    echo '<div class="text-center py-5 mt-5">
+        <div class="mb-4"><i class="fas fa-user fa-3x text-muted"></i></div>
+        <h4 class="text-muted mb-3">You are not logged in</h4>
+        <p class="text-muted mb-4">Please login to do this action.</p>
+        <button class="btn btn-dark rounded-4" onclick="location.href=\'Login.php\'">Login Now</button>
+    </div>';
+    return;
+}
+
 if ($username) {
     $sql = "SELECT id FROM site_user WHERE username = ?";
     $stmt = mysqli_prepare($conn, $sql);
@@ -24,16 +34,11 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
     $order_id = $_GET['orderCode'] ?? '';
     $payment_code = 1;
     $status = 'Paid';
-    // Lấy lại thông tin khách từ session
-    $name = $_SESSION['pending_checkout']['name'] ?? '';
-    $phone = $_SESSION['pending_checkout']['phone'] ?? '';
-    $address = $_SESSION['pending_checkout']['address'] ?? '';
 
     // Tính lại total
     $subtotal = 0;
-    foreach ($cart as $item) {
-        $subtotal += $item['price'] * $item['quantity'];
-    }
+    //subtotal bằng tổng số lượng*giá các sản phẩm có id là $order_id trong bảng checkout_order
+
     $tax = $subtotal * 0.1;
     $total = $subtotal + $tax;
 
@@ -144,6 +149,8 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
         $address = $row['order_address'];
         $payment_method = $row['order_paymethod'];
     }
+    echo "debug1: $name, $phone, $address, $payment_method";
+    echo "debug2: $subtotal";
     ?>
     <!-- Shipping Info -->
     <div class="mb-4">
