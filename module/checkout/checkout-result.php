@@ -8,9 +8,9 @@ $user_id = null;
 if (!isset($_SESSION['username'])) {
     echo '<div class="text-center py-5 mt-5">
         <div class="mb-4"><i class="fas fa-user fa-3x text-muted"></i></div>
-        <h4 class="text-muted mb-3">You are not logged in</h4>
-        <p class="text-muted mb-4">Please login to do this action.</p>
-        <button class="btn btn-dark rounded-4" onclick="location.href=\'Login.php\'">Login Now</button>
+        <h4 class="text-muted mb-3">You are not Place order yet</h4>
+        <p class="text-muted mb-4">Please add some products to do this action.</p>
+        <button class="btn btn-dark rounded-4" onclick="location.href=\'index.php?act=products\'">Shop now</button>
     </div>';
     return;
 }
@@ -37,7 +37,16 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
 
     // Tính lại total
     $subtotal = 0;
-    //subtotal bằng tổng số lượng*giá các sản phẩm có id là $order_id trong bảng checkout_order
+    //subtotal được tính bằng số lượng * đơn giá của các sản phẩm có bill_id = order_id
+    $stmt = $conn->prepare("SELECT price, quantity FROM checkout_cart WHERE bill_id = ?");
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $subtotal = 0;
+    while ($row = $result->fetch_assoc()) {
+        $subtotal += $row['price'] * $row['quantity'];
+    }
+
 
     $tax = $subtotal * 0.1;
     $total = $subtotal + $tax;
@@ -130,7 +139,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
 ?>
 <div class="container bg-white shadow p-5 mt-5 rounded-4 mb-5">
     <div class="text-center mb-5">
-        <h1 class="text-success fw-bold">🎉 Order Successfully Placed!</h1>
+        <h1 class="text-success fw-bold">Order Successfully Placed!</h1>
         <p class="text-muted">Thank you for shopping with us.</p>
         <h5 class="mt-3">Order ID: <span class="text-success">#<?= htmlspecialchars($order_id) ?></span></h5>
     </div>
@@ -159,7 +168,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
             <li class="list-group-item"><strong>Recipient:</strong> <?= htmlspecialchars($name) ?></li>
             <li class="list-group-item"><strong>Phone:</strong> <?= htmlspecialchars($phone) ?></li>
             <li class="list-group-item"><strong>Address:</strong> <?= htmlspecialchars($address) ?></li>
-            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method === '1' ? 'Online by Payos' : 'Cash on Delivery' ?></li>
+            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method == 1 ? 'Online by Payos' : 'Cash on Delivery' ?></li>
         </ul>
     </div>
 
