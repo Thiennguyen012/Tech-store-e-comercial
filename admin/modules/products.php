@@ -161,7 +161,8 @@ if ($action == 'delete' && isset($_GET['id'])) {
                                     $stmt = $conn->prepare("SELECT * FROM product_category ORDER BY category_name");
                                     $stmt->execute();
                                     while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                        echo "<option value='{$category['id']}'>{$category['category_name']}</option>";
+                                        $category_display = ucfirst(htmlspecialchars($category['category_name']));
+                                        echo "<option value='{$category['id']}'>{$category_display}</option>";
                                     }
                                 } catch (Exception $e) {
                                     echo "<option value=''>Error loading categories</option>";
@@ -238,7 +239,8 @@ try {
                                     $stmt->execute();
                                     while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         $selected = ($category['id'] == $product['category_id']) ? 'selected' : '';
-                                        echo "<option value='{$category['id']}' {$selected}>{$category['category_name']}</option>";
+                                        $category_display = ucfirst(htmlspecialchars($category['category_name']));
+                                        echo "<option value='{$category['id']}' {$selected}>{$category_display}</option>";
                                     }
                                 } catch (Exception $e) {
                                     echo "<option value=''>Error loading categories</option>";
@@ -297,7 +299,7 @@ try {
                                             $stmt = $conn->prepare("SELECT category_name FROM product_category WHERE id = ?");
                                             $stmt->execute([$filter_category]);
                                             $cat = $stmt->fetch();
-                                            echo $cat ? htmlspecialchars($cat['category_name']) : 'Unknown Category';
+                                            echo $cat ? ucfirst(htmlspecialchars($cat['category_name'])) : 'Unknown Category';
                                         } catch (Exception $e) {
                                             echo 'Category';
                                         }
@@ -331,7 +333,8 @@ try {
                                 $stmt->execute();
                                 while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $selected = ($filter_category == $category['id']) ? 'selected' : '';
-                                    echo "<option value='{$category['id']}' {$selected}>{$category['category_name']}</option>";
+                                    $category_display = ucfirst(htmlspecialchars($category['category_name']));
+                                    echo "<option value='{$category['id']}' {$selected}>{$category_display}</option>";
                                 }
                             } catch (Exception $e) {
                                 echo "<option value=''>Error loading categories</option>";
@@ -445,7 +448,7 @@ try {
                                                 </h6>
                                                 <div class="small text-muted mb-2">
                                                     <div><strong>ID:</strong> #<?php echo $product['id']; ?></div>
-                                                    <div><strong>Category:</strong> <?php echo htmlspecialchars($product['category_name'] ?? 'N/A'); ?></div>
+                                                    <div><strong>Category:</strong> <?php echo htmlspecialchars(ucfirst($product['category_name'] ?? 'N/A')); ?></div>
                                                     <div><strong>Price:</strong> $<?php echo number_format($product['price'], 2); ?></div>
                                                     <div><strong>Stock:</strong> <span class="badge bg-<?php echo $stock_color; ?>"><?php echo $product['qty_in_stock']; ?></span></div>
                                                 </div>
@@ -539,7 +542,7 @@ try {
                                     echo "<td>{$product['id']}</td>";
                                     echo "<td><img src='{$product['product_image']}' alt='Product' style='width: 50px; height: 50px; object-fit: cover;'></td>";
                                     echo "<td>" . substr($product['name'], 0, 50) . (strlen($product['name']) > 50 ? '...' : '') . "</td>";
-                                    echo "<td>{$product['category_name']}</td>";
+                                    echo "<td>" . ucfirst($product['category_name']) . "</td>";
                                     echo "<td>$" . number_format($product['price'], 2) . "</td>";
                                     echo "<td><span class='badge bg-{$stock_color}'>{$product['qty_in_stock']}</span></td>";
                                     echo "<td>";
@@ -649,6 +652,15 @@ try {
 
 .btn-group .btn:hover {
     transform: translateY(-1px);
+}
+
+/* Category dropdown styling */
+#categoryFilter option {
+    text-transform: capitalize;
+}
+
+.form-select option {
+    text-transform: capitalize;
 }
 </style>
 
