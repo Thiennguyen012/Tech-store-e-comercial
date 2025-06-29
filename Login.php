@@ -162,28 +162,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <small class="text-dark">Or login with</small>
             </div>
             <!-- tạo 1 row với 4 cols để thêm 4 button trong cùng 1 hàng -->
-            <div class="row text-center" style="margin-left: 2px">
-              <!-- tạo col thứ nhất -->
-              <div class="col-3">
-                <div class="input-group mb-lg-2">
-                  <a href="module/login-google/Login-google.php">
-                    <button class="btn bg-light w-100 fs-6" type="button">
-                      <img src="./img/google.png" style="width: 30px" />
-                    </button>
-                  </a>
-                </div>
+            <a href="module/login-google/Login-google.php">
+              <button class="btn bg-light w-100 fs-6 rounded-5" type="button">
+                <img src="./img/google.png" style="width: 30px" />
+              </button>
+            </a>
+            <!-- tạo need an account và sign up cùng trên 1 hàng, lại dùng d-flex justify-content -->
+            <div class="justify-content d-flex mt-4">
+              <div>
+                <small class="text" style="margin-right: 5px">Need an account?</small>
               </div>
-              <!-- tạo need an account và sign up cùng trên 1 hàng, lại dùng d-flex justify-content -->
-              <div class="justify-content d-flex mt-4">
-                <div>
-                  <small class="text" style="margin-right: 5px">Need an account?</small>
-                </div>
 
-                <div>
-                  <small><a href="./Registration.php" class="text-success">Sign up</a></small>
-                </div>
+              <div>
+                <small><a href="./Registration.php" class="text-success">Sign up</a></small>
               </div>
             </div>
+          </div>
         </form>
       </div>
     </div>
