@@ -75,7 +75,23 @@ foreach ($orders as $billId => $order): ?>
             <li class="list-group-item"><strong>Phone:</strong> <?= htmlspecialchars($order['order_phone']) ?></li>
             <li class="list-group-item"><strong>Address:</strong> <?= htmlspecialchars($order['order_address']) ?></li>
             <li class="list-group-item"><strong>Payment Method:</strong> <?= $order['order_paymethod'] == 1 ? 'VNPay' : 'Cash on Delivery' ?></li>
-            <li class="list-group-item"><strong>Status:</strong> <?= $order['order_status'] ?></li>
+            <li class="list-group-item"><strong>Status:</strong> 
+                <?php 
+                $status = $order['order_status'];
+                $status_text = 'Pending';
+                $status_class = 'warning';
+                
+                // Handle both string and numeric status values
+                if ($status === 'paid' || $status == 1) {
+                    $status_text = 'Paid';
+                    $status_class = 'success';
+                } elseif ($status === 'cancelled' || $status == 2) {
+                    $status_text = 'Cancelled';
+                    $status_class = 'danger';
+                }
+                ?>
+                <span class="badge bg-<?= $status_class ?>"><?= $status_text ?></span>
+            </li>
         </ul>
 
         <h6 class="mb-3 fw-semibold">Products</h6>
