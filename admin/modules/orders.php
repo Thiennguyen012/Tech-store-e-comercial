@@ -325,16 +325,61 @@ function updateOrderStatus(orderId, status) {
 }
 
 function viewOrderDetails(orderId) {
-    $('#orderDetailsContent').html('Loading...');
+    console.log('Loading order details for ID:', orderId);
+    
+    // Validate order ID
+    if (!orderId || isNaN(orderId)) {
+        alert('Invalid order ID');
+        return;
+    }
+    
+    $('#orderDetailsContent').html(`
+        <div class="text-center py-3">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="mt-2">Loading order details...</div>
+        </div>
+    `);
     $('#orderDetailsModal').modal('show');
     
-    $.get('../api/order-details.php?id=' + orderId)
-        .done(function(data) {
+    // Make AJAX request with better error handling
+    $.ajax({
+        url: '../api/order-details.php',
+        type: 'GET',
+        data: { id: orderId },
+        timeout: 10000, // 10 second timeout
+        success: function(data) {
+            console.log('Order details loaded successfully');
             $('#orderDetailsContent').html(data);
-        })
-        .fail(function() {
-            $('#orderDetailsContent').html('<div class="alert alert-danger">Error loading order details</div>');
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', {
+                status: status,
+                error: error,
+                responseText: xhr.responseText
+            });
+            
+            let errorMessage = 'Error loading order details.';
+            if (status === 'timeout') {
+                errorMessage = 'Request timed out. Please try again.';
+            } else if (xhr.status === 404) {
+                errorMessage = 'Order details not found.';
+            } else if (xhr.status === 403) {
+                errorMessage = 'Access denied.';
+            }
+            
+            $('#orderDetailsContent').html(`
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    ${errorMessage}
+                    <button type="button" class="btn btn-sm btn-outline-danger ms-2" onclick="viewOrderDetails(${orderId})">
+                        Try Again
+                    </button>
+                </div>
+            `);
+        }
+    });
 }
 </script>
 

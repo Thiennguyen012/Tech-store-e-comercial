@@ -697,3 +697,94 @@ body {
     background-color: #f8f9fa;
   }
 }
+
+/* Service Details Modal Improvements */
+.modal-dialog-scrollable {
+  max-height: calc(100vh - 1rem);
+}
+
+.modal-dialog-scrollable .modal-content {
+  max-height: calc(100vh - 1rem);
+}
+
+.modal-dialog-scrollable .modal-body {
+  overflow-y: auto;
+}
+
+/* Service cards mobile improvements */
+@media (max-width: 575.98px) {
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100vw - 1rem);
+  }
+  
+  .modal-header {
+    padding: 0.75rem;
+  }
+  
+  .modal-body {
+    padding: 0.75rem;
+  }
+  
+  .modal-footer {
+    padding: 0.75rem;
+  }
+  
+  .modal-title {
+    font-size: 1rem;
+  }
+  
+  /* Service cards */
+  .card .card-body {
+    padding: 0.75rem;
+  }
+  
+  .btn-group .btn {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+  }
+  
+  /* Service statistics cards */
+  .col-xl-3.col-md-6.col-sm-6 {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Loading spinner improvements */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.1em;
+}
+
+/* Table in modal responsive */
+.modal-body .table {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+.modal-body .table td {
+  padding: 0.5rem 0.25rem;
+  border: none;
+  vertical-align: top;
+}
+
+.modal-body .table td:first-child {
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Badge consistency */
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+  color: white;
+}
+
+/* Better responsive service type badges */
+@media (max-width: 575.98px) {
+  .badge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    white-space: nowrap;
+  }
+}
