@@ -170,33 +170,37 @@ if ($username) {
 
 <!-- search script -->
 <script>
+  // Biến trạng thái search flyout
   let isSearchOpen = false;
 
-  // Search toggle function
+  // Hàm bật/tắt search flyout
   function toggleSearch() {
     const flyout = document.getElementById('searchFlyout');
     const searchInput = document.getElementById('searchInput');
 
     if (isSearchOpen) {
+      // Đóng search flyout
       flyout.classList.remove('show');
+      flyout.setAttribute('aria-hidden', 'true');
       isSearchOpen = false;
     } else {
+      // Mở search flyout và focus vào input
       flyout.classList.add('show');
+      flyout.setAttribute('aria-hidden', 'false');
       isSearchOpen = true;
-      setTimeout(() => {
-        searchInput.focus();
-      }, 300);
+      setTimeout(() => searchInput.focus(), 300);
     }
   }
 
-  // Handle Enter key for search
+  // Xử lý phím Enter để tìm kiếm
   function handleSearch(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
+
       if (query) {
         performSearch(query);
-        toggleSearch();
+        toggleSearch(); // Đóng search flyout sau khi tìm kiếm
       }
     }
   }
@@ -212,16 +216,14 @@ if ($username) {
 
   // Perform search
   function performSearch(keyword) {
-    // Clear search input
+    // Xóa nội dung ô tìm kiếm
     document.getElementById('searchInput').value = '';
 
-    // Update browser URL to index.php?act=products&query=keyword
+    // Cập nhật URL trình duyệt
     const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
-    history.pushState({
-      query: keyword
-    }, '', newUrl);
+    history.pushState({ query: keyword }, '', newUrl);
 
-    // Load product page with search query parameter
+    // Tải trang sản phẩm với từ khóa tìm kiếm
     loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
   }
 
@@ -232,14 +234,16 @@ if ($username) {
     const query = urlParams.get('query');
     const act = urlParams.get('act');
 
-    if (act === 'products' && query) {
-      // Load product page with search query
-      loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
-    } else if (act === 'products' && !query) {
-      // Load product page without search query
-      loadPage('module/product/product.php');
+    if (act === 'products') {
+      if (query) {
+        // Tải trang sản phẩm với tìm kiếm
+        loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
+      } else {
+        // Tải trang sản phẩm không có tìm kiếm
+        loadPage('module/product/product.php');
+      }
     } else {
-      // Handle other pages or reload current page
+      // Tái tải trang cho các trường hợp khác
       location.reload();
     }
   });
@@ -279,6 +283,7 @@ if ($username) {
         }
       });
   }
+
   document.addEventListener('DOMContentLoaded', function () {
     // Lấy offcanvas element
     var offcanvasEl = document.getElementById('offcanvasNavbar');
