@@ -45,8 +45,8 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
 
 <!-- Service Statistics -->
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card shadow h-100 py-2">
+    <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
+        <div class="card h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -67,8 +67,8 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card shadow h-100 py-2">
+    <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
+        <div class="card h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -89,8 +89,8 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card shadow h-100 py-2">
+    <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
+        <div class="card h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -111,8 +111,8 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card shadow h-100 py-2">
+    <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
+        <div class="card h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -138,21 +138,21 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
 <!-- Services List -->
 <div class="row">
     <div class="col-12">
-        <div class="card shadow">
-            <div class="card-header py-3">
+        <div class="card">
+            <div class="card-header py-3 mobile-stack">
                 <h6 class="m-0 font-weight-bold text-dark">All Service Requests</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="servicesTable">
+                    <table class="table table-hover" id="servicesTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Customer</th>
-                                <th>Phone</th>
-                                <th>Address</th>
+                                <th class="d-none d-md-table-cell">Phone</th>
+                                <th class="d-none d-lg-table-cell">Address</th>
                                 <th>Service Type</th>
-                                <th>Date Requested</th>
+                                <th class="d-none d-md-table-cell">Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -171,15 +171,17 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                                     $customer_name = $service['user_name'] ?: $service['name'] ?: 'Guest';
                                     
                                     echo "<tr>";
-                                    echo "<td>#{$service['id']}</td>";
-                                    echo "<td>{$customer_name}</td>";
-                                    echo "<td>{$service['phone']}</td>";
-                                    echo "<td>" . substr($service['address'], 0, 30) . (strlen($service['address']) > 30 ? '...' : '') . "</td>";
-                                    echo "<td><span class='badge bg-info'>{$service['service_type']}</span></td>";
-                                    echo "<td>" . date('M d, Y H:i', strtotime($service['created_at'])) . "</td>";
-                                    echo "<td>";
-                                    echo "<button class='btn btn-sm btn-outline-dark me-1' onclick='viewServiceDetails({$service['id']})'>View</button>";
-                                    echo "<button class='btn btn-sm btn-dark' onclick='deleteService({$service['id']})'>Delete</button>";
+                                    echo "<td data-label='ID'>#{$service['id']}</td>";
+                                    echo "<td data-label='Customer'>{$customer_name}</td>";
+                                    echo "<td data-label='Phone' class='d-none d-md-table-cell'>{$service['phone']}</td>";
+                                    echo "<td data-label='Address' class='d-none d-lg-table-cell'>" . substr($service['address'], 0, 30) . (strlen($service['address']) > 30 ? '...' : '') . "</td>";
+                                    echo "<td data-label='Service Type'><span class='badge bg-secondary'>{$service['service_type']}</span></td>";
+                                    echo "<td data-label='Date' class='d-none d-md-table-cell'>" . date('M d, Y', strtotime($service['created_at'])) . "</td>";
+                                    echo "<td data-label='Actions'>";
+                                    echo "<div class='btn-group btn-group-sm mobile-stack' role='group'>";
+                                    echo "<button class='btn btn-outline-dark btn-sm' onclick='viewServiceDetails({$service['id']})'>View</button>";
+                                    echo "<button class='btn btn-dark btn-sm' onclick='deleteService({$service['id']})'>Delete</button>";
+                                    echo "</div>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
