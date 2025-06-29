@@ -128,8 +128,8 @@ if ($username) {
                   <li><a class="dropdown-item" href="#"
                       onclick="loadPage('module/user-profile/user-profile.php', this, 'profile'); return false;">Profile</a>
                   </li>
-                  <li><a class="dropdown-item" href="#"
-                      onclick="location.href='index.php?act=order'; return false;">Your Order</a>
+                  <li><a class="dropdown-item" href="#" onclick="location.href='index.php?act=order'; return false;">Your
+                      Order</a>
                   </li>
                   <li>
                     <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
@@ -150,18 +150,19 @@ if ($username) {
         </div>
       </div>
     </div>
-  </div>
 </nav>
 <!-- search flyout -->
 <div class="search-flyout bg-light py-4" id="searchFlyout" style="z-index: 1;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-8 col-lg-6">
-        <input
-          type="text"
-          class="search-input shadow-sm"
-          placeholder="Search on Technologia..."
-          id="searchInput">
+        <div class="position-relative">
+          <input type="text" class="form-control shadow-sm pe-5 rounded-5" placeholder="Search on Technologia..."
+            id="searchInput">
+          <button onclick="toggleSearch()" type="button"
+            class="btn-close position-absolute top-50 end-0 translate-middle-y me-2" aria-label="Close">
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -199,8 +200,17 @@ if ($username) {
       }
     }
   }
+  document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 
-  // Perform search - Using product.php with query parameter
+  // Handle escape key
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && isSearchOpen) {
+      document.getElementById('searchFlyout').classList.remove('show');
+      isSearchOpen = false;
+    }
+  });
+
+  // Perform search
   function performSearch(keyword) {
     // Clear search input
     document.getElementById('searchInput').value = '';
@@ -216,7 +226,7 @@ if ($username) {
   }
 
   // Handle browser back/forward buttons
-  window.addEventListener('popstate', function(event) {
+  window.addEventListener('popstate', function (event) {
     // Get current URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('query');
@@ -234,63 +244,18 @@ if ($username) {
     }
   });
 
-  // Alternative solution: More comprehensive URL routing
-  function handleUrlChange() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const act = urlParams.get('act');
-    const query = urlParams.get('query');
-
-    switch (act) {
-      case 'products':
-        if (query) {
-          loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
-        } else {
-          loadPage('module/product/product.php');
-        }
-        break;
-      case 'home':
-        loadPage('module/home/home.php');
-        break;
-        // Thêm các case khác tùy theo trang web của bạn
-      default:
-        // Load trang mặc định hoặc trang hiện tại
-        if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
-          loadPage('module/home/home.php');
-        }
-    }
-  }
-
   // Improved popstate handler
-  window.addEventListener('popstate', function(event) {
+  window.addEventListener('popstate', function (event) {
     handleUrlChange();
   });
 
   // Call handleUrlChange on page load to handle direct URL access
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     handleUrlChange();
   });
+</script>
 
-  // Close search when clicking outside
-  document.addEventListener('click', function(event) {
-    const searchContainer = document.querySelector('.search-container');
-
-    if (isSearchOpen && !searchContainer.contains(event.target)) {
-      document.getElementById('searchFlyout').classList.remove('show');
-      isSearchOpen = false;
-    }
-  });
-
-  // Handle escape key
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && isSearchOpen) {
-      document.getElementById('searchFlyout').classList.remove('show');
-      isSearchOpen = false;
-    }
-  });
-
-  // Handle Enter key for search
-  document.getElementById('searchInput').addEventListener('keydown', handleSearch);
-
+<script>
   function markAsRead(notiId, element) {
     fetch('module/user-profile/mark-read.php?id=' + notiId)
       .then(res => res.text())
@@ -314,7 +279,7 @@ if ($username) {
         }
       });
   }
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // Lấy offcanvas element
     var offcanvasEl = document.getElementById('offcanvasNavbar');
     if (!offcanvasEl) return;
@@ -323,11 +288,10 @@ if ($username) {
     var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
 
     // Đóng offcanvas khi click vào bất kỳ link trong offcanvas
-    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function(link) {
-      link.addEventListener('click', function() {
+    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function (link) {
+      link.addEventListener('click', function () {
         bsOffcanvas.hide();
       });
     });
   });
 </script>
-<!-- search -->

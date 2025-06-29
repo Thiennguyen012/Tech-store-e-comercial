@@ -220,11 +220,11 @@ if ($isSearchMode) {
             <div class="mb-4">
               <select name="sortBy" class="form-select">
                 <option value="1" <?php if ($sortBy === '1')
-                                    echo 'selected'; ?>>Price (Low to High)</option>
+                  echo 'selected'; ?>>Price (Low to High)</option>
                 <option value="2" <?php if ($sortBy === '2')
-                                    echo 'selected'; ?>>Price (High to Low)</option>
+                  echo 'selected'; ?>>Price (High to Low)</option>
                 <option value="3" <?php if ($sortBy === '3')
-                                    echo 'selected'; ?>>Alphabetical</option>
+                  echo 'selected'; ?>>Alphabetical</option>
               </select>
             </div>
             <div class="d-flex gap-2 flex-wrap">
@@ -289,17 +289,18 @@ if ($isSearchMode) {
           <div class="mb-4">
             <select name="sortBy" class="form-select">
               <option value="1" <?php if ($sortBy === '1')
-                                  echo 'selected'; ?>>Price (Low to High)</option>
+                echo 'selected'; ?>>Price (Low to High)</option>
               <option value="2" <?php if ($sortBy === '2')
-                                  echo 'selected'; ?>>Price (High to Low)</option>
+                echo 'selected'; ?>>Price (High to Low)</option>
               <option value="3" <?php if ($sortBy === '3')
-                                  echo 'selected'; ?>>Alphabetical</option>
+                echo 'selected'; ?>>Alphabetical</option>
             </select>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             <button type="button" id="filterButtonMobile" class="btn btn-dark w-100 rounded-pill fw-bold"
               data-bs-dismiss="offcanvas">Sort</button>
-            <button type="button" id="resetFilterButtonMobile" class="btn btn-outline-dark w-100 rounded-pill fw-bold">Reset
+            <button type="button" id="resetFilterButtonMobile"
+              class="btn btn-outline-dark w-100 rounded-pill fw-bold">Reset
               filter</button>
           </div>
         </form>
@@ -329,7 +330,7 @@ if ($isSearchMode) {
           if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
               $productCount++;
-          ?>
+              ?>
               <div class="col">
                 <div class="card product-card border-0 h-100 shadow-sm">
                   <a href="#"
@@ -349,7 +350,8 @@ if ($isSearchMode) {
                   </div>
                   <div class="d-flex flex-wrap justify-content-center gap-2">
                     <button
-                      onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">
+                      onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
+                      class="btn btn-dark btn-sm rounded-pill px-3">
                       More details
                     </button>
                     <?php if ($row['qty_in_stock'] > 0): ?>
@@ -374,14 +376,26 @@ if ($isSearchMode) {
                   </div>
                 </div>
               </div>
-          <?php
+              <?php
+            }
+          } else {
+            if ($isSearchMode) {
+              echo '<div class="container-fluid vh-100 d-flex align-items-center justify-content-center"><div class="text-center py-5">
+                      <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
+                      <h4 class="text-muted mb-3">No products found</h4>
+                      <p class="text-muted mb-4">We couldn\'t find any products matching "' . htmlspecialchars($query) . '". Try different keywords.</p>
+                      <a href="#" onclick="loadPage(\'module/main-content/main-content.php\', this); return false;" class="btn btn-dark rounded-pill px-4">Back to Home</a>
+                    </div></div>';
+            } else {
+              echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter. Please try other options.</div></div>';
             }
           }
           ?>
         </div>
         <?php if ($result && $result->num_rows == $limit): ?>
           <div class="text-center my-4">
-            <button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="<?= $limit ?>">Show more</button>
+            <button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="<?= $limit ?>">Show
+              more</button>
           </div>
         <?php endif; ?>
       </div>
@@ -405,7 +419,7 @@ if ($isSearchMode) {
 
   // Hàm gán sự kiện AJAX cho tất cả form add to cart
   function attachCartEventListeners() {
-    document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
+    document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
       // Xóa event listener cũ để tránh trùng lặp
       form.removeEventListener('submit', handleCartSubmit);
       // Gán event listener mới
@@ -420,9 +434,9 @@ if ($isSearchMode) {
     const formData = new FormData(e.target);
 
     fetch('module/cart/cart.php', {
-        method: 'POST',
-        body: formData
-      })
+      method: 'POST',
+      body: formData
+    })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -435,7 +449,7 @@ if ($isSearchMode) {
           modal.show();
 
           // Thêm event listener để dispose modal khi đóng
-          modalElement.addEventListener('hidden.bs.modal', function() {
+          modalElement.addEventListener('hidden.bs.modal', function () {
             modal.dispose();
           }, {
             once: true
@@ -459,12 +473,12 @@ if ($isSearchMode) {
   }
 
   // Gửi form lọc (desktop)
-  document.getElementById('filterButton').addEventListener('click', function() {
+  document.getElementById('filterButton').addEventListener('click', function () {
     const formData = new FormData(document.getElementById('filterForm'));
     fetch('module/product/filter.php', {
-        method: 'POST',
-        body: formData,
-      })
+      method: 'POST',
+      body: formData,
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -483,12 +497,12 @@ if ($isSearchMode) {
   });
 
   // Gửi form lọc (mobile)
-  document.getElementById('filterButtonMobile').addEventListener('click', function() {
+  document.getElementById('filterButtonMobile').addEventListener('click', function () {
     const formData = new FormData(document.getElementById('filterFormMobile'));
     fetch('module/product/filter.php', {
-        method: 'POST',
-        body: formData,
-      })
+      method: 'POST',
+      body: formData,
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -507,14 +521,14 @@ if ($isSearchMode) {
   });
 
   // Reset filter desktop
-  document.getElementById('resetFilterButton').addEventListener('click', function() {
+  document.getElementById('resetFilterButton').addEventListener('click', function () {
     const form = document.getElementById('filterForm');
     form.reset();
     document.getElementById('filterButton').click();
   });
 
   // Reset filter mobile
-  document.getElementById('resetFilterButtonMobile').addEventListener('click', function() {
+  document.getElementById('resetFilterButtonMobile').addEventListener('click', function () {
     const form = document.getElementById('filterFormMobile');
     form.reset();
     document.getElementById('filterButtonMobile').click();
@@ -538,9 +552,9 @@ if ($isSearchMode) {
       formData.append('showMore', 1);
 
       fetch('module/product/filter.php', {
-          method: 'POST',
-          body: formData,
-        })
+        method: 'POST',
+        body: formData,
+      })
         .then(res => res.text())
         .then(html => {
           // Tạo một div tạm để lấy các .col mới
@@ -579,7 +593,7 @@ if ($isSearchMode) {
   }
 
   // Gán sự kiện cho các form có sẵn khi trang load
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     attachCartEventListeners();
   });
 
@@ -592,7 +606,8 @@ if ($isSearchMode) {
 </script>
 
 <!-- Modal thông báo thêm vào giỏ hàng thành công -->
-<div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel" aria-hidden="true">
+<div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
