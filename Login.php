@@ -173,44 +173,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </a>
                 </div>
               </div>
-              <!-- tạo col thứ 2 -->
-              <div class="col-3">
-                <div class="input-group mb-lg-2">
-                  <a href="module/login-fb/Login-fb.php">
-                    <button class="btn bg-light w-100 fs-6" type="button">
-                      <img src="./img/facebook2.png" style="width: 30px" />
-                    </button>
-                  </a>
+              <!-- tạo need an account và sign up cùng trên 1 hàng, lại dùng d-flex justify-content -->
+              <div class="justify-content d-flex mt-4">
+                <div>
+                  <small class="text" style="margin-right: 5px">Need an account?</small>
                 </div>
-              </div>
-              <!-- tạo col thứ 3 -->
-              <div class="col-3">
-                <div class="input-group mb-lg-2">
-                  <button class="btn bg-light w-100 fs-6">
-                    <img src="./img/instagram.png" style="width: 30px" />
-                  </button>
-                </div>
-              </div>
-              <!-- tạo col thứ 4 -->
-              <div class="col-3">
-                <div class="input-group mb-lg-2">
-                  <button class="btn bg-light w-100 fs-6">
-                    <img src="./img/twitter.png" style="width: 30px" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- tạo need an account và sign up cùng trên 1 hàng, lại dùng d-flex justify-content -->
-            <div class="justify-content d-flex mt-4">
-              <div>
-                <small class="text" style="margin-right: 5px">Need an account?</small>
-              </div>
 
-              <div>
-                <small><a href="./Registration.php" class="text-success">Sign up</a></small>
+                <div>
+                  <small><a href="./Registration.php" class="text-success">Sign up</a></small>
+                </div>
               </div>
             </div>
-          </div>
         </form>
       </div>
     </div>
