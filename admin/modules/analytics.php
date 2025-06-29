@@ -56,7 +56,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     echo "<tr>";
                                     echo "<td>" . substr($product['name'], 0, 50) . (strlen($product['name']) > 50 ? '...' : '') . "</td>";
                                     echo "<td>{$product['category_name']}</td>";
-                                    echo "<td><span class='badge bg-info'>{$product['times_sold']}</span></td>";
+                                    echo "<td><span class='badge bg-secondary'>{$product['times_sold']}</span></td>";
                                     echo "<td>$" . number_format($product['total_revenue'], 2) . "</td>";
                                     echo "</tr>";
                                 }

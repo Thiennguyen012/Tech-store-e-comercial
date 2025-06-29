@@ -249,7 +249,7 @@ try {
                         
                         while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             $role_text = $user['role'] == 0 ? 'Admin' : 'User';
-                            $role_color = $user['role'] == 0 ? 'dark' : 'secondary';
+                            $role_color = $user['role'] == 0 ? 'danger' : 'success';
                             ?>
                             <div class="card mb-3 border">
                                 <div class="card-body p-3">
@@ -309,8 +309,8 @@ try {
                                     
                                     while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         $role_text = $user['role'] == 0 ? 'Admin' : 'User';
-                                        $role_color = $user['role'] == 0 ? 'dark' : 'secondary';
-                                        
+                                        $role_color = $user['role'] == 0 ? 'danger' : 'success';
+
                                         echo "<tr>";
                                         echo "<td>{$user['id']}</td>";
                                         echo "<td class='text-truncate' style='max-width: 150px;'>" . htmlspecialchars($user['name']) . "</td>";
