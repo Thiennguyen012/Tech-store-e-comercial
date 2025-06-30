@@ -22,7 +22,7 @@
                         Send Message
                     </h3>
 
-                    <form id="contactForm" action="#" method="POST">
+                    <form id="contactForm" action="module/contact/contact-handler.php" method="POST">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName" class="form-label fw-semibold">
@@ -283,27 +283,76 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
 
-        // Form validation
-        const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Contact Form Handling
+        document.addEventListener('DOMContentLoaded', function () {
+            const contactForm = document.getElementById('contactForm');
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
 
-            // Show success message
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-success alert-dismissible fade show';
-            alert.innerHTML = `
-            <i class="fas fa-check-circle me-2"></i>
-            Thank you for contacting us! We will respond as soon as possible.
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Remove existing alerts
+                const existingAlert = contactForm.querySelector('.alert');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+                // Collect form data
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData.entries());
+
+                // Send to PHP handler
+                fetch('contact-handler.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        const alertType = result.success ? 'success' : 'danger';
+                        const icon = result.success ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle';
+
+                        showAlert(alertType, icon, result.message);
+
+                        if (result.success) {
+                            contactForm.reset();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showAlert('danger', 'fas fa-exclamation-triangle', 'An error occurred. Please try again.');
+                    })
+                    .finally(() => {
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    });
+            });
+
+            function showAlert(type, icon, message) {
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type} alert-dismissible fade show`;
+                alert.innerHTML = `
+            <i class="${icon} me-2"></i>
+            ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
 
-            contactForm.insertBefore(alert, contactForm.firstChild);
-            contactForm.reset();
+                contactForm.insertBefore(alert, contactForm.firstChild);
 
-            // Auto dismiss after 5 seconds
-            setTimeout(() => {
-                alert.remove();
-            }, 5000);
+                // Auto dismiss after 5 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.remove();
+                    }
+                }, 5000);
+            }
         });
-    });
 </script>
