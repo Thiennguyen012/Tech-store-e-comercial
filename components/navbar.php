@@ -128,8 +128,8 @@ if ($username) {
                   <li><a class="dropdown-item" href="#"
                       onclick="loadPage('module/user-profile/user-profile.php', this, 'profile'); return false;">Profile</a>
                   </li>
-                  <li><a class="dropdown-item" href="#"
-                      onclick="location.href='index.php?act=order'; return false;">Your Order</a>
+                  <li><a class="dropdown-item" href="#" onclick="location.href='index.php?act=order'; return false;">Your
+                      Order</a>
                   </li>
                   <li>
                     <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
@@ -150,18 +150,19 @@ if ($username) {
         </div>
       </div>
     </div>
-  </div>
 </nav>
 <!-- search flyout -->
 <div class="search-flyout bg-light py-4" id="searchFlyout" style="z-index: 1;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-8 col-lg-6">
-        <input
-          type="text"
-          class="search-input shadow-sm"
-          placeholder="Search on Technologia..."
-          id="searchInput">
+        <div class="position-relative">
+          <input type="text" class="form-control shadow-sm pe-5 rounded-5" placeholder="Search on Technologia..."
+            id="searchInput">
+          <button onclick="toggleSearch()" type="button"
+            class="btn-close position-absolute top-50 end-0 translate-middle-y me-2" aria-label="Close">
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -169,128 +170,96 @@ if ($username) {
 
 <!-- search script -->
 <script>
+  // Biến trạng thái search flyout
   let isSearchOpen = false;
 
-  // Search toggle function
+  // Hàm bật/tắt search flyout
   function toggleSearch() {
     const flyout = document.getElementById('searchFlyout');
     const searchInput = document.getElementById('searchInput');
 
     if (isSearchOpen) {
+      // Đóng search flyout
       flyout.classList.remove('show');
+      flyout.setAttribute('aria-hidden', 'true');
       isSearchOpen = false;
     } else {
+      // Mở search flyout và focus vào input
       flyout.classList.add('show');
+      flyout.setAttribute('aria-hidden', 'false');
       isSearchOpen = true;
-      setTimeout(() => {
-        searchInput.focus();
-      }, 300);
+      setTimeout(() => searchInput.focus(), 300);
     }
   }
 
-  // Handle Enter key for search
+  // Xử lý phím Enter để tìm kiếm
   function handleSearch(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
+
       if (query) {
         performSearch(query);
-        toggleSearch();
+        toggleSearch(); // Đóng search flyout sau khi tìm kiếm
       }
     }
   }
-
-  // Perform search - Using product.php with query parameter
-  function performSearch(keyword) {
-    // Clear search input
-    document.getElementById('searchInput').value = '';
-
-    // Update browser URL to index.php?act=products&query=keyword
-    const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
-    history.pushState({
-      query: keyword
-    }, '', newUrl);
-
-    // Load product page with search query parameter
-    loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
-  }
-
-  // Handle browser back/forward buttons
-  window.addEventListener('popstate', function(event) {
-    // Get current URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('query');
-    const act = urlParams.get('act');
-
-    if (act === 'products' && query) {
-      // Load product page with search query
-      loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
-    } else if (act === 'products' && !query) {
-      // Load product page without search query
-      loadPage('module/product/product.php');
-    } else {
-      // Handle other pages or reload current page
-      location.reload();
-    }
-  });
-
-  // Alternative solution: More comprehensive URL routing
-  function handleUrlChange() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const act = urlParams.get('act');
-    const query = urlParams.get('query');
-
-    switch (act) {
-      case 'products':
-        if (query) {
-          loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
-        } else {
-          loadPage('module/product/product.php');
-        }
-        break;
-      case 'home':
-        loadPage('module/home/home.php');
-        break;
-        // Thêm các case khác tùy theo trang web của bạn
-      default:
-        // Load trang mặc định hoặc trang hiện tại
-        if (window.location.pathname === '/index.php' || window.location.pathname === '/') {
-          loadPage('module/home/home.php');
-        }
-    }
-  }
-
-  // Improved popstate handler
-  window.addEventListener('popstate', function(event) {
-    handleUrlChange();
-  });
-
-  // Call handleUrlChange on page load to handle direct URL access
-  document.addEventListener('DOMContentLoaded', function() {
-    handleUrlChange();
-  });
-
-  // Close search when clicking outside
-  document.addEventListener('click', function(event) {
-    const searchContainer = document.querySelector('.search-container');
-
-    if (isSearchOpen && !searchContainer.contains(event.target)) {
-      document.getElementById('searchFlyout').classList.remove('show');
-      isSearchOpen = false;
-    }
-  });
+  document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 
   // Handle escape key
-  document.addEventListener('keydown', function(event) {
+  document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && isSearchOpen) {
       document.getElementById('searchFlyout').classList.remove('show');
       isSearchOpen = false;
     }
   });
 
-  // Handle Enter key for search
-  document.getElementById('searchInput').addEventListener('keydown', handleSearch);
+  // Perform search
+  function performSearch(keyword) {
+    // Xóa nội dung ô tìm kiếm
+    document.getElementById('searchInput').value = '';
 
+    // Cập nhật URL trình duyệt
+    const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
+    history.pushState({ query: keyword }, '', newUrl);
+
+    // Tải trang sản phẩm với từ khóa tìm kiếm
+    loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
+  }
+
+  // Handle browser back/forward buttons
+  window.addEventListener('popstate', function (event) {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query');
+    const act = urlParams.get('act');
+
+    if (act === 'products') {
+      if (query) {
+        // Tải trang sản phẩm với tìm kiếm
+        loadPage(`module/product/product.php?query=${encodeURIComponent(query)}`);
+      } else {
+        // Tải trang sản phẩm không có tìm kiếm
+        loadPage('module/product/product.php');
+      }
+    } else {
+      // Tái tải trang cho các trường hợp khác
+      location.reload();
+    }
+  });
+
+  // Improved popstate handler
+  window.addEventListener('popstate', function (event) {
+    handleUrlChange();
+  });
+
+  // Call handleUrlChange on page load to handle direct URL access
+  document.addEventListener('DOMContentLoaded', function () {
+    handleUrlChange();
+  });
+</script>
+
+<script>
   function markAsRead(notiId, element) {
     fetch('module/user-profile/mark-read.php?id=' + notiId)
       .then(res => res.text())
@@ -314,7 +283,8 @@ if ($username) {
         }
       });
   }
-  document.addEventListener('DOMContentLoaded', function() {
+
+  document.addEventListener('DOMContentLoaded', function () {
     // Lấy offcanvas element
     var offcanvasEl = document.getElementById('offcanvasNavbar');
     if (!offcanvasEl) return;
@@ -323,11 +293,10 @@ if ($username) {
     var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
 
     // Đóng offcanvas khi click vào bất kỳ link trong offcanvas
-    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function(link) {
-      link.addEventListener('click', function() {
+    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function (link) {
+      link.addEventListener('click', function () {
         bsOffcanvas.hide();
       });
     });
   });
 </script>
-<!-- search -->
