@@ -53,9 +53,9 @@ function generateEmailTemplate($data)
 {
     $subjectTypes = [
         'general' => 'General Question',
-        'service' => 'Service Inquiry',
+        'service' => 'Service',
         'support' => 'Technical Support',
-        'partnership' => 'Partnership Inquiry',
+        'partnership' => 'Partnership',
         'other' => 'Other'
     ];
 
