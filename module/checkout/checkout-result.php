@@ -158,8 +158,6 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
         $address = $row['order_address'];
         $payment_method = $row['order_paymethod'];
     }
-    echo "debug1: $name, $phone, $address, $payment_method";
-    echo "debug2: $subtotal";
     ?>
     <!-- Shipping Info -->
     <div class="mb-4">

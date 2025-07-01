@@ -27,7 +27,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status IS NULL OR order_status = 'pending' OR order_status = 0");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status IS NULL OR order_status = 'Pending'");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -49,7 +49,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'paid' OR order_status = 1");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'Paid'");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -71,7 +71,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'cancelled' OR order_status = 2");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'Cancelled'");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -127,28 +127,28 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             ORDER BY b.order_date DESC
                         ");
                         $stmt->execute();
-                        
+
                         while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             $status_text = 'Pending';
                             $status_color = 'warning';
                             $status_value = $order['order_status'];
-                            
-                            if ($status_value === 'paid' || $status_value == 1) {
+
+                            if ($status_value === 'Paid') {
                                 $status_text = 'Paid';
                                 $status_color = 'success';
-                                $status_value = 'paid';
-                            } elseif ($status_value === 'cancelled' || $status_value == 2) {
+                                $status_value = 'Paid';
+                            } elseif ($status_value === 'Cancelled') {
                                 $status_text = 'Cancelled';
                                 $status_color = 'danger';
-                                $status_value = 'cancelled';
+                                $status_value = 'Cancelled';
                             } else {
-                                $status_value = 'pending';
+                                $status_value = 'Pending';
                                 $status_color = 'secondary';
                             }
-                            
+
                             $customer_name = $order['user_name'] ?: $order['order_name'] ?: 'Guest';
                             $payment_method = $order['order_paymethod'] == 1 ? 'Online Payment' : 'Cash on Delivery';
-                            ?>
+                    ?>
                             <div class="card mb-3 border">
                                 <div class="card-body p-3">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -167,14 +167,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                             <i class="bi bi-eye"></i> View Details
                                         </button>
                                         <select class="form-select form-select-sm" onchange="updateOrderStatus(<?php echo $order['id']; ?>, this.value)">
-                                            <option value="pending"<?php echo $status_value == 'pending' ? ' selected' : ''; ?>>Pending</option>
-                                            <option value="paid"<?php echo $status_value == 'paid' ? ' selected' : ''; ?>>Paid</option>
-                                            <option value="cancelled"<?php echo $status_value == 'cancelled' ? ' selected' : ''; ?>>Cancelled</option>
+                                            <option value="Pending" <?php echo $status_value == 'Pending' ? ' selected' : ''; ?>>Pending</option>
+                                            <option value="Paid" <?php echo $status_value == 'Paid' ? ' selected' : ''; ?>>Paid</option>
+                                            <option value="Cancelled" <?php echo $status_value == 'Cancelled' ? ' selected' : ''; ?>>Cancelled</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <?php
+                    <?php
                         }
                     } catch (Exception $e) {
                         echo '<div class="alert alert-danger">Error loading orders: ' . $e->getMessage() . '</div>';
@@ -209,28 +209,28 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         ORDER BY b.order_date DESC
                                     ");
                                     $stmt->execute();
-                                    
+
                                     while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         $status_text = 'Pending';
                                         $status_color = 'warning';
                                         $status_value = $order['order_status'];
-                                        
-                                        if ($status_value === 'paid' || $status_value == 1) {
+
+                                        if ($status_value === 'Paid') {
                                             $status_text = 'Paid';
                                             $status_color = 'success';
-                                            $status_value = 'paid';
-                                        } elseif ($status_value === 'cancelled' || $status_value == 2) {
+                                            $status_value = 'Paid';
+                                        } elseif ($status_value === 'Cancelled') {
                                             $status_text = 'Cancelled';
                                             $status_color = 'danger';
-                                            $status_value = 'cancelled';
+                                            $status_value = 'Cancelled';
                                         } else {
-                                            $status_value = 'pending';
+                                            $status_value = 'Pending';
                                             $status_color = 'secondary';
                                         }
-                                        
+
                                         $customer_name = $order['user_name'] ?: $order['order_name'] ?: 'Guest';
                                         $payment_method = $order['order_paymethod'] == 1 ? 'Online' : 'COD';
-                                        
+
                                         echo "<tr>";
                                         echo "<td>#{$order['id']}</td>";
                                         echo "<td class='text-truncate' style='max-width: 120px;'>" . htmlspecialchars($customer_name) . "</td>";
@@ -244,9 +244,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         echo "<div class='btn-group btn-group-sm' role='group'>";
                                         echo "<button class='btn btn-outline-dark' onclick='viewOrderDetails({$order['id']})' title='View Details'><i class='bi bi-eye'></i></button>";
                                         echo "<select class='form-select form-select-sm' onchange='updateOrderStatus({$order['id']}, this.value)' style='width: auto; min-width: 100px;'>";
-                                        echo "<option value='pending'" . ($status_value == 'pending' ? ' selected' : '') . ">Pending</option>";
-                                        echo "<option value='paid'" . ($status_value == 'paid' ? ' selected' : '') . ">Paid</option>";
-                                        echo "<option value='cancelled'" . ($status_value == 'cancelled' ? ' selected' : '') . ">Cancelled</option>";
+                                        echo "<option value='Pending'" . ($status_value == 'Pending' ? ' selected' : '') . ">Pending</option>";
+                                        echo "<option value='Paid'" . ($status_value == 'Paid' ? ' selected' : '') . ">Paid</option>";
+                                        echo "<option value='Cancelled'" . ($status_value == 'Cancelled' ? ' selected' : '') . ">Cancelled</option>";
                                         echo "</select>";
                                         echo "</div>";
                                         echo "</td>";
@@ -281,59 +281,59 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 </div>
 
 <script>
-function updateOrderStatus(orderId, status) {
-    console.log('Updating order status:', orderId, status);
-    
-    $.post('orders-ajax.php', {
-        action: 'update_status',
-        order_id: orderId,
-        status: status
-    })
-    .done(function(response) {
-        console.log('Server response:', response);
-        try {
-            const result = JSON.parse(response);
-            if (result.success) {
-                // Show success message
-                const alertDiv = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                    result.message +
-                    '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
-                $('#admin-content').prepend(alertDiv);
-                
-                // Auto dismiss after 3 seconds
-                setTimeout(function() {
-                    alertDiv.remove();
-                }, 3000);
-                
-                // Reload the page to show updated status
-                setTimeout(function() {
-                    location.reload();
-                }, 1000);
-            } else {
-                alert('Error: ' + result.message);
-            }
-        } catch (e) {
-            console.error('Parse error:', e);
-            console.error('Raw response:', response);
-            alert('Error updating order status');
-        }
-    })
-    .fail(function(xhr, status, error) {
-        console.error('AJAX error:', status, error);
-        alert('Error updating order status');
-    });
-}
+    function updateOrderStatus(orderId, status) {
+        console.log('Updating order status:', orderId, status);
 
-function viewOrderDetails(orderId) {
-    console.log('Loading order details for ID:', orderId);
-    
-    // Validate order ID
-    if (!orderId || isNaN(orderId)) {
-        alert('Invalid order ID');
-        return;
+        $.post('orders-ajax.php', {
+                action: 'update_status',
+                order_id: orderId,
+                status: status
+            })
+            .done(function(response) {
+                console.log('Server response:', response);
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        // Show success message
+                        const alertDiv = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                            result.message +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                        $('#admin-content').prepend(alertDiv);
+
+                        // Auto dismiss after 3 seconds
+                        setTimeout(function() {
+                            alertDiv.remove();
+                        }, 3000);
+
+                        // Reload the page to show updated status
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        alert('Error: ' + result.message);
+                    }
+                } catch (e) {
+                    console.error('Parse error:', e);
+                    console.error('Raw response:', response);
+                    alert('Error updating order status');
+                }
+            })
+            .fail(function(xhr, status, error) {
+                console.error('AJAX error:', status, error);
+                alert('Error updating order status');
+            });
     }
-    
-    $('#orderDetailsContent').html(`
+
+    function viewOrderDetails(orderId) {
+        console.log('Loading order details for ID:', orderId);
+
+        // Validate order ID
+        if (!orderId || isNaN(orderId)) {
+            alert('Invalid order ID');
+            return;
+        }
+
+        $('#orderDetailsContent').html(`
         <div class="text-center py-3">
             <div class="spinner-border spinner-border-sm text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -341,35 +341,37 @@ function viewOrderDetails(orderId) {
             <div class="mt-2">Loading order details...</div>
         </div>
     `);
-    $('#orderDetailsModal').modal('show');
-    
-    // Make AJAX request with better error handling
-    $.ajax({
-        url: '../api/order-details.php',
-        type: 'GET',
-        data: { id: orderId },
-        timeout: 10000, // 10 second timeout
-        success: function(data) {
-            console.log('Order details loaded successfully');
-            $('#orderDetailsContent').html(data);
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', {
-                status: status,
-                error: error,
-                responseText: xhr.responseText
-            });
-            
-            let errorMessage = 'Error loading order details.';
-            if (status === 'timeout') {
-                errorMessage = 'Request timed out. Please try again.';
-            } else if (xhr.status === 404) {
-                errorMessage = 'Order details not found.';
-            } else if (xhr.status === 403) {
-                errorMessage = 'Access denied.';
-            }
-            
-            $('#orderDetailsContent').html(`
+        $('#orderDetailsModal').modal('show');
+
+        // Make AJAX request with better error handling
+        $.ajax({
+            url: '../api/order-details.php',
+            type: 'GET',
+            data: {
+                id: orderId
+            },
+            timeout: 10000, // 10 second timeout
+            success: function(data) {
+                console.log('Order details loaded successfully');
+                $('#orderDetailsContent').html(data);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', {
+                    status: status,
+                    error: error,
+                    responseText: xhr.responseText
+                });
+
+                let errorMessage = 'Error loading order details.';
+                if (status === 'timeout') {
+                    errorMessage = 'Request timed out. Please try again.';
+                } else if (xhr.status === 404) {
+                    errorMessage = 'Order details not found.';
+                } else if (xhr.status === 403) {
+                    errorMessage = 'Access denied.';
+                }
+
+                $('#orderDetailsContent').html(`
                 <div class="alert alert-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     ${errorMessage}
@@ -378,9 +380,9 @@ function viewOrderDetails(orderId) {
                     </button>
                 </div>
             `);
-        }
-    });
-}
+            }
+        });
+    }
 </script>
 
 <?php require_once '../includes/admin-layout-footer.php'; ?>

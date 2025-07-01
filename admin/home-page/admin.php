@@ -150,23 +150,23 @@ require_once '../includes/admin-layout.php';
                                     LIMIT 5
                                 ");
                                 $stmt->execute();
-                                
+
                                 while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $status_text = 'Pending';
                                     $status_color = 'secondary';
                                     $status_value = $order['order_status'];
-                                    
+
                                     // Handle both string and numeric status values
-                                    if ($status_value === 'paid' || $status_value == 1) {
+                                    if ($status_value === 'Paid' || $status_value == 1) {
                                         $status_text = 'Paid';
                                         $status_color = 'success';
-                                    } elseif ($status_value === 'cancelled' || $status_value == 2) {
+                                    } elseif ($status_value === 'Cancelled' || $status_value == 2) {
                                         $status_text = 'Cancelled';
                                         $status_color = 'danger';
                                     }
-                                    
+
                                     $customer_name = $order['user_name'] ?: $order['order_name'] ?: 'Guest';
-                                    
+
                                     echo "<tr>";
                                     echo "<td>#{$order['id']}</td>";
                                     echo "<td>{$customer_name}</td>";
