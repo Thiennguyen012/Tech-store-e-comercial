@@ -1,3 +1,36 @@
+<?php
+$message = '';
+$messageType = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once 'contact-config.php';
+
+    // Làm sạch dữ liệu
+    $cleanData = [
+        'firstName' => trim(strip_tags($_POST['firstName'])),
+        'lastName' => trim(strip_tags($_POST['lastName'])),
+        'email' => trim(strtolower($_POST['email'])),
+        'phone' => isset($_POST['phone']) ? trim(strip_tags($_POST['phone'])) : '',
+        'subject' => trim(strip_tags($_POST['subject'])),
+        'message' => trim(strip_tags($_POST['message']))
+    ];
+
+    // Gửi email
+    $result = sendContactEmail($cleanData);
+
+    if ($result['success']) {
+        $message = 'Thank you for your message! We will get back to you shortly.';
+        $messageType = 'success';
+
+        // Clear form data after successful submission
+        $cleanData = [];
+    } else {
+        $message = 'Sorry, there was an error sending your message. Please try again later.';
+        $messageType = 'danger';
+    }
+}
+?>
+
 <div class="container-fluid py-5"
     style="background: linear-gradient(135deg,rgb(234, 235, 240) 0%,rgb(71, 69, 73) 100%);">
     <div class="container">
@@ -22,7 +55,16 @@
                         Send Message
                     </h3>
 
-                    <form id="contactForm" action="#" method="POST">
+                    <?php if (!empty($message)): ?>
+                        <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
+                            <i
+                                class="fas <?php echo $messageType === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'; ?> me-2"></i>
+                            <?php echo htmlspecialchars($message); ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <form id="contactForm" method="POST" action="">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName" class="form-label fw-semibold">
@@ -30,6 +72,7 @@
                                     First Name *
                                 </label>
                                 <input type="text" class="form-control form-control-md" id="firstName" name="firstName"
+                                    value="<?php echo isset($cleanData['firstName']) ? htmlspecialchars($cleanData['firstName']) : ''; ?>"
                                     required>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -38,6 +81,7 @@
                                     Last Name *
                                 </label>
                                 <input type="text" class="form-control form-control-md" id="lastName" name="lastName"
+                                    value="<?php echo isset($cleanData['lastName']) ? htmlspecialchars($cleanData['lastName']) : ''; ?>"
                                     required>
                             </div>
                         </div>
@@ -49,6 +93,7 @@
                                     Email *
                                 </label>
                                 <input type="email" class="form-control form-control-md" id="email" name="email"
+                                    value="<?php echo isset($cleanData['email']) ? htmlspecialchars($cleanData['email']) : ''; ?>"
                                     required>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -56,7 +101,8 @@
                                     <i class="fas fa-phone text-dark me-1"></i>
                                     Phone Number
                                 </label>
-                                <input type="tel" class="form-control form-control-md" id="phone" name="phone">
+                                <input type="tel" class="form-control form-control-md" id="phone" name="phone"
+                                    value="<?php echo isset($cleanData['phone']) ? htmlspecialchars($cleanData['phone']) : ''; ?>">
                             </div>
                         </div>
 
@@ -67,11 +113,11 @@
                             </label>
                             <select class="form-select" id="subject" name="subject" required style="font-size: 1rem;">
                                 <option value="">Select subject...</option>
-                                <option value="general">General Question</option>
-                                <option value="service">Service</option>
-                                <option value="support">Technical Support</option>
-                                <option value="partnership">Partnership</option>
-                                <option value="other">Other</option>
+                                <option value="general" <?php echo (isset($cleanData['subject']) && $cleanData['subject'] === 'general') ? 'selected' : ''; ?>>General Question</option>
+                                <option value="service" <?php echo (isset($cleanData['subject']) && $cleanData['subject'] === 'service') ? 'selected' : ''; ?>>Service</option>
+                                <option value="support" <?php echo (isset($cleanData['subject']) && $cleanData['subject'] === 'support') ? 'selected' : ''; ?>>Technical Support</option>
+                                <option value="partnership" <?php echo (isset($cleanData['subject']) && $cleanData['subject'] === 'partnership') ? 'selected' : ''; ?>>Partnership</option>
+                                <option value="other" <?php echo (isset($cleanData['subject']) && $cleanData['subject'] === 'other') ? 'selected' : ''; ?>>Other</option>
                             </select>
                         </div>
 
@@ -81,7 +127,8 @@
                                 Message *
                             </label>
                             <textarea class="form-control" id="message" name="message" rows="6"
-                                placeholder="Enter your message content..." required></textarea>
+                                placeholder="Enter your message content..."
+                                required><?php echo isset($cleanData['message']) ? htmlspecialchars($cleanData['message']) : ''; ?></textarea>
                         </div>
 
                         <div class="d-grid">
@@ -283,26 +330,13 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
 
-        // Form validation
-        const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Show success message
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-success alert-dismissible fade show';
-            alert.innerHTML = `
-            <i class="fas fa-check-circle me-2"></i>
-            Thank you for contacting us! We will respond as soon as possible.
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-
-            contactForm.insertBefore(alert, contactForm.firstChild);
-            contactForm.reset();
-
-            // Auto dismiss after 5 seconds
-            setTimeout(() => {
-                alert.remove();
+        // Auto dismiss alerts after 5 seconds
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert) {
+            setTimeout(function () {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
             }, 5000);
         });
     });

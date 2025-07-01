@@ -350,7 +350,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .search-input {
   background: #f8f9fa;
-  border: 2px solid #dee2e6;
+  border: 2px solid #000000;
   border-radius: 12px;
   color: #212529;
   padding: 15px 20px;
@@ -365,8 +365,8 @@ input[type="number"]::-webkit-inner-spin-button {
   outline: none;
 }
 
-.search-input::placeholder {
-  color: #6c757d;
+.search-input:placeholder {
+  color: #000000;
 }
 /* trang checkout */
 .address-box {
