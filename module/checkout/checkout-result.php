@@ -168,7 +168,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
             <li class="list-group-item"><strong>Recipient:</strong> <?= htmlspecialchars($name) ?></li>
             <li class="list-group-item"><strong>Phone:</strong> <?= htmlspecialchars($phone) ?></li>
             <li class="list-group-item"><strong>Address:</strong> <?= htmlspecialchars($address) ?></li>
-            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method == 1 ? 'Online by Payos' : 'Cash on Delivery' ?></li>
+            <li class="list-group-item"><strong>Payment:</strong> <?= $payment_method == 1 ? 'Online by PayOS' : 'Cash on Delivery' ?></li>
         </ul>
     </div>
 
