@@ -27,8 +27,8 @@ $sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1';
 // Xử lý logic tùy theo chế độ
 if ($isSearchMode) {
   // Chế độ tìm kiếm
-  $result = searchProductsWithFilters($conn, $query, array_values($selectedFilters), $minPrice, $maxPrice, $sortBy);
-  $filters = getSearchFilters($conn); // Lấy tất cả bộ lọc
+  $result = searchProducts($conn, $query, $minPrice, $maxPrice, $sortBy);
+  $filters = [];
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
 
@@ -85,7 +85,7 @@ if ($isSearchMode) {
     }
   }
 
-  // Add total product count query for the category
+
   $totalCountSql = "SELECT COUNT(DISTINCT p.id) as total_count 
                   FROM product p 
                   INNER JOIN product_category pc ON p.category_id = pc.id 
