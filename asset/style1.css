@@ -93,6 +93,7 @@ a:hover {
 .card {
   height: 520px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 15px;
 }
 
 .card:hover {
