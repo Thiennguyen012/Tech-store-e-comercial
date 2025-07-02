@@ -45,7 +45,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     FROM checkout_cart cc
                                     LEFT JOIN product p ON cc.product_name = p.name
                                     LEFT JOIN product_category pc ON p.category_id = pc.id
-                                    WHERE p.name IS NOT NULL
+                                    INNER JOIN bill b ON cc.bill_id = b.id  -- JOIN với bill table
+                                    WHERE p.name IS NOT NULL 
+                                    AND (b.order_status = 1 OR b.order_status = 'Paid')  -- CHỈ TÍNH ĐƠN ĐÃ PAID
                                     GROUP BY p.id, p.name
                                     ORDER BY times_sold DESC
                                     LIMIT 10
@@ -56,7 +58,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     echo "<tr>";
                                     echo "<td>" . substr($product['name'], 0, 50) . (strlen($product['name']) > 50 ? '...' : '') . "</td>";
                                     echo "<td>{$product['category_name']}</td>";
-                                    echo "<td><span class='badge bg-secondary'>{$product['times_sold']}</span></td>";
+                                    echo "<td><span class='badge bg-success'>{$product['times_sold']}</span></td>";  // Đổi màu sang success
                                     echo "<td>$" . number_format($product['total_revenue'], 2) . "</td>";
                                     echo "</tr>";
                                 }
@@ -79,17 +81,23 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             <div class="card-body">
                 <?php
                 try {
-                    // Average Order Value
-                    $stmt = $conn->prepare("SELECT AVG(order_total) as avg_order FROM bill");
+                    // Average Order Value - CHỈ TÍNH ĐƠN ĐÃ PAID
+                    $stmt = $conn->prepare("
+                        SELECT AVG(order_total) as avg_order 
+                        FROM bill 
+                        WHERE order_status = 1 OR order_status = 'Paid'
+                    ");
                     $stmt->execute();
                     $avg_order = $stmt->fetch()['avg_order'];
                     
-                    // Most Popular Category
+                    // Most Popular Category - CHỈ TÍNH ĐƠN ĐÃ PAID
                     $stmt = $conn->prepare("
                         SELECT pc.category_name, COUNT(cc.id) as count
                         FROM checkout_cart cc
                         JOIN product p ON cc.product_name = p.name
                         JOIN product_category pc ON p.category_id = pc.id
+                        JOIN bill b ON cc.bill_id = b.id
+                        WHERE b.order_status = 1 OR b.order_status = 'Paid'
                         GROUP BY pc.id
                         ORDER BY count DESC
                         LIMIT 1
@@ -97,29 +105,36 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     $stmt->execute();
                     $popular_category = $stmt->fetch();
                     
-                    // Orders This Month
+                    // Orders This Month - TÁCH RIÊNG PAID VÀ PENDING
                     $stmt = $conn->prepare("
-                        SELECT COUNT(*) as count 
+                        SELECT 
+                            COUNT(CASE WHEN order_status = 1 OR order_status = 'Paid' THEN 1 END) as paid_count,
+                            COUNT(CASE WHEN order_status = 0 OR order_status = 'Pending' THEN 1 END) as pending_count
                         FROM bill 
                         WHERE MONTH(order_date) = MONTH(CURDATE()) 
                         AND YEAR(order_date) = YEAR(CURDATE())
                     ");
                     $stmt->execute();
-                    $monthly_orders = $stmt->fetch()['count'];
+                    $monthly_stats = $stmt->fetch();
                     
                     echo "<div class='mb-3'>";
                     echo "<h5>$" . number_format($avg_order, 2) . "</h5>";
-                    echo "<small class='text-muted'>Average Order Value</small>";
+                    echo "<small class='text-muted'>Average Order Value (Paid Orders)</small>";
                     echo "</div>";
                     
                     echo "<div class='mb-3'>";
                     echo "<h5>" . ($popular_category['category_name'] ?? 'N/A') . "</h5>";
-                    echo "<small class='text-muted'>Most Popular Category</small>";
+                    echo "<small class='text-muted'>Most Popular Category (Paid Orders)</small>";
                     echo "</div>";
                     
                     echo "<div class='mb-3'>";
-                    echo "<h5>{$monthly_orders}</h5>";
-                    echo "<small class='text-muted'>Orders This Month</small>";
+                    echo "<h5 class='text-success'>{$monthly_stats['paid_count']}</h5>";
+                    echo "<small class='text-muted'>Paid Orders This Month</small>";
+                    echo "</div>";
+                    
+                    echo "<div class='mb-3'>";
+                    echo "<h5 class='text-warning'>{$monthly_stats['pending_count']}</h5>";
+                    echo "<small class='text-muted'>Pending Orders This Month</small>";
                     echo "</div>";
                     
                 } catch (Exception $e) {

@@ -100,7 +100,12 @@ require_once '../includes/admin-layout.php';
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT SUM(order_total) as total FROM bill");
+                                // CHỈ TÍNH ĐƠN ĐÃ PAID (status = 1 hoặc 'Paid')
+                                $stmt = $conn->prepare("
+                                    SELECT SUM(order_total) as total 
+                                    FROM bill 
+                                    WHERE order_status = 1 OR order_status = 'Paid'
+                                ");
                                 $stmt->execute();
                                 $result = $stmt->fetch();
                                 echo "$" . number_format($result['total'] ?? 0, 2);
@@ -112,6 +117,39 @@ require_once '../includes/admin-layout.php';
                     </div>
                     <div class="col-auto">
                         <i class="bi bi-currency-dollar text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm card mới sau Total Revenue -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Pending Revenue</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <?php
+                            try {
+                                // TÍNH ĐƠN PENDING
+                                $stmt = $conn->prepare("
+                                    SELECT SUM(order_total) as total 
+                                    FROM bill 
+                                    WHERE order_status = 0 OR order_status = 'Pending'
+                                ");
+                                $stmt->execute();
+                                $result = $stmt->fetch();
+                                echo "$" . number_format($result['total'] ?? 0, 2);
+                            } catch (Exception $e) {
+                                echo "$0.00";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-clock-history text-dark" style="font-size: 2rem;"></i>
                     </div>
                 </div>
             </div>
