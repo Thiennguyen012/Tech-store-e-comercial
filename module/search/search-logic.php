@@ -46,52 +46,7 @@ function searchProducts($conn, $query, $minPrice = 0, $maxPrice = 10000000, $sor
 }
 
 // Hàm lấy các bộ lọc cho tìm kiếm (tất cả categories)
-function getSearchFilters($conn)
-{
-    $filters = [];
-
-    // Lấy tất cả variations từ tất cả categories
-    $variationSql = "SELECT DISTINCT v.id, v.name FROM variation v";
-    $stmt = $conn->prepare($variationSql);
-    $stmt->execute();
-    $variationResult = $stmt->get_result();
-
-    $filterCategories = [];
-    if ($variationResult && $variationResult->num_rows > 0) {
-        while ($row = $variationResult->fetch_assoc()) {
-            $filterCategories[$row['name']] = $row['id'];
-        }
-    }
-
-    // Lấy các giá trị bộ lọc cho tất cả variations
-    foreach ($filterCategories as $categoryName => $variationId) {
-        $filterSql = "
-            SELECT vo.value, COUNT(DISTINCT p.id) as count 
-            FROM variation_options vo 
-            LEFT JOIN product p ON vo.product_id = p.id 
-            WHERE vo.variation_id = ? 
-            GROUP BY vo.value
-            HAVING count > 0
-        ";
-
-        $stmt = $conn->prepare($filterSql);
-        $stmt->bind_param("i", $variationId);
-        $stmt->execute();
-        $filterResult = $stmt->get_result();
-
-        if ($filterResult && $filterResult->num_rows > 0) {
-            $filters[$categoryName] = [];
-            while ($row = $filterResult->fetch_assoc()) {
-                $filters[$categoryName][] = [
-                    'value' => htmlspecialchars($row['value']),
-                    'count' => $row['count'],
-                ];
-            }
-        }
-    }
-
-    return $filters;
-}
+// Removed as per new search logic
 
 // Hàm tìm kiếm với bộ lọc
 function searchProductsWithFilters($conn, $query, $selectedFilters = [], $minPrice = 0, $maxPrice = 10000000, $sortBy = '1')
@@ -103,7 +58,6 @@ function searchProductsWithFilters($conn, $query, $selectedFilters = [], $minPri
     $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
-            LEFT JOIN variation_options vo ON p.id = vo.product_id 
             WHERE p.name LIKE ? AND p.price BETWEEN ? AND ?";
 
     $searchTerm = '%' . trim($query) . '%';

@@ -28,7 +28,7 @@ $sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1';
 if ($isSearchMode) {
   // Chế độ tìm kiếm
   $result = searchProductsWithFilters($conn, $query, array_values($selectedFilters), $minPrice, $maxPrice, $sortBy);
-  $filters = getSearchFilters($conn); // Lấy tất cả bộ lọc
+  $filters = [];
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
 
