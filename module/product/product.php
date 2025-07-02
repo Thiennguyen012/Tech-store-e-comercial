@@ -85,7 +85,7 @@ if ($isSearchMode) {
     }
   }
 
-  // Add total product count query for the category
+
   $totalCountSql = "SELECT COUNT(DISTINCT p.id) as total_count 
                   FROM product p 
                   INNER JOIN product_category pc ON p.category_id = pc.id 
