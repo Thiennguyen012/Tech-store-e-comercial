@@ -3,9 +3,6 @@
 // Kết nối database
 require_once __DIR__ . '/../../db/connect.php';
 
-// ✅ SỬA: Debug để kiểm tra dữ liệu nhận được
-error_log("POST Data: " . print_r($_POST, true));
-
 // Lấy các giá trị lọc từ request POST (AJAX)
 $selectedFilters = isset($_POST['filters']) ? $_POST['filters'] : [];
 $minPrice = isset($_POST['minPrice']) ? intval($_POST['minPrice']) : 0;
@@ -15,23 +12,18 @@ $sortBy = isset($_POST['sortBy']) ? $_POST['sortBy'] : '1';
 $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 8;
 $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
 
-// ✅ THÊM: Debug để xem structure của selectedFilters
-error_log("Selected Filters: " . print_r($selectedFilters, true));
-
 // Tạo câu truy vấn SQL cơ bản
 $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
         FROM product p 
         INNER JOIN product_category pc ON p.category_id = pc.id 
-        LEFT JOIN variation_options vo ON p.id = vo.product_id 
-        LEFT JOIN variation v ON vo.variation_id = v.id 
         WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
 
-// ✅ SỬA: Xử lý multiple selections và logic AND
+// ✅ SỬA: Logic EXISTS để handle multiple filter categories
 $filterConditions = [];
 $params = [$category, $minPrice, $maxPrice];
 $types = "sii";
 
-// ✅ SỬA: Xử lý selectedFilters an toàn
+// ✅ SỬA: Xử lý selectedFilters với EXISTS subqueries
 if (!empty($selectedFilters) && is_array($selectedFilters)) {
     foreach ($selectedFilters as $categoryName => $selectedValues) {
         // ✅ SỬA: Đảm bảo selectedValues là array
@@ -47,21 +39,25 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
                 if (is_array($value)) {
                     foreach ($value as $subValue) {
                         if (is_string($subValue) && !empty(trim($subValue))) {
-                            $categoryConditions[] = "vo.value = ?";
+                            $categoryConditions[] = "vo_sub.value = ?";
                             $params[] = htmlspecialchars(trim($subValue), ENT_QUOTES, 'UTF-8');
                             $types .= "s";
                         }
                     }
                 } elseif (is_string($value) && !empty(trim($value))) {
-                    $categoryConditions[] = "vo.value = ?";
+                    $categoryConditions[] = "vo_sub.value = ?";
                     $params[] = htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
                     $types .= "s";
                 }
             }
             
             if (!empty($categoryConditions)) {
-                // Nhóm các điều kiện của cùng 1 category
-                $filterConditions[] = "(" . implode(" OR ", $categoryConditions) . ")";
+                // ✅ SỬA: Sử dụng EXISTS để tìm sản phẩm có ít nhất một trong các giá trị của category này
+                $filterConditions[] = "EXISTS (
+                    SELECT 1 FROM variation_options vo_sub 
+                    WHERE vo_sub.product_id = p.id 
+                    AND (" . implode(" OR ", $categoryConditions) . ")
+                )";
             }
         }
     }
@@ -69,7 +65,7 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
 
 // ✅ SỬA: Dùng AND để kết hợp các categories khác nhau
 if (!empty($filterConditions)) {
-    // AND logic: Sản phẩm phải thỏa mãn TẤT CẢ categories được chọn
+    // AND logic: Sản phẩm phải thỏa mãn TẤT CẢ categories được chọn (mỗi category là một EXISTS)
     $sql .= " AND " . implode(" AND ", $filterConditions);
 }
 
@@ -94,11 +90,6 @@ $params[] = $limit;
 $params[] = $offset;
 $types .= "ii";
 
-// ✅ THÊM: Debug SQL và params
-error_log("Final SQL: " . $sql);
-error_log("Params: " . print_r($params, true));
-error_log("Types: " . $types);
-
 // Chuẩn bị và thực thi truy vấn
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
@@ -115,18 +106,16 @@ if (!$stmt->execute()) {
 }
 $result = $stmt->get_result();
 
-// ✅ SỬA: Count query với cùng logic
+// ✅ SỬA: Count query với cùng logic EXISTS
 $countSql = "SELECT COUNT(DISTINCT p.id) as total 
              FROM product p 
              INNER JOIN product_category pc ON p.category_id = pc.id 
-             LEFT JOIN variation_options vo ON p.id = vo.product_id 
-             LEFT JOIN variation v ON vo.variation_id = v.id 
              WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
 
 $countParams = [$category, $minPrice, $maxPrice];
 $countTypes = "sii";
 
-// ✅ SỬA: Dùng logic AND giống main query và xử lý array đúng
+// ✅ SỬA: Dùng cùng logic EXISTS như main query
 if (!empty($filterConditions)) {
     $countSql .= " AND " . implode(" AND ", $filterConditions);
     
@@ -211,7 +200,4 @@ if ($offset + $limit < $total) {
     echo '<button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="' . ($offset + $limit) . '">Show more</button>';
     echo '</div>';
 }
-
-// ✅ THÊM: Debug info để kiểm tra
-echo '<!-- Debug: Total=' . $total . ', Offset=' . $offset . ', Limit=' . $limit . ' -->';
 ?>
