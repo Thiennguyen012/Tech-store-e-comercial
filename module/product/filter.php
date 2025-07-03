@@ -2,31 +2,54 @@
 
 // Kết nối database
 require_once __DIR__ . '/../../db/connect.php';
+require_once __DIR__ . '/../search/search-logic.php';
 
 // Lấy các giá trị lọc từ request POST (AJAX)
 $selectedFilters = isset($_POST['filters']) ? $_POST['filters'] : [];
 $minPrice = isset($_POST['minPrice']) ? intval($_POST['minPrice']) : 0;
 $maxPrice = isset($_POST['maxPrice']) ? intval($_POST['maxPrice']) : 10000000;
 $category = isset($_POST['category']) ? htmlspecialchars($_POST['category']) : 'laptop';
+$query = isset($_POST['query']) ? trim($_POST['query']) : '';
 $sortBy = isset($_POST['sortBy']) ? $_POST['sortBy'] : '1';
 $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 8;
 $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
 
+//  Kiểm tra search mode
+$isSearchMode = !empty($query);
+
 // Tạo câu truy vấn SQL cơ bản
-$sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
-        FROM product p 
-        INNER JOIN product_category pc ON p.category_id = pc.id 
-        WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
+if ($isSearchMode) {
+    // Search mode: tìm kiếm theo tên sản phẩm
+    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
+            FROM product p 
+            INNER JOIN product_category pc ON p.category_id = pc.id 
+            WHERE p.name LIKE ? AND p.price BETWEEN ? AND ?";
+    
+    $searchTerm = '%' . $query . '%';
+    $params = [$searchTerm, $minPrice, $maxPrice];
+    $types = "sii";
+} else {
+    // Category mode: lọc theo category
+    $sql = "SELECT DISTINCT p.id, p.name, p.product_image, p.price, p.qty_in_stock 
+            FROM product p 
+            INNER JOIN product_category pc ON p.category_id = pc.id 
+            WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
+    
+    $params = [$category, $minPrice, $maxPrice];
+    $types = "sii";
+}
 
-// ✅ SỬA: Logic EXISTS để handle multiple filter categories
+//  Lưu original params trước khi xử lý filters
+$originalParams = $params;
+$originalTypes = $types;
+
+//  Logic EXISTS để handle multiple filter categories
 $filterConditions = [];
-$params = [$category, $minPrice, $maxPrice];
-$types = "sii";
 
-// ✅ SỬA: Xử lý selectedFilters với EXISTS subqueries
+//  Xử lý selectedFilters với EXISTS subqueries
 if (!empty($selectedFilters) && is_array($selectedFilters)) {
     foreach ($selectedFilters as $categoryName => $selectedValues) {
-        // ✅ SỬA: Đảm bảo selectedValues là array
+        //  Đảm bảo selectedValues là array
         if (!is_array($selectedValues)) {
             $selectedValues = [$selectedValues]; // Convert single value to array
         }
@@ -35,7 +58,7 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
             // Tạo điều kiện OR cho cùng 1 category (ví dụ: Dell OR HP)
             $categoryConditions = [];
             foreach ($selectedValues as $value) {
-                // ✅ SỬA: Flatten array nếu cần thiết
+                //  Flatten array nếu cần thiết
                 if (is_array($value)) {
                     foreach ($value as $subValue) {
                         if (is_string($subValue) && !empty(trim($subValue))) {
@@ -52,7 +75,7 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
             }
             
             if (!empty($categoryConditions)) {
-                // ✅ SỬA: Sử dụng EXISTS để tìm sản phẩm có ít nhất một trong các giá trị của category này
+                //  Sử dụng EXISTS để tìm sản phẩm có ít nhất một trong các giá trị của category này
                 $filterConditions[] = "EXISTS (
                     SELECT 1 FROM variation_options vo_sub 
                     WHERE vo_sub.product_id = p.id 
@@ -63,7 +86,7 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
     }
 }
 
-// ✅ SỬA: Dùng AND để kết hợp các categories khác nhau
+//  Dùng AND để kết hợp các categories khác nhau
 if (!empty($filterConditions)) {
     // AND logic: Sản phẩm phải thỏa mãn TẤT CẢ categories được chọn (mỗi category là một EXISTS)
     $sql .= " AND " . implode(" AND ", $filterConditions);
@@ -106,23 +129,34 @@ if (!$stmt->execute()) {
 }
 $result = $stmt->get_result();
 
-// ✅ SỬA: Count query với cùng logic EXISTS
-$countSql = "SELECT COUNT(DISTINCT p.id) as total 
-             FROM product p 
-             INNER JOIN product_category pc ON p.category_id = pc.id 
-             WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
+//  Count query với cùng logic cho cả search và category mode
+if ($isSearchMode) {
+    $countSql = "SELECT COUNT(DISTINCT p.id) as total 
+                 FROM product p 
+                 INNER JOIN product_category pc ON p.category_id = pc.id 
+                 WHERE p.name LIKE ? AND p.price BETWEEN ? AND ?";
+    
+    $countParams = $originalParams; // Sử dụng original params
+    $countTypes = $originalTypes;   // Sử dụng original types
+} else {
+    $countSql = "SELECT COUNT(DISTINCT p.id) as total 
+                 FROM product p 
+                 INNER JOIN product_category pc ON p.category_id = pc.id 
+                 WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
+    
+    $countParams = $originalParams; // Sử dụng original params  
+    $countTypes = $originalTypes;   // Sử dụng original types
+}
 
-$countParams = [$category, $minPrice, $maxPrice];
-$countTypes = "sii";
-
-// ✅ SỬA: Dùng cùng logic EXISTS như main query
+//  Dùng cùng logic EXISTS như main query
 if (!empty($filterConditions)) {
     $countSql .= " AND " . implode(" AND ", $filterConditions);
     
-    // ✅ SỬA: Copy exact params từ main query (trừ limit và offset)
-    $mainParams = array_slice($params, 3, -2); // Bỏ category, minPrice, maxPrice và limit, offset
-    $countParams = array_merge($countParams, $mainParams);
-    $countTypes .= substr($types, 3, -2); // Bỏ "sii" đầu và "ii" cuối
+    //  Copy exact filter params từ main query
+    $filterParams = array_slice($params, count($originalParams), -2); // Chỉ lấy filter params
+    $countParams = array_merge($countParams, $filterParams);
+    $filterTypes = substr($types, strlen($originalTypes), -2); // Chỉ lấy filter types
+    $countTypes .= $filterTypes;
 }
 
 $countStmt = $conn->prepare($countSql);
@@ -140,15 +174,19 @@ if (!$countStmt) {
     }
 }
 
-// ✅ Header với product count
+//  Header với product count
 echo '<div class="d-flex justify-content-between align-items-center mb-3">';
 echo '<h3 class="fw-bold mb-0">';
-echo ucfirst($category);
+if ($isSearchMode) {
+    echo 'Search Results for "' . htmlspecialchars($query) . '"';
+} else {
+    echo ucfirst($category);
+}
 echo '<span class="fs-6 fw-normal"> (' . $total . ' products)</span>';
 echo '</h3>';
 echo '</div>';
 
-// ✅ Wrapper để match với product.php
+//  Wrapper để match với product.php
 echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="productGrid">';
 
 if ($result && $result->num_rows > 0) {

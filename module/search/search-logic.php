@@ -45,13 +45,13 @@ function searchProducts($conn, $query, $minPrice = 0, $maxPrice = 10000000, $sor
     return $result;
 }
 
-// Hàm lấy các bộ lọc cho tìm kiếm (tất cả categories)
-function getSearchFilters($conn)
+// Hàm lấy các bộ lọc cho tìm kiếm (dựa trên kết quả search)
+function getSearchFilters($conn, $minPrice = 0, $maxPrice = 10000000, $query = '')
 {
     $filters = [];
 
     // Lấy tất cả variations từ tất cả categories
-    $variationSql = "SELECT DISTINCT v.id, v.name FROM variation v";
+    $variationSql = "SELECT DISTINCT v.id, v.name FROM variation v ORDER BY v.id";
     $stmt = $conn->prepare($variationSql);
     $stmt->execute();
     $variationResult = $stmt->get_result();
@@ -63,19 +63,29 @@ function getSearchFilters($conn)
         }
     }
 
-    // Lấy các giá trị bộ lọc cho tất cả variations
+    // Lấy các giá trị bộ lọc cho các sản phẩm phù hợp với search query và price range
     foreach ($filterCategories as $categoryName => $variationId) {
         $filterSql = "
             SELECT vo.value, COUNT(DISTINCT p.id) as count 
             FROM variation_options vo 
-            LEFT JOIN product p ON vo.product_id = p.id 
+            INNER JOIN product p ON vo.product_id = p.id 
             WHERE vo.variation_id = ? 
-            GROUP BY vo.value
-            HAVING count > 0
-        ";
+            AND p.price BETWEEN ? AND ?";
+        
+        $params = [$variationId, $minPrice, $maxPrice];
+        $types = "iii";
+        
+        //  Nếu có search query, chỉ lấy filter của sản phẩm match
+        if (!empty(trim($query))) {
+            $filterSql .= " AND p.name LIKE ?";
+            $params[] = '%' . trim($query) . '%';
+            $types .= "s";
+        }
+        
+        $filterSql .= " GROUP BY vo.value HAVING count > 0 ORDER BY count DESC";
 
         $stmt = $conn->prepare($filterSql);
-        $stmt->bind_param("i", $variationId);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $filterResult = $stmt->get_result();
 

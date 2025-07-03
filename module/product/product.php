@@ -33,7 +33,10 @@ $sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1';
 if ($isSearchMode) {
   // Chế độ tìm kiếm
   $result = searchProducts($conn, $query, $minPrice, $maxPrice, $sortBy);
-  $filters = [];
+  
+  // SỬA: Load filters cho search mode với query
+  $filters = getSearchFilters($conn, $minPrice, $maxPrice, $query);
+  
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
 
@@ -224,7 +227,7 @@ if ($isSearchMode) {
                   <?php foreach ($filterOptions as $option): ?>
                     <li class="list-group-item px-0">
                       <div class="form-check">
-                        <!-- ✅ SỬA: Thêm [] để cho phép multiple selections -->
+                        <!--  Thêm [] để cho phép multiple selections -->
                         <input class="form-check-input" type="checkbox" 
                                name="filters[<?php echo $categoryName; ?>][]"
                                value="<?php echo $option['value']; ?>" 
