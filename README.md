@@ -34,7 +34,7 @@ Phía Admin:
 
 
 - Mô hình thiết kế: Module-based PHP application
-- Công nghệ sử dụng: HTML, CSS, JAVASCRIPT, Bootstrap 5, PHP, MySQL, Composer
+- Công nghệ sử dụng: HTML, CSS, Javascript, Bootstrap 5, PHP, MySQL, Composer
 - API: Google API, PayOS API
 
 
