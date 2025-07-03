@@ -102,7 +102,7 @@ if ($username) {
 
         </ul>
         <!-- Check đã đăng nhập hay chưa -->
-        <div class="d-flex justify-content-center align-content-center gap-3">
+        <div class="d-flex justify-content-center align-content-center gap-3 offcanvas-auth-btns">
           <?php if (!isset($_SESSION['username'])): ?>
             <!-- Chưa đăng nhập -->
             <button type="button" class="btn border-0 position-relative mt-1" onclick="location.href='login.php'">
@@ -207,7 +207,7 @@ if ($username) {
   document.getElementById('searchInput').addEventListener('keydown', handleSearch);
 
   // Handle escape key
-  document.addEventListener('keydown', function (event) {
+  document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && isSearchOpen) {
       document.getElementById('searchFlyout').classList.remove('show');
       isSearchOpen = false;
@@ -221,14 +221,16 @@ if ($username) {
 
     // Cập nhật URL trình duyệt
     const newUrl = `index.php?act=products&query=${encodeURIComponent(keyword)}`;
-    history.pushState({ query: keyword }, '', newUrl);
+    history.pushState({
+      query: keyword
+    }, '', newUrl);
 
     // Tải trang sản phẩm với từ khóa tìm kiếm
     loadPage(`module/product/product.php?query=${encodeURIComponent(keyword)}`);
   }
 
   // Handle browser back/forward buttons
-  window.addEventListener('popstate', function (event) {
+  window.addEventListener('popstate', function(event) {
     // Get current URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('query');
@@ -249,12 +251,12 @@ if ($username) {
   });
 
   // Improved popstate handler
-  window.addEventListener('popstate', function (event) {
+  window.addEventListener('popstate', function(event) {
     handleUrlChange();
   });
 
   // Call handleUrlChange on page load to handle direct URL access
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     handleUrlChange();
   });
 </script>
@@ -284,7 +286,7 @@ if ($username) {
       });
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     // Lấy offcanvas element
     var offcanvasEl = document.getElementById('offcanvasNavbar');
     if (!offcanvasEl) return;
@@ -293,8 +295,8 @@ if ($username) {
     var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
 
     // Đóng offcanvas khi click vào bất kỳ link trong offcanvas
-    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function (link) {
-      link.addEventListener('click', function () {
+    offcanvasEl.querySelectorAll('.nav-link, .dropdown-item').forEach(function(link) {
+      link.addEventListener('click', function() {
         bsOffcanvas.hide();
       });
     });

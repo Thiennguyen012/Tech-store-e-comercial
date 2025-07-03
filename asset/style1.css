@@ -39,13 +39,34 @@ a:hover {
 .navbar-brand {
   font-weight: 550;
 }
-@media (max-width: 991px) {
+@media (max-width: 1199px) {
   .sidebar {
     background-color: rgba(255, 255, 255, 0.7) !important;
     backdrop-filter: blur(25px);
   }
   .dropmenu {
     background-color: rgba(255, 255, 255, 1) !important;
+  }
+}
+/* Đưa nút Sign in/Sign up xuống dưới cùng offcanvas ở màn hình từ 991px đến 1199px */
+@media (min-width: 991px) and (max-width: 1199px) {
+  .offcanvas-body {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start;
+    height: 100%;
+    padding-bottom: 90px; /* chừa chỗ cho nút */
+  }
+  .offcanvas-auth-btns {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    display: flex !important;
+    justify-content: center;
+    gap: 16px;
+    z-index: 10;
+    background: transparent;
   }
 }
 .search-form {
@@ -55,9 +76,9 @@ a:hover {
   outline: none !important;
 }
 /* Hiệu ứng cho phần dropdown */
-/* Ẩn dropdown lúc đầu */
+/* Mặc định cho mobile: dropdown-menu không chiếm chỗ */
 .dropdown-menu {
-  display: block;
+  display: none;
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.3s ease;
@@ -65,14 +86,34 @@ a:hover {
   pointer-events: none;
 }
 
-/* Hiện dropdown có hiệu ứng */
-.dropdown:hover .dropdown-menu {
+/* Khi mở dropdown trên mobile (nếu có class .show do JS/Bootstrap) */
+.dropdown:hover .dropdown-menu,
+.dropdown.show .dropdown-menu {
+  display: block;
   opacity: 1;
   transform: translateY(0);
   visibility: visible;
   pointer-events: auto;
 }
-/*  */
+
+/* Màn hình lớn: dropdown-menu luôn display block, hiệu ứng mượt */
+@media (min-width: 1199px) {
+  .dropdown-menu {
+    display: block;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .dropdown:hover .dropdown-menu,
+  .dropdown.show .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
 /* carousel */
 .c-items {
   height: 520px;
