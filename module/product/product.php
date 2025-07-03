@@ -16,9 +16,14 @@ $category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'la
 // Lấy các bộ lọc đã chọn từ request
 $selectedFilters = [];
 if (isset($_GET['filters']) && is_array($_GET['filters'])) {
-  foreach ($_GET['filters'] as $key => $value) {
-    $selectedFilters[htmlspecialchars($key)] = htmlspecialchars($value);
-  }
+    foreach ($_GET['filters'] as $key => $values) {
+        if (is_array($values)) {
+            $selectedFilters[htmlspecialchars($key)] = array_map('htmlspecialchars', $values);
+        } else {
+            // Backward compatibility nếu còn single value
+            $selectedFilters[htmlspecialchars($key)] = [htmlspecialchars($values)];
+        }
+    }
 }
 
 // Thêm điều kiện sắp xếp
@@ -27,8 +32,8 @@ $sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1';
 // Xử lý logic tùy theo chế độ
 if ($isSearchMode) {
   // Chế độ tìm kiếm
-  $result = searchProductsWithFilters($conn, $query, array_values($selectedFilters), $minPrice, $maxPrice, $sortBy);
-  $filters = getSearchFilters($conn); // Lấy tất cả bộ lọc
+  $result = searchProducts($conn, $query, $minPrice, $maxPrice, $sortBy);
+  $filters = [];
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
 
@@ -61,31 +66,35 @@ if ($isSearchMode) {
   $filters = [];
   foreach ($filterCategories as $categoryName => $variationId) {
     $filterSql = "
-          SELECT vo.value, COUNT(DISTINCT p.id) as count 
-          FROM variation_options vo 
-          INNER JOIN product p ON vo.product_id = p.id 
-          INNER JOIN product_category pc ON p.category_id = pc.id 
-          WHERE vo.variation_id = ? AND pc.category_name = ? 
-          GROUP BY vo.value
-      ";
-
+        SELECT vo.value, COUNT(DISTINCT p.id) as count 
+        FROM variation_options vo 
+        INNER JOIN product p ON vo.product_id = p.id 
+        INNER JOIN product_category pc ON p.category_id = pc.id 
+        WHERE vo.variation_id = ? 
+        AND pc.category_name = ? 
+        AND p.price BETWEEN ? AND ?
+        GROUP BY vo.value
+        HAVING count > 0
+        ORDER BY count DESC
+    ";
+    
     $stmt = $conn->prepare($filterSql);
-    $stmt->bind_param("is", $variationId, $category);
+    $stmt->bind_param("isii", $variationId, $category, $minPrice, $maxPrice);
     $stmt->execute();
     $filterResult = $stmt->get_result();
-
+    
     if ($filterResult && $filterResult->num_rows > 0) {
-      $filters[$categoryName] = [];
-      while ($row = $filterResult->fetch_assoc()) {
-        $filters[$categoryName][] = [
-          'value' => htmlspecialchars($row['value']),
-          'count' => $row['count'],
-        ];
-      }
+        $filters[$categoryName] = [];
+        while ($row = $filterResult->fetch_assoc()) {
+            $filters[$categoryName][] = [
+                'value' => htmlspecialchars($row['value']),
+                'count' => $row['count'],
+            ];
+        }
     }
   }
 
-  // Add total product count query for the category
+
   $totalCountSql = "SELECT COUNT(DISTINCT p.id) as total_count 
                   FROM product p 
                   INNER JOIN product_category pc ON p.category_id = pc.id 
@@ -97,18 +106,36 @@ if ($isSearchMode) {
   $totalProducts = $totalResult->fetch_assoc()['total_count'];
 
   // Nếu có bộ lọc được chọn, thêm điều kiện vào câu truy vấn chính
+  $filterConditions = [];
   $filterValues = [];
   $filterTypes = "";
+
   if (!empty($selectedFilters)) {
-    foreach ($selectedFilters as $value) {
-      $sql .= " AND EXISTS (
-                SELECT 1 FROM variation_options vo2 
-                WHERE vo2.product_id = p.id 
-                AND vo2.value = ?
-            )";
-      $filterValues[] = $value;
-      $filterTypes .= "s";
+    foreach ($selectedFilters as $categoryName => $values) {
+      if (!empty($values)) {
+        // Tạo điều kiện cho từng category
+        $categoryConditions = [];
+        foreach ($values as $value) {
+          $categoryConditions[] = "vo2.value = ?";
+          $filterValues[] = $value;
+          $filterTypes .= "s";
+        }
+        
+        if (!empty($categoryConditions)) {
+          // EXISTS subquery cho mỗi category
+          $filterConditions[] = "EXISTS (
+              SELECT 1 FROM variation_options vo2 
+              WHERE vo2.product_id = p.id 
+              AND (" . implode(" OR ", $categoryConditions) . ")
+          )";
+        }
+      }
     }
+  }
+
+  // Nối tất cả conditions với AND
+  if (!empty($filterConditions)) {
+    $sql .= " AND " . implode(" AND ", $filterConditions);
   }
 
   // Thêm điều kiện sắp xếp
@@ -197,8 +224,11 @@ if ($isSearchMode) {
                   <?php foreach ($filterOptions as $option): ?>
                     <li class="list-group-item px-0">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="filters[<?php echo $categoryName; ?>]"
-                          value="<?php echo $option['value']; ?>" id="<?php echo $option['value']; ?>" />
+                        <!-- ✅ SỬA: Thêm [] để cho phép multiple selections -->
+                        <input class="form-check-input" type="checkbox" 
+                               name="filters[<?php echo $categoryName; ?>][]"
+                               value="<?php echo $option['value']; ?>" 
+                               id="<?php echo $option['value']; ?>" />
                         <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>">
                           <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
                         </label>
@@ -266,8 +296,10 @@ if ($isSearchMode) {
                 <?php foreach ($filterOptions as $option): ?>
                   <li class="list-group-item px-0">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="filters[<?php echo $categoryName; ?>]"
-                        value="<?php echo $option['value']; ?>" id="<?php echo $option['value']; ?>-mobile" />
+                      <input class="form-check-input" type="checkbox" 
+                             name="filters[<?php echo $categoryName; ?>][]"
+                             value="<?php echo $option['value']; ?>" 
+                             id="<?php echo $option['value']; ?>-mobile" />
                       <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>-mobile">
                         <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
                       </label>
