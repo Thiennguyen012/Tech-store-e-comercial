@@ -4,9 +4,9 @@ Website bán đồ công nghệ Technologia
 
 Thành viên thực hiện:
 
-Nguyễn Nam Thiện - CT070252
-Bùi Đức Thịnh - CT070253
-Chu Minh Vũ - CT070265
+- Nguyễn Nam Thiện - CT070252
+- Bùi Đức Thịnh - CT070253
+- Chu Minh Vũ - CT070265  
 Là sinh viên của Học Viên Kỹ thuật Mật mã KMA
 
 
