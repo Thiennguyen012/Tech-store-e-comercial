@@ -15,7 +15,7 @@ if ($current_dir == 'home-page') {
 
 // Database connection for Admin Panel
 $servername = "localhost";
-$username = "root"; 
+$username = "root";
 $password = "";
 $dbname = "banhang";
 
@@ -23,7 +23,7 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
 
@@ -62,6 +62,7 @@ $current_page = $current_page ?? 'dashboard';
     <title>Admin Dashboard - <?php echo ucfirst($current_page); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="icon" href="../../asset/web-favicon/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../asset/admin-style.css">
 </head>
 
@@ -75,7 +76,7 @@ $current_page = $current_page ?? 'dashboard';
                     <h5 class="mb-0 title">Admin</h5>
                     <span id="toggleSidebar" class="sidebar-toggle text-white">&#9776;</span>
                 </div>
-                
+
                 <!-- Menu -->
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -110,7 +111,7 @@ $current_page = $current_page ?? 'dashboard';
                 <a href="../../Logout.php" class="nav-link text-white"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></a>
             </div>
         </div>
-        
+
         <!-- Main content -->
         <div class="content flex-fill p-4">
             <div id="admin-content">

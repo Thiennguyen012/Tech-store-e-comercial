@@ -21,7 +21,7 @@
     rel="stylesheet" />
   <!-- bootstrap css -->
   <link rel="stylesheet" href="./asset/bootstrap/css/bootstrap.min.css" />
-
+  <link rel="icon" href="./asset/web-favicon/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="asset/style1.css" />
   <title>Technologia</title>
 </head>

@@ -1,10 +1,4 @@
 <?php
-// search-logic.php
-// File này sẽ được include trong product.php để xử lý tìm kiếm
-
-// Không cần require connect.php ở đây vì product.php đã có
-
-// Hàm tìm kiếm sản phẩm
 function searchProducts($conn, $query, $minPrice = 0, $maxPrice = 10000000, $sortBy = '1')
 {
     if (empty(trim($query))) {

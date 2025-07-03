@@ -14,17 +14,6 @@ if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 $alert_message = '';
 $alert_type = '';
 
-// Chuyển hướng đăng nhập
-if (isset($_SESSION['username'])) {
-  if ($_SESSION['role'] == 0) {
-    header("Location: admin/home-page/admin.php");
-    exit();
-  } else if ($_SESSION['role'] == 1) {
-    header("Location: index.php");
-    exit();
-  }
-}
-
 if (isset($_POST['remember'])) {
   setcookie('username', $_POST['username'], time() + 60 * 60 * 24);
   setcookie('password', $_POST['password'], time() + 60 * 60 * 24);
@@ -46,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $stmt->bind_param("ss", $username, $password);
   $stmt->execute();
   $result = $stmt->get_result();
-  
+
   if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $role = $row['role'];

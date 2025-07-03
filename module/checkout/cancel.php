@@ -59,6 +59,7 @@ if (isset($_GET['orderCode']) && isset($_GET['status']) && strtoupper($_GET['sta
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="icon" href="../../asset/web-favicon/favicon.ico" type="image/x-icon">
     <title>Payment Cancelled</title>
     <style>
         body {
