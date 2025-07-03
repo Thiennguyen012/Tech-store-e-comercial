@@ -213,34 +213,37 @@ if ($isSearchMode) {
               <input type="hidden" name="category" value="<?php echo htmlspecialchars($category); ?>">
             <?php endif; ?>
 
-            <?php foreach ($filters as $categoryName => $filterOptions): ?>
-              <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">
-                <span class="toggle-category" style="cursor: pointer;"
-                  onclick="toggleCategory('<?php echo str_replace(' ', '-', $categoryName); ?>')">
-                  <span id="toggle-icon-<?php echo str_replace(' ', '-', $categoryName); ?>">+</span>
-                  <?php echo $categoryName; ?>
-                </span>
-              </h6>
-              <div class="mb-4" id="category-<?php echo str_replace(' ', '-', $categoryName); ?>"
-                style="max-height: 120px; overflow-y: auto; display: none;">
-                <ul class="list-group list-group-flush">
-                  <?php foreach ($filterOptions as $option): ?>
-                    <li class="list-group-item px-0">
-                      <div class="form-check">
-                        <!--  Thêm [] để cho phép multiple selections -->
-                        <input class="form-check-input" type="checkbox" 
-                               name="filters[<?php echo $categoryName; ?>][]"
-                               value="<?php echo $option['value']; ?>" 
-                               id="<?php echo $option['value']; ?>" />
-                        <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>">
-                          <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
-                        </label>
-                      </div>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </div>
-            <?php endforeach; ?>
+            <?php if (!$isSearchMode): ?>
+              <!-- Attribute filters - only show when NOT in search mode -->
+              <?php foreach ($filters as $categoryName => $filterOptions): ?>
+                <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">
+                  <span class="toggle-category" style="cursor: pointer;"
+                    onclick="toggleCategory('<?php echo str_replace(' ', '-', $categoryName); ?>')">
+                    <span id="toggle-icon-<?php echo str_replace(' ', '-', $categoryName); ?>">+</span>
+                    <?php echo $categoryName; ?>
+                  </span>
+                </h6>
+                <div class="mb-4" id="category-<?php echo str_replace(' ', '-', $categoryName); ?>"
+                  style="max-height: 120px; overflow-y: auto; display: none;">
+                  <ul class="list-group list-group-flush">
+                    <?php foreach ($filterOptions as $option): ?>
+                      <li class="list-group-item px-0">
+                        <div class="form-check">
+                          <!--  Thêm [] để cho phép multiple selections -->
+                          <input class="form-check-input" type="checkbox" 
+                                 name="filters[<?php echo $categoryName; ?>][]"
+                                 value="<?php echo $option['value']; ?>" 
+                                 id="<?php echo $option['value']; ?>" />
+                          <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>">
+                            <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
+                          </label>
+                        </div>
+                      </li>
+                    <?php endforeach; ?>
+                  </ul>
+                </div>
+              <?php endforeach; ?>
+            <?php endif; ?>
             <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">Price($)</h6>
             <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
               <input type="number" name="minPrice" min="0" max="10000000" value="<?php echo $minPrice; ?>"
@@ -284,34 +287,36 @@ if ($isSearchMode) {
             <input type="hidden" name="category" value="<?php echo htmlspecialchars($category); ?>">
           <?php endif; ?>
 
-          <!-- Form bộ lọc mobile (giống desktop nhưng id khác) -->
-          <?php foreach ($filters as $categoryName => $filterOptions): ?>
-            <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">
-              <span class="toggle-category" style="cursor: pointer;"
-                onclick="toggleCategory('<?php echo str_replace(' ', '-', $categoryName); ?>-mobile')">
-                <span id="toggle-icon-<?php echo str_replace(' ', '-', $categoryName); ?>-mobile">+</span>
-                <?php echo $categoryName; ?>
-              </span>
-            </h6>
-            <div class="mb-4" id="category-<?php echo str_replace(' ', '-', $categoryName); ?>-mobile"
-              style="max-height: 120px; overflow-y: auto; display: none;">
-              <ul class="list-group list-group-flush">
-                <?php foreach ($filterOptions as $option): ?>
-                  <li class="list-group-item px-0">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" 
-                             name="filters[<?php echo $categoryName; ?>][]"
-                             value="<?php echo $option['value']; ?>" 
-                             id="<?php echo $option['value']; ?>-mobile" />
-                      <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>-mobile">
-                        <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
-                      </label>
-                    </div>
-                  </li>
-                <?php endforeach; ?>
-              </ul>
-            </div>
-          <?php endforeach; ?>
+          <?php if (!$isSearchMode): ?>
+            <!-- Attribute filters - only show when NOT in search mode (mobile) -->
+            <?php foreach ($filters as $categoryName => $filterOptions): ?>
+              <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">
+                <span class="toggle-category" style="cursor: pointer;"
+                  onclick="toggleCategory('<?php echo str_replace(' ', '-', $categoryName); ?>-mobile')">
+                  <span id="toggle-icon-<?php echo str_replace(' ', '-', $categoryName); ?>-mobile">+</span>
+                  <?php echo $categoryName; ?>
+                </span>
+              </h6>
+              <div class="mb-4" id="category-<?php echo str_replace(' ', '-', $categoryName); ?>-mobile"
+                style="max-height: 120px; overflow-y: auto; display: none;">
+                <ul class="list-group list-group-flush">
+                  <?php foreach ($filterOptions as $option): ?>
+                    <li class="list-group-item px-0">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               name="filters[<?php echo $categoryName; ?>][]"
+                               value="<?php echo $option['value']; ?>" 
+                               id="<?php echo $option['value']; ?>-mobile" />
+                        <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>-mobile">
+                          <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
+                        </label>
+                      </div>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
           <h6 class="card-title text-uppercase fw-bold border-bottom pb-2 mb-3">Price</h6>
           <div class="d-flex align-items-center gap-2 mb-3">
             <input type="number" name="minPrice" min="0" max="10000000" value="<?php echo $minPrice; ?>"
