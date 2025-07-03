@@ -6,8 +6,7 @@ Thành viên thực hiện:
 
 - Nguyễn Nam Thiện - CT070252
 - Bùi Đức Thịnh - CT070253
-- Chu Minh Vũ - CT070265  
-Là sinh viên của Học Viên Kỹ thuật Mật mã KMA
+- Chu Minh Vũ - CT070265  Là sinh viên của Học Viên Kỹ thuật Mật mã KMA
 
 
 Các tính năng chính:
@@ -33,9 +32,9 @@ Phía Admin:
 4. Quản lý đơn hàng (xem, cập nhật trạng thái đơn hàng)
 
 
-Mô hình thiết kế: Module-based PHP application
-Công nghệ sử dụng: HTML, CSS, JAVASCRIPT, Bootstrap 5, PHP, MySQL, Composer
-API: Google API, PayOS API
+- Mô hình thiết kế: Module-based PHP application
+- Công nghệ sử dụng: HTML, CSS, JAVASCRIPT, Bootstrap 5, PHP, MySQL, Composer
+- API: Google API, PayOS API
 
 
 Hướng dẫn cài đặt và chạy dự án:
@@ -47,9 +46,9 @@ Hướng dẫn cài đặt và chạy dự án:
 6. Mở trình duyệt và truy cập: http://localhost/Webbanhang/index.php
 
 
-Dự án được xây dựng với kiến trúc PHP thuần, chưa sử dụng framework MVC.
-Hướng đến mục tiêu học tập và thực hành phát triển web fullstack.
-Dự án đầu tay của chúng mình có thể sẽ có rất nhiều sai sót, trong tương lai có thể sẽ có nhiều sự mở rộng hơn.
+Dự án được xây dựng với kiến trúc PHP thuần, chưa sử dụng framework MVC.  
+Hướng đến mục tiêu học tập và thực hành phát triển web fullstack.  
+Dự án đầu tay của chúng mình có thể sẽ có rất nhiều sai sót, trong tương lai có thể sẽ có nhiều sự mở rộng hơn.  
 
 
 Nếu bạn thấy dự án hữu ích, hãy ⭐ star repository để ủng hộ nhóm nhé!
