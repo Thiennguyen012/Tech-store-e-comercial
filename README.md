@@ -6,7 +6,8 @@ Thành viên thực hiện:
 
 - Nguyễn Nam Thiện - CT070252
 - Bùi Đức Thịnh - CT070253
-- Chu Minh Vũ - CT070265  Là sinh viên của Học Viên Kỹ thuật Mật mã KMA
+- Chu Minh Vũ - CT070265  
+Là sinh viên của Học Viên Kỹ thuật Mật mã KMA
 
 
 Các tính năng chính:
@@ -46,9 +47,9 @@ Hướng dẫn cài đặt và chạy dự án:
 6. Mở trình duyệt và truy cập: http://localhost/Webbanhang/index.php
 
 
-Dự án được xây dựng với kiến trúc PHP thuần, chưa sử dụng framework MVC.  
-Hướng đến mục tiêu học tập và thực hành phát triển web fullstack.  
-Dự án đầu tay của chúng mình có thể sẽ có rất nhiều sai sót, trong tương lai có thể sẽ có nhiều sự mở rộng hơn.  
+- Dự án được xây dựng với kiến trúc PHP thuần, chưa sử dụng framework MVC.  
+- Hướng đến mục tiêu học tập và thực hành phát triển web fullstack.  
+- Dự án đầu tay của chúng mình có thể sẽ có rất nhiều sai sót, trong tương lai có thể sẽ có nhiều sự mở rộng hơn.  
 
 
 Nếu bạn thấy dự án hữu ích, hãy ⭐ star repository để ủng hộ nhóm nhé!
