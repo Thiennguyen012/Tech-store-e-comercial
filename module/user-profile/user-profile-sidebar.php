@@ -23,13 +23,16 @@ function is_active($file)
     return $active === $file ? 'active' : '';
 }
 ?>
-<div class="pv-profile-sidebar text-center shadow-sm mb-5 mt-5" style="height: 446px;">
+<div class="pv-profile-sidebar text-center shadow-sm mb-5 mt-5" style="height: 520px;">
     <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['username']); ?>&background=4f5250&color=fff&size=128" class="avatar mb-2" alt="Avatar">
     <div class="username mb-2">Account of<br><span><?php echo htmlspecialchars($_SESSION['username']); ?></span></div>
     <nav class="nav flex-column align-items-start mt-4">
         <!-- Mỗi liên kết sẽ load một trang con của profile bằng AJAX -->
         <a class="nav-link text-dark<?php echo is_active('user-profile.php'); ?>" href="#" onclick="loadPage('module/user-profile/user-profile.php',this,'profile'); return false;">
             <i class="bi bi-person"></i> Account Information
+        </a>
+        <a class="nav-link text-dark<?php echo is_active('change-password.php'); ?>" href="#" onclick="loadPage('module/user-profile/change-password.php',this,'change-password'); return false;">
+            <i class="bi bi-lock"></i> Change Password
         </a>
         <a class="nav-link text-dark<?php echo is_active('user-order.php'); ?>" href="#" onclick="location.href='index.php?act=order'; return false;">
             <i class="bi bi-bag"></i> Order Management
@@ -43,6 +46,7 @@ function is_active($file)
                 <span id="noti-badge-sidebar" class="badge bg-danger"><?php echo $unread_count; ?></span>
             <?php endif; ?>
         </a>
+
         <!-- Mục dành cho admin -->
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 0): ?>
             <a class="nav-link d-flex justify-content-between align-items-center text-dark" href="admin/home-page/admin.php">

@@ -46,7 +46,7 @@ $stmt->close();
             <?php include 'user-profile-sidebar.php'; ?>
         </div>
         <div class="col-lg-9">
-            <div class="pv-profile-main shadow-sm mt-5 mb-5" style="height: 446px;">
+            <div class="pv-profile-main shadow-sm mt-5 mb-5" style="height: 520px;">
                 <h4 class="mb-4 fw-bold">Address Book</h4>
                 <!-- Form cập nhật địa chỉ -->
                 <div class="d-flex justify-content-center p-3 mb-3" style="background:#fff;border-radius:8px;border:1px dashed #ccc;">
