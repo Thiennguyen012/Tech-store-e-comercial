@@ -445,5 +445,4 @@ input[type="number"]::-webkit-inner-spin-button {
 .list-group-item {
   padding-left: 0.75em !important;
   background: transparent;
-  border: none;
 }
