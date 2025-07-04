@@ -108,25 +108,188 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
+<!-- Orders Filter -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-dark">Filter Orders</h6>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="" id="filterForm">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="status_filter" class="form-label">Order Status</label>
+                            <select class="form-select" id="status_filter" name="status_filter">
+                                <option value="">All Status</option>
+                                <option value="Pending" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
+                                <option value="Paid" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Paid') ? 'selected' : ''; ?>>Paid</option>
+                                <option value="Cancelled" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="payment_filter" class="form-label">Payment Method</label>
+                            <select class="form-select" id="payment_filter" name="payment_filter">
+                                <option value="">All Payment Methods</option>
+                                <option value="0" <?php echo (isset($_GET['payment_filter']) && $_GET['payment_filter'] === '0') ? 'selected' : ''; ?>>Cash on Delivery</option>
+                                <option value="1" <?php echo (isset($_GET['payment_filter']) && $_GET['payment_filter'] === '1') ? 'selected' : ''; ?>>Online Payment</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="date_filter" class="form-label">Date Filter</label>
+                            <select class="form-select" id="date_filter" name="date_filter">
+                                <option value="">All Time</option>
+                                <option value="today" <?php echo (isset($_GET['date_filter']) && $_GET['date_filter'] === 'today') ? 'selected' : ''; ?>>Today</option>
+                                <option value="yesterday" <?php echo (isset($_GET['date_filter']) && $_GET['date_filter'] === 'yesterday') ? 'selected' : ''; ?>>Yesterday</option>
+                                <option value="week" <?php echo (isset($_GET['date_filter']) && $_GET['date_filter'] === 'week') ? 'selected' : ''; ?>>This Week</option>
+                                <option value="month" <?php echo (isset($_GET['date_filter']) && $_GET['date_filter'] === 'month') ? 'selected' : ''; ?>>This Month</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <div class="btn-group w-100" role="group">
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="bi bi-funnel"></i> Filter
+                                </button>
+                                <a href="orders.php" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Orders List -->
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-dark">All Orders</h6>
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-dark">
+                    All Orders
+                    <?php
+                    // Hiển thị thông tin filter đang áp dụng
+                    $active_filters = [];
+                    if (!empty($_GET['status_filter'])) {
+                        $active_filters[] = "Status: " . $_GET['status_filter'];
+                    }
+                    if (isset($_GET['payment_filter']) && $_GET['payment_filter'] !== '') {
+                        $payment_text = $_GET['payment_filter'] == '1' ? 'Online Payment' : 'Cash on Delivery';
+                        $active_filters[] = "Payment: " . $payment_text;
+                    }
+                    if (!empty($_GET['date_filter'])) {
+                        $active_filters[] = "Date: " . ucfirst($_GET['date_filter']);
+                    }
+                    if (!empty($active_filters)) {
+                        echo '<small class="text-muted">(' . implode(', ', $active_filters) . ')</small>';
+                    }
+                    ?>
+                </h6>
+                <div>
+                    <?php
+                    // Đếm tổng số orders sau khi filter
+                    $count_sql = "SELECT COUNT(*) as total FROM bill b LEFT JOIN site_user u ON b.user_id = u.id WHERE 1=1";
+                    $count_params = [];
+
+                    // Áp dụng cùng filter logic như query chính
+                    if (!empty($_GET['status_filter'])) {
+                        if ($_GET['status_filter'] === 'Pending') {
+                            $count_sql .= " AND (b.order_status IS NULL OR b.order_status = 'Pending')";
+                        } else {
+                            $count_sql .= " AND b.order_status = ?";
+                            $count_params[] = $_GET['status_filter'];
+                        }
+                    }
+
+                    if (isset($_GET['payment_filter']) && $_GET['payment_filter'] !== '') {
+                        $count_sql .= " AND b.order_paymethod = ?";
+                        $count_params[] = $_GET['payment_filter'];
+                    }
+
+                    if (!empty($_GET['date_filter'])) {
+                        switch ($_GET['date_filter']) {
+                            case 'today':
+                                $count_sql .= " AND DATE(b.order_date) = CURDATE()";
+                                break;
+                            case 'yesterday':
+                                $count_sql .= " AND DATE(b.order_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+                                break;
+                            case 'week':
+                                $count_sql .= " AND WEEK(b.order_date) = WEEK(CURDATE()) AND YEAR(b.order_date) = YEAR(CURDATE())";
+                                break;
+                            case 'month':
+                                $count_sql .= " AND MONTH(b.order_date) = MONTH(CURDATE()) AND YEAR(b.order_date) = YEAR(CURDATE())";
+                                break;
+                        }
+                    }
+
+                    try {
+                        $count_stmt = $conn->prepare($count_sql);
+                        if (!empty($count_params)) {
+                            $count_stmt->execute($count_params);
+                        } else {
+                            $count_stmt->execute();
+                        }
+                        $total_orders = $count_stmt->fetchColumn();
+                        echo "<span class='badge bg-dark'>{$total_orders} orders</span>";
+                    } catch (Exception $e) {
+                        echo "<span class='badge bg-danger'>Error</span>";
+                    }
+                    ?>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Mobile-friendly order cards (visible only on small screens) -->
                 <div class="d-block d-md-none">
                     <?php
-                    try {
-                        $stmt = $conn->prepare("
-                            SELECT b.*, u.name as user_name 
+                    // Build filter query
+                    $sql = "SELECT b.*, u.name as user_name 
                             FROM bill b 
                             LEFT JOIN site_user u ON b.user_id = u.id 
-                            ORDER BY b.order_date DESC
-                        ");
-                        $stmt->execute();
+                            WHERE 1=1";
+                    $params = [];
+
+                    // Status filter
+                    if (!empty($_GET['status_filter'])) {
+                        if ($_GET['status_filter'] === 'Pending') {
+                            $sql .= " AND (b.order_status IS NULL OR b.order_status = 'Pending')";
+                        } else {
+                            $sql .= " AND b.order_status = ?";
+                            $params[] = $_GET['status_filter'];
+                        }
+                    }
+
+                    // Payment method filter
+                    if (isset($_GET['payment_filter']) && $_GET['payment_filter'] !== '') {
+                        $sql .= " AND b.order_paymethod = ?";
+                        $params[] = $_GET['payment_filter'];
+                    }
+
+                    // Date filter
+                    if (!empty($_GET['date_filter'])) {
+                        switch ($_GET['date_filter']) {
+                            case 'today':
+                                $sql .= " AND DATE(b.order_date) = CURDATE()";
+                                break;
+                            case 'yesterday':
+                                $sql .= " AND DATE(b.order_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+                                break;
+                            case 'week':
+                                $sql .= " AND WEEK(b.order_date) = WEEK(CURDATE()) AND YEAR(b.order_date) = YEAR(CURDATE())";
+                                break;
+                            case 'month':
+                                $sql .= " AND MONTH(b.order_date) = MONTH(CURDATE()) AND YEAR(b.order_date) = YEAR(CURDATE())";
+                                break;
+                        }
+                    }
+
+                    $sql .= " ORDER BY b.order_date DESC";
+
+                    try {
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute($params);
 
                         while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             $status_text = 'Pending';
@@ -201,14 +364,52 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             </thead>
                             <tbody>
                                 <?php
-                                try {
-                                    $stmt = $conn->prepare("
-                                        SELECT b.*, u.name as user_name 
+                                // Build same filter query for desktop table
+                                $sql = "SELECT b.*, u.name as user_name 
                                         FROM bill b 
                                         LEFT JOIN site_user u ON b.user_id = u.id 
-                                        ORDER BY b.order_date DESC
-                                    ");
-                                    $stmt->execute();
+                                        WHERE 1=1";
+                                $params = [];
+
+                                // Status filter
+                                if (!empty($_GET['status_filter'])) {
+                                    if ($_GET['status_filter'] === 'Pending') {
+                                        $sql .= " AND (b.order_status IS NULL OR b.order_status = 'Pending')";
+                                    } else {
+                                        $sql .= " AND b.order_status = ?";
+                                        $params[] = $_GET['status_filter'];
+                                    }
+                                }
+
+                                // Payment method filter
+                                if (isset($_GET['payment_filter']) && $_GET['payment_filter'] !== '') {
+                                    $sql .= " AND b.order_paymethod = ?";
+                                    $params[] = $_GET['payment_filter'];
+                                }
+
+                                // Date filter
+                                if (!empty($_GET['date_filter'])) {
+                                    switch ($_GET['date_filter']) {
+                                        case 'today':
+                                            $sql .= " AND DATE(b.order_date) = CURDATE()";
+                                            break;
+                                        case 'yesterday':
+                                            $sql .= " AND DATE(b.order_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+                                            break;
+                                        case 'week':
+                                            $sql .= " AND WEEK(b.order_date) = WEEK(CURDATE()) AND YEAR(b.order_date) = YEAR(CURDATE())";
+                                            break;
+                                        case 'month':
+                                            $sql .= " AND MONTH(b.order_date) = MONTH(CURDATE()) AND YEAR(b.order_date) = YEAR(CURDATE())";
+                                            break;
+                                    }
+                                }
+
+                                $sql .= " ORDER BY b.order_date DESC";
+
+                                try {
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute($params);
 
                                     while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         $status_text = 'Pending';
@@ -281,6 +482,38 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 </div>
 
 <script>
+    // Auto-submit form when filter changes
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterSelects = document.querySelectorAll('#status_filter, #payment_filter, #date_filter');
+        
+        filterSelects.forEach(function(select) {
+            select.addEventListener('change', function() {
+                // Add loading state
+                const submitBtn = document.querySelector('#filterForm button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Filtering...';
+                submitBtn.disabled = true;
+                
+                // Submit form
+                document.getElementById('filterForm').submit();
+            });
+        });
+        
+        // Add tooltips to filter options
+        const tooltips = {
+            'status_filter': 'Filter orders by their current status',
+            'payment_filter': 'Filter by payment method used',
+            'date_filter': 'Filter orders by date range'
+        };
+        
+        Object.keys(tooltips).forEach(function(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.setAttribute('title', tooltips[id]);
+            }
+        });
+    });
+
     function updateOrderStatus(orderId, status) {
         console.log('Updating order status:', orderId, status);
 
@@ -335,7 +568,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 
         $('#orderDetailsContent').html(`
         <div class="text-center py-3">
-            <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <div class="spinner-border spinner-border-sm text-dark" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
             <div class="mt-2">Loading order details...</div>
