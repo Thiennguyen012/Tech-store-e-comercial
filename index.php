@@ -98,15 +98,18 @@
       case 'profile':
         include 'module/user-profile/user-profile.php';
         break;
-      // Mục your Order
-      case 'order':
-        include 'module/user-order/user-order.php';
+      case 'addresses':
+        include 'module/user-profile/addresses.php';
         break;
       case 'notification':
         include 'module/user-profile/notification.php';
         break;
-      case 'addresses':
-        include 'module/user-profile/addresses.php';
+      case 'change-password':
+        include 'module/user-profile/change-password.php';
+        break;
+      // Mục your Order
+      case 'order':
+        include 'module/user-order/user-order.php';
         break;
       case 'checkout':
         include 'module/checkout/checkout.php';

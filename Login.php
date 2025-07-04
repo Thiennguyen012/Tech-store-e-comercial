@@ -113,8 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="login.php" method="post">
           <!-- tạo 1 row ở cột phải -->
           <div class="row align-items-center">
-            <div>
+            <div class="d-flex justify-content-between align-items-center">
               <p class="text-dark mt-4 mb-4" id="login-text">Sign in</p>
+              <a href="#" onclick="location.href='index.php';return false;" class="btn btn-transperent"><i class="bi bi-arrow-left fs-5"></i></a>
             </div>
             <!-- input username, password -->
             <div class="input-group mb-3">
@@ -136,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <div>
-                <small><a href="#" class="text-dark float-end"
+                <small><a href="#" class="text-success float-end"
                     onclick="window.location.href='module/forgot-password/send-email.php'; return false;">Forgot
                     password?</a></small>
               </div>
@@ -158,6 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="module/login-google/Login-google.php">
               <button class="btn bg-light w-100 fs-6 rounded-5" type="button">
                 <img src="./img/google.png" style="width: 30px" />
+                <small class="mx-3">Continue with <span class="fw-semibold">Google</span></small>
               </button>
             </a>
             <!-- tạo need an account và sign up cùng trên 1 hàng, lại dùng d-flex justify-content -->

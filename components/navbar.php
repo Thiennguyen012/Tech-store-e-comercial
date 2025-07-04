@@ -20,7 +20,7 @@ if ($username) {
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand fs-4" href="#"
-      onclick="loadPage('module/main-content/main-content.php',this,'home'); return false;">Technologia™</a>
+      onclick="location.href='index.php'; return false;">Technologia™</a>
     <!-- Toggle button -->
     <button class="navbar-toggler shaddow-none border-0" type="button" data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@ if ($username) {
         <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
           <li class="nav-item mx-2">
             <a class="nav-link" href="#"
-              onclick="loadPage('module/main-content/main-content.php',this,'home'); return false;">Home</a>
+              onclick="location.href='index.php'; return false;">Home</a>
 
           </li>
 

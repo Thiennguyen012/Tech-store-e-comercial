@@ -24,7 +24,7 @@ if ($isSearchMode) {
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
             WHERE p.name LIKE ? AND p.price BETWEEN ? AND ?";
-    
+
     $searchTerm = '%' . $query . '%';
     $params = [$searchTerm, $minPrice, $maxPrice];
     $types = "sii";
@@ -34,7 +34,7 @@ if ($isSearchMode) {
             FROM product p 
             INNER JOIN product_category pc ON p.category_id = pc.id 
             WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
-    
+
     $params = [$category, $minPrice, $maxPrice];
     $types = "sii";
 }
@@ -53,7 +53,7 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
         if (!is_array($selectedValues)) {
             $selectedValues = [$selectedValues]; // Convert single value to array
         }
-        
+
         if (!empty($selectedValues)) {
             // Tạo điều kiện OR cho cùng 1 category (ví dụ: Dell OR HP)
             $categoryConditions = [];
@@ -73,7 +73,7 @@ if (!empty($selectedFilters) && is_array($selectedFilters)) {
                     $types .= "s";
                 }
             }
-            
+
             if (!empty($categoryConditions)) {
                 //  Sử dụng EXISTS để tìm sản phẩm có ít nhất một trong các giá trị của category này
                 $filterConditions[] = "EXISTS (
@@ -135,7 +135,7 @@ if ($isSearchMode) {
                  FROM product p 
                  INNER JOIN product_category pc ON p.category_id = pc.id 
                  WHERE p.name LIKE ? AND p.price BETWEEN ? AND ?";
-    
+
     $countParams = $originalParams; // Sử dụng original params
     $countTypes = $originalTypes;   // Sử dụng original types
 } else {
@@ -143,7 +143,7 @@ if ($isSearchMode) {
                  FROM product p 
                  INNER JOIN product_category pc ON p.category_id = pc.id 
                  WHERE pc.category_name = ? AND p.price BETWEEN ? AND ?";
-    
+
     $countParams = $originalParams; // Sử dụng original params  
     $countTypes = $originalTypes;   // Sử dụng original types
 }
@@ -151,7 +151,7 @@ if ($isSearchMode) {
 //  Dùng cùng logic EXISTS như main query
 if (!empty($filterConditions)) {
     $countSql .= " AND " . implode(" AND ", $filterConditions);
-    
+
     //  Copy exact filter params từ main query
     $filterParams = array_slice($params, count($originalParams), -2); // Chỉ lấy filter params
     $countParams = array_merge($countParams, $filterParams);
@@ -191,21 +191,37 @@ echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-c
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        // Lấy số sao trung bình và tổng số đánh giá cho sản phẩm này
+        $stmtRating = $conn->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM product_review WHERE product_id = ?");
+        $stmtRating->bind_param("i", $row['id']);
+        $stmtRating->execute();
+        $ratingResult = $stmtRating->get_result()->fetch_assoc();
+        $avg_rating = $ratingResult && $ratingResult['avg_rating'] ? round($ratingResult['avg_rating'], 1) : 0;
+        $total_reviews = $ratingResult['total_reviews'] ?? 0;
+        $stmtRating->close();
         echo '<div class="col">';
         echo '  <div class="card product-card border-0 h-100 shadow-sm">';
         echo '    <a href="#" onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\', this, \'single-product\', \'' . $row['id'] . '\'); return false;" style="text-decoration:none; color:inherit;">';
         echo '      <img src="' . htmlspecialchars($row['product_image']) . '" class="card-img-top p-2" alt="' . htmlspecialchars($row['name']) . '" style="height:260px;object-fit:contain;">';
         echo '    </a>';
-        echo '    <div class="card-body text-center">';
+        echo '    <div class="card-body text-center h-100 d-flex flex-column justify-content-start">';
         echo '      <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">' . htmlspecialchars($row['name']) . '</h6>';
+        echo '      <div class="mb-1" style="font-size:1.1rem;">';
+        for ($i = 1; $i <= 5; $i++) {
+            echo $i <= round($avg_rating) ? '<span style="color:#ffc107">&#9733;</span>' : '<span style="color:#ccc">&#9733;</span>';
+        }
+        echo '        <span class="ms-1 text-dark">' . $avg_rating . '/5</span>';
+        echo '        <span class="text-muted ms-1" style="font-size:0.95rem;">(' . $total_reviews . ' reviews)</span>';
+        echo '      </div>';
         echo '      <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;">' . number_format($row['price'], 0, ',', '.') . '$</div>';
-        echo '    </div>';
-        
-        echo '    <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">';
+        echo '    </div>'; // Đóng card-body
+
+        // Đặt button bên ngoài card-body, bên trong .card
+        echo '    <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 mt-auto">';
         echo '      <button onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\', this, \'single-product\', \'' . $row['id'] . '\'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">';
         echo '        More details';
         echo '      </button>';
-        
+
         if ($row['qty_in_stock'] > 0) {
             echo '      <form id="addToCartForm" action="module/cart/cart.php" method="POST" class="m-0 p-0">';
             echo '        <input type="hidden" name="product-id" value="' . $row['id'] . '">';
@@ -217,14 +233,13 @@ if ($result && $result->num_rows > 0) {
             echo '        </button>';
             echo '      </form>';
         } else {
-            echo '      <button type="button" onclick="location.href=\'index.php?act=contact\'; return false;" class="btn btn-outline-secondary btn-sm rounded-pill px-3">';
+            echo '      <button onclick="location.href=\'index.php?act=contact\'; return false;" class="btn btn-outline-secondary btn-sm rounded-pill px-3">';
             echo '        Contact';
             echo '      </button>';
         }
-        
-        echo '    </div>';
-        echo '  </div>';
-        echo '</div>';
+        echo '    </div>'; // Đóng button group
+        echo '  </div>'; // Đóng card
+        echo '</div>'; // Đóng col
     }
 } else {
     echo '<div class="col"><div class="alert alert-warning w-100">No products match the current filter.</div></div>';
@@ -238,4 +253,3 @@ if ($offset + $limit < $total) {
     echo '<button id="showMoreBtn" class="btn btn-outline-dark px-4 rounded-pill" data-offset="' . ($offset + $limit) . '">Show more</button>';
     echo '</div>';
 }
-?>

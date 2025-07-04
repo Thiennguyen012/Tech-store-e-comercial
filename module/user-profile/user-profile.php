@@ -61,7 +61,7 @@ $user = $stmt->get_result()->fetch_assoc();
         </div>
         <!-- Form thông tin tài khoản chính -->
         <div class="col-lg-6">
-            <div class="pv-profile-main shadow-sm mb-5 mt-5" style="height: 446px;">
+            <div class="pv-profile-main shadow-sm mb-5 mt-5" style="height: 520px;">
                 <h4 class="mb-4 fw-bold">Account Information</h4>
                 <?php if ($success): ?>
                     <div class="alert alert-success"><?php echo $success; ?></div>

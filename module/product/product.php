@@ -16,14 +16,14 @@ $category = isset($_GET['category']) ? htmlspecialchars($_GET['category']) : 'la
 // Lấy các bộ lọc đã chọn từ request
 $selectedFilters = [];
 if (isset($_GET['filters']) && is_array($_GET['filters'])) {
-    foreach ($_GET['filters'] as $key => $values) {
-        if (is_array($values)) {
-            $selectedFilters[htmlspecialchars($key)] = array_map('htmlspecialchars', $values);
-        } else {
-            // Backward compatibility nếu còn single value
-            $selectedFilters[htmlspecialchars($key)] = [htmlspecialchars($values)];
-        }
+  foreach ($_GET['filters'] as $key => $values) {
+    if (is_array($values)) {
+      $selectedFilters[htmlspecialchars($key)] = array_map('htmlspecialchars', $values);
+    } else {
+      // Backward compatibility nếu còn single value
+      $selectedFilters[htmlspecialchars($key)] = [htmlspecialchars($values)];
     }
+  }
 }
 
 // Thêm điều kiện sắp xếp
@@ -33,10 +33,10 @@ $sortBy = isset($_GET['sortBy']) ? htmlspecialchars($_GET['sortBy']) : '1';
 if ($isSearchMode) {
   // Chế độ tìm kiếm
   $result = searchProducts($conn, $query, $minPrice, $maxPrice, $sortBy);
-  
+
   // SỬA: Load filters cho search mode với query
   $filters = getSearchFilters($conn, $minPrice, $maxPrice, $query);
-  
+
   $pageTitle = 'Search Results for "' . htmlspecialchars($query) . '"';
   $breadcrumbTitle = 'Search Results';
 
@@ -80,20 +80,20 @@ if ($isSearchMode) {
         HAVING count > 0
         ORDER BY count DESC
     ";
-    
+
     $stmt = $conn->prepare($filterSql);
     $stmt->bind_param("isii", $variationId, $category, $minPrice, $maxPrice);
     $stmt->execute();
     $filterResult = $stmt->get_result();
-    
+
     if ($filterResult && $filterResult->num_rows > 0) {
-        $filters[$categoryName] = [];
-        while ($row = $filterResult->fetch_assoc()) {
-            $filters[$categoryName][] = [
-                'value' => htmlspecialchars($row['value']),
-                'count' => $row['count'],
-            ];
-        }
+      $filters[$categoryName] = [];
+      while ($row = $filterResult->fetch_assoc()) {
+        $filters[$categoryName][] = [
+          'value' => htmlspecialchars($row['value']),
+          'count' => $row['count'],
+        ];
+      }
     }
   }
 
@@ -124,7 +124,7 @@ if ($isSearchMode) {
           $filterValues[] = $value;
           $filterTypes .= "s";
         }
-        
+
         if (!empty($categoryConditions)) {
           // EXISTS subquery cho mỗi category
           $filterConditions[] = "EXISTS (
@@ -231,10 +231,10 @@ if ($isSearchMode) {
                       <li class="list-group-item px-0">
                         <div class="form-check">
                           <!--  Thêm [] để cho phép multiple selections -->
-                          <input class="form-check-input" type="checkbox" 
-                                 name="filters[<?php echo $categoryName; ?>][]"
-                                 value="<?php echo $option['value']; ?>" 
-                                 id="<?php echo $option['value']; ?>" />
+                          <input class="form-check-input" type="checkbox"
+                            name="filters[<?php echo $categoryName; ?>][]"
+                            value="<?php echo $option['value']; ?>"
+                            id="<?php echo $option['value']; ?>" />
                           <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>">
                             <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
                           </label>
@@ -257,11 +257,11 @@ if ($isSearchMode) {
             <div class="mb-4">
               <select name="sortBy" class="form-select">
                 <option value="1" <?php if ($sortBy === '1')
-                  echo 'selected'; ?>>Price (Low to High)</option>
+                                    echo 'selected'; ?>>Price (Low to High)</option>
                 <option value="2" <?php if ($sortBy === '2')
-                  echo 'selected'; ?>>Price (High to Low)</option>
+                                    echo 'selected'; ?>>Price (High to Low)</option>
                 <option value="3" <?php if ($sortBy === '3')
-                  echo 'selected'; ?>>Alphabetical</option>
+                                    echo 'selected'; ?>>Alphabetical</option>
               </select>
             </div>
             <div class="d-flex gap-2 flex-wrap">
@@ -304,10 +304,10 @@ if ($isSearchMode) {
                   <?php foreach ($filterOptions as $option): ?>
                     <li class="list-group-item px-0">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" 
-                               name="filters[<?php echo $categoryName; ?>][]"
-                               value="<?php echo $option['value']; ?>" 
-                               id="<?php echo $option['value']; ?>-mobile" />
+                        <input class="form-check-input" type="checkbox"
+                          name="filters[<?php echo $categoryName; ?>][]"
+                          value="<?php echo $option['value']; ?>"
+                          id="<?php echo $option['value']; ?>-mobile" />
                         <label class="form-check-label fw-semibold" for="<?php echo $option['value']; ?>-mobile">
                           <?php echo $option['value']; ?> (<?php echo $option['count']; ?>)
                         </label>
@@ -330,11 +330,11 @@ if ($isSearchMode) {
           <div class="mb-4">
             <select name="sortBy" class="form-select">
               <option value="1" <?php if ($sortBy === '1')
-                echo 'selected'; ?>>Price (Low to High)</option>
+                                  echo 'selected'; ?>>Price (Low to High)</option>
               <option value="2" <?php if ($sortBy === '2')
-                echo 'selected'; ?>>Price (High to Low)</option>
+                                  echo 'selected'; ?>>Price (High to Low)</option>
               <option value="3" <?php if ($sortBy === '3')
-                echo 'selected'; ?>>Alphabetical</option>
+                                  echo 'selected'; ?>>Alphabetical</option>
             </select>
           </div>
           <div class="d-flex gap-2 flex-wrap">
@@ -371,11 +371,19 @@ if ($isSearchMode) {
           if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
               $productCount++;
-              ?>
+              // Lấy số sao trung bình và tổng số đánh giá cho sản phẩm này
+              $stmtRating = $conn->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM product_review WHERE product_id = ?");
+              $stmtRating->bind_param("i", $row['id']);
+              $stmtRating->execute();
+              $ratingResult = $stmtRating->get_result()->fetch_assoc();
+              $avg_rating = $ratingResult && $ratingResult['avg_rating'] ? round($ratingResult['avg_rating'], 1) : 0;
+              $total_reviews = $ratingResult['total_reviews'] ?? 0;
+              $stmtRating->close();
+          ?>
               <div class="col">
                 <div class="card product-card border-0 h-100 shadow-sm">
                   <a href="#"
-                    onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
+                    onclick="location.href='index.php?act=single-product&id=<?php echo $row['id']; ?>'; return false;"
                     style="text-decoration:none; color:inherit;">
                     <img src="<?php echo htmlspecialchars($row['product_image']); ?>" class="card-img-top p-2"
                       alt="<?php echo htmlspecialchars($row['name']); ?>" style="height:260px;object-fit:contain;">
@@ -384,6 +392,16 @@ if ($isSearchMode) {
                     <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
                       <?php echo htmlspecialchars($row['name']); ?>
                     </h6>
+                    <div class="mb-1" style="font-size:1.1rem;">
+                      <?php
+                      for ($i = 1; $i <= 5; $i++) {
+                        echo $i <= round($avg_rating) ? '<span style="color:#ffc107">&#9733;</span>' : '<span style="color:#ccc">&#9733;</span>';
+                      }
+                      ?>
+                      <span class="ms-1 text-dark"><?php echo $avg_rating; ?>/5</span>
+                      <br>
+                      <span class="text-muted ms-1" style="font-size:0.95rem;">(<?php echo $total_reviews; ?> reviews)</span>
+                    </div>
                     <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;">
                       <?php echo number_format($row['price'], 0, ',', '.'); ?>$
                     </div>
@@ -417,7 +435,7 @@ if ($isSearchMode) {
                   </div>
                 </div>
               </div>
-              <?php
+          <?php
             }
           } else {
             if ($isSearchMode) {
@@ -460,7 +478,7 @@ if ($isSearchMode) {
 
   // Hàm gán sự kiện AJAX cho tất cả form add to cart
   function attachCartEventListeners() {
-    document.querySelectorAll('form[id="addToCartForm"]').forEach(function (form) {
+    document.querySelectorAll('form[id="addToCartForm"]').forEach(function(form) {
       // Xóa event listener cũ để tránh trùng lặp
       form.removeEventListener('submit', handleCartSubmit);
       // Gán event listener mới
@@ -475,9 +493,9 @@ if ($isSearchMode) {
     const formData = new FormData(e.target);
 
     fetch('module/cart/cart.php', {
-      method: 'POST',
-      body: formData
-    })
+        method: 'POST',
+        body: formData
+      })
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -490,7 +508,7 @@ if ($isSearchMode) {
           modal.show();
 
           // Thêm event listener để dispose modal khi đóng
-          modalElement.addEventListener('hidden.bs.modal', function () {
+          modalElement.addEventListener('hidden.bs.modal', function() {
             modal.dispose();
           }, {
             once: true
@@ -514,12 +532,12 @@ if ($isSearchMode) {
   }
 
   // Gửi form lọc (desktop)
-  document.getElementById('filterButton').addEventListener('click', function () {
+  document.getElementById('filterButton').addEventListener('click', function() {
     const formData = new FormData(document.getElementById('filterForm'));
     fetch('module/product/filter.php', {
-      method: 'POST',
-      body: formData,
-    })
+        method: 'POST',
+        body: formData,
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -543,12 +561,12 @@ if ($isSearchMode) {
   });
 
   // Gửi form lọc (mobile)
-  document.getElementById('filterButtonMobile').addEventListener('click', function () {
+  document.getElementById('filterButtonMobile').addEventListener('click', function() {
     const formData = new FormData(document.getElementById('filterFormMobile'));
     fetch('module/product/filter.php', {
-      method: 'POST',
-      body: formData,
-    })
+        method: 'POST',
+        body: formData,
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -572,14 +590,14 @@ if ($isSearchMode) {
   });
 
   // Reset filter desktop
-  document.getElementById('resetFilterButton').addEventListener('click', function () {
+  document.getElementById('resetFilterButton').addEventListener('click', function() {
     const form = document.getElementById('filterForm');
     form.reset();
     document.getElementById('filterButton').click();
   });
 
   // Reset filter mobile
-  document.getElementById('resetFilterButtonMobile').addEventListener('click', function () {
+  document.getElementById('resetFilterButtonMobile').addEventListener('click', function() {
     const form = document.getElementById('filterFormMobile');
     form.reset();
     document.getElementById('filterButtonMobile').click();
@@ -603,9 +621,9 @@ if ($isSearchMode) {
       formData.append('showMore', 1);
 
       fetch('module/product/filter.php', {
-        method: 'POST',
-        body: formData,
-      })
+          method: 'POST',
+          body: formData,
+        })
         .then(res => res.text())
         .then(html => {
           // Tạo một div tạm để lấy các .col mới
@@ -644,7 +662,7 @@ if ($isSearchMode) {
   }
 
   // Gán sự kiện cho các form có sẵn khi trang load
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     attachCartEventListeners();
   });
 

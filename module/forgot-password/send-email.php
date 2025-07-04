@@ -19,6 +19,7 @@ require 'send-mail-handler.php';
     <link rel="stylesheet" href="../../asset/bootstrap/css/bootstrap.min.css" />
 
     <link rel="stylesheet" href="../../asset/style1.css" />
+    <link rel="icon" href="../../asset/web-favicon/favicon.ico" type="image/x-icon">
     <title>Technologia</title>
 </head>
 
@@ -27,8 +28,8 @@ require 'send-mail-handler.php';
     <body>
         <div class="container py-5">
             <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-control bg-white shadow-sm">
+                <div class="col-md-6 col-lg-4 col-sm-6">
+                    <div class="form-control bg-white shadow-sm py-4 px-4">
                         <div class="text-center mb-4">
                             <h3 class="fw-bold">Reset your Password</h3>
                             <p class="text-muted mb-0">Enter your email to get verify code</p>
