@@ -371,6 +371,14 @@ if ($isSearchMode) {
           if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
               $productCount++;
+              // Lấy số sao trung bình và tổng số đánh giá cho sản phẩm này
+              $stmtRating = $conn->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM product_review WHERE product_id = ?");
+              $stmtRating->bind_param("i", $row['id']);
+              $stmtRating->execute();
+              $ratingResult = $stmtRating->get_result()->fetch_assoc();
+              $avg_rating = $ratingResult && $ratingResult['avg_rating'] ? round($ratingResult['avg_rating'], 1) : 0;
+              $total_reviews = $ratingResult['total_reviews'] ?? 0;
+              $stmtRating->close();
           ?>
               <div class="col">
                 <div class="card product-card border-0 h-100 shadow-sm">
@@ -384,6 +392,16 @@ if ($isSearchMode) {
                     <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 0.95rem; min-height: 38px;">
                       <?php echo htmlspecialchars($row['name']); ?>
                     </h6>
+                    <div class="mb-1" style="font-size:1.1rem;">
+                      <?php
+                      for ($i = 1; $i <= 5; $i++) {
+                        echo $i <= round($avg_rating) ? '<span style="color:#ffc107">&#9733;</span>' : '<span style="color:#ccc">&#9733;</span>';
+                      }
+                      ?>
+                      <span class="ms-1 text-dark"><?php echo $avg_rating; ?>/5</span>
+                      <br>
+                      <span class="text-muted ms-1" style="font-size:0.95rem;">(<?php echo $total_reviews; ?> reviews)</span>
+                    </div>
                     <div class="fw-bold mb-2" style="font-size: 1.1rem; margin-top: 0.5rem;">
                       <?php echo number_format($row['price'], 0, ',', '.'); ?>$
                     </div>
