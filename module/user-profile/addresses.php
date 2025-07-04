@@ -1,8 +1,8 @@
 <?php
-// Start session if not already started
+// Bắt đầu session nếu chưa được khởi tạo
 if (session_status() === PHP_SESSION_NONE) session_start();
 
-// Redirect to login if not logged in
+// Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
 if (!isset($_SESSION['username'])) {
     echo '<div class="container mt-5"><div class="alert alert-warning">Please <a href="Login.php">login</a> to view your address book.</div></div>';
     return;
@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../db/connect.php';
 $username = $_SESSION['username'];
 $success = $error = "";
 
-// Handle address update
+// Xử lý cập nhật địa chỉ
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = trim($_POST['address'] ?? '');
     if ($address === "") {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch the latest user information
+// Lấy thông tin người dùng mới nhất
 $stmt = $conn->prepare("SELECT address FROM site_user WHERE username=?");
 $stmt->bind_param("s", $username);
 $stmt->execute();

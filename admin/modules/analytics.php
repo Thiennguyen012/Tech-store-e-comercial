@@ -2,7 +2,7 @@
 $current_page = 'analytics';
 require_once '../includes/admin-layout.php';
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
@@ -17,7 +17,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 </div>
 
 
-<!-- Top Products -->
+<!-- Sản phẩm bán chạy nhất -->
 <div class="row mb-4">
     <div class="col-lg-8">
         <div class="card shadow">
@@ -45,9 +45,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     FROM checkout_cart cc
                                     LEFT JOIN product p ON cc.product_name = p.name
                                     LEFT JOIN product_category pc ON p.category_id = pc.id
-                                    INNER JOIN bill b ON cc.bill_id = b.id  -- JOIN với bill table
+                                    INNER JOIN bill b ON cc.bill_id = b.id  -- KẾT HỢP với bảng bill
                                     WHERE p.name IS NOT NULL 
-                                    AND (b.order_status = 1 OR b.order_status = 'Paid')  -- CHỈ TÍNH ĐƠN ĐÃ PAID
+                                    AND (b.order_status = 1 OR b.order_status = 'Paid')  -- CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN
                                     GROUP BY p.id, p.name
                                     ORDER BY times_sold DESC
                                     LIMIT 10
@@ -81,7 +81,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             <div class="card-body">
                 <?php
                 try {
-                    // Average Order Value - CHỈ TÍNH ĐƠN ĐÃ PAID
+                    // Giá trị đơn hàng trung bình - CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN
                     $stmt = $conn->prepare("
                         SELECT AVG(order_total) as avg_order 
                         FROM bill 
@@ -90,7 +90,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     $stmt->execute();
                     $avg_order = $stmt->fetch()['avg_order'];
                     
-                    // Most Popular Category - CHỈ TÍNH ĐƠN ĐÃ PAID
+                    // Danh mục phổ biến nhất - CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN
                     $stmt = $conn->prepare("
                         SELECT pc.category_name, COUNT(cc.id) as count
                         FROM checkout_cart cc
@@ -105,7 +105,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     $stmt->execute();
                     $popular_category = $stmt->fetch();
                     
-                    // Orders This Month - TÁCH RIÊNG PAID VÀ PENDING
+                    // Đơn hàng tháng này - TÁCH RIÊNG ĐÃ THANH TOÁN VÀ ĐANG CHỜ XỬ LÝ
                     $stmt = $conn->prepare("
                         SELECT 
                             COUNT(CASE WHEN order_status = 1 OR order_status = 'Paid' THEN 1 END) as paid_count,
@@ -146,7 +146,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Recent Activity -->
+<!-- Hoạt động gần đây -->
 <div class="row">
     <div class="col-12">
         <div class="card shadow">
@@ -190,10 +190,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Include Chart.js -->
+<!-- Bao gồm thư viện Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Sales by Category Chart
+// Biểu đồ doanh số theo danh mục
 $.get('../api/sales-by-category.php')
     .done(function(data) {
         const categories = JSON.parse(data);
@@ -218,7 +218,7 @@ $.get('../api/sales-by-category.php')
         });
     });
 
-// Monthly Sales Chart
+// Biểu đồ doanh số theo tháng
 $.get('../api/monthly-sales.php')
     .done(function(data) {
         const sales = JSON.parse(data);

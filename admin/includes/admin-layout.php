@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Determine the base path for navigation
+// Xác định đường dẫn cơ sở cho navigation
 $current_dir = basename(dirname($_SERVER['PHP_SELF']));
 $base_path = '';
 $dashboard_path = '';
@@ -13,7 +13,7 @@ if ($current_dir == 'home-page') {
     $dashboard_path = '../home-page/admin.php';
 }
 
-// Database connection for Admin Panel
+// Kết nối cơ sở dữ liệu cho Admin Panel
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -24,10 +24,10 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     
-    // Count new orders (created in last 24 hours and not viewed by admin)
+    // Đếm đơn hàng mới (được tạo trong 24 giờ qua và chưa được admin xem)
     $new_orders_count = 0;
     try {
-        // Check if the admin_order_views table exists, if not create it
+        // Kiểm tra xem bảng admin_order_views có tồn tại không, nếu không thì tạo
         $check_table = $conn->query("SHOW TABLES LIKE 'admin_order_views'");
         if ($check_table->rowCount() == 0) {
             $conn->exec("
@@ -39,7 +39,7 @@ try {
             ");
         }
         
-        // Get admin's last view time
+        // Lấy thời gian xem lần cuối của admin
         $admin_id = $_SESSION['user_id'] ?? 0;
         $last_view_stmt = $conn->prepare("SELECT last_view_time FROM admin_order_views WHERE admin_user_id = ?");
         $last_view_stmt->execute([$admin_id]);
@@ -47,7 +47,7 @@ try {
         
         $last_view_time = $last_view ? $last_view['last_view_time'] : '1970-01-01 00:00:00';
         
-        // Count orders created after last view
+        // Đếm đơn hàng được tạo sau lần xem cuối
         $count_stmt = $conn->prepare("
             SELECT COUNT(*) as count 
             FROM bill 
@@ -59,7 +59,7 @@ try {
         $new_orders_count = $result['count'];
         
     } catch (Exception $e) {
-        // Silently handle errors for badge functionality
+        // Xử lý lỗi một cách im lặng cho chức năng badge
         $new_orders_count = 0;
     }
     
@@ -67,7 +67,7 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role'])) {
     header('Location: ../../Login.php');
     exit;
@@ -157,7 +157,7 @@ $current_page = $current_page ?? 'dashboard';
             </div>
         </div>
 
-        <!-- Main content -->
+        <!-- Nội dung chính -->
         <div class="content flex-fill p-4">
             <div id="admin-content">
-                <!-- Page content will be loaded here -->
+                <!-- Nội dung trang sẽ được tải ở đây -->

@@ -5,7 +5,7 @@ require_once '../includes/admin-layout.php';
 $action = $_POST['action'] ?? $_GET['action'] ?? 'list';
 
 if ($action == 'add' && $_POST) {
-    // Handle add category
+    // Xử lý thêm danh mục
     try {
         $stmt = $conn->prepare("INSERT INTO product_category (category_name) VALUES (?)");
         $stmt->execute([$_POST['category_name']]);
@@ -19,7 +19,7 @@ if ($action == 'add' && $_POST) {
 }
 
 if ($action == 'edit' && $_POST) {
-    // Handle edit category
+    // Xử lý chỉnh sửa danh mục
     try {
         $stmt = $conn->prepare("UPDATE product_category SET category_name = ? WHERE id = ?");
         $stmt->execute([$_POST['category_name'], $_POST['id']]);
@@ -54,7 +54,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
 </div>
 
 <?php if ($action == 'add'): ?>
-<!-- Add Category Form -->
+<!-- Form thêm danh mục -->
 <div class="row">
     <div class="col-lg-6">
         <div class="card shadow">
@@ -76,7 +76,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
 </div>
 
 <?php elseif ($action == 'edit'): ?>
-<!-- Edit Category Form -->
+<!-- Form chỉnh sửa danh mục -->
 <?php
 $category_id = $_GET['id'] ?? 0;
 try {
@@ -115,7 +115,7 @@ try {
 </div>
 
 <?php else: ?>
-<!-- Categories List -->
+<!-- Danh sách danh mục -->
 <div class="row">
     <div class="col-lg-8">
         <div class="card shadow">

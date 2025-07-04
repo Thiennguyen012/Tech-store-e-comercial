@@ -5,7 +5,7 @@ require_once '../includes/admin-layout.php';
 $action = $_POST['action'] ?? $_GET['action'] ?? 'list';
 
 if ($action == 'add' && $_POST) {
-    // Handle add user
+    // Xử lý thêm người dùng
     try {
         $stmt = $conn->prepare("
             INSERT INTO site_user (name, email, phone, username, password, role, address) 
@@ -31,7 +31,7 @@ if ($action == 'add' && $_POST) {
 }
 
 if ($action == 'edit' && $_POST) {
-    // Handle edit user
+    // Xử lý chỉnh sửa người dùng
     try {
         if (!empty($_POST['password'])) {
             $stmt = $conn->prepare("
@@ -97,7 +97,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
 </div>
 
 <?php if ($action == 'add'): ?>
-    <!-- Add User Form -->
+    <!-- Form thêm người dùng -->
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8">
             <div class="card">
@@ -154,7 +154,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
     </div>
 
 <?php elseif ($action == 'edit'): ?>
-    <!-- Edit User Form -->
+    <!-- Form chỉnh sửa người dùng -->
     <?php
     $user_id = $_GET['id'] ?? 0;
     try {
@@ -229,7 +229,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
     </div>
 
 <?php else: ?>
-    <!-- User Filter -->
+    <!-- Bộ lọc người dùng -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
@@ -286,7 +286,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
         </div>
     </div>
 
-    <!-- Users List -->
+    <!-- Danh sách người dùng -->
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -294,7 +294,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
                     <h6 class="m-0 font-weight-bold text-dark">
                         All Users
                         <?php
-                        // Display active filters
+                        // Hiển thị bộ lọc đang hoạt động
                         $active_filters = [];
                         if (!empty($_GET['email_filter'])) {
                             $active_filters[] = "Email: \"" . htmlspecialchars($_GET['email_filter']) . "\"";
@@ -310,11 +310,11 @@ if ($action == 'delete' && isset($_GET['id'])) {
                     </h6>
                     <div>
                         <?php
-                        // Count total users after filter
+                        // Đếm tổng số người dùng sau khi lọc
                         $count_sql = "SELECT COUNT(*) as total FROM site_user WHERE 1=1";
                         $count_params = [];
 
-                        // Apply same filter logic as main query
+                        // Áp dụng logic lọc giống như truy vấn chính
                         if (!empty($_GET['email_filter'])) {
                             $count_sql .= " AND email LIKE ?";
                             $count_params[] = '%' . $_GET['email_filter'] . '%';
@@ -341,20 +341,20 @@ if ($action == 'delete' && isset($_GET['id'])) {
                     </div>
                 </div>
                 <div class="card-body">
-                    <!-- Mobile-friendly user cards (visible only on small screens) -->
+                    <!-- Cards thân thiện với mobile (chỉ hiển thị trên màn hình nhỏ) -->
                     <div class="d-block d-md-none">
                         <?php
-                        // Build filter query for mobile cards
+                        // Xây dựng truy vấn lọc cho mobile cards
                         $sql = "SELECT * FROM site_user WHERE 1=1";
                         $params = [];
 
-                        // Email filter
+                        // Lọc email
                         if (!empty($_GET['email_filter'])) {
                             $sql .= " AND email LIKE ?";
                             $params[] = '%' . $_GET['email_filter'] . '%';
                         }
 
-                        // Role filter
+                        // Lọc role
                         if (isset($_GET['role_filter']) && $_GET['role_filter'] !== '') {
                             $sql .= " AND role = ?";
                             $params[] = $_GET['role_filter'];
@@ -405,7 +405,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
                         ?>
                     </div>
 
-                    <!-- Desktop table (hidden on small screens) -->
+                    <!-- Bảng desktop (ẩn trên màn hình nhỏ) -->
                     <div class="d-none d-md-block">
                         <div class="table-responsive">
                             <table class="table table-hover" id="usersTable">
@@ -422,17 +422,17 @@ if ($action == 'delete' && isset($_GET['id'])) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    // Build same filter query for desktop table
+                                    // Xây dựng truy vấn lọc giống như cho desktop table
                                     $sql = "SELECT * FROM site_user WHERE 1=1";
                                     $params = [];
 
-                                    // Email filter
+                                    // Lọc email
                                     if (!empty($_GET['email_filter'])) {
                                         $sql .= " AND email LIKE ?";
                                         $params[] = '%' . $_GET['email_filter'] . '%';
                                     }
 
-                                    // Role filter
+                                    // Lọc role
                                     if (isset($_GET['role_filter']) && $_GET['role_filter'] !== '') {
                                         $sql .= " AND role = ?";
                                         $params[] = $_GET['role_filter'];
@@ -479,19 +479,19 @@ if ($action == 'delete' && isset($_GET['id'])) {
 <?php endif; ?>
 
 <script>
-    // Auto-submit form when filter changes
+    // Tự động submit form khi filter thay đổi
     document.addEventListener('DOMContentLoaded', function() {
         const filterSelects = document.querySelectorAll('#role_filter');
         const emailInput = document.getElementById('email_filter');
         
-        // Auto-submit for select fields
+        // Tự động submit cho các trường select
         filterSelects.forEach(function(select) {
             select.addEventListener('change', function() {
                 submitFilterForm();
             });
         });
         
-        // Debounced search for email input
+        // Tìm kiếm có độ trễ cho input email
         let emailSearchTimeout;
         if (emailInput) {
             emailInput.addEventListener('input', function() {
@@ -500,10 +500,10 @@ if ($action == 'delete' && isset($_GET['id'])) {
                     if (emailInput.value.length >= 2 || emailInput.value.length === 0) {
                         submitFilterForm();
                     }
-                }, 500); // Wait 500ms after user stops typing
+                }, 500); // Chờ 500ms sau khi người dùng ngừng gõ
             });
             
-            // Submit on Enter key
+            // Submit khi nhấn Enter
             emailInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -523,7 +523,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
             document.getElementById('filterForm').submit();
         }
         
-        // Add tooltips to filter options
+        // Thêm tooltips cho các tùy chọn lọc
         const tooltips = {
             'email_filter': 'Search by user email address (min 2 characters)',
             'role_filter': 'Filter users by their role'
@@ -537,12 +537,12 @@ if ($action == 'delete' && isset($_GET['id'])) {
         });
     });
 
-    // Clear email filter function
+    // Hàm xóa bộ lọc email
     function clearEmailFilter() {
         const emailInput = document.getElementById('email_filter');
         if (emailInput) {
             emailInput.value = '';
-            // Trigger form submission to apply the change
+            // Kích hoạt form submission để áp dụng thay đổi
             document.getElementById('filterForm').submit();
         }
     }

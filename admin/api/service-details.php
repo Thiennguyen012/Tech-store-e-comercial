@@ -1,5 +1,5 @@
 <?php
-// Clean output buffer and turn off error reporting for production
+// Dọn buffer đầu ra và tắt báo cáo lỗi cho production
 ob_start();
 error_reporting(0);
 ini_set('display_errors', 0);
@@ -7,13 +7,13 @@ ini_set('display_errors', 0);
 session_start();
 require_once '../config/admin-connect.php';
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
 }
 
-// Validate service ID
+// Xác thực ID dịch vụ
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo '<div class="alert alert-danger">Invalid service ID</div>';
     exit;
@@ -22,11 +22,11 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $service_id = (int)$_GET['id'];
 
 try {
-    // Verify database connection
+    // Xác minh kết nối cơ sở dữ liệu
     if (!$conn) {
         throw new Exception('Database connection not available');
     }
-    // Get service details
+    // Lấy chi tiết dịch vụ
     $stmt = $conn->prepare("
         SELECT s.*, u.name as user_name, u.email as user_email 
         FROM services s 
@@ -41,7 +41,7 @@ try {
         exit;
     }
     
-    // Debug: Log successful service fetch
+    // Debug: Ghi log việc lấy dịch vụ thành công
     error_log("Service details loaded successfully for ID: " . $service_id);
     
     $customer_name = $service['user_name'] ?: ($service['name'] ?: 'Guest');
@@ -119,14 +119,14 @@ try {
     
     <?php
 } catch (Exception $e) {
-    // Log error for debugging but show user-friendly message
+    // Ghi log lỗi để debug nhưng hiển thị thông báo thân thiện với người dùng
     error_log('Service Details Error: ' . $e->getMessage());
     echo '<div class="alert alert-danger">';
     echo '<i class="bi bi-exclamation-triangle me-2"></i>';
     echo 'Unable to load service details. Please try again later.';
     echo '</div>';
 } catch (PDOException $e) {
-    // Database specific errors
+    // Lỗi cụ thể từ cơ sở dữ liệu
     error_log('Database Error in Service Details: ' . $e->getMessage());
     echo '<div class="alert alert-danger">';
     echo '<i class="bi bi-exclamation-triangle me-2"></i>';
@@ -134,6 +134,6 @@ try {
     echo '</div>';
 }
 
-// Clean up output buffer
+// Dọn dẹp buffer đầu ra
 ob_end_flush();
 ?>

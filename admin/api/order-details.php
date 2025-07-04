@@ -1,5 +1,5 @@
 <?php
-// Clean output buffer and turn off error reporting for production
+// Dọn buffer đầu ra và tắt báo cáo lỗi cho production
 ob_start();
 error_reporting(0);
 ini_set('display_errors', 0);
@@ -7,13 +7,13 @@ ini_set('display_errors', 0);
 session_start();
 require_once '../config/admin-connect.php';
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
 }
 
-// Validate order ID
+// Xác thực ID đơn hàng
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo '<div class="alert alert-danger">Invalid order ID</div>';
     exit;
@@ -22,11 +22,11 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $order_id = (int)$_GET['id'];
 
 try {
-    // Verify database connection
+    // Xác minh kết nối cơ sở dữ liệu
     if (!$conn) {
         throw new Exception('Database connection not available');
     }
-    // Get order information
+    // Lấy thông tin đơn hàng
     $stmt = $conn->prepare("
         SELECT b.*, u.name as user_name, u.email as user_email 
         FROM bill b 
@@ -41,10 +41,10 @@ try {
         exit;
     }
     
-    // Debug: Log successful order fetch
+    // Debug: Ghi log việc lấy đơn hàng thành công
     error_log("Order details loaded successfully for ID: " . $order_id);
     
-    // Get order items from checkout_cart table
+    // Lấy các mục đơn hàng từ bảng checkout_cart
     $stmt = $conn->prepare("
         SELECT cc.*, p.name as product_name, p.product_image 
         FROM checkout_cart cc 
@@ -54,10 +54,10 @@ try {
     $stmt->execute([$order_id]);
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Debug: Log items count
+    // Debug: Ghi log số lượng item
     error_log("Found " . count($items) . " items for order ID: " . $order_id);
     
-    // Handle status display
+    // Xử lý hiển thị trạng thái
     $status_text = 'Pending';
     $status_color = 'secondary';
     $status_value = $order['order_status'];
@@ -74,7 +74,7 @@ try {
     $customer_email = $order['user_email'] ?: ($order['order_email'] ?: 'N/A');
     $payment_method = ($order['order_paymethod'] == 1) ? 'Online Payment' : 'Cash on Delivery';
     
-    // Ensure order_total is not null
+    // Đảm bảo order_total không null
     $order_total = isset($order['order_total']) ? (float)$order['order_total'] : 0;
     
     ?>
@@ -187,14 +187,14 @@ try {
     
     <?php
 } catch (Exception $e) {
-    // Log error for debugging but show user-friendly message
+    // Ghi log lỗi để debug nhưng hiển thị thông báo thân thiện với người dùng
     error_log('Order Details Error: ' . $e->getMessage());
     echo '<div class="alert alert-danger">';
     echo '<i class="bi bi-exclamation-triangle me-2"></i>';
     echo 'Unable to load order details. Please try again later.';
     echo '</div>';
 } catch (PDOException $e) {
-    // Database specific errors
+    // Lỗi cụ thể từ cơ sở dữ liệu
     error_log('Database Error in Order Details: ' . $e->getMessage());
     echo '<div class="alert alert-danger">';
     echo '<i class="bi bi-exclamation-triangle me-2"></i>';
@@ -202,6 +202,6 @@ try {
     echo '</div>';
 }
 
-// Clean up output buffer
+// Dọn dẹp buffer đầu ra
 ob_end_flush();
 ?>

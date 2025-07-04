@@ -2,7 +2,7 @@
 $current_page = 'services';
 require_once '../includes/admin-layout.php';
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
@@ -43,7 +43,7 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
     </div>
 </div>
 
-<!-- Service Statistics -->
+<!-- Thống kê dịch vụ -->
 <div class="row mb-4">
     <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
         <div class="card h-100 py-2">
@@ -135,7 +135,7 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
     </div>
 </div>
 
-<!-- Services List -->
+<!-- Danh sách dịch vụ -->
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -143,7 +143,7 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                 <h6 class="m-0 font-weight-bold text-dark">All Service Requests</h6>
             </div>
             <div class="card-body">
-                <!-- Mobile-friendly service cards (visible only on small screens) -->
+                <!-- Cards thân thiện với mobile (chỉ hiển thị trên màn hình nhỏ) -->
                 <div class="d-block d-md-none">
                     <?php
                     try {
@@ -190,7 +190,7 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                     ?>
                 </div>
 
-                <!-- Desktop table (hidden on small screens) -->
+                <!-- Bảng desktop (ẩn trên màn hình nhỏ) -->
                 <div class="d-none d-md-block">
                     <div class="table-responsive">
                         <table class="table table-hover" id="servicesTable">
@@ -274,7 +274,7 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
 function viewServiceDetails(serviceId) {
     console.log('Loading service details for ID:', serviceId);
     
-    // Validate service ID
+    // Xác thực service ID
     if (!serviceId || isNaN(serviceId)) {
         alert('Invalid service ID');
         return;
@@ -290,12 +290,12 @@ function viewServiceDetails(serviceId) {
     `);
     $('#serviceDetailsModal').modal('show');
     
-    // Make AJAX request with better error handling
+    // Thực hiện yêu cầu AJAX với xử lý lỗi tốt hơn
     $.ajax({
         url: '../api/service-details.php',
         type: 'GET',
         data: { id: serviceId },
-        timeout: 10000, // 10 second timeout
+        timeout: 10000, // thời gian chờ 10 giây
         success: function(data) {
             console.log('Service details loaded successfully');
             $('#serviceDetailsContent').html(data);
@@ -331,7 +331,7 @@ function viewServiceDetails(serviceId) {
 
 function deleteService(serviceId) {
     if (confirm('Are you sure you want to delete this service request?')) {
-        // Show loading state
+        // Hiển thị trạng thái loading
         const button = event.target.closest('button');
         const originalText = button.innerHTML;
         button.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
@@ -342,32 +342,32 @@ function deleteService(serviceId) {
             type: 'GET',
             data: { action: 'delete', id: serviceId },
             success: function(response) {
-                // Check if response contains success indicator
+                // Kiểm tra xem response có chứa chỉ báo thành công không
                 if (response.includes('alert("Service request deleted successfully!")')) {
-                    // Show success message
+                    // Hiển thị thông báo thành công
                     const alertDiv = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
                         'Service request deleted successfully!' +
                         '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
                     $('#admin-content').prepend(alertDiv);
                     
-                    // Auto dismiss after 3 seconds
+                    // Tự động ẩn sau 3 giây
                     setTimeout(function() {
                         alertDiv.remove();
                     }, 3000);
                     
-                    // Reload the page to show updated list
+                    // Reload trang để hiển thị danh sách cập nhật
                     setTimeout(function() {
                         location.reload();
                     }, 1000);
                 } else {
-                    // Reset button state
+                    // Reset trạng thái button
                     button.innerHTML = originalText;
                     button.disabled = false;
                     alert('Error deleting service request');
                 }
             },
             error: function() {
-                // Reset button state
+                // Reset trạng thái button
                 button.innerHTML = originalText;
                 button.disabled = false;
                 alert('Error deleting service request');

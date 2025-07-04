@@ -3,7 +3,7 @@ $current_page = 'dashboard';
 require_once '../includes/admin-layout.php';
 ?>
 
-<!-- Dashboard content -->
+<!-- Nội dung Dashboard -->
 <div class="row mb-4">
     <div class="col-12">
         <h2>Admin Dashboard</h2>
@@ -11,7 +11,7 @@ require_once '../includes/admin-layout.php';
     </div>
 </div>
 
-<!-- Statistics Cards -->
+<!-- Cards thống kê -->
 <div class="row mb-4">
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-dark shadow h-100 py-2">
@@ -100,7 +100,7 @@ require_once '../includes/admin-layout.php';
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                // CHỈ TÍNH ĐƠN ĐÃ PAID (status = 1 hoặc 'Paid')
+                                // CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN (status = 1 hoặc 'Paid')
                                 $stmt = $conn->prepare("
                                     SELECT SUM(order_total) as total 
                                     FROM bill 
@@ -133,7 +133,7 @@ require_once '../includes/admin-layout.php';
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                // TÍNH ĐƠN PENDING
+                                // TÍNH ĐƠN ĐANG CHỜ XỬ LÝ
                                 $stmt = $conn->prepare("
                                     SELECT SUM(order_total) as total 
                                     FROM bill 
@@ -157,7 +157,7 @@ require_once '../includes/admin-layout.php';
     </div>
 </div>
 
-<!-- Recent Orders -->
+<!-- Đơn hàng gần đây -->
 <div class="row">
     <div class="col-lg-8 mb-4">
         <div class="card shadow">
@@ -194,7 +194,7 @@ require_once '../includes/admin-layout.php';
                                     $status_color = 'secondary';
                                     $status_value = $order['order_status'];
 
-                                    // Handle both string and numeric status values
+                                    // Xử lý cả giá trị status dạng string và numeric
                                     if ($status_value === 'Paid' || $status_value == 1) {
                                         $status_text = 'Paid';
                                         $status_color = 'success';

@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/admin-connect.php';
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     http_response_code(403);
     echo json_encode(['error' => 'Access denied']);
@@ -10,7 +10,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 }
 
 try {
-    // Get recent orders (last 10)
+    // Lấy đơn hàng gần đây (10 đơn cuối)
     $stmt = $conn->prepare("
         SELECT id, order_name, order_total, order_date, order_status 
         FROM bill 
@@ -22,14 +22,14 @@ try {
         $orders[] = $row;
     }
 
-    // Format orders for display
+    // Định dạng đơn hàng để hiển thị
     $formatted_orders = [];
     foreach ($orders as $order) {
         $status_text = 'Pending';
         $status_color = 'warning';
         $status_value = $order['order_status'];
         
-        // Handle both string and numeric status values
+        // Xử lý cả giá trị trạng thái string và numeric
         if ($status_value === 'paid' || $status_value == 1) {
             $status_text = 'Paid';
             $status_color = 'success';

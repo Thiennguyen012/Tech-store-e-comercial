@@ -4,14 +4,14 @@ require_once '../includes/admin-layout.php';
 
 $action = $_POST['action'] ?? $_GET['action'] ?? 'list';
 
-// Sorting parameters
+// Tham số sắp xếp
 $sort_by = $_GET['sort'] ?? 'id';
 $sort_order = $_GET['order'] ?? 'DESC';
 
-// Filtering parameters
+// Tham số lọc
 $filter_category = $_GET['category'] ?? '';
 
-// Validate sort parameters
+// Xác thực tham số sắp xếp
 $allowed_sorts = ['id', 'name', 'category_name', 'price', 'qty_in_stock'];
 $allowed_orders = ['ASC', 'DESC'];
 
@@ -22,7 +22,7 @@ if (!in_array($sort_order, $allowed_orders)) {
     $sort_order = 'DESC';
 }
 
-// Function to generate sort URL with current filters
+// Hàm tạo URL sắp xếp với bộ lọc hiện tại
 function getSortUrl($column, $current_sort, $current_order, $current_category = '') {
     $new_order = ($current_sort == $column && $current_order == 'ASC') ? 'DESC' : 'ASC';
     $url = "products.php?sort=" . $column . "&order=" . $new_order;
@@ -32,7 +32,7 @@ function getSortUrl($column, $current_sort, $current_order, $current_category = 
     return $url;
 }
 
-// Function to generate filter URL with current sorting
+// Hàm tạo URL lọc với sắp xếp hiện tại
 function getFilterUrl($category_id, $current_sort, $current_order) {
     $url = "products.php";
     $params = [];
@@ -52,7 +52,7 @@ function getFilterUrl($category_id, $current_sort, $current_order) {
     return $url;
 }
 
-// Function to generate sort icon
+// Hàm tạo biểu tượng sắp xếp
 function getSortIcon($column, $current_sort, $current_order) {
     if ($current_sort == $column) {
         return $current_order == 'ASC' ? '<i class="bi bi-arrow-up"></i>' : '<i class="bi bi-arrow-down"></i>';
@@ -61,7 +61,7 @@ function getSortIcon($column, $current_sort, $current_order) {
 }
 
 if ($action == 'add' && $_POST) {
-    // Handle add product
+    // Xử lý thêm sản phẩm
     try {
         $stmt = $conn->prepare("
             INSERT INTO product (name, description, category_id, qty_in_stock, product_image, price) 
@@ -85,7 +85,7 @@ if ($action == 'add' && $_POST) {
 }
 
 if ($action == 'edit' && $_POST) {
-    // Handle edit product
+    // Xử lý chỉnh sửa sản phẩm
     try {
         $stmt = $conn->prepare("
             UPDATE product 
@@ -132,7 +132,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
 </div>
 
 <?php if ($action == 'add'): ?>
-<!-- Add Product Form -->
+<!-- Form thêm sản phẩm -->
 <div class="row">
     <div class="col-lg-10">
         <div class="card shadow">
@@ -192,7 +192,7 @@ if ($action == 'delete' && isset($_GET['id'])) {
 </div>
 
 <?php elseif ($action == 'edit'): ?>
-<!-- Edit Product Form -->
+<!-- Form chỉnh sửa sản phẩm -->
 <?php
 $product_id = $_GET['id'] ?? 0;
 try {
@@ -270,7 +270,7 @@ try {
 </div>
 
 <?php else: ?>
-<!-- Products List -->
+<!-- Danh sách sản phẩm -->
 <div class="row">
     <div class="col-12">
         <div class="card shadow">
@@ -398,11 +398,11 @@ try {
                 </div>
                 
                 <div class="table-responsive">
-                    <!-- Mobile Cards (visible only on small screens) -->
+                    <!-- Mobile Cards (chỉ hiển thị trên màn hình nhỏ) -->
                     <div class="d-block d-md-none">
                         <?php
                         try {
-                            // Build WHERE clause for filtering
+                            // Xây dựng mệnh đề WHERE để lọc
                             $where_clause = "";
                             $params = [];
                             if (!empty($filter_category)) {
@@ -410,7 +410,7 @@ try {
                                 $params[] = $filter_category;
                             }
                             
-                            // Build the ORDER BY clause for mobile
+                            // Xây dựng mệnh đề ORDER BY cho mobile
                             $order_clause = "ORDER BY ";
                             if ($sort_by == 'category_name') {
                                 $order_clause .= "pc.category_name " . $sort_order . ", p.id DESC";
@@ -474,7 +474,7 @@ try {
                         ?>
                     </div>
                     
-                    <!-- Desktop Table (hidden on small screens) -->
+                    <!-- Desktop Table (ẩn trên màn hình nhỏ) -->
                     <div class="d-none d-md-block">
                     <table class="table table-bordered table-hover" id="productsTable">
                         <thead>
@@ -507,7 +507,7 @@ try {
                         <tbody>
                             <?php
                             try {
-                                // Build WHERE clause for filtering  
+                                // Xây dựng mệnh đề WHERE để lọc  
                                 $where_clause = "";
                                 $params = [];
                                 if (!empty($filter_category)) {
@@ -515,7 +515,7 @@ try {
                                     $params[] = $filter_category;
                                 }
                                 
-                                // Build the ORDER BY clause
+                                // Xây dựng mệnh đề ORDER BY
                                 $order_clause = "ORDER BY ";
                                 if ($sort_by == 'category_name') {
                                     $order_clause .= "pc.category_name " . $sort_order . ", p.id DESC";
@@ -567,7 +567,7 @@ try {
 <?php endif; ?>
 
 <style>
-/* Sortable table headers */
+/* Headers bảng có thể sắp xếp */
 .table thead th a {
     display: flex !important;
     align-items: center;
@@ -665,17 +665,17 @@ try {
 </style>
 
 <script>
-// Category filter function
+// Hàm lọc theo danh mục
 function filterByCategory(categoryId) {
     var url = 'products.php';
     var params = [];
     
-    // Add category filter if selected
+    // Thêm bộ lọc danh mục nếu được chọn
     if (categoryId) {
         params.push('category=' + encodeURIComponent(categoryId));
     }
     
-    // Preserve current sorting
+    // Bảo tồn sắp xếp hiện tại
     <?php if ($sort_by != 'id' || $sort_order != 'DESC'): ?>
         params.push('sort=<?php echo $sort_by; ?>');
         params.push('order=<?php echo $sort_order; ?>');
@@ -688,43 +688,43 @@ function filterByCategory(categoryId) {
     location.href = url;
 }
 
-// Add keyboard shortcuts for sorting and filtering
+// Thêm phím tắt cho sắp xếp và lọc
 document.addEventListener('keydown', function(e) {
-    // Alt + N = Sort by Name
+    // Alt + N = Sắp xếp theo tên
     if (e.altKey && e.key === 'n') {
         e.preventDefault();
         location.href = '<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category); ?>';
     }
-    // Alt + P = Sort by Price  
+    // Alt + P = Sắp xếp theo giá  
     if (e.altKey && e.key === 'p') {
         e.preventDefault();
         location.href = '<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category); ?>';
     }
-    // Alt + S = Sort by Stock
+    // Alt + S = Sắp xếp theo tồn kho
     if (e.altKey && e.key === 's') {
         e.preventDefault();
         location.href = '<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category); ?>';
     }
-    // Alt + C = Focus on category filter
+    // Alt + C = Focus vào bộ lọc danh mục
     if (e.altKey && e.key === 'c') {
         e.preventDefault();
         document.getElementById('categoryFilter').focus();
     }
-    // Alt + R = Reset sorting and filters
+    // Alt + R = Reset sắp xếp và bộ lọc
     if (e.altKey && e.key === 'r') {
         e.preventDefault();
         location.href = 'products.php';
     }
 });
 
-// Confirm delete with better UX
+// Xác nhận xóa với UX tốt hơn
 function confirmDelete(productName, productId) {
     if (confirm(`Are you sure you want to delete "${productName}"?\n\nThis action cannot be undone.`)) {
         location.href = `products.php?action=delete&id=${productId}`;
     }
 }
 
-// Auto-refresh stock status colors
+// Tự động làm mới màu trạng thái tồn kho
 function updateStockColors() {
     document.querySelectorAll('.badge').forEach(badge => {
         const stock = parseInt(badge.textContent);
@@ -739,11 +739,11 @@ function updateStockColors() {
     });
 }
 
-// Initialize on page load
+// Khởi tạo khi trang tải
 document.addEventListener('DOMContentLoaded', function() {
     updateStockColors();
     
-    // Add tooltips for keyboard shortcuts
+    // Thêm tooltips cho phím tắt
     const tooltips = [
         { selector: 'a[href*="sort=name"]', text: 'Sort by Name (Alt+N)' },
         { selector: 'a[href*="sort=price"]', text: 'Sort by Price (Alt+P)' },

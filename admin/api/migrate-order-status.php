@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/admin-connect.php';
 
-// Check if user is admin
+// Kiểm tra xem người dùng có phải admin không
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     die('Access denied');
 }
@@ -11,7 +11,7 @@ try {
     echo "<h2>Order Status Migration</h2>";
     echo "<p>Migrating numeric order statuses to string values...</p>";
 
-    // Count existing records with numeric status
+    // Đếm các bản ghi hiện có với trạng thái số
     $stmt = $conn->prepare("SELECT 
         COUNT(CASE WHEN order_status = 0 OR order_status IS NULL THEN 1 END) as pending_count,
         COUNT(CASE WHEN order_status = 1 THEN 1 END) as completed_count,
@@ -34,17 +34,17 @@ try {
     if (isset($_POST['migrate'])) {
         $conn->beginTransaction();
 
-        // Update status 0 and NULL to 'pending'
+        // Cập nhật trạng thái 0 và NULL thành 'pending'
         $stmt = $conn->prepare("UPDATE bill SET order_status = 'pending' WHERE order_status = 0 OR order_status IS NULL");
         $stmt->execute();
         $pending_updated = $stmt->rowCount();
 
-        // Update status 1 to 'paid'
+        // Cập nhật trạng thái 1 thành 'paid'
         $stmt = $conn->prepare("UPDATE bill SET order_status = 'paid' WHERE order_status = 1");
         $stmt->execute();
         $paid_updated = $stmt->rowCount();
 
-        // Update status 2 to 'cancelled'
+        // Cập nhật trạng thái 2 thành 'cancelled'
         $stmt = $conn->prepare("UPDATE bill SET order_status = 'cancelled' WHERE order_status = 2");
         $stmt->execute();
         $cancelled_updated = $stmt->rowCount();
@@ -64,7 +64,7 @@ try {
         echo "<p><a href='../modules/orders.php' class='btn btn-primary'>Go to Order Management</a></p>";
 
     } else {
-        // Show migration form
+        // Hiển thị form migration
         if ($counts['pending_count'] > 0 || $counts['completed_count'] > 0 || $counts['cancelled_count'] > 0) {
             echo "<form method='POST'>";
             echo "<div style='background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; margin: 10px 0; border-radius: 5px;'>";
