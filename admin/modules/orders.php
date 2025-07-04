@@ -395,7 +395,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         <button class="btn btn-outline-dark btn-sm" onclick="viewOrderDetails(<?php echo $order['id']; ?>)">
                                             <i class="bi bi-eye"></i> View Details
                                         </button>
-                                        <select class="form-select form-select-sm" onchange="updateOrderStatus(<?php echo $order['id']; ?>, this.value)">
+                                        <select class="form-select form-select-sm" onchange="updateOrderStatus(<?php echo $order['id']; ?>, this.value)" <?php echo $status_value == 'Cancelled' ? 'disabled' : ''; ?>>
                                             <option value="Pending" <?php echo $status_value == 'Pending' ? ' selected' : ''; ?>>Pending</option>
                                             <option value="Shipping" <?php echo $status_value == 'Shipping' ? ' selected' : ''; ?>>Shipping</option>
                                             <option value="Completed" <?php echo $status_value == 'Completed' ? ' selected' : ''; ?>>Completed</option>
@@ -523,7 +523,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         echo "<td>";
                                         echo "<div class='btn-group btn-group-sm' role='group'>";
                                         echo "<button class='btn btn-outline-dark' onclick='viewOrderDetails({$order['id']})' title='View Details'><i class='bi bi-eye'></i></button>";
-                                        echo "<select class='form-select form-select-sm' onchange='updateOrderStatus({$order['id']}, this.value)' style='width: auto; min-width: 100px;'>";
+                                        $disabled = ($status_value == 'Cancelled') ? ' disabled' : '';
+                                        echo "<select class='form-select form-select-sm' onchange='updateOrderStatus({$order['id']}, this.value)' style='width: auto; min-width: 100px;'{$disabled}>";
                                         echo "<option value='Pending'" . ($status_value == 'Pending' ? ' selected' : '') . ">Pending</option>";
                                         echo "<option value='Shipping'" . ($status_value == 'Shipping' ? ' selected' : '') . ">Shipping</option>";
                                         echo "<option value='Completed'" . ($status_value == 'Completed' ? ' selected' : '') . ">Completed</option>";
@@ -562,6 +563,24 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 </div>
 
 <script>
+    // CSS cho disabled select elements
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-select:disabled {
+            background-color: #f8f9fa !important;
+            border-color: #dee2e6 !important;
+            color: #6c757d !important;
+            cursor: not-allowed !important;
+        }
+        .form-select:disabled option {
+            color: #6c757d !important;
+        }
+        .badge.bg-danger {
+            position: relative;
+        }
+    `;
+    document.head.appendChild(style);
+
     // Tự động gửi form khi bộ lọc thay đổi
     document.addEventListener('DOMContentLoaded', function() {
         // Đánh dấu đơn hàng đã được xem khi trang tải
@@ -693,7 +712,19 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             location.reload();
                         }, 1000);
                     } else {
-                        alert('Error: ' + result.message);
+                        // Hiển thị thông báo lỗi với style đẹp hơn
+                        const alertDiv = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<i class="bi bi-exclamation-triangle me-2"></i>' + result.message +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                        $('#admin-content').prepend(alertDiv);
+
+                        // Tự động ẩn sau 5 giây
+                        setTimeout(function() {
+                            alertDiv.remove();
+                        }, 5000);
+                        
+                        // Revert lại giá trị select về trạng thái ban đầu
+                        location.reload();
                     }
                 } catch (e) {
                     console.error('Lỗi phân tích:', e);

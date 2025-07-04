@@ -695,17 +695,6 @@ try {
     border: 1px solid #e9ecef;
 }
 
-/* Badge styling */
-.badge.bg-success {
-    background-color: #198754 !important;
-}
-.badge.bg-warning {
-    background-color: #ffc107 !important;
-    color: #000 !important;
-}
-.badge.bg-danger {
-    background-color: #dc3545 !important;
-}
 
 /* Mobile card improvements */
 @media (max-width: 767.98px) {
@@ -844,7 +833,7 @@ function updateStockColors() {
         if (stock > 5) {
             badge.className += 'bg-success';
         } else if (stock > 0) {
-            badge.className += 'bg-warning';
+            badge.className += 'bg-danger';
         } else {
             badge.className += 'bg-danger';
         }

@@ -127,7 +127,7 @@ $current_page = $current_page ?? 'dashboard';
                         <a href="<?php echo $base_path; ?>orders.php" class="nav-link text-white <?php echo $current_page == 'orders' ? 'active' : ''; ?> d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-cart-check"></i> <span>Orders</span></span>
                             <?php if ($new_orders_count > 0): ?>
-                                <span id="new-orders-badge" class="badge bg-danger rounded-pill"><?php echo $new_orders_count; ?></span>
+                                <span id="new-orders-badge" class="badge bg-danger "><?php echo $new_orders_count; ?></span>
                             <?php endif; ?>
                         </a>
                     </li>

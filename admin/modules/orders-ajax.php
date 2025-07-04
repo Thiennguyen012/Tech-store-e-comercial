@@ -66,6 +66,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'mark_orders_viewed') {
             exit;
         }
         
+        // Kiểm tra nếu đơn hàng đã bị hủy thì không cho phép thay đổi trạng thái
+        if ($existing_order['order_status'] === 'Cancelled') {
+            echo json_encode(['success' => false, 'message' => 'Cannot change status of a cancelled order']);
+            exit;
+        }
+        
         // Xử lý hoàn trả sản phẩm khi chuyển sang trạng thái Cancelled
         if ($_POST['status'] === 'Cancelled' && $existing_order['order_status'] !== 'Cancelled') {
             try {

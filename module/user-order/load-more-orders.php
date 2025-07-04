@@ -136,8 +136,17 @@ foreach ($orders as $billId => $order): ?>
             </tbody>
         </table>
 
-        <div class="text-end mt-3">
-            <strong>Total:</strong> <span class="fs-5 text-success">$<?= number_format($order['order_total'], 2) ?></span>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+                <?php if ($status === 'Pending' || $status === null || $status === ''): ?>
+                    <button class="btn btn-outline-dark btn-md rounded-pill" onclick="cancelOrder(<?= $billId ?>)" 
+                            title="Cancel this order">Cancel Order
+                    </button>
+                <?php endif; ?>
+            </div>
+            <div>
+                <strong>Total:</strong> <span class="fs-5 text-success fw-bold">$<?= number_format($order['order_total'], 2) ?></span>
+            </div>
         </div>
     </div>
 <?php endforeach; ?>
