@@ -82,8 +82,8 @@ foreach ($orders as $billId => $order): ?>
                 $status_class = 'warning';
 
                 // Handle both string and numeric status values
-                if ($status === 'Paid' || $status == 1) {
-                    $status_text = 'Paid';
+                if ($status === 'Completed' || $status == 1) {
+                    $status_text = 'Completed';
                     $status_class = 'success';
                 } elseif ($status === 'Cancelled' || $status == 2) {
                     $status_text = 'Cancelled';

@@ -50,7 +50,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'mark_orders_viewed') {
     error_log("Order status update attempt: order_id=" . $_POST['order_id'] . ", status=" . $_POST['status']);
     
     try {
-        // Đầu tiên kiểm tra xem đơn hàng có tồn tại không
+        // Kiểm tra xem đơn hàng có tồn tại không
         $check_stmt = $conn->prepare("SELECT id, order_status FROM bill WHERE id = ?");
         $check_stmt->execute([$_POST['order_id']]);
         $existing_order = $check_stmt->fetch();

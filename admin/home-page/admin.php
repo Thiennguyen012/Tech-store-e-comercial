@@ -100,11 +100,11 @@ require_once '../includes/admin-layout.php';
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                // CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN (status = 1 hoặc 'Paid')
+                                // CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN (status = 1 hoặc 'Completed')
                                 $stmt = $conn->prepare("
                                     SELECT SUM(order_total) as total 
                                     FROM bill 
-                                    WHERE order_status = 1 OR order_status = 'Paid'
+                                    WHERE order_status = 1 OR order_status = 'Completed'
                                 ");
                                 $stmt->execute();
                                 $result = $stmt->fetch();
@@ -195,8 +195,8 @@ require_once '../includes/admin-layout.php';
                                     $status_value = $order['order_status'];
 
                                     // Xử lý cả giá trị status dạng string và numeric
-                                    if ($status_value === 'Paid' || $status_value == 1) {
-                                        $status_text = 'Paid';
+                                    if ($status_value === 'Completed' || $status_value == 1) {
+                                        $status_text = 'Completed';
                                         $status_color = 'success';
                                     } elseif ($status_value === 'Cancelled' || $status_value == 2) {
                                         $status_text = 'Cancelled';

@@ -47,7 +47,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                     LEFT JOIN product_category pc ON p.category_id = pc.id
                                     INNER JOIN bill b ON cc.bill_id = b.id  -- KẾT HỢP với bảng bill
                                     WHERE p.name IS NOT NULL 
-                                    AND (b.order_status = 1 OR b.order_status = 'Paid')  -- CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN
+                                    AND (b.order_status = 1 OR b.order_status = 'Completed')  -- CHỈ TÍNH ĐƠN ĐÃ THANH TOÁN
                                     GROUP BY p.id, p.name
                                     ORDER BY times_sold DESC
                                     LIMIT 10
@@ -85,7 +85,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     $stmt = $conn->prepare("
                         SELECT AVG(order_total) as avg_order 
                         FROM bill 
-                        WHERE order_status = 1 OR order_status = 'Paid'
+                        WHERE order_status = 1 OR order_status = 'Completed'
                     ");
                     $stmt->execute();
                     $avg_order = $stmt->fetch()['avg_order'];
@@ -97,7 +97,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         JOIN product p ON cc.product_name = p.name
                         JOIN product_category pc ON p.category_id = pc.id
                         JOIN bill b ON cc.bill_id = b.id
-                        WHERE b.order_status = 1 OR b.order_status = 'Paid'
+                        WHERE b.order_status = 1 OR b.order_status = 'Completed'
                         GROUP BY pc.id
                         ORDER BY count DESC
                         LIMIT 1
@@ -108,7 +108,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     // Đơn hàng tháng này - TÁCH RIÊNG ĐÃ THANH TOÁN VÀ ĐANG CHỜ XỬ LÝ
                     $stmt = $conn->prepare("
                         SELECT 
-                            COUNT(CASE WHEN order_status = 1 OR order_status = 'Paid' THEN 1 END) as paid_count,
+                            COUNT(CASE WHEN order_status = 1 OR order_status = 'Completed' THEN 1 END) as paid_count,
                             COUNT(CASE WHEN order_status = 0 OR order_status = 'Pending' THEN 1 END) as pending_count
                         FROM bill 
                         WHERE MONTH(order_date) = MONTH(CURDATE()) 
@@ -119,17 +119,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     
                     echo "<div class='mb-3'>";
                     echo "<h5>$" . number_format($avg_order, 2) . "</h5>";
-                    echo "<small class='text-muted'>Average Order Value (Paid Orders)</small>";
+                    echo "<small class='text-muted'>Average Order Value (Completed Orders)</small>";
                     echo "</div>";
                     
                     echo "<div class='mb-3'>";
                     echo "<h5>" . ($popular_category['category_name'] ?? 'N/A') . "</h5>";
-                    echo "<small class='text-muted'>Most Popular Category (Paid Orders)</small>";
+                    echo "<small class='text-muted'>Most Popular Category (Completed Orders)</small>";
                     echo "</div>";
                     
                     echo "<div class='mb-3'>";
                     echo "<h5 class='text-success'>{$monthly_stats['paid_count']}</h5>";
-                    echo "<small class='text-muted'>Paid Orders This Month</small>";
+                    echo "<small class='text-muted'>Completed Orders This Month</small>";
                     echo "</div>";
                     
                     echo "<div class='mb-3'>";

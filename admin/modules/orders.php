@@ -45,11 +45,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Paid Orders</div>
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Completed Orders</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'Paid'");
+                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM bill WHERE order_status = 'Completed'");
                                 $stmt->execute();
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
@@ -164,7 +164,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             <select class="form-select" id="status_filter" name="status_filter">
                                 <option value="">All Status</option>
                                 <option value="Pending" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
-                                <option value="Paid" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Paid') ? 'selected' : ''; ?>>Paid</option>
+                                <option value="Completed" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Completed') ? 'selected' : ''; ?>>Completed</option>
                                 <option value="Cancelled" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
                             </select>
                         </div>
@@ -335,10 +335,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             $status_color = 'warning';
                             $status_value = $order['order_status'];
 
-                            if ($status_value === 'Paid') {
-                                $status_text = 'Paid';
+                            if ($status_value === 'Completed') {
+                                $status_text = 'Completed';
                                 $status_color = 'success';
-                                $status_value = 'Paid';
+                                $status_value = 'Completed';
                             } elseif ($status_value === 'Cancelled') {
                                 $status_text = 'Cancelled';
                                 $status_color = 'danger';
@@ -370,7 +370,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         </button>
                                         <select class="form-select form-select-sm" onchange="updateOrderStatus(<?php echo $order['id']; ?>, this.value)">
                                             <option value="Pending" <?php echo $status_value == 'Pending' ? ' selected' : ''; ?>>Pending</option>
-                                            <option value="Paid" <?php echo $status_value == 'Paid' ? ' selected' : ''; ?>>Paid</option>
+                                            <option value="Completed" <?php echo $status_value == 'Completed' ? ' selected' : ''; ?>>Completed</option>
                                             <option value="Cancelled" <?php echo $status_value == 'Cancelled' ? ' selected' : ''; ?>>Cancelled</option>
                                         </select>
                                     </div>
@@ -463,10 +463,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         $status_color = 'warning';
                                         $status_value = $order['order_status'];
 
-                                        if ($status_value === 'Paid') {
-                                            $status_text = 'Paid';
+                                        if ($status_value === 'Completed') {
+                                            $status_text = 'Completed';
                                             $status_color = 'success';
-                                            $status_value = 'Paid';
+                                            $status_value = 'Completed';
                                         } elseif ($status_value === 'Cancelled') {
                                             $status_text = 'Cancelled';
                                             $status_color = 'danger';
@@ -493,7 +493,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         echo "<button class='btn btn-outline-dark' onclick='viewOrderDetails({$order['id']})' title='View Details'><i class='bi bi-eye'></i></button>";
                                         echo "<select class='form-select form-select-sm' onchange='updateOrderStatus({$order['id']}, this.value)' style='width: auto; min-width: 100px;'>";
                                         echo "<option value='Pending'" . ($status_value == 'Pending' ? ' selected' : '') . ">Pending</option>";
-                                        echo "<option value='Paid'" . ($status_value == 'Paid' ? ' selected' : '') . ">Paid</option>";
+                                        echo "<option value='Completed'" . ($status_value == 'Completed' ? ' selected' : '') . ">Completed</option>";
                                         echo "<option value='Cancelled'" . ($status_value == 'Cancelled' ? ' selected' : '') . ">Cancelled</option>";
                                         echo "</select>";
                                         echo "</div>";

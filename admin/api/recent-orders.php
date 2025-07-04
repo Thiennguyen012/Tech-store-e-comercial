@@ -30,8 +30,8 @@ try {
         $status_value = $order['order_status'];
         
         // Xử lý cả giá trị trạng thái string và numeric
-        if ($status_value === 'paid' || $status_value == 1) {
-            $status_text = 'Paid';
+        if ($status_value === 'completed' || $status_value == 1) {
+            $status_text = 'Completed';
             $status_color = 'success';
         } elseif ($status_value === 'cancelled' || $status_value == 2) {
             $status_text = 'Cancelled';

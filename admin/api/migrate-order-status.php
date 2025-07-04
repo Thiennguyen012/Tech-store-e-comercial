@@ -39,10 +39,10 @@ try {
         $stmt->execute();
         $pending_updated = $stmt->rowCount();
 
-        // Cập nhật trạng thái 1 thành 'paid'
-        $stmt = $conn->prepare("UPDATE bill SET order_status = 'paid' WHERE order_status = 1");
+        // Cập nhật trạng thái 1 thành 'completed'
+        $stmt = $conn->prepare("UPDATE bill SET order_status = 'completed' WHERE order_status = 1");
         $stmt->execute();
-        $paid_updated = $stmt->rowCount();
+        $completed_updated = $stmt->rowCount();
 
         // Cập nhật trạng thái 2 thành 'cancelled'
         $stmt = $conn->prepare("UPDATE bill SET order_status = 'cancelled' WHERE order_status = 2");
@@ -55,10 +55,10 @@ try {
         echo "<h4>✅ Migration Completed Successfully!</h4>";
         echo "<ul>";
         echo "<li>Updated $pending_updated orders to 'pending'</li>";
-        echo "<li>Updated $paid_updated orders to 'paid'</li>";
+        echo "<li>Updated $completed_updated orders to 'completed'</li>";
         echo "<li>Updated $cancelled_updated orders to 'cancelled'</li>";
         echo "</ul>";
-        echo "<p><strong>Total updated:</strong> " . ($pending_updated + $paid_updated + $cancelled_updated) . " orders</p>";
+        echo "<p><strong>Total updated:</strong> " . ($pending_updated + $completed_updated + $cancelled_updated) . " orders</p>";
         echo "</div>";
 
         echo "<p><a href='../modules/orders.php' class='btn btn-primary'>Go to Order Management</a></p>";
@@ -69,11 +69,11 @@ try {
             echo "<form method='POST'>";
             echo "<div style='background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; margin: 10px 0; border-radius: 5px;'>";
             echo "<h4>⚠️ Migration Required</h4>";
-            echo "<p>This will update your database to use string status values ('pending', 'paid', 'cancelled') instead of numeric values (0, 1, 2).</p>";
+            echo "<p>This will update your database to use string status values ('pending', 'completed', 'cancelled') instead of numeric values (0, 1, 2).</p>";
             echo "<p><strong>What will happen:</strong></p>";
             echo "<ul>";
             echo "<li>Status 0 and NULL → 'pending'</li>";
-            echo "<li>Status 1 → 'paid'</li>";
+            echo "<li>Status 1 → 'completed'</li>";
             echo "<li>Status 2 → 'cancelled'</li>";
             echo "</ul>";
             echo "<p><strong>This action cannot be undone. Please backup your database before proceeding.</strong></p>";

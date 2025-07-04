@@ -62,8 +62,8 @@ try {
     $status_color = 'secondary';
     $status_value = $order['order_status'];
     
-    if ($status_value === 'paid' || $status_value == 1) {
-        $status_text = 'Paid';
+    if ($status_value === 'completed' || $status_value == 1) {
+        $status_text = 'Completed';
         $status_color = 'success';
     } elseif ($status_value === 'cancelled' || $status_value == 2) {
         $status_text = 'Cancelled';
