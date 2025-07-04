@@ -9,6 +9,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 }
 
 $action = $_POST['action'] ?? $_GET['action'] ?? 'list';
+$service_type_filter = $_GET['service_type'] ?? 'all';
 
 if ($action == 'delete' && isset($_GET['id'])) {
     try {
@@ -34,6 +35,15 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
         exit;
     }
 }
+
+// Lấy danh sách các loại dịch vụ có sẵn
+try {
+    $stmt = $conn->prepare("SELECT DISTINCT service_type FROM services WHERE service_type IS NOT NULL AND service_type != '' ORDER BY service_type");
+    $stmt->execute();
+    $service_types = $stmt->fetchAll(PDO::FETCH_COLUMN);
+} catch (Exception $e) {
+    $service_types = [];
+}
 ?>
 
 <div class="row mb-4">
@@ -42,6 +52,8 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
         <p class="text-muted">Manage customer service requests</p>
     </div>
 </div>
+
+
 
 <!-- Thống kê dịch vụ -->
 <div class="row mb-4">
@@ -54,8 +66,16 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <?php
                             try {
-                                $stmt = $conn->prepare("SELECT COUNT(*) as count FROM services");
-                                $stmt->execute();
+                                $count_query = "SELECT COUNT(*) as count FROM services";
+                                $count_params = [];
+                                
+                                if ($service_type_filter != 'all') {
+                                    $count_query .= " WHERE service_type = ?";
+                                    $count_params[] = $service_type_filter;
+                                }
+                                
+                                $stmt = $conn->prepare($count_query);
+                                $stmt->execute($count_params);
                                 echo $stmt->fetch()['count'];
                             } catch (Exception $e) {
                                 echo "Error";
@@ -134,28 +154,72 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
         </div>
     </div>
 </div>
-
+<!-- Bộ lọc -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body py-3">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="serviceTypeFilter" class="form-label">Filter by Service Type</label>
+                        <select class="form-select" id="serviceTypeFilter" onchange="filterServices()">
+                            <option value="all" <?php echo $service_type_filter == 'all' ? 'selected' : ''; ?>>All Service Types</option>
+                            <?php foreach ($service_types as $type): ?>
+                                <option value="<?php echo htmlspecialchars($type); ?>" <?php echo $service_type_filter == $type ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($type); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">
+                            <i class="bi bi-arrow-clockwise"></i> Clear Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Danh sách dịch vụ -->
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header py-3 mobile-stack">
-                <h6 class="m-0 font-weight-bold text-dark">All Service Requests</h6>
+                <h6 class="m-0 font-weight-bold text-dark">
+                    <?php 
+                    if ($service_type_filter != 'all') {
+                        echo htmlspecialchars($service_type_filter) . ' Service Requests';
+                    } else {
+                        echo 'All Service Requests';
+                    }
+                    ?>
+                </h6>
             </div>
             <div class="card-body">
                 <!-- Cards thân thiện với mobile (chỉ hiển thị trên màn hình nhỏ) -->
                 <div class="d-block d-md-none">
                     <?php
                     try {
-                        $stmt = $conn->prepare("
+                        $query = "
                             SELECT s.*, u.name as user_name 
                             FROM services s 
-                            LEFT JOIN site_user u ON s.user_id = u.id 
-                            ORDER BY s.created_at DESC
-                        ");
-                        $stmt->execute();
+                            LEFT JOIN site_user u ON s.user_id = u.id";
+                        $params = [];
                         
+                        if ($service_type_filter != 'all') {
+                            $query .= " WHERE s.service_type = ?";
+                            $params[] = $service_type_filter;
+                        }
+                        
+                        $query .= " ORDER BY s.created_at DESC";
+                        
+                        $stmt = $conn->prepare($query);
+                        $stmt->execute($params);
+                        
+                        $has_results = false;
                         while ($service = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $has_results = true;
                             $customer_name = $service['user_name'] ?: $service['name'] ?: 'Guest';
                             ?>
                             <div class="card mb-3 border">
@@ -184,6 +248,13 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                             </div>
                             <?php
                         }
+                        
+                        if (!$has_results) {
+                            echo '<div class="alert alert-info text-center">
+                                <i class="bi bi-info-circle me-2"></i>
+                                No service requests found' . ($service_type_filter != 'all' ? ' for "' . htmlspecialchars($service_type_filter) . '"' : '') . '.
+                            </div>';
+                        }
                     } catch (Exception $e) {
                         echo '<div class="alert alert-danger">Error loading services: ' . $e->getMessage() . '</div>';
                     }
@@ -208,15 +279,25 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                             <tbody>
                                 <?php
                                 try {
-                                    $stmt = $conn->prepare("
+                                    $query = "
                                         SELECT s.*, u.name as user_name 
                                         FROM services s 
-                                        LEFT JOIN site_user u ON s.user_id = u.id 
-                                        ORDER BY s.created_at DESC
-                                    ");
-                                    $stmt->execute();
+                                        LEFT JOIN site_user u ON s.user_id = u.id";
+                                    $params = [];
                                     
+                                    if ($service_type_filter != 'all') {
+                                        $query .= " WHERE s.service_type = ?";
+                                        $params[] = $service_type_filter;
+                                    }
+                                    
+                                    $query .= " ORDER BY s.created_at DESC";
+                                    
+                                    $stmt = $conn->prepare($query);
+                                    $stmt->execute($params);
+                                    
+                                    $has_results = false;
                                     while ($service = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        $has_results = true;
                                         $customer_name = $service['user_name'] ?: $service['name'] ?: 'Guest';
                                         
                                         echo "<tr>";
@@ -233,6 +314,13 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
                                         echo "</div>";
                                         echo "</td>";
                                         echo "</tr>";
+                                    }
+                                    
+                                    if (!$has_results) {
+                                        echo "<tr><td colspan='7' class='text-center text-muted py-4'>";
+                                        echo "<i class='bi bi-info-circle me-2'></i>";
+                                        echo "No service requests found" . ($service_type_filter != 'all' ? ' for "' . htmlspecialchars($service_type_filter) . '"' : '') . ".";
+                                        echo "</td></tr>";
                                     }
                                 } catch (Exception $e) {
                                     echo "<tr><td colspan='7' class='text-center text-danger'>Error loading services: {$e->getMessage()}</td></tr>";
@@ -271,6 +359,28 @@ if ($action == 'update_status' && isset($_POST['service_id']) && isset($_POST['s
 </div>
 
 <script>
+// Hàm lọc dịch vụ theo loại
+function filterServices() {
+    const selectedType = document.getElementById('serviceTypeFilter').value;
+    const currentUrl = new URL(window.location.href);
+    
+    if (selectedType === 'all') {
+        currentUrl.searchParams.delete('service_type');
+    } else {
+        currentUrl.searchParams.set('service_type', selectedType);
+    }
+    
+    // Chuyển hướng với tham số lọc mới
+    window.location.href = currentUrl.toString();
+}
+
+// Hàm xóa bộ lọc
+function clearFilters() {
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete('service_type');
+    window.location.href = currentUrl.toString();
+}
+
 function viewServiceDetails(serviceId) {
     console.log('Loading service details for ID:', serviceId);
     
