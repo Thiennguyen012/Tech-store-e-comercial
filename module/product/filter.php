@@ -201,7 +201,7 @@ if ($result && $result->num_rows > 0) {
         $stmtRating->close();
         echo '<div class="col">';
         echo '  <div class="card product-card border-0 h-100 shadow-sm">';
-        echo '    <a href="#" onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\', this, \'single-product\', \'' . $row['id'] . '\'); return false;" style="text-decoration:none; color:inherit;">';
+        echo '    <a href="#" onclick="location.href=\'index.php?act=single-product&id=' . $row['id'] . '\'; return false;" style="text-decoration:none; color:inherit;">';
         echo '      <img src="' . htmlspecialchars($row['product_image']) . '" class="card-img-top p-2" alt="' . htmlspecialchars($row['name']) . '" style="height:260px;object-fit:contain;">';
         echo '    </a>';
         echo '    <div class="card-body text-center h-100 d-flex flex-column justify-content-start">';
@@ -218,7 +218,7 @@ if ($result && $result->num_rows > 0) {
 
         // Đặt button bên ngoài card-body, bên trong .card
         echo '    <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 mt-auto">';
-        echo '      <button onclick="loadPage(\'module/product/single_product.php?id=' . $row['id'] . '\', this, \'single-product\', \'' . $row['id'] . '\'); return false;" class="btn btn-dark btn-sm rounded-pill px-3">';
+        echo '      <button onclick="location.href=\'index.php?act=single-product&id=' . $row['id'] . '\'; return false;" class="btn btn-dark btn-sm rounded-pill px-3">';
         echo '        More details';
         echo '      </button>';
 

@@ -409,7 +409,7 @@ if ($isSearchMode) {
                   </div>
                   <div class="d-flex flex-wrap justify-content-center gap-2">
                     <button
-                      onclick="loadPage('module/product/single_product.php?id=<?php echo $row['id']; ?>', this, 'single-product', '<?php echo $row['id']; ?>'); return false;"
+                      onclick="location.href='index.php?act=single-product&id=<?php echo $row['id']; ?>'; return false;"
                       class="btn btn-dark btn-sm rounded-pill px-3">
                       More details
                     </button>
