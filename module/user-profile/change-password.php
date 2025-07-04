@@ -63,8 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form method="post" autocomplete="off">
                     <div class="mb-3">
                         <label for="current_password" class="form-label">Current Password</label>
-                        <input type="password" class="form-control" id="current_password" name="current_password" required autocomplete="current-password">
+                        <input type="password" class="form-control" id="current_password" name="current_password" autocomplete="current-password">
+                        <small class="text-muted">If you login with Google at the first time, you don't need to fill in this field.</small>
                     </div>
+
                     <div class="mb-3">
                         <label for="new_password" class="form-label">New Password</label>
                         <input type="password" class="form-control" id="new_password" name="new_password" required autocomplete="new-password">
