@@ -170,11 +170,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
                             <div class="btn-group w-100" role="group">
-                                <button type="submit" class="btn btn-dark">
-                                    <i class="bi bi-funnel"></i> Filter
-                                </button>
                                 <a href="orders.php" class="btn btn-outline-secondary">
-                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                    <i class="bi bi-arrow-clockwise"></i> Reset Filters
                                 </a>
                             </div>
                         </div>

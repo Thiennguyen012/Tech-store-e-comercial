@@ -10,6 +10,7 @@ $sort_order = $_GET['order'] ?? 'DESC';
 
 // Tham số lọc
 $filter_category = $_GET['category'] ?? '';
+$search_query = $_GET['search'] ?? '';
 
 // Xác thực tham số sắp xếp
 $allowed_sorts = ['id', 'name', 'category_name', 'price', 'qty_in_stock'];
@@ -23,22 +24,28 @@ if (!in_array($sort_order, $allowed_orders)) {
 }
 
 // Hàm tạo URL sắp xếp với bộ lọc hiện tại
-function getSortUrl($column, $current_sort, $current_order, $current_category = '') {
+function getSortUrl($column, $current_sort, $current_order, $current_category = '', $current_search = '') {
     $new_order = ($current_sort == $column && $current_order == 'ASC') ? 'DESC' : 'ASC';
     $url = "products.php?sort=" . $column . "&order=" . $new_order;
     if (!empty($current_category)) {
         $url .= "&category=" . urlencode($current_category);
     }
+    if (!empty($current_search)) {
+        $url .= "&search=" . urlencode($current_search);
+    }
     return $url;
 }
 
 // Hàm tạo URL lọc với sắp xếp hiện tại
-function getFilterUrl($category_id, $current_sort, $current_order) {
+function getFilterUrl($category_id, $current_sort, $current_order, $current_search = '') {
     $url = "products.php";
     $params = [];
     
     if (!empty($category_id)) {
         $params[] = "category=" . urlencode($category_id);
+    }
+    if (!empty($current_search)) {
+        $params[] = "search=" . urlencode($current_search);
     }
     if ($current_sort != 'id' || $current_order != 'DESC') {
         $params[] = "sort=" . $current_sort;
@@ -278,7 +285,7 @@ try {
                 <div class="d-flex flex-row align-items-center justify-content-between">
                     <div>
                         <h6 class="m-0 font-weight-bold text-dark">All Products</h6>
-                        <?php if ($sort_by != 'id' || $sort_order != 'DESC' || !empty($filter_category)): ?>
+                        <?php if ($sort_by != 'id' || $sort_order != 'DESC' || !empty($filter_category) || !empty($search_query)): ?>
                             <small class="text-muted">
                                 <?php if ($sort_by != 'id' || $sort_order != 'DESC'): ?>
                                     Sorted by: <strong><?php 
@@ -305,11 +312,15 @@ try {
                                         }
                                     ?></strong>
                                 <?php endif; ?>
+                                <?php if (!empty($search_query)): ?>
+                                    <?php if ($sort_by != 'id' || $sort_order != 'DESC' || !empty($filter_category)): echo ' | '; endif; ?>
+                                    Searching for: <strong>"<?php echo htmlspecialchars($search_query); ?>"</strong>
+                                <?php endif; ?>
                             </small>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex gap-2">
-                        <?php if ($sort_by != 'id' || $sort_order != 'DESC' || !empty($filter_category)): ?>
+                        <?php if ($sort_by != 'id' || $sort_order != 'DESC' || !empty($filter_category) || !empty($search_query)): ?>
                             <a href="products.php" class="btn btn-outline-secondary btn-sm" title="Reset sorting and filters">
                                 <i class="bi bi-arrow-clockwise"></i> Reset All
                             </a>
@@ -321,11 +332,11 @@ try {
                 </div>
             </div>
             <div class="card-body">
-                <!-- Category Filter -->
-                <div class="row mb-3">
-                    <div class="col-md-4">
+                <!-- Bộ lọc và tìm kiếm -->
+                <div class="row mb-3 g-3">
+                    <div class="col-md-3">
                         <label for="categoryFilter" class="form-label small text-muted">Filter by Category:</label>
-                        <select id="categoryFilter" class="form-select form-select-md" onchange="filterByCategory(this.value)">
+                        <select id="categoryFilter" class="form-select form-select-md" onchange="applyFilters()">
                             <option value="">All Categories</option>
                             <?php
                             try {
@@ -342,17 +353,41 @@ try {
                             ?>
                         </select>
                     </div>
-                    <div class="col-md-8 d-flex align-items-end justify-content-between">
+                    <div class="col-md-4">
+                        <label for="searchInput" class="form-label small text-muted">Search Products:</label>
+                        <div class="input-group">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Search by name or description..." 
+                                   value="<?php echo htmlspecialchars($search_query); ?>" onkeypress="handleSearchKeypress(event)">
+                            <button class="btn btn-outline-secondary" type="button" onclick="applyFilters()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <?php if (!empty($search_query)): ?>
+                                <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()" title="Clear search">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-5 d-flex align-items-end justify-content-between">
                         <small class="text-muted">
                             <?php
                             try {
-                                // Build WHERE clause for filtering
-                                $where_clause = "";
+                                // Xây dựng mệnh đề WHERE để lọc và tìm kiếm
+                                $where_conditions = [];
                                 $params = [];
+                                
                                 if (!empty($filter_category)) {
-                                    $where_clause = "WHERE p.category_id = ?";
+                                    $where_conditions[] = "p.category_id = ?";
                                     $params[] = $filter_category;
                                 }
+                                
+                                if (!empty($search_query)) {
+                                    $where_conditions[] = "(p.name LIKE ? OR p.description LIKE ?)";
+                                    $params[] = "%{$search_query}%";
+                                    $params[] = "%{$search_query}%";
+                                }
+                                
+                                $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
                                 
                                 $count_stmt = $conn->prepare("
                                     SELECT COUNT(*) as total 
@@ -363,12 +398,12 @@ try {
                                 $count_stmt->execute($params);
                                 $filtered_products = $count_stmt->fetch()['total'];
                                 
-                                // Total products count
+                                // Tổng số sản phẩm
                                 $total_stmt = $conn->prepare("SELECT COUNT(*) as total FROM product");
                                 $total_stmt->execute();
                                 $total_products = $total_stmt->fetch()['total'];
                                 
-                                if (!empty($filter_category)) {
+                                if (!empty($filter_category) || !empty($search_query)) {
                                     echo "Showing {$filtered_products} of {$total_products} products";
                                 } else {
                                     echo "Showing {$total_products} product" . ($total_products != 1 ? 's' : '');
@@ -379,18 +414,18 @@ try {
                             ?>
                         </small>
                         
-                        <!-- Quick sort buttons -->
+                        <!-- Nút sắp xếp nhanh -->
                         <div class="btn-group btn-group-sm d-none d-md-block" role="group">
                             <button type="button" class="btn <?php echo ($sort_by == 'name') ? 'btn-dark' : 'btn-outline-secondary'; ?>" 
-                                    onclick="location.href='<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category); ?>'" title="Sort by Name">
+                                    onclick="location.href='<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category, $search_query); ?>'" title="Sort by Name">
                                 <i class="bi bi-sort-alpha-down"></i>
                             </button>
                             <button type="button" class="btn <?php echo ($sort_by == 'price') ? 'btn-dark' : 'btn-outline-secondary'; ?>" 
-                                    onclick="location.href='<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category); ?>'" title="Sort by Price">
+                                    onclick="location.href='<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category, $search_query); ?>'" title="Sort by Price">
                                 <i class="bi bi-currency-dollar"></i>
                             </button>
                             <button type="button" class="btn <?php echo ($sort_by == 'qty_in_stock') ? 'btn-dark' : 'btn-outline-secondary'; ?>" 
-                                    onclick="location.href='<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category); ?>'" title="Sort by Stock">
+                                    onclick="location.href='<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category, $search_query); ?>'" title="Sort by Stock">
                                 <i class="bi bi-boxes"></i>
                             </button>
                         </div>
@@ -398,17 +433,26 @@ try {
                 </div>
                 
                 <div class="table-responsive">
-                    <!-- Mobile Cards (chỉ hiển thị trên màn hình nhỏ) -->
+                    <!-- Cards cho mobile -->
                     <div class="d-block d-md-none">
                         <?php
                         try {
-                            // Xây dựng mệnh đề WHERE để lọc
-                            $where_clause = "";
+                            // Xây dựng mệnh đề WHERE để lọc và tìm kiếm
+                            $where_conditions = [];
                             $params = [];
+                            
                             if (!empty($filter_category)) {
-                                $where_clause = "WHERE p.category_id = ?";
+                                $where_conditions[] = "p.category_id = ?";
                                 $params[] = $filter_category;
                             }
+                            
+                            if (!empty($search_query)) {
+                                $where_conditions[] = "(p.name LIKE ? OR p.description LIKE ?)";
+                                $params[] = "%{$search_query}%";
+                                $params[] = "%{$search_query}%";
+                            }
+                            
+                            $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
                             
                             // Xây dựng mệnh đề ORDER BY cho mobile
                             $order_clause = "ORDER BY ";
@@ -430,7 +474,9 @@ try {
                             ");
                             $stmt->execute($params);
                             
+                            $has_results = false;
                             while ($product = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $has_results = true;
                                 $stock_color = $product['qty_in_stock'] > 5 ? 'success' : ($product['qty_in_stock'] > 0 ? 'warning' : 'danger');
                                 ?>
                                 <div class="card mb-3 border mobile-product-card">
@@ -468,13 +514,20 @@ try {
                                 </div>
                                 <?php
                             }
+                            
+                            if (!$has_results) {
+                                echo '<div class="alert alert-info text-center">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    No products found matching your search criteria.
+                                </div>';
+                            }
                         } catch (Exception $e) {
                             echo '<div class="alert alert-danger">Error loading products: ' . htmlspecialchars($e->getMessage()) . '</div>';
                         }
                         ?>
                     </div>
                     
-                    <!-- Desktop Table (ẩn trên màn hình nhỏ) -->
+                    <!-- Bảng desktop -->
                     <div class="d-none d-md-block">
                     <table class="table table-bordered table-hover" id="productsTable">
                         <thead>
@@ -482,22 +535,22 @@ try {
                                 <th style="width: 60px;">ID</th>
                                 <th style="width: 80px;">Image</th>
                                 <th>
-                                    <a href="<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category); ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                                    <a href="<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category, $search_query); ?>" class="text-decoration-none text-dark d-flex align-items-center">
                                         Name <?php echo getSortIcon('name', $sort_by, $sort_order); ?>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="<?php echo getSortUrl('category_name', $sort_by, $sort_order, $filter_category); ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                                    <a href="<?php echo getSortUrl('category_name', $sort_by, $sort_order, $filter_category, $search_query); ?>" class="text-decoration-none text-dark d-flex align-items-center">
                                         Category <?php echo getSortIcon('category_name', $sort_by, $sort_order); ?>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category); ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                                    <a href="<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category, $search_query); ?>" class="text-decoration-none text-dark d-flex align-items-center">
                                         Price <?php echo getSortIcon('price', $sort_by, $sort_order); ?>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category); ?>" class="text-decoration-none text-dark d-flex align-items-center">
+                                    <a href="<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category, $search_query); ?>" class="text-decoration-none text-dark d-flex align-items-center">
                                         Stock <?php echo getSortIcon('qty_in_stock', $sort_by, $sort_order); ?>
                                     </a>
                                 </th>
@@ -507,13 +560,22 @@ try {
                         <tbody>
                             <?php
                             try {
-                                // Xây dựng mệnh đề WHERE để lọc  
-                                $where_clause = "";
+                                // Xây dựng mệnh đề WHERE để lọc và tìm kiếm
+                                $where_conditions = [];
                                 $params = [];
+                                
                                 if (!empty($filter_category)) {
-                                    $where_clause = "WHERE p.category_id = ?";
+                                    $where_conditions[] = "p.category_id = ?";
                                     $params[] = $filter_category;
                                 }
+                                
+                                if (!empty($search_query)) {
+                                    $where_conditions[] = "(p.name LIKE ? OR p.description LIKE ?)";
+                                    $params[] = "%{$search_query}%";
+                                    $params[] = "%{$search_query}%";
+                                }
+                                
+                                $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
                                 
                                 // Xây dựng mệnh đề ORDER BY
                                 $order_clause = "ORDER BY ";
@@ -535,7 +597,9 @@ try {
                                 ");
                                 $stmt->execute($params);
                                 
+                                $has_results = false;
                                 while ($product = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    $has_results = true;
                                     $stock_color = $product['qty_in_stock'] > 5 ? 'success' : ($product['qty_in_stock'] > 0 ? 'warning' : 'danger');
                                     
                                     echo "<tr>";
@@ -550,6 +614,13 @@ try {
                                     echo "<a href='products.php?action=delete&id={$product['id']}' class='btn btn-sm btn-dark' onclick='return confirm(\"Are you sure you want to delete this product?\")'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
+                                }
+                                
+                                if (!$has_results) {
+                                    echo "<tr><td colspan='7' class='text-center text-muted py-4'>";
+                                    echo "<i class='bi bi-search me-2'></i>";
+                                    echo "No products found matching your search criteria.";
+                                    echo "</td></tr>";
                                 }
                             } catch (Exception $e) {
                                 echo "<tr><td colspan='7' class='text-center text-danger'>Error loading products: {$e->getMessage()}</td></tr>";
@@ -665,14 +736,22 @@ try {
 </style>
 
 <script>
-// Hàm lọc theo danh mục
-function filterByCategory(categoryId) {
+// Hàm áp dụng bộ lọc và tìm kiếm
+function applyFilters() {
+    var categoryId = document.getElementById('categoryFilter').value;
+    var searchQuery = document.getElementById('searchInput').value.trim();
+    
     var url = 'products.php';
     var params = [];
     
     // Thêm bộ lọc danh mục nếu được chọn
     if (categoryId) {
         params.push('category=' + encodeURIComponent(categoryId));
+    }
+    
+    // Thêm từ khóa tìm kiếm nếu có
+    if (searchQuery) {
+        params.push('search=' + encodeURIComponent(searchQuery));
     }
     
     // Bảo tồn sắp xếp hiện tại
@@ -688,22 +767,48 @@ function filterByCategory(categoryId) {
     location.href = url;
 }
 
-// Thêm phím tắt cho sắp xếp và lọc
+// Hàm xử lý phím Enter trong ô tìm kiếm
+function handleSearchKeypress(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        applyFilters();
+    }
+}
+
+// Hàm xóa tìm kiếm
+function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    applyFilters();
+}
+
+// Hàm lọc theo danh mục (giữ lại để tương thích ngược)
+function filterByCategory(categoryId) {
+    document.getElementById('categoryFilter').value = categoryId;
+    applyFilters();
+}
+
+// Thêm phím tắt cho tìm kiếm
 document.addEventListener('keydown', function(e) {
+    // Ctrl + F = Focus vào ô tìm kiếm
+    if (e.ctrlKey && e.key === 'f') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+        document.getElementById('searchInput').select();
+    }
     // Alt + N = Sắp xếp theo tên
     if (e.altKey && e.key === 'n') {
         e.preventDefault();
-        location.href = '<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category); ?>';
+        location.href = '<?php echo getSortUrl('name', $sort_by, $sort_order, $filter_category, $search_query); ?>';
     }
     // Alt + P = Sắp xếp theo giá  
     if (e.altKey && e.key === 'p') {
         e.preventDefault();
-        location.href = '<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category); ?>';
+        location.href = '<?php echo getSortUrl('price', $sort_by, $sort_order, $filter_category, $search_query); ?>';
     }
     // Alt + S = Sắp xếp theo tồn kho
     if (e.altKey && e.key === 's') {
         e.preventDefault();
-        location.href = '<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category); ?>';
+        location.href = '<?php echo getSortUrl('qty_in_stock', $sort_by, $sort_order, $filter_category, $search_query); ?>';
     }
     // Alt + C = Focus vào bộ lọc danh mục
     if (e.altKey && e.key === 'c') {
@@ -714,6 +819,10 @@ document.addEventListener('keydown', function(e) {
     if (e.altKey && e.key === 'r') {
         e.preventDefault();
         location.href = 'products.php';
+    }
+    // Escape = Clear search if search input is focused
+    if (e.key === 'Escape' && document.activeElement === document.getElementById('searchInput')) {
+        clearSearch();
     }
 });
 
@@ -748,7 +857,9 @@ document.addEventListener('DOMContentLoaded', function() {
         { selector: 'a[href*="sort=name"]', text: 'Sort by Name (Alt+N)' },
         { selector: 'a[href*="sort=price"]', text: 'Sort by Price (Alt+P)' },
         { selector: 'a[href*="sort=qty_in_stock"]', text: 'Sort by Stock (Alt+S)' },
-        { selector: 'a[href="products.php"]', text: 'Reset Sort (Alt+R)' }
+        { selector: 'a[href="products.php"]', text: 'Reset Sort (Alt+R)' },
+        { selector: '#searchInput', text: 'Search products (Ctrl+F to focus)' },
+        { selector: '#categoryFilter', text: 'Filter by category (Alt+C to focus)' }
     ];
     
     tooltips.forEach(tip => {
@@ -757,6 +868,11 @@ document.addEventListener('DOMContentLoaded', function() {
             element.title = tip.text;
         }
     });
+    
+    // Tự động focus vào ô tìm kiếm nếu có tham số search trong URL
+    <?php if (!empty($search_query)): ?>
+        document.getElementById('searchInput').focus();
+    <?php endif; ?>
 });
 </script>
 
