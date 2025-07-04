@@ -33,7 +33,7 @@ if (isset($_GET['code']) && $_GET['code'] === '00' && $_GET['status'] === 'PAID'
 
     $order_id = $_GET['orderCode'] ?? '';
     $payment_code = 1;
-    $status = 'Completed';
+    $status = 'Pending';
 
     // Tính lại total
     $subtotal = 0;
