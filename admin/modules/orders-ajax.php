@@ -21,7 +21,31 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     exit;
 }
 
-if (isset($_POST['action']) && $_POST['action'] == 'update_status' && isset($_POST['order_id']) && isset($_POST['status'])) {
+if (isset($_POST['action']) && $_POST['action'] == 'mark_orders_viewed') {
+    try {
+        $admin_id = $_SESSION['user_id'] ?? 0;
+        
+        // Check if admin record exists
+        $check_stmt = $conn->prepare("SELECT id FROM admin_order_views WHERE admin_user_id = ?");
+        $check_stmt->execute([$admin_id]);
+        
+        if ($check_stmt->fetch()) {
+            // Update existing record
+            $update_stmt = $conn->prepare("UPDATE admin_order_views SET last_view_time = NOW() WHERE admin_user_id = ?");
+            $update_stmt->execute([$admin_id]);
+        } else {
+            // Insert new record
+            $insert_stmt = $conn->prepare("INSERT INTO admin_order_views (admin_user_id, last_view_time) VALUES (?, NOW())");
+            $insert_stmt->execute([$admin_id]);
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Orders marked as viewed']);
+        exit;
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        exit;
+    }
+} elseif (isset($_POST['action']) && $_POST['action'] == 'update_status' && isset($_POST['order_id']) && isset($_POST['status'])) {
     // Debug log
     error_log("Order status update attempt: order_id=" . $_POST['order_id'] . ", status=" . $_POST['status']);
     

@@ -117,8 +117,27 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             </div>
             <div class="card-body">
                 <form method="GET" action="" id="filterForm">
-                    <div class="row g-3">
-                        <div class="col-md-3">
+                    <!-- First Row: Customer Name & Order Status -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="customer_filter" class="form-label">Customer Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-search"></i></span>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="customer_filter" 
+                                       name="customer_filter" 
+                                       placeholder="Search by customer name or order name..." 
+                                       value="<?php echo isset($_GET['customer_filter']) ? htmlspecialchars($_GET['customer_filter']) : ''; ?>">
+                                <?php if (!empty($_GET['customer_filter'])): ?>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="clearCustomerFilter()" title="Clear search">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                            <div class="form-text">Search by registered user name or guest order name</div>
+                        </div>
+                        <div class="col-md-6">
                             <label for="status_filter" class="form-label">Order Status</label>
                             <select class="form-select" id="status_filter" name="status_filter">
                                 <option value="">All Status</option>
@@ -127,7 +146,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                 <option value="Cancelled" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    
+                    <!-- Second Row: Payment Method & Date Filter -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
                             <label for="payment_filter" class="form-label">Payment Method</label>
                             <select class="form-select" id="payment_filter" name="payment_filter">
                                 <option value="">All Payment Methods</option>
@@ -135,7 +158,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                 <option value="1" <?php echo (isset($_GET['payment_filter']) && $_GET['payment_filter'] === '1') ? 'selected' : ''; ?>>Online Payment</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="date_filter" class="form-label">Date Filter</label>
                             <select class="form-select" id="date_filter" name="date_filter">
                                 <option value="">All Time</option>
@@ -145,7 +168,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                 <option value="month" <?php echo (isset($_GET['date_filter']) && $_GET['date_filter'] === 'month') ? 'selected' : ''; ?>>This Month</option>
                             </select>
                         </div>
-                        <div class="col-md-3 d-flex align-items-end">
+                        <div class="col-md-4 d-flex align-items-end">
                             <div class="btn-group w-100" role="group">
                                 <button type="submit" class="btn btn-dark">
                                     <i class="bi bi-funnel"></i> Filter
@@ -172,6 +195,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     <?php
                     // Hiển thị thông tin filter đang áp dụng
                     $active_filters = [];
+                    if (!empty($_GET['customer_filter'])) {
+                        $active_filters[] = "Customer: \"" . htmlspecialchars($_GET['customer_filter']) . "\"";
+                    }
                     if (!empty($_GET['status_filter'])) {
                         $active_filters[] = "Status: " . $_GET['status_filter'];
                     }
@@ -194,6 +220,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     $count_params = [];
 
                     // Áp dụng cùng filter logic như query chính
+                    // Customer name filter
+                    if (!empty($_GET['customer_filter'])) {
+                        $count_sql .= " AND (u.name LIKE ? OR b.order_name LIKE ?)";
+                        $search_term = '%' . $_GET['customer_filter'] . '%';
+                        $count_params[] = $search_term;
+                        $count_params[] = $search_term;
+                    }
+
                     if (!empty($_GET['status_filter'])) {
                         if ($_GET['status_filter'] === 'Pending') {
                             $count_sql .= " AND (b.order_status IS NULL OR b.order_status = 'Pending')";
@@ -250,6 +284,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             LEFT JOIN site_user u ON b.user_id = u.id 
                             WHERE 1=1";
                     $params = [];
+
+                    // Customer name filter
+                    if (!empty($_GET['customer_filter'])) {
+                        $sql .= " AND (u.name LIKE ? OR b.order_name LIKE ?)";
+                        $search_term = '%' . $_GET['customer_filter'] . '%';
+                        $params[] = $search_term;
+                        $params[] = $search_term;
+                    }
 
                     // Status filter
                     if (!empty($_GET['status_filter'])) {
@@ -371,6 +413,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                         WHERE 1=1";
                                 $params = [];
 
+                                // Customer name filter
+                                if (!empty($_GET['customer_filter'])) {
+                                    $sql .= " AND (u.name LIKE ? OR b.order_name LIKE ?)";
+                                    $search_term = '%' . $_GET['customer_filter'] . '%';
+                                    $params[] = $search_term;
+                                    $params[] = $search_term;
+                                }
+
                                 // Status filter
                                 if (!empty($_GET['status_filter'])) {
                                     if ($_GET['status_filter'] === 'Pending') {
@@ -484,23 +534,54 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 <script>
     // Auto-submit form when filter changes
     document.addEventListener('DOMContentLoaded', function() {
-        const filterSelects = document.querySelectorAll('#status_filter, #payment_filter, #date_filter');
+        // Mark orders as viewed when page loads
+        markOrdersAsViewed();
         
+        const filterSelects = document.querySelectorAll('#status_filter, #payment_filter, #date_filter');
+        const customerInput = document.getElementById('customer_filter');
+        
+        // Auto-submit for select fields
         filterSelects.forEach(function(select) {
             select.addEventListener('change', function() {
-                // Add loading state
-                const submitBtn = document.querySelector('#filterForm button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Filtering...';
-                submitBtn.disabled = true;
-                
-                // Submit form
-                document.getElementById('filterForm').submit();
+                submitFilterForm();
             });
         });
         
+        // Debounced search for customer input
+        let customerSearchTimeout;
+        if (customerInput) {
+            customerInput.addEventListener('input', function() {
+                clearTimeout(customerSearchTimeout);
+                customerSearchTimeout = setTimeout(function() {
+                    if (customerInput.value.length >= 2 || customerInput.value.length === 0) {
+                        submitFilterForm();
+                    }
+                }, 500); // Wait 500ms after user stops typing
+            });
+            
+            // Submit on Enter key
+            customerInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(customerSearchTimeout);
+                    submitFilterForm();
+                }
+            });
+        }
+        
+        function submitFilterForm() {
+            const submitBtn = document.querySelector('#filterForm button[type="submit"]');
+            if (submitBtn) {
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Filtering...';
+                submitBtn.disabled = true;
+            }
+            document.getElementById('filterForm').submit();
+        }
+        
         // Add tooltips to filter options
         const tooltips = {
+            'customer_filter': 'Search by customer name or order name (min 2 characters)',
             'status_filter': 'Filter orders by their current status',
             'payment_filter': 'Filter by payment method used',
             'date_filter': 'Filter orders by date range'
@@ -513,6 +594,45 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             }
         });
     });
+
+    // Mark orders as viewed and remove badge
+    function markOrdersAsViewed() {
+        $.post('orders-ajax.php', {
+            action: 'mark_orders_viewed'
+        })
+        .done(function(response) {
+            try {
+                const result = JSON.parse(response);
+                if (result.success) {
+                    // Remove the badge from sidebar
+                    const badge = document.getElementById('new-orders-badge');
+                    if (badge) {
+                        badge.style.transition = 'all 0.3s ease';
+                        badge.style.opacity = '0';
+                        badge.style.transform = 'scale(0)';
+                        setTimeout(function() {
+                            badge.remove();
+                        }, 300);
+                    }
+                }
+            } catch (e) {
+                console.log('Non-critical error updating view status');
+            }
+        })
+        .fail(function() {
+            console.log('Non-critical error updating view status');
+        });
+    }
+
+    // Clear customer filter function
+    function clearCustomerFilter() {
+        const customerInput = document.getElementById('customer_filter');
+        if (customerInput) {
+            customerInput.value = '';
+            // Trigger form submission to apply the change
+            document.getElementById('filterForm').submit();
+        }
+    }
 
     function updateOrderStatus(orderId, status) {
         console.log('Updating order status:', orderId, status);

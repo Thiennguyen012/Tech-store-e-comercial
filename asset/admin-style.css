@@ -139,7 +139,63 @@ body {
   padding: 0.375rem 0.75rem;
 }
 
+/* New Orders Badge Animation */
+#new-orders-badge {
+  animation: pulse 2s infinite;
+  min-width: 20px;
+  height: 20px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Sidebar badge positioning */
+.nav-link.d-flex.justify-content-between {
+  width: 100%;
+}
+
+.sidebar.collapsed .nav-link.d-flex.justify-content-between {
+  justify-content: center !important;
+}
+
+.sidebar.collapsed #new-orders-badge {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  min-width: 16px;
+  height: 16px;
+  font-size: 0.6rem;
+  transform: scale(0.8);
+}
+
+/* Badge hover effects */
+#new-orders-badge:hover {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+}
+
+/* Fade out animation */
+.badge-fade-out {
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0);
+}
 
 /* Timeline styling for analytics */
 .timeline {

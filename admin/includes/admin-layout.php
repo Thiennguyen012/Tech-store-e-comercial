@@ -23,6 +23,46 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    
+    // Count new orders (created in last 24 hours and not viewed by admin)
+    $new_orders_count = 0;
+    try {
+        // Check if the admin_order_views table exists, if not create it
+        $check_table = $conn->query("SHOW TABLES LIKE 'admin_order_views'");
+        if ($check_table->rowCount() == 0) {
+            $conn->exec("
+                CREATE TABLE admin_order_views (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    admin_user_id INT,
+                    last_view_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )
+            ");
+        }
+        
+        // Get admin's last view time
+        $admin_id = $_SESSION['user_id'] ?? 0;
+        $last_view_stmt = $conn->prepare("SELECT last_view_time FROM admin_order_views WHERE admin_user_id = ?");
+        $last_view_stmt->execute([$admin_id]);
+        $last_view = $last_view_stmt->fetch();
+        
+        $last_view_time = $last_view ? $last_view['last_view_time'] : '1970-01-01 00:00:00';
+        
+        // Count orders created after last view
+        $count_stmt = $conn->prepare("
+            SELECT COUNT(*) as count 
+            FROM bill 
+            WHERE order_date > ? 
+            AND order_date >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+        ");
+        $count_stmt->execute([$last_view_time]);
+        $result = $count_stmt->fetch();
+        $new_orders_count = $result['count'];
+        
+    } catch (Exception $e) {
+        // Silently handle errors for badge functionality
+        $new_orders_count = 0;
+    }
+    
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
@@ -95,7 +135,12 @@ $current_page = $current_page ?? 'dashboard';
                         <a href="<?php echo $base_path; ?>categories.php" class="nav-link text-white <?php echo $current_page == 'categories' ? 'active' : ''; ?>"><i class="bi bi-tags"></i> <span>Categories</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo $base_path; ?>orders.php" class="nav-link text-white <?php echo $current_page == 'orders' ? 'active' : ''; ?>"><i class="bi bi-cart-check"></i> <span>Orders</span></a>
+                        <a href="<?php echo $base_path; ?>orders.php" class="nav-link text-white <?php echo $current_page == 'orders' ? 'active' : ''; ?> d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-cart-check"></i> <span>Orders</span></span>
+                            <?php if ($new_orders_count > 0): ?>
+                                <span id="new-orders-badge" class="badge bg-danger rounded-pill"><?php echo $new_orders_count; ?></span>
+                            <?php endif; ?>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a href="<?php echo $base_path; ?>services.php" class="nav-link text-white <?php echo $current_page == 'services' ? 'active' : ''; ?>"><i class="bi bi-tools"></i> <span>Services</span></a>
