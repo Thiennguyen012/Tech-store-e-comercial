@@ -530,6 +530,11 @@ if ($isSearchMode) {
         document.getElementById('productList').innerHTML = data;
         // Gán lại sự kiện cho các form mới
         attachCartEventListeners();
+        // Tự động cuộn lên đầu trang sau khi lọc/sắp xếp
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -554,6 +559,11 @@ if ($isSearchMode) {
         document.getElementById('productList').innerHTML = data;
         // Gán lại sự kiện cho các form mới
         attachCartEventListeners();
+        // Tự động cuộn lên đầu trang sau khi lọc/sắp xếp (mobile)
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       })
       .catch((error) => {
         console.error('Error:', error);
