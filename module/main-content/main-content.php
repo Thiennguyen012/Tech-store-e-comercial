@@ -56,28 +56,19 @@ include __DIR__ . '/get-top-products.php';
     <!-- Nội dung bên trái -->
     <div class="col-md-6 text-md-start text-center mb-4 mb-md-0">
       <h1 class="gcam-title fw-bold mb-3">
-        <!-- hàm bên dưới để gọi tên sản phẩm top mới nếu cần 
-         <?php echo $featuredCamera ? htmlspecialchars($featuredCamera['name']) : 'Make your home secured with Google Nest Cam'; ?> -->
         Make your home secured with Google Nest Cam
       </h1>
       <p class="gcam-content text-muted mb-4">
         Start or expand your security setup with professional security cameras
       </p>
       <p class="gcam-content mb-4 fs-2 fw-bold">
-        <span style="font-size: 16px; vertical-align: top">$</span><?php echo $featuredCamera ? number_format($featuredCamera['price'], 0) : '69'; ?><span
+        <span style="font-size: 16px; vertical-align: top">$</span>69<span
           style="font-size: 14px; vertical-align: super">99</span>
       </p>
-      <?php if ($featuredCamera): ?>
-        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
-          onclick="loadPage('module/product/single_product.php?id=<?php echo $featuredCamera['id']; ?>', this, 'single-product', '<?php echo $featuredCamera['id']; ?>'); return false;">
-          Show more
-        </button>
-      <?php else: ?>
-        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
-          onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">
-          Show more
-        </button>
-      <?php endif; ?>
+      <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
+        onclick="loadPage('module/product/single_product.php?id=31', this, 'single-product', '31'); return false;">
+        Show more
+      </button>
     </div>
 
     <!-- Hình ảnh bên phải -->
@@ -173,27 +164,19 @@ include __DIR__ . '/get-top-products.php';
     <!-- Nội dung bên trái -->
     <div class="col-md-6 text-md-start text-center mb-4 mb-md-0">
       <h1 class="laptop-title fw-bold mb-3">
-        <!-- <?php echo $featuredLaptop ? htmlspecialchars($featuredLaptop['name']) : 'Extreme Gaming performance with ROG Strix G16'; ?> -->
         Extreme Gaming performance with ROG Strix G16
       </h1>
       <p class="laptop-content text-muted mb-4">
         Reach new heights of Windows 11 Pro gaming with high-performance laptops
       </p>
       <p class="laptop-content mb-4 fs-2 fw-bold">
-        <span style="font-size: 16px; vertical-align: top">$</span><?php echo $featuredLaptop ? number_format($featuredLaptop['price'], 0) : '1,899'; ?><span
+        <span style="font-size: 16px; vertical-align: top">$</span>1,899<span
           style="font-size: 14px; vertical-align: super">99</span>
       </p>
-      <?php if ($featuredLaptop): ?>
-        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
-          onclick="loadPage('module/product/single_product.php?id=<?php echo $featuredLaptop['id']; ?>', this, 'single-product', '<?php echo $featuredLaptop['id']; ?>'); return false;">
-          Show more
-        </button>
-      <?php else: ?>
-        <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
-          onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">
-          Show more
-        </button>
-      <?php endif; ?>
+      <button class="btn btn-dark gcam-btn rounded-4 px-4 py-2"
+        onclick="loadPage('module/product/single_product.php?id=6', this, 'single-product', '6'); return false;">
+        Show more
+      </button>
     </div>
   </div>
 </div>

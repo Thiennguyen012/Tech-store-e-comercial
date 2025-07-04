@@ -71,8 +71,6 @@ function getTopProductsConfig($conn, $key, $default = '') {
 // Load configuration and get products
 $topLaptopIds = array_filter(array_map('intval', explode(',', getTopProductsConfig($conn, 'top_laptop_ids', '1,2,3,4'))));
 $topCameraIds = array_filter(array_map('intval', explode(',', getTopProductsConfig($conn, 'top_camera_ids', '13,14,15,16'))));
-$featuredLaptopId = intval(getTopProductsConfig($conn, 'featured_laptop_id', '6'));
-$featuredCameraId = intval(getTopProductsConfig($conn, 'featured_camera_id', '31'));
 
 // Get products by configured IDs or fallback to category method
 $laptops = getProductsByIds($conn, $topLaptopIds);
@@ -85,24 +83,11 @@ if (!is_object($cameras) || $cameras->num_rows < 4) {
     $cameras = getTopProductsByCategory($conn, 'camera', 4);
 }
 
-// Get featured products
-$featuredLaptop = getProductById($conn, $featuredLaptopId);
-if (!$featuredLaptop) {
-    $laptopFallback = getTopProductsByCategory($conn, 'laptop', 6);
-    $featuredLaptop = $laptopFallback->fetch_assoc();
-}
-
-$featuredCamera = getProductById($conn, $featuredCameraId);
-if (!$featuredCamera) {
-    $cameraFallback = getTopProductsByCategory($conn, 'camera', 31);
-    $featuredCamera = $cameraFallback->fetch_assoc();
-}
-
 // ========== HƯỚNG DẪN SỬ DỤNG ==========/
 /*
 CÁCH THAY ĐỔI TOP PRODUCTS:
 
-Để thay đổi Top Products và Featured Products, vào Admin Panel:
+Để thay đổi Top Products, vào Admin Panel:
 1. Truy cập: /admin/modules/top-products-config.php
 2. Chọn sản phẩm muốn hiển thị trong từng section
 3. Nhấn "Save Configuration"
