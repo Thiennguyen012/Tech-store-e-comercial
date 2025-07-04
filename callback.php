@@ -140,6 +140,7 @@ if (isset($_GET['code'])) {
 
         // Bước 4: Tạo session
         $_SESSION['username'] = $username;
+        $_SESSION['user_id'] = $id;
         $_SESSION['email'] = $email;
         $_SESSION['name'] = $name;
         $_SESSION['role'] = $role;
@@ -150,7 +151,6 @@ if (isset($_GET['code'])) {
 
         header("Location: " . $redirect_url);
         exit;
-
     } catch (Exception $e) {
         // Log lỗi chi tiết
         error_log("Google OAuth Error: " . $e->getMessage());
@@ -167,4 +167,3 @@ if (isset($_GET['code'])) {
     header("Location: Login.php");
     exit;
 }
-?>
