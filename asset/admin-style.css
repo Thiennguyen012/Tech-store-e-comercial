@@ -785,3 +785,69 @@ body {
     white-space: nowrap;
   }
 }
+
+/* Enhanced responsive design for 2-row filter layout */
+@media (max-width: 767.98px) {
+  /* Stack filter elements vertically on mobile */
+  .row.g-3.mb-3 .col-md-3 {
+    margin-bottom: 1rem;
+  }
+  
+  /* Ensure buttons group properly on mobile */
+  .btn-group.w-100 {
+    display: flex;
+    width: 100% !important;
+  }
+  
+  .btn-group.w-100 .btn {
+    flex: 1;
+  }
+  
+  /* Better spacing for filter labels on mobile */
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Improve input group appearance on mobile */
+  .input-group .form-control {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .input-group-text {
+    min-width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .row.g-3.mb-3 .col-md-3 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    margin-bottom: 1rem;
+  }
+  
+  /* Stack buttons below other filters on tablet */
+  .col-md-3.d-flex.align-items-end {
+    order: 4;
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Large screen enhancements */
+@media (min-width: 1200px) {
+  .form-label {
+    font-size: 0.9rem;
+  }
+  
+  .form-select,
+  .form-control {
+    font-size: 0.875rem;
+  }
+}

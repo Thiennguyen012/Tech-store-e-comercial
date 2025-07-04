@@ -229,23 +229,142 @@ if ($action == 'delete' && isset($_GET['id'])) {
     </div>
 
 <?php else: ?>
+    <!-- User Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-dark">Filter Users</h6>
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="" id="filterForm">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label for="email_filter" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope-search"></i></span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="email_filter" 
+                                           name="email_filter" 
+                                           placeholder="Search by email..." 
+                                           value="<?php echo isset($_GET['email_filter']) ? htmlspecialchars($_GET['email_filter']) : ''; ?>">
+                                    <?php if (!empty($_GET['email_filter'])): ?>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="clearEmailFilter()" title="Clear search">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="role_filter" class="form-label">Role</label>
+                                <select class="form-select" id="role_filter" name="role_filter">
+                                    <option value="">All Roles</option>
+                                    <option value="0" <?php echo (isset($_GET['role_filter']) && $_GET['role_filter'] === '0') ? 'selected' : ''; ?>>Admin</option>
+                                    <option value="1" <?php echo (isset($_GET['role_filter']) && $_GET['role_filter'] === '1') ? 'selected' : ''; ?>>User</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="btn-group w-100" role="group">
+                                    <button type="submit" class="btn btn-dark">
+                                        <i class="bi bi-funnel"></i> Filter
+                                    </button>
+                                    <a href="users.php" class="btn btn-outline-secondary">
+                                        <i class="bi bi-arrow-clockwise"></i> Reset
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="users.php?action=add" class="btn btn-dark w-100">
+                                    <i class="bi bi-plus-circle"></i> Add User
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Users List -->
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header py-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-                    <h6 class="m-0 font-weight-bold text-dark">All Users</h6>
-                    <a href="users.php?action=add" class="btn btn-dark btn-sm">
-                        <i class="bi bi-plus-circle"></i> Add New User
-                    </a>
+                    <h6 class="m-0 font-weight-bold text-dark">
+                        All Users
+                        <?php
+                        // Display active filters
+                        $active_filters = [];
+                        if (!empty($_GET['email_filter'])) {
+                            $active_filters[] = "Email: \"" . htmlspecialchars($_GET['email_filter']) . "\"";
+                        }
+                        if (isset($_GET['role_filter']) && $_GET['role_filter'] !== '') {
+                            $role_text = $_GET['role_filter'] == '0' ? 'Admin' : 'User';
+                            $active_filters[] = "Role: " . $role_text;
+                        }
+                        if (!empty($active_filters)) {
+                            echo '<small class="text-muted">(' . implode(', ', $active_filters) . ')</small>';
+                        }
+                        ?>
+                    </h6>
+                    <div>
+                        <?php
+                        // Count total users after filter
+                        $count_sql = "SELECT COUNT(*) as total FROM site_user WHERE 1=1";
+                        $count_params = [];
+
+                        // Apply same filter logic as main query
+                        if (!empty($_GET['email_filter'])) {
+                            $count_sql .= " AND email LIKE ?";
+                            $count_params[] = '%' . $_GET['email_filter'] . '%';
+                        }
+
+                        if (isset($_GET['role_filter']) && $_GET['role_filter'] !== '') {
+                            $count_sql .= " AND role = ?";
+                            $count_params[] = $_GET['role_filter'];
+                        }
+
+                        try {
+                            $count_stmt = $conn->prepare($count_sql);
+                            if (!empty($count_params)) {
+                                $count_stmt->execute($count_params);
+                            } else {
+                                $count_stmt->execute();
+                            }
+                            $total_users = $count_stmt->fetchColumn();
+                            echo "<span class='badge bg-dark'>{$total_users} users</span>";
+                        } catch (Exception $e) {
+                            echo "<span class='badge bg-danger'>Error</span>";
+                        }
+                        ?>
+                    </div>
                 </div>
                 <div class="card-body">
                     <!-- Mobile-friendly user cards (visible only on small screens) -->
                     <div class="d-block d-md-none">
                         <?php
+                        // Build filter query for mobile cards
+                        $sql = "SELECT * FROM site_user WHERE 1=1";
+                        $params = [];
+
+                        // Email filter
+                        if (!empty($_GET['email_filter'])) {
+                            $sql .= " AND email LIKE ?";
+                            $params[] = '%' . $_GET['email_filter'] . '%';
+                        }
+
+                        // Role filter
+                        if (isset($_GET['role_filter']) && $_GET['role_filter'] !== '') {
+                            $sql .= " AND role = ?";
+                            $params[] = $_GET['role_filter'];
+                        }
+
+                        $sql .= " ORDER BY id DESC";
+
                         try {
-                            $stmt = $conn->prepare("SELECT * FROM site_user ORDER BY id DESC");
-                            $stmt->execute();
+                            $stmt = $conn->prepare($sql);
+                            $stmt->execute($params);
 
                             while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 $role_text = $user['role'] == 0 ? 'Admin' : 'User';
@@ -303,9 +422,27 @@ if ($action == 'delete' && isset($_GET['id'])) {
                                 </thead>
                                 <tbody>
                                     <?php
+                                    // Build same filter query for desktop table
+                                    $sql = "SELECT * FROM site_user WHERE 1=1";
+                                    $params = [];
+
+                                    // Email filter
+                                    if (!empty($_GET['email_filter'])) {
+                                        $sql .= " AND email LIKE ?";
+                                        $params[] = '%' . $_GET['email_filter'] . '%';
+                                    }
+
+                                    // Role filter
+                                    if (isset($_GET['role_filter']) && $_GET['role_filter'] !== '') {
+                                        $sql .= " AND role = ?";
+                                        $params[] = $_GET['role_filter'];
+                                    }
+
+                                    $sql .= " ORDER BY id DESC";
+
                                     try {
-                                        $stmt = $conn->prepare("SELECT * FROM site_user ORDER BY id DESC");
-                                        $stmt->execute();
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute($params);
 
                                         while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                             $role_text = $user['role'] == 0 ? 'Admin' : 'User';
@@ -340,5 +477,75 @@ if ($action == 'delete' && isset($_GET['id'])) {
     </div>
 
 <?php endif; ?>
+
+<script>
+    // Auto-submit form when filter changes
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterSelects = document.querySelectorAll('#role_filter');
+        const emailInput = document.getElementById('email_filter');
+        
+        // Auto-submit for select fields
+        filterSelects.forEach(function(select) {
+            select.addEventListener('change', function() {
+                submitFilterForm();
+            });
+        });
+        
+        // Debounced search for email input
+        let emailSearchTimeout;
+        if (emailInput) {
+            emailInput.addEventListener('input', function() {
+                clearTimeout(emailSearchTimeout);
+                emailSearchTimeout = setTimeout(function() {
+                    if (emailInput.value.length >= 2 || emailInput.value.length === 0) {
+                        submitFilterForm();
+                    }
+                }, 500); // Wait 500ms after user stops typing
+            });
+            
+            // Submit on Enter key
+            emailInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clearTimeout(emailSearchTimeout);
+                    submitFilterForm();
+                }
+            });
+        }
+        
+        function submitFilterForm() {
+            const submitBtn = document.querySelector('#filterForm button[type="submit"]');
+            if (submitBtn) {
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Filtering...';
+                submitBtn.disabled = true;
+            }
+            document.getElementById('filterForm').submit();
+        }
+        
+        // Add tooltips to filter options
+        const tooltips = {
+            'email_filter': 'Search by user email address (min 2 characters)',
+            'role_filter': 'Filter users by their role'
+        };
+        
+        Object.keys(tooltips).forEach(function(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.setAttribute('title', tooltips[id]);
+            }
+        });
+    });
+
+    // Clear email filter function
+    function clearEmailFilter() {
+        const emailInput = document.getElementById('email_filter');
+        if (emailInput) {
+            emailInput.value = '';
+            // Trigger form submission to apply the change
+            document.getElementById('filterForm').submit();
+        }
+    }
+</script>
 
 <?php require_once '../includes/admin-layout-footer.php'; ?>

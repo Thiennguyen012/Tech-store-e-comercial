@@ -2,7 +2,7 @@
 $current_page = 'orders';
 require_once '../includes/admin-layout.php';
 
-// Check if user is admin
+// Kiểm tra nếu người dùng là admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     echo '<div class="alert alert-danger">Access denied</div>';
     exit;
@@ -16,7 +16,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Order Statistics -->
+<!-- Thống kê đơn hàng -->
 <div class="row mb-4">
     <div class="col-xl-3 col-md-6 col-sm-6 mb-3">
         <div class="card h-100 py-2">
@@ -108,7 +108,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Orders Filter -->
+<!-- Bộ lọc đơn hàng -->
 <div class="row mb-4">
     <div class="col-12">
         <div class="card">
@@ -117,9 +117,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             </div>
             <div class="card-body">
                 <form method="GET" action="" id="filterForm">
-                    <!-- First Row: Customer Name & Order Status -->
+                    <!-- Hàng đầu tiên: Tên khách hàng (Toàn bộ chiều rộng) -->
                     <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                        <div class="col-12">
                             <label for="customer_filter" class="form-label">Customer Name</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person-search"></i></span>
@@ -137,20 +137,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             </div>
                             <div class="form-text">Search by registered user name or guest order name</div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="status_filter" class="form-label">Order Status</label>
-                            <select class="form-select" id="status_filter" name="status_filter">
-                                <option value="">All Status</option>
-                                <option value="Pending" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
-                                <option value="Paid" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Paid') ? 'selected' : ''; ?>>Paid</option>
-                                <option value="Cancelled" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
-                            </select>
-                        </div>
                     </div>
                     
-                    <!-- Second Row: Payment Method & Date Filter -->
+                    <!-- Hàng thứ hai: Phương thức thanh toán, Bộ lọc ngày, Trạng thái đơn hàng và Nút bấm -->
                     <div class="row g-3 mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="payment_filter" class="form-label">Payment Method</label>
                             <select class="form-select" id="payment_filter" name="payment_filter">
                                 <option value="">All Payment Methods</option>
@@ -158,7 +149,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                 <option value="1" <?php echo (isset($_GET['payment_filter']) && $_GET['payment_filter'] === '1') ? 'selected' : ''; ?>>Online Payment</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="date_filter" class="form-label">Date Filter</label>
                             <select class="form-select" id="date_filter" name="date_filter">
                                 <option value="">All Time</option>
@@ -168,7 +159,16 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                 <option value="month" <?php echo (isset($_GET['date_filter']) && $_GET['date_filter'] === 'month') ? 'selected' : ''; ?>>This Month</option>
                             </select>
                         </div>
-                        <div class="col-md-4 d-flex align-items-end">
+                        <div class="col-md-3">
+                            <label for="status_filter" class="form-label">Order Status</label>
+                            <select class="form-select" id="status_filter" name="status_filter">
+                                <option value="">All Status</option>
+                                <option value="Pending" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
+                                <option value="Paid" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Paid') ? 'selected' : ''; ?>>Paid</option>
+                                <option value="Cancelled" <?php echo (isset($_GET['status_filter']) && $_GET['status_filter'] === 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
                             <div class="btn-group w-100" role="group">
                                 <button type="submit" class="btn btn-dark">
                                     <i class="bi bi-funnel"></i> Filter
@@ -185,7 +185,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Orders List -->
+<!-- Danh sách đơn hàng -->
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -219,8 +219,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     $count_sql = "SELECT COUNT(*) as total FROM bill b LEFT JOIN site_user u ON b.user_id = u.id WHERE 1=1";
                     $count_params = [];
 
-                    // Áp dụng cùng filter logic như query chính
-                    // Customer name filter
+                    // Áp dụng cùng logic filter như query chính
+                    // Bộ lọc tên khách hàng
                     if (!empty($_GET['customer_filter'])) {
                         $count_sql .= " AND (u.name LIKE ? OR b.order_name LIKE ?)";
                         $search_term = '%' . $_GET['customer_filter'] . '%';
@@ -275,17 +275,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                 </div>
             </div>
             <div class="card-body">
-                <!-- Mobile-friendly order cards (visible only on small screens) -->
+                <!-- Thẻ đơn hàng thân thiện với thiết bị di động (chỉ hiển thị trên màn hình nhỏ) -->
                 <div class="d-block d-md-none">
                     <?php
-                    // Build filter query
+                    // Xây dựng query filter
                     $sql = "SELECT b.*, u.name as user_name 
                             FROM bill b 
                             LEFT JOIN site_user u ON b.user_id = u.id 
                             WHERE 1=1";
                     $params = [];
 
-                    // Customer name filter
+                    // Bộ lọc tên khách hàng
                     if (!empty($_GET['customer_filter'])) {
                         $sql .= " AND (u.name LIKE ? OR b.order_name LIKE ?)";
                         $search_term = '%' . $_GET['customer_filter'] . '%';
@@ -293,7 +293,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         $params[] = $search_term;
                     }
 
-                    // Status filter
+                    // Bộ lọc trạng thái
                     if (!empty($_GET['status_filter'])) {
                         if ($_GET['status_filter'] === 'Pending') {
                             $sql .= " AND (b.order_status IS NULL OR b.order_status = 'Pending')";
@@ -303,13 +303,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         }
                     }
 
-                    // Payment method filter
+                    // Bộ lọc phương thức thanh toán
                     if (isset($_GET['payment_filter']) && $_GET['payment_filter'] !== '') {
                         $sql .= " AND b.order_paymethod = ?";
                         $params[] = $_GET['payment_filter'];
                     }
 
-                    // Date filter
+                    // Bộ lọc ngày
                     if (!empty($_GET['date_filter'])) {
                         switch ($_GET['date_filter']) {
                             case 'today':
@@ -387,7 +387,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     ?>
                 </div>
 
-                <!-- Desktop table (hidden on small screens) -->
+                <!-- Bảng máy tính để bàn (ẩn trên màn hình nhỏ) -->
                 <div class="d-none d-md-block">
                     <div class="table-responsive">
                         <table class="table table-hover" id="ordersTable">
@@ -406,7 +406,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                             </thead>
                             <tbody>
                                 <?php
-                                // Build same filter query for desktop table
+                                // Xây dựng cùng query filter cho bảng máy tính để bàn
                                 $sql = "SELECT b.*, u.name as user_name 
                                         FROM bill b 
                                         LEFT JOIN site_user u ON b.user_id = u.id 
@@ -516,7 +516,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
     </div>
 </div>
 
-<!-- Order Details Modal -->
+<!-- Modal chi tiết đơn hàng -->
 <div class="modal fade" id="orderDetailsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -532,22 +532,22 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
 </div>
 
 <script>
-    // Auto-submit form when filter changes
+    // Tự động gửi form khi bộ lọc thay đổi
     document.addEventListener('DOMContentLoaded', function() {
-        // Mark orders as viewed when page loads
+        // Đánh dấu đơn hàng đã được xem khi trang tải
         markOrdersAsViewed();
         
         const filterSelects = document.querySelectorAll('#status_filter, #payment_filter, #date_filter');
         const customerInput = document.getElementById('customer_filter');
         
-        // Auto-submit for select fields
+        // Tự động gửi cho các trường select
         filterSelects.forEach(function(select) {
             select.addEventListener('change', function() {
                 submitFilterForm();
             });
         });
         
-        // Debounced search for customer input
+        // Tìm kiếm có độ trễ cho ô nhập khách hàng
         let customerSearchTimeout;
         if (customerInput) {
             customerInput.addEventListener('input', function() {
@@ -556,10 +556,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     if (customerInput.value.length >= 2 || customerInput.value.length === 0) {
                         submitFilterForm();
                     }
-                }, 500); // Wait 500ms after user stops typing
+                }, 500); // Chờ 500ms sau khi người dùng ngừng gõ
             });
             
-            // Submit on Enter key
+            // Gửi khi nhấn phím Enter
             customerInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -579,12 +579,12 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             document.getElementById('filterForm').submit();
         }
         
-        // Add tooltips to filter options
+        // Thêm tooltip cho các tùy chọn bộ lọc
         const tooltips = {
-            'customer_filter': 'Search by customer name or order name (min 2 characters)',
-            'status_filter': 'Filter orders by their current status',
-            'payment_filter': 'Filter by payment method used',
-            'date_filter': 'Filter orders by date range'
+            'customer_filter': 'Tìm kiếm theo tên khách hàng hoặc tên đơn hàng (tối thiểu 2 ký tự)',
+            'status_filter': 'Lọc đơn hàng theo trạng thái hiện tại',
+            'payment_filter': 'Lọc theo phương thức thanh toán đã sử dụng',
+            'date_filter': 'Lọc đơn hàng theo khoảng thời gian'
         };
         
         Object.keys(tooltips).forEach(function(id) {
@@ -595,7 +595,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
         });
     });
 
-    // Mark orders as viewed and remove badge
+    // Đánh dấu đơn hàng đã được xem và xóa badge
     function markOrdersAsViewed() {
         $.post('orders-ajax.php', {
             action: 'mark_orders_viewed'
@@ -604,7 +604,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             try {
                 const result = JSON.parse(response);
                 if (result.success) {
-                    // Remove the badge from sidebar
+                    // Xóa badge từ thanh bên
                     const badge = document.getElementById('new-orders-badge');
                     if (badge) {
                         badge.style.transition = 'all 0.3s ease';
@@ -616,26 +616,26 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     }
                 }
             } catch (e) {
-                console.log('Non-critical error updating view status');
+                console.log('Lỗi không nghiêm trọng khi cập nhật trạng thái xem');
             }
         })
         .fail(function() {
-            console.log('Non-critical error updating view status');
+            console.log('Lỗi không nghiêm trọng khi cập nhật trạng thái xem');
         });
     }
 
-    // Clear customer filter function
+    // Hàm xóa bộ lọc khách hàng
     function clearCustomerFilter() {
         const customerInput = document.getElementById('customer_filter');
         if (customerInput) {
             customerInput.value = '';
-            // Trigger form submission to apply the change
+            // Kích hoạt gửi form để áp dụng thay đổi
             document.getElementById('filterForm').submit();
         }
     }
 
     function updateOrderStatus(orderId, status) {
-        console.log('Updating order status:', orderId, status);
+        console.log('Cập nhật trạng thái đơn hàng:', orderId, status);
 
         $.post('orders-ajax.php', {
                 action: 'update_status',
@@ -643,22 +643,22 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                 status: status
             })
             .done(function(response) {
-                console.log('Server response:', response);
+                console.log('Phản hồi từ server:', response);
                 try {
                     const result = JSON.parse(response);
                     if (result.success) {
-                        // Show success message
+                        // Hiển thị thông báo thành công
                         const alertDiv = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
                             result.message +
                             '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
                         $('#admin-content').prepend(alertDiv);
 
-                        // Auto dismiss after 3 seconds
+                        // Tự động ẩn sau 3 giây
                         setTimeout(function() {
                             alertDiv.remove();
                         }, 3000);
 
-                        // Reload the page to show updated status
+                        // Tải lại trang để hiển thị trạng thái đã cập nhật
                         setTimeout(function() {
                             location.reload();
                         }, 1000);
@@ -666,23 +666,23 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                         alert('Error: ' + result.message);
                     }
                 } catch (e) {
-                    console.error('Parse error:', e);
-                    console.error('Raw response:', response);
-                    alert('Error updating order status');
+                    console.error('Lỗi phân tích:', e);
+                    console.error('Phản hồi thô:', response);
+                    alert('Lỗi cập nhật trạng thái đơn hàng');
                 }
             })
             .fail(function(xhr, status, error) {
-                console.error('AJAX error:', status, error);
-                alert('Error updating order status');
+                console.error('Lỗi AJAX:', status, error);
+                alert('Lỗi cập nhật trạng thái đơn hàng');
             });
     }
 
     function viewOrderDetails(orderId) {
-        console.log('Loading order details for ID:', orderId);
+        console.log('Đang tải chi tiết đơn hàng cho ID:', orderId);
 
-        // Validate order ID
+        // Xác thực ID đơn hàng
         if (!orderId || isNaN(orderId)) {
-            alert('Invalid order ID');
+            alert('ID đơn hàng không hợp lệ');
             return;
         }
 
@@ -691,37 +691,37 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
             <div class="spinner-border spinner-border-sm text-dark" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <div class="mt-2">Loading order details...</div>
+            <div class="mt-2">Đang tải chi tiết đơn hàng...</div>
         </div>
     `);
         $('#orderDetailsModal').modal('show');
 
-        // Make AJAX request with better error handling
+        // Thực hiện yêu cầu AJAX với xử lý lỗi tốt hơn
         $.ajax({
             url: '../api/order-details.php',
             type: 'GET',
             data: {
                 id: orderId
             },
-            timeout: 10000, // 10 second timeout
+            timeout: 10000, // Timeout 10 giây
             success: function(data) {
-                console.log('Order details loaded successfully');
+                console.log('Chi tiết đơn hàng đã tải thành công');
                 $('#orderDetailsContent').html(data);
             },
             error: function(xhr, status, error) {
-                console.error('AJAX Error:', {
+                console.error('Lỗi AJAX:', {
                     status: status,
                     error: error,
                     responseText: xhr.responseText
                 });
 
-                let errorMessage = 'Error loading order details.';
+                let errorMessage = 'Lỗi tải chi tiết đơn hàng.';
                 if (status === 'timeout') {
-                    errorMessage = 'Request timed out. Please try again.';
+                    errorMessage = 'Yêu cầu hết thời gian chờ. Vui lòng thử lại.';
                 } else if (xhr.status === 404) {
-                    errorMessage = 'Order details not found.';
+                    errorMessage = 'Không tìm thấy chi tiết đơn hàng.';
                 } else if (xhr.status === 403) {
-                    errorMessage = 'Access denied.';
+                    errorMessage = 'Quyền truy cập bị từ chối.';
                 }
 
                 $('#orderDetailsContent').html(`
@@ -729,7 +729,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                     <i class="bi bi-exclamation-triangle me-2"></i>
                     ${errorMessage}
                     <button type="button" class="btn btn-sm btn-outline-danger ms-2" onclick="viewOrderDetails(${orderId})">
-                        Try Again
+                        Thử lại
                     </button>
                 </div>
             `);
