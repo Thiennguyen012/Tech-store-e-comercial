@@ -434,3 +434,8 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 1.5rem 1rem;
   }
 }
+
+#starRating .star {
+  transition: color 0.2s;
+  cursor: pointer;
+}
