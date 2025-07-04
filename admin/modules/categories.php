@@ -151,7 +151,7 @@ try {
                                 while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<tr>";
                                     echo "<td>{$category['id']}</td>";
-                                    echo "<td>{$category['category_name']}</td>";
+                                    echo "<td>" . ucfirst(htmlspecialchars($category['category_name'])) . "</td>";
                                     echo "<td><span class='badge bg-success'>{$category['product_count']} products</span></td>";
                                     echo "<td>";
                                     echo "<a href='categories.php?action=edit&id={$category['id']}' class='btn btn-sm btn-outline-dark me-1'>Edit</a>";
