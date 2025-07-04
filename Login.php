@@ -113,8 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="login.php" method="post">
           <!-- tạo 1 row ở cột phải -->
           <div class="row align-items-center">
-            <div>
+            <div class="d-flex justify-content-between align-items-center">
               <p class="text-dark mt-4 mb-4" id="login-text">Sign in</p>
+              <a href="#" onclick="location.href='index.php';return false;" class="btn btn-transperent"><i class="bi bi-arrow-left fs-5"></i></a>
             </div>
             <!-- input username, password -->
             <div class="input-group mb-3">

@@ -18,15 +18,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST["username"];
   $password = $_POST["password"];
   $rePassword = $_POST["rePassword"];
-}
-// Kiểm tra các trường trống 
-if (empty($name) || empty($email) || empty($phone) || empty($username) || empty($password)) {
-  $alert_message = 'Please fulfill the information!';
-  $alert_type = 'danger';
-} elseif ($password !== $rePassword) {
-  $alert_message = 'Wrong Password! Try again!';
-  $alert_type = 'warning';
-} else {
+  // Kiểm tra các trường trống 
+  if (empty($name) || empty($email) || empty($phone) || empty($username) || empty($password)) {
+    $alert_message = 'Please fulfill the information!';
+    $alert_type = 'danger';
+  } elseif ($password !== $rePassword) {
+    $alert_message = 'Wrong Password! Try again!';
+    $alert_type = 'warning';
+  } else {
+  }
+
 
   // Kiểm tra username đã tồn tại chưa
   $check_username = "SELECT * FROM site_user WHERE username = '$username'";
@@ -35,7 +36,6 @@ if (empty($name) || empty($email) || empty($phone) || empty($username) || empty(
   if (mysqli_num_rows($result_username) > 0) {
     $alert_message = 'Username already exists. Please choose another username!';
     $alert_type = 'warning';
-
   } else {
     // Kiểm tra email đã tồn tại chưa
     $check_email = "SELECT * FROM site_user WHERE email = '$email'";
@@ -44,7 +44,6 @@ if (empty($name) || empty($email) || empty($phone) || empty($username) || empty(
     if (mysqli_num_rows($result_email) > 0) {
       $alert_message = 'Email already exists. Please choose another email!';
       $alert_type = 'warning';
-
     } else {
       // Lưu vào database
       $sql = "INSERT INTO site_user (name, email, phone, username, password, role)
@@ -108,8 +107,9 @@ if (empty($name) || empty($email) || empty($phone) || empty($username) || empty(
       <form method="POST" action="Registration.php">
         <!-- tạo 1 row ở cột phải -->
         <div class="row align-items-center">
-          <div>
+          <div class="d-flex justify-content-between align-items-center">
             <p class="text-dark mt-4 mb-4" id="login-text">Sign up</p>
+            <a href="#" onclick="location.href='index.php';return false;" class="btn btn-transperent"><i class="bi bi-arrow-left fs-5"></i></a>
           </div>
           <!-- input username, password -->
           <div class="input-group mb-3">

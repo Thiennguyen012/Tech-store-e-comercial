@@ -24,7 +24,7 @@ $total_reviews = $avg_result['total_reviews'];
 
 // Lấy danh sách đánh giá (mới nhất trước)
 $reviews = [];
-$review_sql = "SELECT pr.*, u.username FROM product_review pr LEFT JOIN site_user u ON pr.user_id = u.id WHERE pr.product_id = ? ORDER BY pr.created_at DESC";
+$review_sql = "SELECT pr.*, u.username FROM product_review pr LEFT JOIN site_user u ON pr.user_id = u.id WHERE pr.product_id = ? ORDER BY pr.created_at DESC LIMIT 5";
 $stmt = $conn->prepare($review_sql);
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
