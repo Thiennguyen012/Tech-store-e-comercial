@@ -439,3 +439,11 @@ input[type="number"]::-webkit-inner-spin-button {
   transition: color 0.2s;
   cursor: pointer;
 }
+.form-check {
+  padding-left: 1.5em !important;
+}
+.list-group-item {
+  padding-left: 0.75em !important;
+  background: transparent;
+  border: none;
+}

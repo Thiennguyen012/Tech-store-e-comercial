@@ -226,7 +226,7 @@ while ($row = $config_result->fetch_assoc()) {
           <div class="col-12">
             <h5 class="fw-bold border-bottom pb-2 mb-3">Related Products</h5>
             <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
-              <div class="carousel-inner">
+              <div class="carousel-inner px-5">
                 <?php
                 // Lấy danh sách sản phẩm liên quan (cùng category_id, loại trừ chính nó)
                 $related_sql = "SELECT id, name, price, product_image FROM product WHERE category_id = ? AND id != ? LIMIT 10";
@@ -249,7 +249,7 @@ while ($row = $config_result->fetch_assoc()) {
                     <div class="row">
                       <?php foreach ($chunk as $related): ?>
                         <div class="col-md-3 text-center">
-                          <div class="card border-0 text-center" style="width: 100%;">
+                          <div class="card border-0 text-center mx-2" style="width: 100%; height: 480px;">
                             <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $related['id']; ?>', this, 'single-product', '<?php echo $related['id']; ?>'); return false;" class="text-decoration-none text-dark">
                               <img src="<?php echo htmlspecialchars($related['product_image']); ?>" class="card-img-top img-fluid" alt="<?php echo htmlspecialchars($related['name']); ?>">
                               <div class="card-body">

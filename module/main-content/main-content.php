@@ -25,18 +25,18 @@ include __DIR__ . '/get-top-products.php';
       <img id="slide-img2" src="./img/product-banner/vivo s16.jpg" class="d-block w-100 c-img" alt="..." />
       <div class="carousel-caption d-md-block">
         <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold"
-          onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Learn more</button>
+          onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Learn more</button>
         <a class="text-light ms-2 fw-bold" href="#"
-          onclick="loadPage('module/product/product.php?category=camera', this, 'products'); return false;">Buy now</a>
+          onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Buy now</a>
       </div>
     </div>
     <div class="carousel-item c-items">
       <img id="slide-img3" src="./img/product-banner/zenbook a14.jpg" class="d-block w-100 c-img" alt="..." />
       <div class="carousel-caption d-md-block">
         <button class="btn btn-transparent btn-outline-light rounded-4 mx-3 my-1 my-lg-3 fw-bold"
-          onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Learn more</button>
+          onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Learn more</button>
         <a class="text-light ms-2 fw-bold" href="#"
-          onclick="loadPage('module/product/product.php?category=accessories', this, 'products'); return false;">Buy now</a>
+          onclick="loadPage('module/product/product.php?category=laptop', this, 'products'); return false;">Buy now</a>
       </div>
     </div>
   </div>
@@ -240,40 +240,61 @@ include __DIR__ . '/get-top-products.php';
   <!-- Laptop -->
   <div class="row align-content-center my-lg-4">
     <?php while ($laptop = $laptops->fetch_assoc()): ?>
+      <?php
+      // Lấy rating trung bình và số review
+      $stmtRating = $conn->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM product_review WHERE product_id = ?");
+      $stmtRating->bind_param("i", $laptop['id']);
+      $stmtRating->execute();
+      $ratingResult = $stmtRating->get_result()->fetch_assoc();
+      $avg_rating = $ratingResult && $ratingResult['avg_rating'] ? round($ratingResult['avg_rating'], 1) : 0;
+      $total_reviews = $ratingResult['total_reviews'] ?? 0;
+      $stmtRating->close();
+      ?>
       <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-        <div class="card" style="width: 18rem">
+        <div class="card product-card border-0 shadow-sm h-100 d-flex flex-column align-items-center" style="width: 18rem;">
           <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $laptop['id']; ?>', this, 'single-product', '<?php echo $laptop['id']; ?>'); return false;" style="text-decoration: none; color: inherit;">
-            <img src="<?php echo htmlspecialchars($laptop['product_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($laptop['name']); ?>" />
+            <img src="<?php echo htmlspecialchars($laptop['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($laptop['name']); ?>" style="height:200px;object-fit:contain;" />
           </a>
-          <div class="card-body">
-            <h5 class="card-title"><?php echo htmlspecialchars($laptop['name']); ?></h5>
-            <p class="card-text">
-              Price: $<?php echo number_format($laptop['price'], 2); ?>
-            </p>
+          <div class="card-body text-center d-flex flex-column justify-content-between w-100">
+            <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem; min-height: 38px; white-space: normal; overflow: hidden; text-overflow: ellipsis;">
+              <?php echo htmlspecialchars($laptop['name']); ?>
+            </h6>
+            <!-- Hiển thị rating -->
+            <div class="mb-1" style="font-size:1.1rem;">
+              <?php
+              for ($i = 1; $i <= 5; $i++) {
+                echo $i <= round($avg_rating) ? '<span style="color:#ffc107">&#9733;</span>' : '<span style="color:#ccc">&#9733;</span>';
+              }
+              ?>
+              <span class="ms-1 text-dark"><?php echo $avg_rating; ?>/5</span>
+              <br>
+              <span class="text-muted ms-1" style="font-size:0.95rem;">(<?php echo $total_reviews; ?> reviews)</span>
+            </div>
+            <div class="fw-bold mb-2" style="font-size: 1.2rem; color: #222;">
+              $<?php echo number_format($laptop['price'], 2); ?>
+            </div>
           </div>
-          <div class="row justify-content-center text-center">
-            <div class="col-auto">
-              <a href="#" class="btn btn-dark rounded-4 mb-3"
-                onclick="loadPage('module/product/single_product.php?id=<?php echo $laptop['id']; ?>', this, 'single-product', '<?php echo $laptop['id']; ?>'); return false;">More details</a>
-            </div>
-            <div class="col-auto">
-              <?php if ($laptop['qty_in_stock'] > 0): ?>
-                <form class="addToCartForm" action="module/cart/cart.php" method="POST" style="display: inline;">
-                  <input type="hidden" name="product-id" value="<?php echo $laptop['id']; ?>">
-                  <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($laptop['name']); ?>">
-                  <input type="hidden" name="product-price" value="<?php echo $laptop['price']; ?>">
-                  <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($laptop['product_image']); ?>">
-                  <input type="hidden" name="quantity" value="1">
-                  <button type="submit" name="add-to-cart" class="btn rounded-4 mb-3">
-                    <i class="fa-solid fa-cart-plus fs-4"></i>
-                  </button>
-                </form>
-              <?php else: ?>
-                <button onclick="loadPage('module/contact/contact.php'); return false;" class="btn rounded-4 mb-3">
-                  <i class="fa-solid fa-phone fs-4"></i>
+          <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 mt-auto w-100">
+            <a href="#" class="btn btn-dark btn-sm rounded-pill px-3"
+              onclick="loadPage('module/product/single_product.php?id=<?php echo $laptop['id']; ?>', this, 'single-product', '<?php echo $laptop['id']; ?>'); return false;">
+              More details
+            </a>
+            <?php if ($laptop['qty_in_stock'] > 0): ?>
+              <form class="addToCartForm m-0 p-0" action="module/cart/cart.php" method="POST" style="display: inline;">
+                <input type="hidden" name="product-id" value="<?php echo $laptop['id']; ?>">
+                <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($laptop['name']); ?>">
+                <input type="hidden" name="product-price" value="<?php echo $laptop['price']; ?>">
+                <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($laptop['product_image']); ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" name="add-to-cart" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                  <i class="bi bi-cart"></i>
                 </button>
-              <?php endif; ?>
-            </div>
+              </form>
+            <?php else: ?>
+              <button onclick="loadPage('module/contact/contact.php'); return false;" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="bi bi-telephone"></i>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </div>
@@ -283,207 +304,220 @@ include __DIR__ . '/get-top-products.php';
   <!-- Security Camera -->
   <div class="row align-content-center my-lg-4">
     <?php while ($camera = $cameras->fetch_assoc()): ?>
+      <?php
+      // Lấy rating trung bình và số review
+      $stmtRating = $conn->prepare("SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM product_review WHERE product_id = ?");
+      $stmtRating->bind_param("i", $camera['id']);
+      $stmtRating->execute();
+      $ratingResult = $stmtRating->get_result()->fetch_assoc();
+      $avg_rating = $ratingResult && $ratingResult['avg_rating'] ? round($ratingResult['avg_rating'], 1) : 0;
+      $total_reviews = $ratingResult['total_reviews'] ?? 0;
+      $stmtRating->close();
+      ?>
       <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
-        <div class="card" style="width: 18rem">
+        <div class="card product-card border-0 shadow-sm h-100 d-flex flex-column align-items-center" style="width: 18rem;">
           <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $camera['id']; ?>', this, 'single-product', '<?php echo $camera['id']; ?>'); return false;" style="text-decoration: none; color: inherit;">
-            <img src="<?php echo htmlspecialchars($camera['product_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($camera['name']); ?>" />
+            <img src="<?php echo htmlspecialchars($camera['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($camera['name']); ?>" style="height:200px;object-fit:contain;" />
           </a>
-          <div class="card-body">
-            <h5 class="card-title"><?php echo htmlspecialchars($camera['name']); ?></h5>
-            <p class="card-text">
-              Price: $<?php echo number_format($camera['price'], 2); ?>
-            </p>
+          <div class="card-body text-center d-flex flex-column justify-content-between w-100">
+            <h6 class="card-title fw-bold text-uppercase mb-2" style="font-size: 1rem; min-height: 38px; white-space: normal; overflow: hidden; text-overflow: ellipsis;">
+              <?php echo htmlspecialchars($camera['name']); ?>
+            </h6>
+            <!-- Hiển thị rating -->
+            <div class="mb-1" style="font-size:1.1rem;">
+              <?php
+              for ($i = 1; $i <= 5; $i++) {
+                echo $i <= round($avg_rating) ? '<span style="color:#ffc107">&#9733;</span>' : '<span style="color:#ccc">&#9733;</span>';
+              }
+              ?>
+              <span class="ms-1 text-dark"><?php echo $avg_rating; ?>/5</span>
+              <br>
+              <span class="text-muted ms-1" style="font-size:0.95rem;">(<?php echo $total_reviews; ?> reviews)</span>
+            </div>
+            <div class="fw-bold mb-2" style="font-size: 1.2rem; color: #222;">
+              $<?php echo number_format($camera['price'], 2); ?>
+            </div>
           </div>
-          <div class="row justify-content-center text-center">
-            <div class="col-auto">
-              <a href="#" class="btn btn-dark rounded-4 mb-3"
-                onclick="loadPage('module/product/single_product.php?id=<?php echo $camera['id']; ?>', this, 'single-product', '<?php echo $camera['id']; ?>'); return false;">More details</a>
-            </div>
-            <div class="col-auto">
-              <?php if ($camera['qty_in_stock'] > 0): ?>
-                <form class="addToCartForm" action="module/cart/cart.php" method="POST" style="display: inline;">
-                  <input type="hidden" name="product-id" value="<?php echo $camera['id']; ?>">
-                  <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($camera['name']); ?>">
-                  <input type="hidden" name="product-price" value="<?php echo $camera['price']; ?>">
-                  <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($camera['product_image']); ?>">
-                  <input type="hidden" name="quantity" value="1">
-                  <button type="submit" name="add-to-cart" class="btn rounded-4 mb-3">
-                    <i class="fa-solid fa-cart-plus fs-4"></i>
-                  </button>
-                </form>
-              <?php else: ?>
-                <button onclick="loadPage('module/contact/contact.php'); return false;" class="btn rounded-4 mb-3">
-                  <i class="fa-solid fa-phone fs-4"></i>
+          <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 mt-auto w-100">
+            <a href="#" class="btn btn-dark btn-sm rounded-pill px-3"
+              onclick="loadPage('module/product/single_product.php?id=<?php echo $camera['id']; ?>', this, 'single-product', '<?php echo $camera['id']; ?>'); return false;">
+              More details
+            </a>
+            <?php if ($camera['qty_in_stock'] > 0): ?>
+              <form class="addToCartForm m-0 p-0" action="module/cart/cart.php" method="POST" style="display: inline;">
+                <input type="hidden" name="product-id" value="<?php echo $camera['id']; ?>">
+                <input type="hidden" name="product-name" value="<?php echo htmlspecialchars($camera['name']); ?>">
+                <input type="hidden" name="product-price" value="<?php echo $camera['price']; ?>">
+                <input type="hidden" name="product-img" value="<?php echo htmlspecialchars($camera['product_image']); ?>">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" name="add-to-cart" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                  <i class="bi bi-cart"></i>
                 </button>
-              <?php endif; ?>
-            </div>
+              </form>
+            <?php else: ?>
+              <button onclick="loadPage('module/contact/contact.php'); return false;" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="bi bi-telephone"></i>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </div>
     <?php endwhile; ?>
   </div>
 
-  <div class="row align-content-center my-lg-4">
-    <div class="col-12 d-flex justify-content-center">
-      <button class="btn btn-outline-dark rounded-4 mb-3 w-25"
-        onclick="loadPage('module/product/product.php',this,'products');return false;">View more</button>
-    </div>
-  </div>
-</div>
-
-<!-- about us -->
-<hr style="width: 85%; margin: auto" />
-<div id="#About" class="about-us container container my-5">
-  <div class="about-us-container border p-4 rounded-4">
-    <div class="row">
-      <div class="col col-6">
-        <h1>About Us</h1>
-        <p>Welcome to <span style="font-weight:bold ;">Technologia</span> – your trusted destination for the latest and most reliable tech products!</p>
-        <p>We specialize in providing high-quality technology items such as laptops, cameras, electronic accessories, smart devices, and more. With our motto <span style="font-weight: bold;">"Quality – Trust – Dedicated Support," Technologia</span> is committed to delivering a safe, convenient, and professional shopping experience.</p>
-        <button id="about-us-btn" class="btn btn-dark rounded-4"
-          onclick="loadPage('module/about-us/about-us.php', this, 'about'); return false;">More about us</button>
+  <!-- about us -->
+  <hr style="width: 85%; margin: auto" />
+  <div id="#About" class="about-us container container my-5">
+    <div class="about-us-container border p-4 rounded-4">
+      <div class="row">
+        <div class="col col-6">
+          <h1>About Us</h1>
+          <p>Welcome to <span style="font-weight:bold ;">Technologia</span> – your trusted destination for the latest and most reliable tech products!</p>
+          <p>We specialize in providing high-quality technology items such as laptops, cameras, electronic accessories, smart devices, and more. With our motto <span style="font-weight: bold;">"Quality – Trust – Dedicated Support," Technologia</span> is committed to delivering a safe, convenient, and professional shopping experience.</p>
+          <button id="about-us-btn" class="btn btn-dark rounded-4"
+            onclick="loadPage('module/about-us/about-us.php', this, 'about'); return false;">More about us</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<style>
-  #about-us-btn {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+  <style>
+    #about-us-btn {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-  #about-us-btn:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
-  }
+    #about-us-btn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0);
+    }
 
-  .categories-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-</style>
+    .categories-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+  </style>
 
-<script>
-  function updateCarouselImages() {
-    const aspectRatio = window.innerHeight / window.innerWidth;
+  <script>
+    function updateCarouselImages() {
+      const aspectRatio = window.innerHeight / window.innerWidth;
 
-    const slide1 = document.getElementById("slide-img1");
-    const slide2 = document.getElementById("slide-img2");
-    const slide3 = document.getElementById("slide-img3");
+      const slide1 = document.getElementById("slide-img1");
+      const slide2 = document.getElementById("slide-img2");
+      const slide3 = document.getElementById("slide-img3");
 
-    if (slide1 && slide2 && slide3) {
-      if (aspectRatio > 0.9) {
-        slide1.src = "./img/product-banner/zenbook14-smalll.jpg";
-        slide2.src = "./img/product-banner/vivo s16-small.jpg";
-        slide3.src = "./img/product-banner/zenbook a14-small.jpg";
-      } else {
-        slide1.src = "./img/product-banner/zenbook14.jpg";
-        slide2.src = "./img/product-banner/vivo s16.jpg";
-        slide3.src = "./img/product-banner/zenbook a14.jpg";
+      if (slide1 && slide2 && slide3) {
+        if (aspectRatio > 0.9) {
+          slide1.src = "./img/product-banner/zenbook14-smalll.jpg";
+          slide2.src = "./img/product-banner/vivo s16-small.jpg";
+          slide3.src = "./img/product-banner/zenbook a14-small.jpg";
+        } else {
+          slide1.src = "./img/product-banner/zenbook14.jpg";
+          slide2.src = "./img/product-banner/vivo s16.jpg";
+          slide3.src = "./img/product-banner/zenbook a14.jpg";
+        }
       }
     }
-  }
 
-  // Hàm xử lý thêm vào giỏ hàng cho main content
-  function attachMainContentCartEventListeners() {
-    document.querySelectorAll('form.addToCartForm').forEach(function(form) {
-      form.removeEventListener('submit', handleMainContentCartSubmit);
-      form.addEventListener('submit', handleMainContentCartSubmit);
-    });
-  }
-
-  function handleMainContentCartSubmit(e) {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-
-    fetch('module/cart/cart.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          // Hiển thị modal thay vì alert
-          const modalElement = document.getElementById('addToCartSuccessModal');
-          const modal = new bootstrap.Modal(modalElement, {
-            backdrop: true,
-            keyboard: true
-          });
-          modal.show();
-
-          // Thêm event listener để dispose modal khi đóng
-          modalElement.addEventListener('hidden.bs.modal', function() {
-            modal.dispose();
-          }, {
-            once: true
-          });
-
-          // Cập nhật số trên icon giỏ hàng nếu có
-          const cartIcon = document.querySelector('.cart-icon .fw-bold');
-          if (cartIcon) {
-            cartIcon.textContent = data.total;
-          }
-        } else {
-          alert("Thêm vào giỏ hàng thất bại!");
-        }
-      })
-      .catch(err => {
-        console.error("Lỗi khi gửi form:", err);
-        // alert("You are not logged, please login to add products to cart.");
-        const notLoggedInModal = new bootstrap.Modal(document.getElementById('notLoggedInModal'));
-        notLoggedInModal.show();
+    // Hàm xử lý thêm vào giỏ hàng cho main content
+    function attachMainContentCartEventListeners() {
+      document.querySelectorAll('form.addToCartForm').forEach(function(form) {
+        form.removeEventListener('submit', handleMainContentCartSubmit);
+        form.addEventListener('submit', handleMainContentCartSubmit);
       });
-  }
+    }
 
-  window.addEventListener("load", function() {
-    updateCarouselImages();
-    attachMainContentCartEventListeners();
-  });
+    function handleMainContentCartSubmit(e) {
+      e.preventDefault();
 
-  window.addEventListener("resize", updateCarouselImages);
+      const formData = new FormData(e.target);
 
-  // Gán sự kiện khi trang được load lại qua AJAX
-  document.addEventListener('DOMContentLoaded', function() {
-    attachMainContentCartEventListeners();
-  });
-</script>
-<!-- các modal thông báo -->
-<!-- Modal thông báo thêm vào giỏ hàng thành công -->
-<div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addToCartSuccessModalLabel">Success</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Product has been added to your cart successfully!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      fetch('module/cart/cart.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            // Hiển thị modal thay vì alert
+            const modalElement = document.getElementById('addToCartSuccessModal');
+            const modal = new bootstrap.Modal(modalElement, {
+              backdrop: true,
+              keyboard: true
+            });
+            modal.show();
+
+            // Thêm event listener để dispose modal khi đóng
+            modalElement.addEventListener('hidden.bs.modal', function() {
+              modal.dispose();
+            }, {
+              once: true
+            });
+
+            // Cập nhật số trên icon giỏ hàng nếu có
+            const cartIcon = document.querySelector('.cart-icon .fw-bold');
+            if (cartIcon) {
+              cartIcon.textContent = data.total;
+            }
+          } else {
+            alert("Thêm vào giỏ hàng thất bại!");
+          }
+        })
+        .catch(err => {
+          console.error("Lỗi khi gửi form:", err);
+          // alert("You are not logged, please login to add products to cart.");
+          const notLoggedInModal = new bootstrap.Modal(document.getElementById('notLoggedInModal'));
+          notLoggedInModal.show();
+        });
+    }
+
+    window.addEventListener("load", function() {
+      updateCarouselImages();
+      attachMainContentCartEventListeners();
+    });
+
+    window.addEventListener("resize", updateCarouselImages);
+
+    // Gán sự kiện khi trang được load lại qua AJAX
+    document.addEventListener('DOMContentLoaded', function() {
+      attachMainContentCartEventListeners();
+    });
+  </script>
+  <!-- các modal thông báo -->
+  <!-- Modal thông báo thêm vào giỏ hàng thành công -->
+  <div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addToCartSuccessModalLabel">Success</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Product has been added to your cart successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal thông báo chưa đăng nhập -->
-<div class="modal fade" id="notLoggedInModal" tabindex="-1" aria-labelledby="notLoggedInModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="notLoggedInModalLabel">Notification</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        You are not logged in. Please login to add products to cart.
-      </div>
-      <div class="modal-footer">
-        <a href="login.php" class="btn btn-dark">Login Now</a>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  <!-- Modal thông báo chưa đăng nhập -->
+  <div class="modal fade" id="notLoggedInModal" tabindex="-1" aria-labelledby="notLoggedInModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="notLoggedInModalLabel">Notification</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          You are not logged in. Please login to add products to cart.
+        </div>
+        <div class="modal-footer">
+          <a href="login.php" class="btn btn-dark">Login Now</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
