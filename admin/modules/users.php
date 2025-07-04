@@ -77,8 +77,13 @@ if ($action == 'edit' && $_POST) {
 
 if ($action == 'delete' && isset($_GET['id'])) {
     try {
+        $userId = $_GET['id'];
+        // Xóa tất cả đơn hàng của user trước
+        $stmt = $conn->prepare("DELETE FROM bill WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        // Sau đó xóa user
         $stmt = $conn->prepare("DELETE FROM site_user WHERE id = ?");
-        $stmt->execute([$_GET['id']]);
+        $stmt->execute([$userId]);
         echo '<script>
             alert("User deleted successfully!");
             location.href = "users.php";
