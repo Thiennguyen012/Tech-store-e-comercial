@@ -252,7 +252,7 @@ include __DIR__ . '/get-top-products.php';
       ?>
       <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
         <div class="card product-card border-0 shadow-sm h-100 d-flex flex-column align-items-center" style="width: 18rem;">
-          <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $laptop['id']; ?>', this, 'single-product', '<?php echo $laptop['id']; ?>'); return false;" style="text-decoration: none; color: inherit;">
+          <a href="#" onclick="location.href='index.php?act=single-product&id=<?php echo $laptop['id']; ?>'; return false;" style="text-decoration: none; color: inherit;">
             <img src="<?php echo htmlspecialchars($laptop['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($laptop['name']); ?>" style="height:200px;object-fit:contain;" />
           </a>
           <div class="card-body text-center d-flex flex-column justify-content-between w-100">
@@ -316,7 +316,7 @@ include __DIR__ . '/get-top-products.php';
       ?>
       <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center">
         <div class="card product-card border-0 shadow-sm h-100 d-flex flex-column align-items-center" style="width: 18rem;">
-          <a href="#" onclick="loadPage('module/product/single_product.php?id=<?php echo $camera['id']; ?>', this, 'single-product', '<?php echo $camera['id']; ?>'); return false;" style="text-decoration: none; color: inherit;">
+          <a href="#" onclick="location.href='index.php?act=single-product&id=<?php echo $camera['id']; ?>'; return false;" style="text-decoration: none; color: inherit;">
             <img src="<?php echo htmlspecialchars($camera['product_image']); ?>" class="card-img-top p-2" alt="<?php echo htmlspecialchars($camera['name']); ?>" style="height:200px;object-fit:contain;" />
           </a>
           <div class="card-body text-center d-flex flex-column justify-content-between w-100">
