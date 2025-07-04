@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 04, 2025 lúc 12:26 PM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jul 04, 2025 at 01:13 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,32 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `banhang`
+-- Database: `banhang`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `bill`
+-- Table structure for table `admin_order_views`
+--
+
+CREATE TABLE `admin_order_views` (
+  `id` int(11) NOT NULL,
+  `admin_user_id` int(11) DEFAULT NULL,
+  `last_view_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin_order_views`
+--
+
+INSERT INTO `admin_order_views` (`id`, `admin_user_id`, `last_view_time`) VALUES
+(1, 9, '2025-07-04 11:11:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bill`
 --
 
 CREATE TABLE `bill` (
@@ -40,7 +59,7 @@ CREATE TABLE `bill` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `bill`
+-- Dumping data for table `bill`
 --
 
 INSERT INTO `bill` (`id`, `user_id`, `order_date`, `order_name`, `order_phone`, `order_address`, `order_total`, `order_paymethod`, `order_status`) VALUES
@@ -167,12 +186,14 @@ INSERT INTO `bill` (`id`, `user_id`, `order_date`, `order_name`, `order_phone`, 
 (122, 2, '2025-07-02 10:42:51', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1013.19, 1, 'Cancelled'),
 (126, 2, '2025-07-04 12:22:59', 'Bùi Thịnh', '0333675969', 'e Thịnh trùm phi phai', 197.88, 1, 'Cancelled'),
 (127, 2, '2025-07-04 13:00:31', 'Bùi Thịnh', '0333675969', 'e Thịnh trùm phi phai', 1418.41, 0, 'Pending'),
-(129, 15, '2025-07-04 16:41:56', 'Thien Nguyenn', '123456', 'hahahaaa', 5277.80, 0, 'Pending');
+(129, 15, '2025-07-04 16:41:56', 'Thien Nguyenn', '123456', 'hahahaaa', 5277.80, 0, 'Pending'),
+(130, 9, '2025-07-04 18:09:05', 'whiteyin', '0389040222', 'Hoang Liet, Hoang Mai, Ha Noi', 746.78, 0, 'Pending'),
+(131, 9, '2025-07-04 18:11:03', 'whiteyin', '0389040222', 'Hoang Liet, Hoang Mai, Ha Noi', 2110.44, 0, 'Pending');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `checkout_cart`
+-- Table structure for table `checkout_cart`
 --
 
 CREATE TABLE `checkout_cart` (
@@ -186,7 +207,7 @@ CREATE TABLE `checkout_cart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `checkout_cart`
+-- Dumping data for table `checkout_cart`
 --
 
 INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `quantity`, `total`, `bill_id`) VALUES
@@ -341,12 +362,16 @@ INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `qu
 (149, 'Dell Inspiron 3530 i7-1355U 16GB 512GB SSD 15.6 Inch FHD 120Hz Win11H OfficeHS21 Silver', 'https://hanoicomputercdn.com/media/product/86105_file_pts_chu___n_l____0000_layer_1.jpg', 690.46, 1, 690.46, 128),
 (150, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00, 1, 599.00, 128),
 (151, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00, 1, 2999.00, 129),
-(152, 'Apple MacBook Pro 14-inch M4 16GB RAM 512GB SSD Space Black', 'https://www.laptopsdirect.co.uk/Images/MW2U3BA_1_Supersize.jpg?v=4', 1799.00, 1, 1799.00, 129);
+(152, 'Apple MacBook Pro 14-inch M4 16GB RAM 512GB SSD Space Black', 'https://www.laptopsdirect.co.uk/Images/MW2U3BA_1_Supersize.jpg?v=4', 1799.00, 1, 1799.00, 129),
+(153, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 130),
+(154, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 130),
+(155, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59s', 921.08, 1, 921.08, 131),
+(156, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 1, 997.50, 131);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `notifications`
+-- Table structure for table `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -359,7 +384,7 @@ CREATE TABLE `notifications` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `notifications`
+-- Dumping data for table `notifications`
 --
 
 INSERT INTO `notifications` (`id`, `user_id`, `type`, `content`, `is_read`, `created_at`) VALUES
@@ -372,12 +397,14 @@ INSERT INTO `notifications` (`id`, `user_id`, `type`, `content`, `is_read`, `cre
 (153, 2, 0, 'You have successfully placed order #123.', 1, '2025-07-02 11:35:33'),
 (154, 10, 0, 'You have successfully placed order #124.', 1, '2025-07-03 17:53:00'),
 (155, 14, 0, 'You have successfully placed order #125.', 1, '2025-07-03 21:15:39'),
-(156, 2, 0, 'You have successfully placed order #127.', 1, '2025-07-04 13:00:31');
+(156, 2, 0, 'You have successfully placed order #127.', 1, '2025-07-04 13:00:31'),
+(159, 9, 0, 'You have successfully placed order #130.', 1, '2025-07-04 18:09:05'),
+(160, 9, 0, 'You have successfully placed order #131.', 1, '2025-07-04 18:11:03');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product`
+-- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
@@ -392,18 +419,18 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock`, `product_image`, `price`, `rate_id`) VALUES
-(1, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'Highlighting form and function, a stunningly slim body and impressive tactile finish accentuate real-world design features. Built to keep you active, engaged, and on the move, the Aspire 3 has the technology to suit your way of life. Fundamentally impressive technology.\r\nEfficient Performance with Intel Celeron N4500\r\nThe Acer Aspire 3 A315-35 is powered by the Intel Celeron N4500 processor, delivering reliable performance for everyday computing tasks. With speeds of up to 2.8 GHz, this dual-core processor ensures smooth web browsing, document editing, and media playback. Whether you\'re working on assignments, streaming content, or managing emails, the Aspire 3 provides a seamless user experience.Crisp 15.6-Inch HD Display for Everyday Use\r\nFeaturing a 15.6-inch HD (1366 x 768) TN display, the Aspire 3 offers clear visuals and vibrant colors for work and entertainment. The anti-glare screen reduces reflections, making it comfortable to use in various lighting conditions. Its widescreen format enhances productivity, allowing you to view multiple applications simultaneously without feeling cramped.Fast and Reliable Storage with 128GB NVMe SSD\r\nThe 128GB NVMe SSD provides quick boot times and fast data access, ensuring efficient performance for everyday computing. With 3D Triple-Level Cell (TLC) technology, the SSD offers durability and reliability, making file transfers and software loading times much faster compared to traditional hard drives. This storage capacity is ideal for essential applications, documents, and media files.Seamless Connectivity with Wi-Fi 6 and Gigabit Ethernet\r\nStay connected with the latest Wi-Fi 6 technology, providing faster and more stable wireless connections for browsing, streaming, and online meetings. The Aspire 3 also includes a Gigabit Ethernet port for a reliable wired connection when needed. Whether at home, in the office, or on the go, you can enjoy uninterrupted connectivity for all your online activities.Sleek Design with a Comfortable UK Keyboard\r\nFinished in an elegant pure silver design, the Acer Aspire 3 offers a stylish and lightweight build, making it easy to carry wherever you go. The UK keyboard layout ensures comfortable and accurate typing, ideal for students and professionals alike. With a full-sized keyboard and precision touchpad, navigating through tasks becomes effortless, enhancing your overall productivity.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 0),
+(1, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'Highlighting form and function, a stunningly slim body and impressive tactile finish accentuate real-world design features. Built to keep you active, engaged, and on the move, the Aspire 3 has the technology to suit your way of life. Fundamentally impressive technology.\r\nEfficient Performance with Intel Celeron N4500\r\nThe Acer Aspire 3 A315-35 is powered by the Intel Celeron N4500 processor, delivering reliable performance for everyday computing tasks. With speeds of up to 2.8 GHz, this dual-core processor ensures smooth web browsing, document editing, and media playback. Whether you\'re working on assignments, streaming content, or managing emails, the Aspire 3 provides a seamless user experience.Crisp 15.6-Inch HD Display for Everyday Use\r\nFeaturing a 15.6-inch HD (1366 x 768) TN display, the Aspire 3 offers clear visuals and vibrant colors for work and entertainment. The anti-glare screen reduces reflections, making it comfortable to use in various lighting conditions. Its widescreen format enhances productivity, allowing you to view multiple applications simultaneously without feeling cramped.Fast and Reliable Storage with 128GB NVMe SSD\r\nThe 128GB NVMe SSD provides quick boot times and fast data access, ensuring efficient performance for everyday computing. With 3D Triple-Level Cell (TLC) technology, the SSD offers durability and reliability, making file transfers and software loading times much faster compared to traditional hard drives. This storage capacity is ideal for essential applications, documents, and media files.Seamless Connectivity with Wi-Fi 6 and Gigabit Ethernet\r\nStay connected with the latest Wi-Fi 6 technology, providing faster and more stable wireless connections for browsing, streaming, and online meetings. The Aspire 3 also includes a Gigabit Ethernet port for a reliable wired connection when needed. Whether at home, in the office, or on the go, you can enjoy uninterrupted connectivity for all your online activities.Sleek Design with a Comfortable UK Keyboard\r\nFinished in an elegant pure silver design, the Acer Aspire 3 offers a stylish and lightweight build, making it easy to carry wherever you go. The UK keyboard layout ensures comfortable and accurate typing, ideal for students and professionals alike. With a full-sized keyboard and precision touchpad, navigating through tasks becomes effortless, enhancing your overall productivity.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 0),
 (2, 'Acer TravelMate P2 Intel Core i5 8GB RAM 256GB SSD 14 Inch Windows 11 Laptop', 'Acer TravelMate P2, Intel Core i5, 8GB RAM, 256GB SSD, 14\" Full HD, Windows 11, NX.VYAEK.003. Designed for business and productivity with robust security, long battery life, and a lightweight chassis.', 1, 5, 'https://www.laptopsdirect.co.uk/Images/NX.VYAEK.00F_1_Supersize.jpg?v=3', 499.97, 0),
 (3, 'Apple MacBook Air 13-inch M2 16GB RAM 512GB SSD Space Grey', 'Apple MacBook Air 13-inch (M2, 2022), 16GB RAM, 512GB SSD, Space Grey. Siêu mỏng nhẹ, hiệu năng mạnh mẽ với chip Apple M2, màn hình Liquid Retina, thời lượng pin lên tới 18 giờ, Touch ID, macOS.', 1, 0, 'https://www.laptopsdirect.co.uk/Images/Z15S2002148089_1_Supersize.png?v=3', 1399.00, 0),
 (4, 'Apple MacBook Pro 14-inch M4 16GB RAM 512GB SSD Space Black', 'Apple MacBook Pro 14-inch (2024), Apple M4 chip with 10-core CPU and 10-core GPU, 16GB RAM, 512GB SSD, Space Black. Màn hình Liquid Retina XDR, Touch ID, thời lượng pin lên tới 18 giờ, macOS.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/MW2U3BA_1_Supersize.jpg?v=4', 1799.00, 0),
 (5, 'ASUS TUF A15 Ryzen 7 7435HS 16GB RAM 512GB SSD RTX 4060 144Hz 15.6 Inch FHD', 'ASUS TUF A15, AMD Ryzen 7 7435HS, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4060, 144Hz 15.6\" FHD, FA507NVR-LP012W, Windows 11, thiết kế gaming bền bỉ, hiệu năng mạnh mẽ.', 1, 8, 'https://www.laptopsdirect.co.uk/Images/FA507NVR-LP012W_1_Supersize.jpg?v=3', 1199.00, 0),
 (6, 'ASUS ROG Strix G16 Intel Core Ultra 9 16GB RAM 2TB SSD GeForce RTX 5080 240Hz 16 Inch', 'ASUS ROG Strix G16, Intel Core Ultra 9, 16GB RAM, 2TB SSD, NVIDIA GeForce RTX 5080, 240Hz 16\" FHD, G615LW-S5008W, Windows 11, laptop gaming cao cấp với hiệu năng vượt trội.', 1, 8, 'https://www.laptopsdirect.co.uk/Images/G615LW-S5008W_1_Supersize.png?v=32', 2999.00, 0),
 (7, 'Dell Latitude 7400 Intel Core i5 8th Gen 16GB 256GB 14 Inch Win 11 Pro', 'Dell Latitude 7400 Refurbished, Intel Core i5 8th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 11 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 0, 'https://www.laptopsdirect.co.uk/Images/T15420i516GB256GBW10P_1_Supersize.jpg?v=3', 399.00, 0),
-(8, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'Dell Latitude 5420 Refurbished, Intel Core i5 11th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 10 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 3, 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 0),
+(8, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'Dell Latitude 5420 Refurbished, Intel Core i5 11th Gen, 16GB RAM, 256GB SSD, 14\" FHD, Windows 10 Pro. Laptop doanh nhân bền bỉ, hiệu năng ổn định, thiết kế mỏng nhẹ.', 1, 2, 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 0),
 (9, 'HP 250 G9 Laptop Intel Core i7 1255U 16GB 512GB SSD 15.6 Inch FHD Windows 11', 'HP 250 G9, Intel Core i7-1255U, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 699.00, 0),
 (10, 'HP 250 G9 Intel Core i5 16GB RAM 256GB SSD 15.6 Inch Windows 11 Pro Laptop', 'HP 250 G9, Intel Core i5, 16GB RAM, 256GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng bền bỉ, hiệu năng ổn định, phù hợp cho doanh nghiệp và cá nhân.', 1, 6, 'https://www.laptopsdirect.co.uk/Images/A16Q947ES_1_Supersize.jpg?v=47', 599.00, 0),
 (11, 'Lenovo V15 G4 AMD Ryzen 5 16GB RAM 512GB SSD 15.6 Inch Windows 11 Pro Laptop', 'Lenovo V15 G4, AMD Ryzen 5, 16GB RAM, 512GB SSD, 15.6\" FHD, Windows 11 Pro. Laptop văn phòng mạnh mẽ, thiết kế bền bỉ, phù hợp cho công việc và học tập.', 1, 4, 'https://www.laptopsdirect.co.uk/Images/82YU00JYUK_1_15087916_Supersize.jpg?v=5', 549.00, 0),
@@ -413,8 +440,8 @@ INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock
 (15, 'TP-Link VIGI C240I 4mm 4MP Dome Camera', 'TP-Link VIGI C240I 4mm IP Camera, 4MP, Dome, H.265+ Compression, AI-Powered, Motion Detection, WDR Backlight Compensation, IP67 Rating, Built-in Microphone.', 2, 19, 'https://hanoicomputercdn.com/media/product/74709_camera_tp_link_vigi_c240l_4mm_1.jpg', 45.67, 0),
 (16, 'Hikvision DS-2CE16D0T-EXLPF 2MP Bullet Camera', 'Hikvision DS-2CE16D0T-EXLPF, 2MP, Bullet, EXIR, 2.8mm lens, IR up to 30m, IP67 weatherproof, metal body, suitable for indoor and outdoor installation.', 2, 19, 'https://hanoicomputercdn.com/media/product/89646_camera_hikvision_ds_2ce16d0t_exlpf.jpg', 13.39, 0),
 (17, 'Acer Gaming Nitro V 16 ProPanel ANV16-41-R36Y R7-8845HS 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'Acer Nitro V 16 ProPanel ANV16-41-R36Y, AMD Ryzen 7 8845HS, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4050 6GB, 16\" WUXGA, Windows 11,Black color, high-performance gaming laptop, large display, efficient cooling system.', 1, 10, 'https://hanoicomputercdn.com/media/product/84662_laptop_acer_gaming_nitro_v_16_propanel_anv16_41_r6na_nh_qp0sv_001_r7_8845hs_16gb_ram_512gb_ssd_rtx4060_8gb_16_inch_0005_.jpg', 1120.66, 0),
-(18, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'Acer Gaming Nitro Lite NL16-71G-71UJ, Intel Core i7-13620H, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4050 6GB, 16\" WUXGA, Windows 11, black color. High-performance gaming laptop with large display, efficient cooling, and modern design.', 1, 10, 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg', 921.08, 0),
-(19, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'ASUS Zenbook UX3405MA-PP152W, Intel Core Ultra 5 125H, 16GB RAM, 512GB SSD, 14\" 3K OLED Touch Display, Intel Graphics, Windows 11, ultra-thin and lightweight design, long battery life, premium build quality.', 1, 10, 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 0),
+(18, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'Acer Gaming Nitro Lite NL16-71G-71UJ, Intel Core i7-13620H, 16GB RAM, 512GB SSD, NVIDIA GeForce RTX 4050 6GB, 16\" WUXGA, Windows 11, black color. High-performance gaming laptop with large display, efficient cooling, and modern design.', 1, 9, 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59sv_002_0007_layer_2.jpg', 921.08, 0),
+(19, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'ASUS Zenbook UX3405MA-PP152W, Intel Core Ultra 5 125H, 16GB RAM, 512GB SSD, 14\" 3K OLED Touch Display, Intel Graphics, Windows 11, ultra-thin and lightweight design, long battery life, premium build quality.', 1, 9, 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 0),
 (20, 'Dell Inspiron 3530 i7-1355U 16GB 512GB SSD 15.6 Inch FHD 120Hz Win11H OfficeHS21 Silver', 'Dell Inspiron 3530, Intel Core i7-1355U, 16GB RAM, 512GB SSD, 15.6\" FHD 120Hz, Windows 11 Home, Office Home & Student 2021, Silver. High-performance laptop for work and entertainment, featuring a fast display and modern design.', 1, 2, 'https://hanoicomputercdn.com/media/product/86105_file_pts_chu___n_l____0000_layer_1.jpg', 690.46, 0),
 (21, 'MSI Vigor GK20 UK USB Keyboard', 'MSI Vigor GK20 UK USB Keyboard, ergonomic design, RGB lighting, durable keys.', 3, 49, 'https://www.laptopsdirect.co.uk/Images/S11-04UK231-CLA_1_Supersize.jpg?width=750&height=750&v=15', 29.99, 0),
 (22, 'SteelSeries Apex 9 TKL Mechanical Gaming Keyboard', 'SteelSeries Apex 9 TKL, mechanical gaming keyboard, compact design, RGB lighting.', 3, 50, 'https://www.laptopsdirect.co.uk/Images/64848_1_Supersize.png?width=750&height=750&v=5', 129.99, 0),
@@ -431,7 +458,7 @@ INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_category`
+-- Table structure for table `product_category`
 --
 
 CREATE TABLE `product_category` (
@@ -440,7 +467,7 @@ CREATE TABLE `product_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_category`
+-- Dumping data for table `product_category`
 --
 
 INSERT INTO `product_category` (`id`, `category_name`) VALUES
@@ -451,7 +478,7 @@ INSERT INTO `product_category` (`id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_review`
+-- Table structure for table `product_review`
 --
 
 CREATE TABLE `product_review` (
@@ -465,7 +492,7 @@ CREATE TABLE `product_review` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_review`
+-- Dumping data for table `product_review`
 --
 
 INSERT INTO `product_review` (`id`, `product_id`, `user_id`, `rating`, `comment`, `created_at`, `reviewer_name`) VALUES
@@ -480,12 +507,13 @@ INSERT INTO `product_review` (`id`, `product_id`, `user_id`, `rating`, `comment`
 (10, 13, 2, 5, 'cam nét như cam cypher', '2025-07-04 12:48:43', 'thinh1'),
 (11, 16, NULL, 5, 'cam nét như cam cypher', '2025-07-04 16:08:21', 'Guest'),
 (12, 2, NULL, 5, 'chạy mượt vl a ơi', '2025-07-04 16:10:04', 'Guest'),
-(13, 7, 15, 3, 'sạc lâu quá', '2025-07-04 16:12:02', 'thiennguyen5432@gmail.com');
+(13, 7, 15, 3, 'sạc lâu quá', '2025-07-04 16:12:02', 'thiennguyen5432@gmail.com'),
+(14, 31, 9, 5, 'ngon', '2025-07-04 18:05:28', 'admin1');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `services`
+-- Table structure for table `services`
 --
 
 CREATE TABLE `services` (
@@ -499,7 +527,7 @@ CREATE TABLE `services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `services`
+-- Dumping data for table `services`
 --
 
 INSERT INTO `services` (`id`, `user_id`, `name`, `phone`, `address`, `service_type`, `created_at`) VALUES
@@ -583,7 +611,7 @@ INSERT INTO `services` (`id`, `user_id`, `name`, `phone`, `address`, `service_ty
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `site_user`
+-- Table structure for table `site_user`
 --
 
 CREATE TABLE `site_user` (
@@ -599,7 +627,7 @@ CREATE TABLE `site_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `site_user`
+-- Dumping data for table `site_user`
 --
 
 INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, `password`, `role`, `reset_token`) VALUES
@@ -613,7 +641,30 @@ INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `variation`
+-- Table structure for table `top_products_config`
+--
+
+CREATE TABLE `top_products_config` (
+  `id` int(11) NOT NULL,
+  `config_key` varchar(50) NOT NULL,
+  `config_value` text DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `top_products_config`
+--
+
+INSERT INTO `top_products_config` (`id`, `config_key`, `config_value`, `updated_at`) VALUES
+(1, 'top_laptop_ids', '1,18,4,6', '2025-07-04 11:06:37'),
+(2, 'top_camera_ids', '31,14,16,13', '2025-07-04 11:11:55'),
+(3, 'featured_laptop_id', '1', '2025-07-04 10:57:04'),
+(4, 'featured_camera_id', '31', '2025-07-04 10:50:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variation`
 --
 
 CREATE TABLE `variation` (
@@ -623,7 +674,7 @@ CREATE TABLE `variation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `variation`
+-- Dumping data for table `variation`
 --
 
 INSERT INTO `variation` (`id`, `category_id`, `name`) VALUES
@@ -648,7 +699,7 @@ INSERT INTO `variation` (`id`, `category_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `variation_options`
+-- Table structure for table `variation_options`
 --
 
 CREATE TABLE `variation_options` (
@@ -658,7 +709,7 @@ CREATE TABLE `variation_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `variation_options`
+-- Dumping data for table `variation_options`
 --
 
 INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
@@ -832,11 +883,17 @@ INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
 (31, 15, '1080p');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `bill`
+-- Indexes for table `admin_order_views`
+--
+ALTER TABLE `admin_order_views`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bill`
 --
 ALTER TABLE `bill`
   ADD PRIMARY KEY (`id`),
@@ -844,32 +901,32 @@ ALTER TABLE `bill`
   ADD KEY `order_status` (`order_status`);
 
 --
--- Chỉ mục cho bảng `checkout_cart`
+-- Indexes for table `checkout_cart`
 --
 ALTER TABLE `checkout_cart`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `notifications`
+-- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `product`
+-- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_product_category` (`category_id`);
 
 --
--- Chỉ mục cho bảng `product_category`
+-- Indexes for table `product_category`
 --
 ALTER TABLE `product_category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `product_review`
+-- Indexes for table `product_review`
 --
 ALTER TABLE `product_review`
   ADD PRIMARY KEY (`id`),
@@ -877,122 +934,141 @@ ALTER TABLE `product_review`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `services`
+-- Indexes for table `services`
 --
 ALTER TABLE `services`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `site_user`
+-- Indexes for table `site_user`
 --
 ALTER TABLE `site_user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `variation`
+-- Indexes for table `top_products_config`
+--
+ALTER TABLE `top_products_config`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `config_key` (`config_key`);
+
+--
+-- Indexes for table `variation`
 --
 ALTER TABLE `variation`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Chỉ mục cho bảng `variation_options`
+-- Indexes for table `variation_options`
 --
 ALTER TABLE `variation_options`
   ADD PRIMARY KEY (`product_id`,`variation_id`),
   ADD KEY `variation_id` (`variation_id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `bill`
+-- AUTO_INCREMENT for table `admin_order_views`
+--
+ALTER TABLE `admin_order_views`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
--- AUTO_INCREMENT cho bảng `checkout_cart`
+-- AUTO_INCREMENT for table `checkout_cart`
 --
 ALTER TABLE `checkout_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
 
 --
--- AUTO_INCREMENT cho bảng `notifications`
+-- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
--- AUTO_INCREMENT cho bảng `product`
+-- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- AUTO_INCREMENT cho bảng `product_category`
+-- AUTO_INCREMENT for table `product_category`
 --
 ALTER TABLE `product_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `product_review`
+-- AUTO_INCREMENT for table `product_review`
 --
 ALTER TABLE `product_review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT cho bảng `services`
+-- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
--- AUTO_INCREMENT cho bảng `site_user`
+-- AUTO_INCREMENT for table `site_user`
 --
 ALTER TABLE `site_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT cho bảng `variation`
+-- AUTO_INCREMENT for table `top_products_config`
+--
+ALTER TABLE `top_products_config`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `variation`
 --
 ALTER TABLE `variation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `bill`
+-- Constraints for table `bill`
 --
 ALTER TABLE `bill`
   ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`);
 
 --
--- Các ràng buộc cho bảng `product`
+-- Constraints for table `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_ibfk_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Các ràng buộc cho bảng `product_review`
+-- Constraints for table `product_review`
 --
 ALTER TABLE `product_review`
   ADD CONSTRAINT `product_review_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_review_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `variation`
+-- Constraints for table `variation`
 --
 ALTER TABLE `variation`
   ADD CONSTRAINT `fk_variation_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `variation_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Các ràng buộc cho bảng `variation_options`
+-- Constraints for table `variation_options`
 --
 ALTER TABLE `variation_options`
   ADD CONSTRAINT `fk_productconfig_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE,

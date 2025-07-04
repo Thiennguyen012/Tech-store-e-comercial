@@ -27,17 +27,6 @@ try {
     // Đếm đơn hàng mới (được tạo trong 24 giờ qua và chưa được admin xem)
     $new_orders_count = 0;
     try {
-        // Kiểm tra xem bảng admin_order_views có tồn tại không, nếu không thì tạo
-        $check_table = $conn->query("SHOW TABLES LIKE 'admin_order_views'");
-        if ($check_table->rowCount() == 0) {
-            $conn->exec("
-                CREATE TABLE admin_order_views (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    admin_user_id INT,
-                    last_view_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-                )
-            ");
-        }
         
         // Lấy thời gian xem lần cuối của admin
         $admin_id = $_SESSION['user_id'] ?? 0;

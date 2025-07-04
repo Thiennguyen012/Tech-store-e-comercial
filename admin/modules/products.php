@@ -325,6 +325,9 @@ try {
                                 <i class="bi bi-arrow-clockwise"></i> Reset All
                             </a>
                         <?php endif; ?>
+                        <a href="top-products-config.php" class="btn btn-warning btn-sm" title="Configure Top Products">
+                            <i class="bi bi-star"></i> Top Products Config
+                        </a>
                         <a href="products.php?action=add" class="btn btn-dark btn-sm">
                             <i class="bi bi-plus-circle"></i> Add New Product
                         </a>

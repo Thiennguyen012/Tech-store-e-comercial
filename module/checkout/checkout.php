@@ -146,7 +146,7 @@ if ($username) {
         `;
     } else {
         addressContent.innerHTML = `<p class="text-muted">No default address available.</p>
-        <a class="text-success" href="#" onclick="location.href='index.php?act=addresses';return false;">Update now!</a> `;
+        <a class="text-success" href="#" onclick="location.href='index.php?act=profile';return false;">Update now!</a> `;
     }
 
     checkbox.addEventListener('change', function() {
