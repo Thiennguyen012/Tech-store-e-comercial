@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 01:13 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th7 04, 2025 lúc 03:58 PM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `banhang`
+-- Cơ sở dữ liệu: `banhang`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_order_views`
+-- Cấu trúc bảng cho bảng `admin_order_views`
 --
 
 CREATE TABLE `admin_order_views` (
@@ -34,16 +34,16 @@ CREATE TABLE `admin_order_views` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admin_order_views`
+-- Đang đổ dữ liệu cho bảng `admin_order_views`
 --
 
 INSERT INTO `admin_order_views` (`id`, `admin_user_id`, `last_view_time`) VALUES
-(1, 9, '2025-07-04 11:11:40');
+(1, 9, '2025-07-04 13:57:44');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bill`
+-- Cấu trúc bảng cho bảng `bill`
 --
 
 CREATE TABLE `bill` (
@@ -59,7 +59,7 @@ CREATE TABLE `bill` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `bill`
+-- Đang đổ dữ liệu cho bảng `bill`
 --
 
 INSERT INTO `bill` (`id`, `user_id`, `order_date`, `order_name`, `order_phone`, `order_address`, `order_total`, `order_paymethod`, `order_status`) VALUES
@@ -167,33 +167,33 @@ INSERT INTO `bill` (`id`, `user_id`, `order_date`, `order_name`, `order_phone`, 
 (103, 2, '2025-06-27 15:08:14', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Pending'),
 (104, 2, '2025-06-27 15:09:25', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Pending'),
 (105, 2, '2025-06-27 15:09:58', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 0, 'Pending'),
-(106, 2, '2025-06-27 15:20:01', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Paid'),
+(106, 2, '2025-06-27 15:20:01', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Pending'),
 (107, 2, '2025-06-27 15:21:47', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Cancelled'),
 (108, 2, '2025-06-28 10:13:03', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 0, 'Pending'),
 (109, 2, '2025-06-28 10:14:05', 'lmaovl', 'bruh', 'tung tung sahur', 1.10, 1, 'Cancelled'),
 (110, 2, '2025-06-28 10:20:13', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 5.49, 0, 'Pending'),
-(111, 2, '2025-06-28 10:27:55', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Paid'),
+(111, 2, '2025-06-28 10:27:55', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Pending'),
 (112, 2, '2025-06-28 10:39:27', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 197.99, 1, 'Cancelled'),
 (113, 2, '2025-06-28 10:42:18', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 549.97, 0, 'Pending'),
-(114, 2, '2025-06-28 10:45:26', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 549.97, 0, 'paid'),
 (115, 2, '2025-06-28 10:52:39', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 759.51, 1, 'pending'),
 (116, 9, '2025-06-28 17:24:50', '123', '4141', '515', 658.90, 1, 'Cancelled'),
-(117, 2, '2025-07-01 11:10:01', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Paid'),
+(117, 2, '2025-07-01 11:10:01', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1.10, 1, 'Pending'),
 (118, 2, '2025-07-01 11:18:58', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1013.19, 1, 'Cancelled'),
-(119, 2, '2025-07-01 11:37:24', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 603.90, 0, 'Paid'),
-(120, 2, '2025-07-01 11:52:37', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 264.00, 0, 'Paid'),
+(119, 2, '2025-07-01 11:37:24', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 603.90, 0, 'Pending'),
+(120, 2, '2025-07-01 11:52:37', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 264.00, 0, 'Pending'),
 (121, 9, '2025-07-01 21:15:42', 'lmao', 'kk', 'hehhe', 759.51, 0, 'Pending'),
 (122, 2, '2025-07-02 10:42:51', 'Bùi Thịnh', '0333675969', 'tao bắn phi phai', 1013.19, 1, 'Cancelled'),
 (126, 2, '2025-07-04 12:22:59', 'Bùi Thịnh', '0333675969', 'e Thịnh trùm phi phai', 197.88, 1, 'Cancelled'),
 (127, 2, '2025-07-04 13:00:31', 'Bùi Thịnh', '0333675969', 'e Thịnh trùm phi phai', 1418.41, 0, 'Pending'),
 (129, 15, '2025-07-04 16:41:56', 'Thien Nguyenn', '123456', 'hahahaaa', 5277.80, 0, 'Pending'),
 (130, 9, '2025-07-04 18:09:05', 'whiteyin', '0389040222', 'Hoang Liet, Hoang Mai, Ha Noi', 746.78, 0, 'Pending'),
-(131, 9, '2025-07-04 18:11:03', 'whiteyin', '0389040222', 'Hoang Liet, Hoang Mai, Ha Noi', 2110.44, 0, 'Pending');
+(131, 9, '2025-07-04 18:11:03', 'whiteyin', '0389040222', 'Hoang Liet, Hoang Mai, Ha Noi', 2110.44, 0, 'Pending'),
+(132, 9, '2025-07-04 20:54:47', 'test1', '123', 'vn', 1.10, 1, 'Pending');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `checkout_cart`
+-- Cấu trúc bảng cho bảng `checkout_cart`
 --
 
 CREATE TABLE `checkout_cart` (
@@ -207,7 +207,7 @@ CREATE TABLE `checkout_cart` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `checkout_cart`
+-- Đang đổ dữ liệu cho bảng `checkout_cart`
 --
 
 INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `quantity`, `total`, `bill_id`) VALUES
@@ -366,12 +366,13 @@ INSERT INTO `checkout_cart` (`id`, `product_name`, `product_image`, `price`, `qu
 (153, 'Acer Aspire 3 Intel Celeron 4GB RAM 128GB SSD 15.6 Inch Windows 11 Laptop', 'https://www.laptopsdirect.co.uk/Images/NX.A6LEK.00P_1_Supersize.jpg?width=750&height=750&v=3', 179.89, 1, 179.89, 130),
 (154, 'Dell Latitude 5420 Core i5 11th Gen 16GB 256GB 14 Inch Windows 10 Pro', 'https://www.laptopsdirect.co.uk/Images/T17400i516GB256GBW11P_1_Supersize.jpg?v=3', 499.00, 1, 499.00, 130),
 (155, 'Acer Gaming Nitro Lite NL16-71G-71UJ i7-13620H 16GB RAM 512GB SSD RTX 4050 16 Inch WUXGA Win11 Black', 'https://hanoicomputercdn.com/media/product/90816_laptop_acer_gaming_nitro_lite_nl16_71g_71uj_nh_d59s', 921.08, 1, 921.08, 131),
-(156, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 1, 997.50, 131);
+(156, 'ASUS Zenbook UX3405MA-PP152W i5-12500H 16GB RAM 512GB SSD 14 Inch OLED Touch Win11', 'https://hanoicomputercdn.com/media/product/79246_laptop_asus_zenbook_ux3405ma_pp152w__6_.jpg', 997.50, 1, 997.50, 131),
+(157, 'really', 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://img7.thuthuatphanmem.vn/uploads/2023', 1.00, 1, 1.00, 132);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Cấu trúc bảng cho bảng `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -384,7 +385,7 @@ CREATE TABLE `notifications` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `notifications`
+-- Đang đổ dữ liệu cho bảng `notifications`
 --
 
 INSERT INTO `notifications` (`id`, `user_id`, `type`, `content`, `is_read`, `created_at`) VALUES
@@ -399,12 +400,13 @@ INSERT INTO `notifications` (`id`, `user_id`, `type`, `content`, `is_read`, `cre
 (155, 14, 0, 'You have successfully placed order #125.', 1, '2025-07-03 21:15:39'),
 (156, 2, 0, 'You have successfully placed order #127.', 1, '2025-07-04 13:00:31'),
 (159, 9, 0, 'You have successfully placed order #130.', 1, '2025-07-04 18:09:05'),
-(160, 9, 0, 'You have successfully placed order #131.', 1, '2025-07-04 18:11:03');
+(160, 9, 0, 'You have successfully placed order #131.', 1, '2025-07-04 18:11:03'),
+(161, 9, 0, 'You have successfully placed order #132.', 0, '2025-07-04 20:55:13');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product`
+-- Cấu trúc bảng cho bảng `product`
 --
 
 CREATE TABLE `product` (
@@ -419,7 +421,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `product`
+-- Đang đổ dữ liệu cho bảng `product`
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock`, `product_image`, `price`, `rate_id`) VALUES
@@ -453,12 +455,13 @@ INSERT INTO `product` (`id`, `name`, `description`, `category_id`, `qty_in_stock
 (28, 'Cables Direct HDMI Cable with Ethernet 3m', 'Cables Direct HDMI Cable, 3m length, supports Ethernet, high-speed data transfer.', 3, 100, 'https://www.laptopsdirect.co.uk/Images/77HDMI-030_1_supersize.jpg?width=750&height=750&v=1', 9.99, 0),
 (29, '1m RJ-45 Cat6 Networking Cable Black', 'RJ-45 Cat6 Networking Cable, 1m length, black, high-speed data transfer.', 3, 99, 'https://www.laptopsdirect.co.uk/Images/31-0010BK_1_Supersize.jpg?width=750&height=750&v=3', 4.99, 0),
 (30, 'Corsair T3 Rush Fabric Gaming Chair Grey and Charcoal', 'Corsair T3 Rush Gaming Chair, fabric material, ergonomic design, grey and charcoal.', 3, 18, 'https://www.laptopsdirect.co.uk/Images/CF-9010056-UK%20_1_Supersize.jpg?width=750&height=750&v=3', 249.99, 0),
-(31, 'Google Nest Cam Outdoor/Indoor Battery', 'Google Nest Cam (battery) is a completely wire-free outdoor security camera that helps you keep watch over what matters most. It can run on battery power or be plugged in, and it works with the Google Home app for easy setup and control.\r\n\r\nKey Features:\r\n- Wire-free design with rechargeable battery\r\n- Works indoors and outdoors (IP54 weather resistance)\r\n- 1080p HDR video with night vision\r\n- 130° diagonal field of view\r\n- Two-way talk with noise cancellation\r\n- Activity zones and intelligent alerts\r\n- 3 hours of free event video history\r\n- Works with Google Assistant and Alexa\r\n- Easy magnetic mount included\r\n- Privacy features with physical privacy switch\r\n\r\nThe camera uses advanced machine learning to tell the difference between people, animals, and vehicles, sending you intelligent alerts about activity that matters to you. With the Nest Aware subscription (sold separately), you can get up to 60 days of video history and additional intelligent features.\r\n\r\nPerfect for monitoring your home, garden, or any area where running cables isn\'t practical. The weather-resistant design means it can handle rain, snow, and extreme temperatures.', 2, 25, 'https://haloshop.vn/wp-content/uploads/2025/02/google-nest-cam-outdoor-or-indoor-battery-00-700x700-1.jpg', 179.99, 0);
+(31, 'Google Nest Cam Outdoor/Indoor Battery', 'Google Nest Cam (battery) is a completely wire-free outdoor security camera that helps you keep watch over what matters most. It can run on battery power or be plugged in, and it works with the Google Home app for easy setup and control.\r\n\r\nKey Features:\r\n- Wire-free design with rechargeable battery\r\n- Works indoors and outdoors (IP54 weather resistance)\r\n- 1080p HDR video with night vision\r\n- 130° diagonal field of view\r\n- Two-way talk with noise cancellation\r\n- Activity zones and intelligent alerts\r\n- 3 hours of free event video history\r\n- Works with Google Assistant and Alexa\r\n- Easy magnetic mount included\r\n- Privacy features with physical privacy switch\r\n\r\nThe camera uses advanced machine learning to tell the difference between people, animals, and vehicles, sending you intelligent alerts about activity that matters to you. With the Nest Aware subscription (sold separately), you can get up to 60 days of video history and additional intelligent features.\r\n\r\nPerfect for monitoring your home, garden, or any area where running cables isn\'t practical. The weather-resistant design means it can handle rain, snow, and extreme temperatures.', 2, 25, 'https://haloshop.vn/wp-content/uploads/2025/02/google-nest-cam-outdoor-or-indoor-battery-00-700x700-1.jpg', 179.99, 0),
+(36, 'really', 'hẹ hẹ', 3, 9, 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://img7.thuthuatphanmem.vn/uploads/2023/08/18/meme-anh-da-den-cham-hoi_052117827.jpg', 1.00, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_category`
+-- Cấu trúc bảng cho bảng `product_category`
 --
 
 CREATE TABLE `product_category` (
@@ -467,7 +470,7 @@ CREATE TABLE `product_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `product_category`
+-- Đang đổ dữ liệu cho bảng `product_category`
 --
 
 INSERT INTO `product_category` (`id`, `category_name`) VALUES
@@ -478,7 +481,7 @@ INSERT INTO `product_category` (`id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_review`
+-- Cấu trúc bảng cho bảng `product_review`
 --
 
 CREATE TABLE `product_review` (
@@ -492,7 +495,7 @@ CREATE TABLE `product_review` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `product_review`
+-- Đang đổ dữ liệu cho bảng `product_review`
 --
 
 INSERT INTO `product_review` (`id`, `product_id`, `user_id`, `rating`, `comment`, `created_at`, `reviewer_name`) VALUES
@@ -508,12 +511,14 @@ INSERT INTO `product_review` (`id`, `product_id`, `user_id`, `rating`, `comment`
 (11, 16, NULL, 5, 'cam nét như cam cypher', '2025-07-04 16:08:21', 'Guest'),
 (12, 2, NULL, 5, 'chạy mượt vl a ơi', '2025-07-04 16:10:04', 'Guest'),
 (13, 7, 15, 3, 'sạc lâu quá', '2025-07-04 16:12:02', 'thiennguyen5432@gmail.com'),
-(14, 31, 9, 5, 'ngon', '2025-07-04 18:05:28', 'admin1');
+(14, 31, 9, 5, 'ngon', '2025-07-04 18:05:28', 'admin1'),
+(15, 18, 15, 5, 'Laptop xịn vl mà, học tập thì phê phải biết', '2025-07-04 20:38:37', 'thiennguyen5432@gmail.com'),
+(16, 3, 15, 5, 'làm con mac về code khá ngon', '2025-07-04 20:39:20', 'thiennguyen5432@gmail.com');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `services`
+-- Cấu trúc bảng cho bảng `services`
 --
 
 CREATE TABLE `services` (
@@ -527,7 +532,7 @@ CREATE TABLE `services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `services`
+-- Đang đổ dữ liệu cho bảng `services`
 --
 
 INSERT INTO `services` (`id`, `user_id`, `name`, `phone`, `address`, `service_type`, `created_at`) VALUES
@@ -611,7 +616,7 @@ INSERT INTO `services` (`id`, `user_id`, `name`, `phone`, `address`, `service_ty
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site_user`
+-- Cấu trúc bảng cho bảng `site_user`
 --
 
 CREATE TABLE `site_user` (
@@ -627,7 +632,7 @@ CREATE TABLE `site_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `site_user`
+-- Đang đổ dữ liệu cho bảng `site_user`
 --
 
 INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, `password`, `role`, `reset_token`) VALUES
@@ -641,7 +646,7 @@ INSERT INTO `site_user` (`id`, `name`, `address`, `email`, `phone`, `username`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `top_products_config`
+-- Cấu trúc bảng cho bảng `top_products_config`
 --
 
 CREATE TABLE `top_products_config` (
@@ -652,7 +657,7 @@ CREATE TABLE `top_products_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `top_products_config`
+-- Đang đổ dữ liệu cho bảng `top_products_config`
 --
 
 INSERT INTO `top_products_config` (`id`, `config_key`, `config_value`, `updated_at`) VALUES
@@ -664,7 +669,7 @@ INSERT INTO `top_products_config` (`id`, `config_key`, `config_value`, `updated_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variation`
+-- Cấu trúc bảng cho bảng `variation`
 --
 
 CREATE TABLE `variation` (
@@ -674,7 +679,7 @@ CREATE TABLE `variation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `variation`
+-- Đang đổ dữ liệu cho bảng `variation`
 --
 
 INSERT INTO `variation` (`id`, `category_id`, `name`) VALUES
@@ -699,7 +704,7 @@ INSERT INTO `variation` (`id`, `category_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variation_options`
+-- Cấu trúc bảng cho bảng `variation_options`
 --
 
 CREATE TABLE `variation_options` (
@@ -709,7 +714,7 @@ CREATE TABLE `variation_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `variation_options`
+-- Đang đổ dữ liệu cho bảng `variation_options`
 --
 
 INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
@@ -883,17 +888,17 @@ INSERT INTO `variation_options` (`product_id`, `variation_id`, `value`) VALUES
 (31, 15, '1080p');
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `admin_order_views`
+-- Chỉ mục cho bảng `admin_order_views`
 --
 ALTER TABLE `admin_order_views`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `bill`
+-- Chỉ mục cho bảng `bill`
 --
 ALTER TABLE `bill`
   ADD PRIMARY KEY (`id`),
@@ -901,32 +906,32 @@ ALTER TABLE `bill`
   ADD KEY `order_status` (`order_status`);
 
 --
--- Indexes for table `checkout_cart`
+-- Chỉ mục cho bảng `checkout_cart`
 --
 ALTER TABLE `checkout_cart`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `notifications`
+-- Chỉ mục cho bảng `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product`
+-- Chỉ mục cho bảng `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_product_category` (`category_id`);
 
 --
--- Indexes for table `product_category`
+-- Chỉ mục cho bảng `product_category`
 --
 ALTER TABLE `product_category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `product_review`
+-- Chỉ mục cho bảng `product_review`
 --
 ALTER TABLE `product_review`
   ADD PRIMARY KEY (`id`),
@@ -934,141 +939,141 @@ ALTER TABLE `product_review`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `services`
+-- Chỉ mục cho bảng `services`
 --
 ALTER TABLE `services`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `site_user`
+-- Chỉ mục cho bảng `site_user`
 --
 ALTER TABLE `site_user`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `top_products_config`
+-- Chỉ mục cho bảng `top_products_config`
 --
 ALTER TABLE `top_products_config`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `config_key` (`config_key`);
 
 --
--- Indexes for table `variation`
+-- Chỉ mục cho bảng `variation`
 --
 ALTER TABLE `variation`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indexes for table `variation_options`
+-- Chỉ mục cho bảng `variation_options`
 --
 ALTER TABLE `variation_options`
   ADD PRIMARY KEY (`product_id`,`variation_id`),
   ADD KEY `variation_id` (`variation_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
--- AUTO_INCREMENT for table `admin_order_views`
+-- AUTO_INCREMENT cho bảng `admin_order_views`
 --
 ALTER TABLE `admin_order_views`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `bill`
+-- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
--- AUTO_INCREMENT for table `checkout_cart`
+-- AUTO_INCREMENT cho bảng `checkout_cart`
 --
 ALTER TABLE `checkout_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
--- AUTO_INCREMENT for table `notifications`
+-- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
--- AUTO_INCREMENT for table `product`
+-- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
--- AUTO_INCREMENT for table `product_category`
+-- AUTO_INCREMENT cho bảng `product_category`
 --
 ALTER TABLE `product_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `product_review`
+-- AUTO_INCREMENT cho bảng `product_review`
 --
 ALTER TABLE `product_review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `services`
+-- AUTO_INCREMENT cho bảng `services`
 --
 ALTER TABLE `services`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
--- AUTO_INCREMENT for table `site_user`
+-- AUTO_INCREMENT cho bảng `site_user`
 --
 ALTER TABLE `site_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `top_products_config`
+-- AUTO_INCREMENT cho bảng `top_products_config`
 --
 ALTER TABLE `top_products_config`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `variation`
+-- AUTO_INCREMENT cho bảng `variation`
 --
 ALTER TABLE `variation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- Constraints for dumped tables
+-- Các ràng buộc cho các bảng đã đổ
 --
 
 --
--- Constraints for table `bill`
+-- Các ràng buộc cho bảng `bill`
 --
 ALTER TABLE `bill`
   ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`);
 
 --
--- Constraints for table `product`
+-- Các ràng buộc cho bảng `product`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_ibfk_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Constraints for table `product_review`
+-- Các ràng buộc cho bảng `product_review`
 --
 ALTER TABLE `product_review`
   ADD CONSTRAINT `product_review_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_review_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `site_user` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `variation`
+-- Các ràng buộc cho bảng `variation`
 --
 ALTER TABLE `variation`
   ADD CONSTRAINT `fk_variation_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `variation_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`id`);
 
 --
--- Constraints for table `variation_options`
+-- Các ràng buộc cho bảng `variation_options`
 --
 ALTER TABLE `variation_options`
   ADD CONSTRAINT `fk_productconfig_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE,

@@ -65,6 +65,9 @@ try {
     if ($status_value === 'completed' || $status_value == 1) {
         $status_text = 'Completed';
         $status_color = 'success';
+    } elseif ($status_value === 'Shipping') {
+        $status_text = 'Shipping';
+        $status_color = 'info';
     } elseif ($status_value === 'cancelled' || $status_value == 2) {
         $status_text = 'Cancelled';
         $status_color = 'danger';

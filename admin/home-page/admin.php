@@ -104,7 +104,7 @@ require_once '../includes/admin-layout.php';
                                 $stmt = $conn->prepare("
                                     SELECT SUM(order_total) as total 
                                     FROM bill 
-                                    WHERE order_status = 1 OR order_status = 'Completed'
+                                    WHERE order_status = 1 OR order_status = 'Completed' OR order_status = 'Shipping'
                                 ");
                                 $stmt->execute();
                                 $result = $stmt->fetch();
@@ -198,6 +198,9 @@ require_once '../includes/admin-layout.php';
                                     if ($status_value === 'Completed' || $status_value == 1) {
                                         $status_text = 'Completed';
                                         $status_color = 'success';
+                                    } elseif ($status_value === 'Shipping') {
+                                        $status_text = 'Shipping';
+                                        $status_color = 'info';
                                     } elseif ($status_value === 'Cancelled' || $status_value == 2) {
                                         $status_text = 'Cancelled';
                                         $status_color = 'danger';

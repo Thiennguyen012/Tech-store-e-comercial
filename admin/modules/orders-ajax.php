@@ -66,14 +66,58 @@ if (isset($_POST['action']) && $_POST['action'] == 'mark_orders_viewed') {
             exit;
         }
         
-        // Cập nhật trạng thái
-        $stmt = $conn->prepare("UPDATE bill SET order_status = ? WHERE id = ?");
-        $result = $stmt->execute([$_POST['status'], $_POST['order_id']]);
-        
-        if ($result && $stmt->rowCount() > 0) {
-            echo json_encode(['success' => true, 'message' => 'Order status updated successfully!']);
+        // Xử lý hoàn trả sản phẩm khi chuyển sang trạng thái Cancelled
+        if ($_POST['status'] === 'Cancelled' && $existing_order['order_status'] !== 'Cancelled') {
+            try {
+                // Lấy danh sách sản phẩm trong đơn hàng từ checkout_cart
+                $items_stmt = $conn->prepare("
+                    SELECT product_name, quantity 
+                    FROM checkout_cart 
+                    WHERE bill_id = ?
+                ");
+                $items_stmt->execute([$_POST['order_id']]);
+                $order_items = $items_stmt->fetchAll();
+                
+                // Hoàn trả số lượng sản phẩm vào kho
+                foreach ($order_items as $item) {
+                    $update_stock_stmt = $conn->prepare("
+                        UPDATE product 
+                        SET qty_in_stock = qty_in_stock + ? 
+                        WHERE name = ?
+                    ");
+                    $update_stock_stmt->execute([$item['quantity'], $item['product_name']]);
+                    
+                    // Log việc hoàn trả để debug
+                    error_log("Restored {$item['quantity']} units of product '{$item['product_name']}' for cancelled order #{$_POST['order_id']}");
+                }
+                
+                // Cập nhật trạng thái đơn hàng
+                $stmt = $conn->prepare("UPDATE bill SET order_status = ? WHERE id = ?");
+                $result = $stmt->execute([$_POST['status'], $_POST['order_id']]);
+                
+                if ($result && $stmt->rowCount() > 0) {
+                    echo json_encode([
+                        'success' => true, 
+                        'message' => 'Order cancelled successfully and product quantities restored to inventory!'
+                    ]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to update order status']);
+                }
+                
+            } catch (Exception $e) {
+                error_log("Error restoring inventory for cancelled order: " . $e->getMessage());
+                echo json_encode(['success' => false, 'message' => 'Error cancelling order: ' . $e->getMessage()]);
+            }
         } else {
-            echo json_encode(['success' => false, 'message' => 'Update failed. Rows affected: ' . $stmt->rowCount()]);
+            // Cập nhật trạng thái bình thường cho các trường hợp khác
+            $stmt = $conn->prepare("UPDATE bill SET order_status = ? WHERE id = ?");
+            $result = $stmt->execute([$_POST['status'], $_POST['order_id']]);
+            
+            if ($result && $stmt->rowCount() > 0) {
+                echo json_encode(['success' => true, 'message' => 'Order status updated successfully!']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Update failed. Rows affected: ' . $stmt->rowCount()]);
+            }
         }
         exit;
     } catch (Exception $e) {

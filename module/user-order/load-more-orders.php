@@ -85,6 +85,9 @@ foreach ($orders as $billId => $order): ?>
                 if ($status === 'Completed' || $status == 1) {
                     $status_text = 'Completed';
                     $status_class = 'success';
+                } elseif ($status === 'Shipping') {
+                    $status_text = 'Shipping';
+                    $status_class = 'info';
                 } elseif ($status === 'Cancelled' || $status == 2) {
                     $status_text = 'Cancelled';
                     $status_class = 'danger';
