@@ -127,7 +127,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 0) {
                                        class="form-control" 
                                        id="customer_filter" 
                                        name="customer_filter" 
-                                       placeholder="Search by customer name or order name..." 
+                                       placeholder="Search by customer name " 
                                        value="<?php echo isset($_GET['customer_filter']) ? htmlspecialchars($_GET['customer_filter']) : ''; ?>">
                                 <?php if (!empty($_GET['customer_filter'])): ?>
                                     <button type="button" class="btn btn-outline-secondary" onclick="clearCustomerFilter()" title="Clear search">
