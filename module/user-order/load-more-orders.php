@@ -15,15 +15,45 @@ $userId = $user['id'];
 $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
 $limit = 3;
 
+// Bước 1: Lấy danh sách bill_id với phân trang chính xác
+$sqlBills = "SELECT id FROM bill WHERE user_id = ? ORDER BY order_date DESC LIMIT ? OFFSET ?";
+$stmtBills = $conn->prepare($sqlBills);
+$stmtBills->bind_param("iii", $userId, $limit, $offset);
+$stmtBills->execute();
+$resultBills = $stmtBills->get_result();
+
+$billIds = [];
+while ($row = $resultBills->fetch_assoc()) {
+    $billIds[] = $row['id'];
+}
+
+// Nếu không có đơn hàng nào, trả về empty
+if (empty($billIds)) {
+    if ($offset === 0) {
+        echo '<div class="container-fluid vh-50 d-flex align-items-center justify-content-center" data-empty="true">
+                <div class="text-center py-5">
+                    <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
+                    <h4 class="text-muted mb-3">No orders yet !</h4>
+                    <p class="text-muted mb-4">Please place an order to see it here.</p>
+                    <a href="#" onclick="loadPage(\'module/product/product.php\', this, \'products\'); return false;" class="btn btn-dark rounded-pill px-4">Shop now</a>
+                </div>
+              </div>';
+    } else {
+        echo '';
+    }
+    exit;
+}
+
+// Bước 2: Lấy chi tiết đơn hàng cho các bill_id đã chọn
+$placeholders = str_repeat('?,', count($billIds) - 1) . '?';
 $sql = "SELECT b.id AS bill_id, b.order_date, b.order_total, b.order_status, b.order_name, b.order_phone, b.order_address, b.order_paymethod,
                c.product_name, c.product_image, c.price, c.quantity, c.total
         FROM bill b
         JOIN checkout_cart c ON b.id = c.bill_id
-        WHERE b.user_id = ?
-        ORDER BY b.order_date DESC
-        LIMIT ? OFFSET ?";
+        WHERE b.id IN ($placeholders)
+        ORDER BY b.order_date DESC, c.id";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iii", $userId, $limit, $offset);
+$stmt->bind_param(str_repeat('i', count($billIds)), ...$billIds);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -49,22 +79,6 @@ while ($row = $result->fetch_assoc()) {
         'quantity' => $row['quantity'],
         'total' => $row['total']
     ];
-}
-if (empty($orders)) {
-    if ($offset === 0) {
-        echo '<div class="container-fluid vh-50 d-flex align-items-center justify-content-center" data-empty="true">
-                <div class="text-center py-5">
-                    <div class="mb-4"><i class="fas fa-search fa-3x text-muted"></i></div>
-                    <h4 class="text-muted mb-3">No orders yet !</h4>
-                    <p class="text-muted mb-4">Please place an order to see it here.</p>
-                    <a href="#" onclick="loadPage(\'module/product/product.php\', this, \'products\'); return false;" class="btn btn-dark rounded-pill px-4">Shop now</a>
-                </div>
-              </div>';
-    } else {
-        // Chỉ gửi về một chuỗi rỗng nếu offset > 0
-        echo '';
-    }
-    exit;
 }
 
 foreach ($orders as $billId => $order): ?>
