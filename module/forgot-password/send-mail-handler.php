@@ -13,7 +13,7 @@ require '../../db/connect.php'; // Cấu hình database và email
 $smtp_host = 'smtp.gmail.com';
 $smtp_port = 587;
 $smtp_username = 'thinhbui7779@gmail.com';
-$smtp_password = 'feae uzam xwvt zgdf';
+$smtp_password = 'hqfm iokh sqmx kltg';
 $from_email = 'thinhbui7779@gmail.com';
 $from_name = 'Technologia';
 
@@ -87,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     // Gửi email
                     $mail->send();
                     $success_message = "Email đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư của bạn.";
-
                 } catch (Exception $e) {
                     $error_message = "Không thể gửi email. Lỗi: {$mail->ErrorInfo}";
                 }
@@ -98,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
             // Đóng kết nối
             $conn->close();
-
         } catch (Exception $e) {
             $error_message = "Lỗi database: " . $e->getMessage();
         }

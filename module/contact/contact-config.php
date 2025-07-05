@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_PORT', 587);
 define('SMTP_USERNAME', 'thinhbui7779@gmail.com'); // Email công ty
-define('SMTP_PASSWORD', 'feae uzam xwvt zgdf'); // App password hoặc mật khẩu email
+define('SMTP_PASSWORD', 'hqfm iokh sqmx kltg'); // App password hoặc mật khẩu email
 define('COMPANY_EMAIL', 'thinhbui7779@gmail.com'); // Email nhận tin nhắn
 define('COMPANY_NAME', 'Technologia');
 
@@ -43,7 +43,6 @@ function sendContactEmail($data)
         // Gửi email
         $mail->send();
         return ['success' => true, 'message' => 'Email sent successfully'];
-
     } catch (Exception $e) {
         return ['success' => false, 'message' => 'Email could not be sent. Error: ' . $mail->ErrorInfo];
     }
@@ -121,5 +120,3 @@ function generateEmailTemplate($data)
 
     return $html;
 }
-
-?>
