@@ -2,13 +2,15 @@ Dự án học phần Thiết kế ứng dụng Web:
 
 Website bán đồ công nghệ Technologia
 
+<img width="1901" height="909" alt="image" src="https://github.com/user-attachments/assets/ae226c00-9b05-4744-b415-b81434ea8080" />
+
+
 Thành viên thực hiện:
 
 - Nguyễn Nam Thiện - CT070252
 - Bùi Đức Thịnh - CT070253
 - Chu Minh Vũ - CT070265  
 Là sinh viên của Học Viên Kỹ thuật Mật mã KMA
-
 
 Các tính năng chính:
 
